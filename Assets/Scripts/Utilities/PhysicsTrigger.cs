@@ -5,39 +5,34 @@ using UnityEngine.Events;
 
 namespace JTUtility
 {
-
-	[System.Serializable] public class ColliderEvent : UnityEvent<Collider> { }
-	[System.Serializable] public class Collider2DEvent : UnityEvent<Collider2D> { }
-	[System.Serializable] public class CollisionEvent : UnityEvent<Collision> { }
-	[System.Serializable] public class Collision2DEvent : UnityEvent<Collision2D> { }
-
 	public class PhysicsTrigger : MonoBehaviour
 	{
 		[SerializeField]
-		bool triggerOnlyOnce;
+		bool triggerOnlyOnce = false;
 
 		[SerializeField]
-		string[] triggerableTags;
+		string[] triggerableTags = new string[0];
 
 		[SerializeField]
-		UnityEvent onTrigged;
-		bool triggeed;
+		UnityEvent onTrigged = new UnityEvent();
 
-		[SerializeField] ColliderEvent OnEnterTrigger;
-		[SerializeField] ColliderEvent OnStayTrigger;
-		[SerializeField] ColliderEvent OnExitTrigger;
+		bool triggeed = false;
 
-		[SerializeField] CollisionEvent OnStartCollision;
-		[SerializeField] CollisionEvent OnStayCollision;
-		[SerializeField] CollisionEvent OnExitCollision;
+		[SerializeField] ColliderEvent OnEnterTrigger = new ColliderEvent();
+		[SerializeField] ColliderEvent OnStayTrigger = new ColliderEvent();
+		[SerializeField] ColliderEvent OnExitTrigger = new ColliderEvent();
 
-		[SerializeField] Collider2DEvent OnEnterTrigger2D;
-		[SerializeField] Collider2DEvent OnStayTrigger2D;
-		[SerializeField] Collider2DEvent OnExitTrigger2D;
+		[SerializeField] CollisionEvent OnStartCollision = new CollisionEvent();
+		[SerializeField] CollisionEvent OnStayCollision = new CollisionEvent();
+		[SerializeField] CollisionEvent OnExitCollision = new CollisionEvent();
 
-		[SerializeField] Collision2DEvent OnStartCollision2D;
-		[SerializeField] Collision2DEvent OnStayCollision2D;
-		[SerializeField] Collision2DEvent OnExitCollision2D;
+		[SerializeField] Collider2DEvent OnEnterTrigger2D = new Collider2DEvent();
+		[SerializeField] Collider2DEvent OnStayTrigger2D = new Collider2DEvent();
+		[SerializeField] Collider2DEvent OnExitTrigger2D = new Collider2DEvent();
+
+		[SerializeField] Collision2DEvent OnStartCollision2D = new Collision2DEvent();
+		[SerializeField] Collision2DEvent OnStayCollision2D = new Collision2DEvent();
+		[SerializeField] Collision2DEvent OnExitCollision2D = new Collision2DEvent();
 
 		void OnTriggerEnter(Collider collider)
 		{

@@ -16,10 +16,10 @@ namespace JTUtility
 			public UnityEvent Event;
 		}
 
-		[SerializeField] bool startAtBeginning;
-		[SerializeField] bool manuallyExecute;
+		[SerializeField] bool startAtBeginning = false;
+		[SerializeField] bool manuallyExecute = false;
 
-		[SerializeField] SequenceEventData[] sequences;
+		[SerializeField] SequenceEventData[] sequences = new SequenceEventData[0];
 
 		public bool Running { get; private set; }
 		public int nextEventIndex { get; private set; }

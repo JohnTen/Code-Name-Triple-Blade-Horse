@@ -13,4 +13,8 @@ namespace JTUtility
 	[Serializable] public class QuaternionEvent : UnityEvent<Quaternion> { }
 	[Serializable] public class TransformEvent : UnityEvent<Transform> { }
 	[Serializable] public class GameObjectEvent : UnityEvent<GameObject> { }
+	[Serializable] public class ColliderEvent : UnityEvent<Collider> { }
+	[Serializable] public class Collider2DEvent : UnityEvent<Collider2D> { }
+	[Serializable] public class CollisionEvent : UnityEvent<Collision> { }
+	[Serializable] public class Collision2DEvent : UnityEvent<Collision2D> { }
 }

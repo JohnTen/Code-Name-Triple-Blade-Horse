@@ -27,13 +27,13 @@ namespace JTUtility.UI
 		int CurrentIndex;
 
 		[SerializeField]
-		IntEvent OnSwitch;
+		IntEvent OnSwitch = null;
 
 		[SerializeField]
-		Image ButtonImage;
+		Image ButtonImage = null;
 
 		[SerializeField]
-		Text ButtonLabel;
+		Text ButtonLabel = null;
 
 		bool disabledEvent;
 

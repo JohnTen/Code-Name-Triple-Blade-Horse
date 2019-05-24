@@ -4,12 +4,12 @@ namespace JTUtility.Interactables
 	public interface IInteractable
 	{
 		/// <summary>
-		/// Wether this object is being interacting.
+		/// Whether this object is being interacting.
 		/// </summary>
 		bool IsInteracting { get; }
 
 		/// <summary>
-		/// Wether this object is Activated.
+		/// Whether this object is Activated.
 		/// </summary>
 		bool IsActivated { get; }
 
@@ -34,12 +34,12 @@ namespace JTUtility.Interactables
 		event Action OnActivated;
 
 		/// <summary>
-		/// Calls when while this object is deactivated.
+		/// Calls when this object is deactivated.
 		/// </summary>
 		event Action OnDeactivated;
 
 		/// <summary>
-		/// Starts interacting with this object.
+		/// Start interacting with this object.
 		/// </summary>
 		void StartInteracting();
 

@@ -8,10 +8,10 @@ namespace JTUtility.Interactables
 	public class PressPlate : MonoInteractable
 	{
 		[SerializeField]
-		LayerMask affetcableLayer;
+		LayerMask affetcableLayer = new LayerMask();
 
 		[SerializeField]
-		List<GameObject> pressingObjects;
+		List<GameObject> pressingObjects = new List<GameObject>();
 
 		public override void StartInteracting() { }
 

@@ -6,7 +6,7 @@ namespace JTUtility.Interactables
 {
 	public class TimedSwitch : MonoInteractable
 	{
-		[SerializeField] float time;
+		[SerializeField] float time = 0;
 
 		Timer timer;
 
