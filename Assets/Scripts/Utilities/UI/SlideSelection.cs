@@ -14,13 +14,13 @@ namespace JTUtility.UI
 		[SerializeField] Vector2 itemSize;
 		[SerializeField] Sprite[] items;
 		[SerializeField] bool level;
-		[SerializeField] Gradient gradientByRange;
+		[SerializeField] Gradient gradientByRange = null;
 		[SerializeField] AnimationCurve scaleByRange = new AnimationCurve();
 
 		[SerializeField] bool horizontal;
-		[SerializeField] Canvas viewport;
-		[SerializeField] Sprite idleMask;
-		[SerializeField] Sprite selectingMask;
+		[SerializeField] Canvas viewport = null;
+		[SerializeField] Sprite idleMask = null;
+		[SerializeField] Sprite selectingMask = null;
 
 		public IntEvent onValueChange;
 		public IntEvent onValueSettle;
