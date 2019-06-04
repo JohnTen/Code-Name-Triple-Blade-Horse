@@ -13,8 +13,8 @@ public enum PlayerMoveState
 
 public class WeaponSystem : MonoBehaviour
 {
-	IAttacker<AttackPackage, PlayerWeaponState> _weapon;
-	IAttackMove<AttackPackage, PlayerMoveState> _moves;
+	IAttacker _weapon;
+	IAttackMove<AttackPackage> _moves;
 
 	public void Activate(AttackPackage attack)
 	{

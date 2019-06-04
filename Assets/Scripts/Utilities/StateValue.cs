@@ -29,9 +29,33 @@ namespace JTUtility
 			Current = Base;
 		}
 
-		public float ModCurrent(float value)
+		public static implicit operator float(StateValue value)
 		{
-			return Current += value;
+			return value.current;
+		}
+		
+		public static StateValue operator +(StateValue v1, float v2)
+		{
+			v1.current += v2;
+			return v1;
+		}
+
+		public static StateValue operator -(StateValue v1, float v2)
+		{
+			v1.current -= v2;
+			return v1;
+		}
+
+		public static StateValue operator *(StateValue v1, float v2)
+		{
+			v1.current *= v2;
+			return v1;
+		}
+
+		public static StateValue operator /(StateValue v1, float v2)
+		{
+			v1.current /= v2;
+			return v1;
 		}
 	}
 }
