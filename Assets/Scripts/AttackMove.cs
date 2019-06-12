@@ -34,6 +34,8 @@ public class AttackMove : ScriptableObject, ICanProcess<AttackPackage>
 		target._hitPointDamage *= hitPointDamageFactor;
 		target._enduranceDamage *= enduranceDamageFactor;
 		target._knockback += knockbackDistance;
+		target._gapStaggerAnimation = gapStaggerAnimation;
+		target._staggerAnimation = staggerAnimation;
 
 		return target;
 	}

@@ -205,8 +205,7 @@ public class ThrowingKnife : BaseWeapon
 
 	public override AttackPackage Process(AttackPackage target)
 	{
-		target._isMeleeAttack = false;
-		target._isChargedAttack = false;
+		target._attackType = AttackType.Range;
 		target._hitPointDamage += _baseHitPointDamage;
 		target._enduranceDamage += _baseEnduranceDamage;
 		target._knockback += 0.7f;

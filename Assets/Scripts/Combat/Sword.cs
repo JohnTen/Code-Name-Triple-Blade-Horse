@@ -38,8 +38,7 @@ public class Sword : BaseWeapon
 
 	public override AttackPackage Process(AttackPackage target)
 	{
-		target._isMeleeAttack = true;
-		target._isChargedAttack = _charged;
+		target._attackType = _charged ? AttackType.ChargedMelee : AttackType.Melee;
 		target._hitPointDamage += _baseHitPointDamage;
 		target._hitPointDamage *= _chargeAttackMultiplier;
 		target._enduranceDamage += _baseEnduranceDamage;

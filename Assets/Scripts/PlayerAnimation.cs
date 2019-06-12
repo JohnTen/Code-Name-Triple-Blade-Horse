@@ -24,6 +24,12 @@ public class PlayerAnimation : MonoBehaviour
 
 	public event Action<string, float> OnRecievedFrameEvent;
 
+	public bool Flip
+	{
+		get => !_armature.flipX;
+		set => _armature.flipX = !value;
+	}
+
 	public PlayerAnimation()
 	{
 		_boolValueMap = new Dictionary<string, bool>();
@@ -218,7 +224,7 @@ public class PlayerAnimation : MonoBehaviour
 			if (_floatValueMap["XSpeed"] > 0 && _armature.flipX
 			 || _floatValueMap["XSpeed"] < 0 && !_armature.flipX)
 			{
-				_armature.flipX = !_armature.flipX;
+				//_armature.flipX = !_armature.flipX;
 			}
 
 			return;
@@ -250,7 +256,7 @@ public class PlayerAnimation : MonoBehaviour
 			if (_floatValueMap["XSpeed"] > 0 && _armature.flipX
 			 || _floatValueMap["XSpeed"] < 0 && !_armature.flipX)
 			{
-				_armature.flipX = !_armature.flipX;
+				//_armature.flipX = !_armature.flipX;
 			}
 		}
 	}
