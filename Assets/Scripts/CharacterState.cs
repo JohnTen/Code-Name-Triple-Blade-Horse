@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using JTUtility;
 
 public class CharacterState : MonoBehaviour
 {
-	[SerializeField] StateValue _hitPoints;
-	[SerializeField] StateValue _endurance;
-	[SerializeField] StateValue _stamina;
+	[Header("Basic")]
+	public StateValue _hitPoints;
+	public StateValue _endurance;
 
-	[SerializeField] float _staminaRecoverRate;
+	public float _enduranceRecoverRate;
+	public float _enduranceRefreshDelay;
+
+	public float _basicDamage;
+	public float _enduranceDamage;
 }
