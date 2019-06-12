@@ -5,6 +5,7 @@ using JTUtility;
 
 public enum InputCommand
 {
+	Null,
 	Dash,
 	Jump,
 	RangeBegin,
@@ -13,8 +14,8 @@ public enum InputCommand
 	MeleeBegin,
 	MeleeAttack,
 	MeleeChargeAttack,
-	WithdrawInAir,
-	WithdrawStuck,
+	WithdrawAll,
+	WithdrawOne,
 }
 
 public struct InputEventArg
@@ -41,14 +42,38 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 	[SerializeField] float _meleeMaxChargeTime;
 	[SerializeField] float _rangeChargeTime;
 	[SerializeField] float _withdrawTime;
+	[SerializeField] Transform _aimingPivot;
 
 	float _meleeChargeTimer;
 	float _rangeChargeTimer;
 	float _withdrawTimer;
 
+	bool _delayingInput;
 	bool _usingController;
 	bool _throwPressedBefore;
 	IInputModel _input;
+	InputEventArg _delayedInput;
+
+	public bool DelayInput
+	{
+		get => _delayingInput;
+		set
+		{
+			if (!value && _delayingInput && _delayedInput._command != InputCommand.Null)
+			{
+				OnReceivedInput?.Invoke(_delayedInput);
+			}
+
+			if (_delayingInput == value)
+				return;
+
+			_delayingInput = value;
+			if (_delayingInput)
+			{
+				_delayedInput._command = InputCommand.Null;
+			}
+		}
+	}
 
 	public event Action<InputEventArg> OnReceivedInput;
 
@@ -66,7 +91,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		}
 		else
 		{
-			aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+			aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - _aimingPivot.position);
 			if (aim.SqrMagnitude() > 1)
 				aim.Normalize();
 		}
@@ -94,12 +119,34 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		HandleWithdraw();
 	}
 
+	private void InvokeInputEvent(InputCommand command)
+	{
+		if (DelayInput)
+		{
+			_delayedInput._command = command;
+			return;
+		}
+		OnReceivedInput?.Invoke(new InputEventArg(command));
+	}
+
+	private void InvokeInputEvent(InputCommand command, float value)
+	{
+		if (DelayInput)
+		{
+			_delayedInput._command = command;
+			_delayedInput._additionalValue = value;
+			return;
+		}
+
+		OnReceivedInput?.Invoke(new InputEventArg(command, value));
+	}
+
 	private void HandleMeleeInput()
 	{
 		if (_input.GetButtonDown("Melee"))
 		{
 			_meleeChargeTimer = 0;
-			OnReceivedInput?.Invoke(new InputEventArg(InputCommand.MeleeBegin));
+			InvokeInputEvent(InputCommand.MeleeBegin);
 		}
 
 		if (_input.GetButton("Melee"))
@@ -107,7 +154,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_meleeChargeTimer += Time.deltaTime;
 			if (_meleeChargeTimer > _meleeMaxChargeTime)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.MeleeChargeAttack, 1));
+				InvokeInputEvent(InputCommand.MeleeChargeAttack, 1);
 				_meleeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -120,11 +167,11 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 					(_meleeChargeTimer - _meleeChargeTime) /
 					(_meleeMaxChargeTime - _meleeChargeTime);
 
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.MeleeChargeAttack, chargedPercent));
+				InvokeInputEvent(InputCommand.MeleeChargeAttack, chargedPercent);
 			}
 			else if (_meleeChargeTimer > 0)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.MeleeAttack));
+				InvokeInputEvent(InputCommand.MeleeAttack);
 			}
 		}
 	}
@@ -136,10 +183,11 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			HandleControllerRangeInput();
 			return;
 		}
+
 		if (_input.GetButtonDown("Throw"))
 		{
 			_rangeChargeTimer = 0;
-			OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeBegin));
+			InvokeInputEvent(InputCommand.RangeBegin);
 		}
 
 		if (_input.GetButton("Throw"))
@@ -147,7 +195,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_rangeChargeTimer += Time.deltaTime;
 			if (_rangeChargeTimer > _rangeChargeTime)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeChargeAttack));
+				InvokeInputEvent(InputCommand.RangeChargeAttack);
 				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -155,7 +203,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		if (_input.GetButtonUp("Throw"))
 		{
 			if (_rangeChargeTimer > 0)
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeAttack));
+				InvokeInputEvent(InputCommand.RangeAttack);
 		}
 	}
 
@@ -178,14 +226,14 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			{
 				_throwPressedBefore = true;
 				_rangeChargeTimer = 0;
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeBegin));
+				InvokeInputEvent(InputCommand.RangeBegin);
 			}
 
 			// OnButton
 			_rangeChargeTimer += Time.deltaTime;
 			if (_rangeChargeTimer > _rangeChargeTime)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeChargeAttack));
+				InvokeInputEvent(InputCommand.RangeChargeAttack);
 				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -193,41 +241,41 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		else if (_throwPressedBefore)
 		{
 			if (_rangeChargeTimer > 0)
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.RangeAttack));
+				InvokeInputEvent(InputCommand.RangeAttack);
 		}
 	}
 
 	private void HandleJumpInput()
 	{
-		if (Input.GetButtonDown("Jump"))
+		if (_input.GetButtonDown("Jump"))
 		{
-			OnReceivedInput?.Invoke(new InputEventArg(InputCommand.Jump));
+			InvokeInputEvent(InputCommand.Jump);
 		}
 	}
 
 	private void HandleDashInput()
 	{
-		if (Input.GetButtonDown("Dash"))
+		if (_input.GetButtonDown("Dash"))
 		{
-			OnReceivedInput?.Invoke(new InputEventArg(InputCommand.Dash));
+			InvokeInputEvent(InputCommand.Dash);
 		}
 	}
 
 	private void HandleWithdraw()
 	{
-		if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawOnStuck"))
+		if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
 		{
 			_withdrawTimer += Time.deltaTime;
 			if (_withdrawTimer >= _withdrawTime)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.WithdrawInAir));
+				InvokeInputEvent(InputCommand.WithdrawAll);
 			}
 		}
-		else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawOnStuck"))
+		else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
 		{
 			if (_withdrawTimer < _withdrawTime)
 			{
-				OnReceivedInput?.Invoke(new InputEventArg(InputCommand.WithdrawStuck));
+				InvokeInputEvent(InputCommand.WithdrawOne);
 			}
 			_withdrawTimer = 0;
 		}

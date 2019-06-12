@@ -3,6 +3,7 @@ using JTUtility;
 
 public class CharacterState : MonoBehaviour
 {
+	[Header("Basic")]
 	public StateValue _hitPoints;
 	public StateValue _endurance;
 

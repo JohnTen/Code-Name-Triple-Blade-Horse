@@ -6,7 +6,6 @@ using UnityEngine;
 public class Sword : BaseWeapon
 {
 	[SerializeField] float _maxChargeAttack;
-	[SerializeField] float _maxChargeTime;
 	[SerializeField] AnimationCurve _chargeAttackMultiplierCurve;
 	[SerializeField] Collider2D triggerBox;
 
@@ -15,10 +14,10 @@ public class Sword : BaseWeapon
 	float _chargeAttackMultiplier;
 	AttackPackage basePackage;
 
-	public void Charge(float time)
+	public void Charge(float percentage)
 	{
 		_charged = true;
-		_chargeAttackMultiplier = _chargeAttackMultiplierCurve.Evaluate(time / _maxChargeTime) * _maxChargeAttack;
+		_chargeAttackMultiplier = _chargeAttackMultiplierCurve.Evaluate(percentage) * _maxChargeAttack;
 	}
 
 	public override void Activate(AttackPackage attack)

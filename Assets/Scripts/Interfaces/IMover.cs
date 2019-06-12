@@ -23,8 +23,9 @@ public interface ICanDash
 {
 	void Dash(Vector3 direction);
 
-	event Action OnDashing;
-	event Action OnDashed;
+	event Action OnDashingBegin;
+	event Action OnDashingDelayBegin;
+	event Action OnDashingFinished;
 }
 
 public interface ICanDetectGround
