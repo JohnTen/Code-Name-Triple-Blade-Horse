@@ -209,7 +209,7 @@ public class ThrowingKnife : BaseWeapon
 		target._isChargedAttack = false;
 		target._hitPointDamage += _baseHitPointDamage;
 		target._enduranceDamage += _baseEnduranceDamage;
-		target._hitBackDistance += 0.7f;
+		target._knockback += 0.7f;
 
 		return target;
 	}

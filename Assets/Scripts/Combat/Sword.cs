@@ -8,7 +8,9 @@ public class Sword : BaseWeapon
 	[SerializeField] float _maxChargeAttack;
 	[SerializeField] AnimationCurve _chargeAttackMultiplierCurve;
 	[SerializeField] Collider2D triggerBox;
-
+	[SerializeField] AttackMove normalAttack;
+	[SerializeField] AttackMove chargedAttack;
+	
 	bool _activated;
 	bool _charged;
 	float _chargeAttackMultiplier;
@@ -41,7 +43,7 @@ public class Sword : BaseWeapon
 		target._hitPointDamage += _baseHitPointDamage;
 		target._hitPointDamage *= _chargeAttackMultiplier;
 		target._enduranceDamage += _baseEnduranceDamage;
-		target._hitBackDistance += 2;
+		target._knockback += 2;
 
 		return target;
 	}
