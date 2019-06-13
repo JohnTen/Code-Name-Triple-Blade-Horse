@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerCharacter : MonoBehaviour
 {
 	[SerializeField] PlayerState _state;
-	[SerializeField] bool _frozen;
 
 	PlayerInput _input;
 	PlayerMover _mover;
@@ -14,11 +13,6 @@ public class PlayerCharacter : MonoBehaviour
 	PlayerAnimation _animation;
 
 	InputCommand _lastInput;
-
-	public bool Frozen
-	{
-		get => _frozen;
-	}
 
 	private void Awake()
 	{
@@ -60,7 +54,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void OnReceivedInputHandler(InputEventArg input)
 	{
-		if (Frozen) return;
+		if (_state._frozen) return;
 
 		switch (input._command)
 		{
@@ -101,12 +95,14 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void Update()
 	{
-		_frozen = _animation.GetBool("Frozen") || _mover.IsDashing || _weaponSystem.Frozen;
-		_input.DelayInput = _frozen;
-		print(Frozen);
-		var moveInput = Frozen ? Vector2.zero : _input.GetMovingDirection();
+		_state._frozen = _animation.GetBool("Frozen") || _mover.IsDashing || _weaponSystem.Frozen;
+
+		_input.DelayInput = _state._frozen;
+
+		var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
 		_mover.Move(moveInput);
-		if (Frozen)
+
+		if (_state._frozen)
 		{
 			_animation.SetFloat("XSpeed", 0);
 			_animation.SetFloat("YSpeed", 0);

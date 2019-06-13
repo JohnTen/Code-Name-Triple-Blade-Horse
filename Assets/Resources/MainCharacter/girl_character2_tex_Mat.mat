@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: girl_character2_tex_Mat
   m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _ALPHATEST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,7 +19,31 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - DisplacementPack_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -27,10 +51,133 @@ Material:
         m_Texture: {fileID: 2800000, guid: 2717de2bc9a85cf4ba8f97704e78ed57, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NewTex_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SourceNewTex_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - AnimatedInfiniteZoomUV_Intensity_1: 2.921
+    - AnimatedInfiniteZoomUV_PosX_1: 0.235
+    - AnimatedInfiniteZoomUV_PosY_1: -0.036
+    - AnimatedInfiniteZoomUV_Speed_1: -5.214
+    - AnimatedInfiniteZoomUV_Zoom_1: 0.54
+    - AnimatedTwistUV_AnimatedTwistUV_Bend_1: 0.197
+    - AnimatedTwistUV_AnimatedTwistUV_PosX_1: 0.25
+    - AnimatedTwistUV_AnimatedTwistUV_PosY_1: 0.5
+    - AnimatedTwistUV_AnimatedTwistUV_Radius_1: 0.5
+    - AnimatedTwistUV_AnimatedTwistUV_Speed_1: 0
     - PixelSnap: 0
+    - PolarCoordinatesUV_Size_1: 0.317
+    - PositionUV_X_1: 0.014
+    - PositionUV_Y_1: 0
+    - _Add_Fade_1: 1.615
+    - _BumpScale: 1
+    - _CircleFade_Dist_1: 0.2
+    - _CircleFade_Dist_2: 0.2
+    - _CircleFade_PosX_1: 0.5
+    - _CircleFade_PosX_2: 0.5
+    - _CircleFade_PosY_1: 0.8692334
+    - _CircleFade_PosY_2: 0.4942322
+    - _CircleFade_Size_1: 0.4256427
+    - _CircleFade_Size_2: 0.325641
+    - _CircleHole_Dist_1: 0.259
+    - _CircleHole_PosX_1: 0.313
+    - _CircleHole_PosY_1: 0.473
+    - _CircleHole_Size_1: 0.786
+    - _ColorMask: 15
+    - _Cutoff: 0.06
+    - _DetailNormalMapScale: 1
+    - _DisplacementPack_Size_1: 3
+    - _DisplacementPack_ValueX_1: 0
+    - _DisplacementPack_ValueY_1: -0.374
+    - _DstBlend: 0
     - _EnableExternalAlpha: 0
+    - _Generate_Donut_PosX_1: 0.5
+    - _Generate_Donut_PosY_1: 0.5
+    - _Generate_Donut_SizeDonut_1: -0.582
+    - _Generate_Donut_SizeSmooth_1: 0.159
+    - _Generate_Donut_Size_1: 0.618
+    - _Generate_Fire_PosX_1: 0
+    - _Generate_Fire_PosX_2: 0.1115382
+    - _Generate_Fire_PosY_1: -0.223077
+    - _Generate_Fire_PosY_2: 0
+    - _Generate_Fire_Precision_1: 0.1397436
+    - _Generate_Fire_Precision_2: 0.05
+    - _Generate_Fire_Smooth_1: 0.4089745
+    - _Generate_Fire_Smooth_2: 0.3499995
+    - _Generate_Fire_Speed_1: 1.323078
+    - _Generate_Fire_Speed_2: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _LerpUV_Fade_1: 0.097
+    - _MaskRGBA_Fade_1: 0
+    - _MaskRGBA_Fade_2: 0
+    - _Metallic: 0
+    - _Mode: 1
+    - _OcclusionStrength: 1
+    - _OperationBlend_Fade_1: 1
+    - _OperationBlend_Fade_2: 1
+    - _Parallax: 0.02
+    - _PlasmaFX_Fade_1: 0.151
+    - _PlasmaFX_Speed_1: 0.745
+    - _PremadeGradients_Fade_1: 1
+    - _PremadeGradients_Offset_1: 0
+    - _PremadeGradients_Speed_1: 0.496
+    - _RGBA_Add_Fade_1: 1.653841
+    - _RGBA_Mul_Fade_1: 1.275
+    - _ShadowLight_Intensity_1: 1.433
+    - _ShadowLight_NoSprite_1: 0
+    - _ShadowLight_PosX_1: 0
+    - _ShadowLight_PosY_1: -0.069
+    - _ShadowLight_Precision_1: 10.774
+    - _ShadowLight_Size_1: 1.102
+    - _ShinyFX_Intensity_1: 1.218
+    - _ShinyFX_Pos_1: -0.07
+    - _ShinyFX_Size_1: -0.092
+    - _ShinyFX_Smooth_1: 0.25
+    - _ShinyFX_Speed_1: 1.407
+    - _Simple_Displacement_Rotative_Rotation_1: -0.239
+    - _Simple_Displacement_Rotative_Value_1: -0.11
+    - _Simple_Displacement_Value_1: 0.011
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SpriteFade: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ThresholdSmooth_Smooth_1: 0.025
+    - _ThresholdSmooth_Value_1: -0.9
+    - _TurnAlphaToBlack_Fade_1: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    - px1: 0.42
+    - px2: 0.6
+    - py1: 0.2
+    - py2: 0.4
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor_Color_1: {r: 0.2794118, g: 1, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowLight_Color_1: {r: 1, g: 0.7728195, b: 0.1764706, a: 1}

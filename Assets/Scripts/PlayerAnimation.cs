@@ -18,17 +18,13 @@ public class PlayerAnimation : MonoBehaviour
 	int _currentAttack = 0;
 	string[] _meleeAttacks = { "ATK_Melee_Ground_1", "ATK_Melee_Ground_2", "ATK_Melee_Ground_3" };
 	
-	[SerializeField] private UnityArmatureComponent _armatureComponent;
+	[SerializeField] UnityArmatureComponent _armatureComponent;
 
-	[SerializeField] private float attackTimer;
+	[SerializeField] float attackTimer;
+
+	[SerializeField] CharacterState _state;
 
 	public event Action<string, float> OnRecievedFrameEvent;
-
-	public bool Flip
-	{
-		get => !_armature.flipX;
-		set => _armature.flipX = !value;
-	}
 
 	public PlayerAnimation()
 	{
@@ -173,6 +169,11 @@ public class PlayerAnimation : MonoBehaviour
 
 	private void UpdateAnimation()
 	{
+		if (_state._facingRight == _armature.flipX)
+		{
+			_armature.flipX = !_armature.flipX;
+		}
+
 		if (_boolValueMap["Jump"] && _boolValueMap["Airborne"] == false)
 		{
 			var anim = _armature.animation.FadeIn("Jump_Ground", 0.1f, 1, 0, null);
@@ -221,12 +222,6 @@ public class PlayerAnimation : MonoBehaviour
 				_boolValueMap["Falling"] = true;
 			}
 
-			if (_floatValueMap["XSpeed"] > 0 && _armature.flipX
-			 || _floatValueMap["XSpeed"] < 0 && !_armature.flipX)
-			{
-				//_armature.flipX = !_armature.flipX;
-			}
-
 			return;
 		}
 
@@ -251,12 +246,6 @@ public class PlayerAnimation : MonoBehaviour
 				print("Run_Ground");
 				_walkState.resetToPose = false;
 				_walkState.timeScale = 0.5f;
-			}
-
-			if (_floatValueMap["XSpeed"] > 0 && _armature.flipX
-			 || _floatValueMap["XSpeed"] < 0 && !_armature.flipX)
-			{
-				//_armature.flipX = !_armature.flipX;
 			}
 		}
 	}

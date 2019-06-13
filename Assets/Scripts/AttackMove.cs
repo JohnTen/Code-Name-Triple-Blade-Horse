@@ -31,9 +31,10 @@ public class AttackMove : ScriptableObject, ICanProcess<AttackPackage>
 
 	public AttackPackage Process(AttackPackage target)
 	{
-		target._hitPointDamage *= hitPointDamageFactor;
+		target._hitPointDamage *= hitPointDamageFactor * damageCurve.Evaluate(target._chargedPercent);
 		target._enduranceDamage *= enduranceDamageFactor;
 		target._knockback += knockbackDistance;
+		target._triggerGapStagger = canTriggerGapStagger;
 		target._gapStaggerAnimation = gapStaggerAnimation;
 		target._staggerAnimation = staggerAnimation;
 
