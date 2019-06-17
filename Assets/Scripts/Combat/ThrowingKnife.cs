@@ -25,10 +25,13 @@ public class ThrowingKnife : BaseWeapon
 	[SerializeField] float hoverTimer;
 	[SerializeField] KnifeState state;
 	[SerializeField] bool piercing;
+	[SerializeField] AttackMove normalAttack;
+	[SerializeField] AttackMove chargedAttack;
+	[SerializeField] AttackMove floatAttack;
 
 	bool activated;
 	Sheath sheath;
-	AttackPackage basicAttack;
+	AttackPackage attackPackage;
 
 	public KnifeState State
 	{
@@ -63,7 +66,14 @@ public class ThrowingKnife : BaseWeapon
 		transform.position = sheath.LaunchPosition.position;
 		transform.right = direction;
 
-		basicAttack = AttackPackage.CreateNewPackage();
+		if (isPiercing)
+		{
+			attackPackage = CreateNewPackage(AttackType.ChargedRange, chargedAttack);
+		}
+		else
+		{
+			attackPackage = CreateNewPackage(AttackType.Range, normalAttack);
+		}
 
 		return true;
 	}
@@ -75,7 +85,8 @@ public class ThrowingKnife : BaseWeapon
 		piercing = false;
 		state = KnifeState.Hover;
 
-		basicAttack = AttackPackage.CreateNewPackage();
+		attackPackage = CreateNewPackage(AttackType.Float, floatAttack);
+		attackPackage._attackRate = 0.2f;
 
 		return true;
 	}
@@ -88,7 +99,15 @@ public class ThrowingKnife : BaseWeapon
 		transform.parent = null;
 		state = KnifeState.Returning;
 
-		basicAttack = AttackPackage.CreateNewPackage();
+		if (piercing)
+		{
+			attackPackage = CreateNewPackage(AttackType.ChargedRange, chargedAttack);
+		}
+		else
+		{
+			attackPackage = CreateNewPackage(AttackType.Range, normalAttack);
+		}
+
 		Returning();
 
 		return true;
@@ -105,7 +124,7 @@ public class ThrowingKnife : BaseWeapon
 			print(hit.collider.name);
 			var attackable = hit.collider.GetComponent<IAttackable>();
 
-			if (hit.collider.tag == "Climable")
+			if (hit.collider.tag == "Climbable")
 			{
 				StuckedOnClimbable = true;
 				state = KnifeState.Stuck;
@@ -116,7 +135,7 @@ public class ThrowingKnife : BaseWeapon
 			else if (attackable != null)
 			{
 				print("Enemy fly");
-				var attack = Process(basicAttack);
+				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
 				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
 			}
@@ -159,7 +178,7 @@ public class ThrowingKnife : BaseWeapon
 			if (attackable != null)
 			{
 				print("Enemy return");
-				var attack = Process(basicAttack);
+				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
 				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
 			}
@@ -185,16 +204,16 @@ public class ThrowingKnife : BaseWeapon
 			if (attackable != null)
 			{
 				print("Enemy hover");
-				var attack = Process(basicAttack);
+				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
 				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
 			}
 		}
 	}
 
-	public override void Activate(AttackPackage attack)
+	public override void Activate(AttackPackage attack, AttackMove move)
 	{
-		basicAttack = attack;
+		attackPackage = attack;
 		activated = true;
 	}
 
@@ -203,13 +222,14 @@ public class ThrowingKnife : BaseWeapon
 		activated = false;
 	}
 
-	public override AttackPackage Process(AttackPackage target)
+	private AttackPackage CreateNewPackage(AttackType type, AttackMove move)
 	{
-		target._attackType = AttackType.Range;
-		target._hitPointDamage += _baseHitPointDamage;
-		target._enduranceDamage += _baseEnduranceDamage;
-		target._knockback += 0.7f;
+		var package = AttackPackage.CreateNewPackage();
+		package._hitPointDamage.Base = _baseHitPointDamage;
+		package._enduranceDamage.Base = _baseEnduranceDamage;
+		package._attackType = type;
+		package = move.Process(package);
 
-		return target;
+		return package;
 	}
 }

@@ -8,11 +8,12 @@ public class PlayerAnimation : MonoBehaviour
 {
 	DragonBones.Armature _armature;
 	DragonBones.AnimationState _walkState;
+	DragonBones.AnimationState _dashState;
 	Dictionary<string, bool> _boolValueMap;
 	Dictionary<string, float> _floatValueMap;
 	Dictionary<string, int> _intValueMap;
 
-	readonly string[] _boolValueKeys = { "Idle", "Jump", "Dash", "Airborne", "Landing", "Falling", "Frozen", "MeleeAttack", "CanBreak" };
+	readonly string[] _boolValueKeys = { "Jump", "Dash", "Airborne", "Landing", "Falling", "Frozen", "MeleeAttack", "CanBreak", "DelayInput" };
 	readonly string[] _floatValueKeys = { "XSpeed", "YSpeed", "AttackStepSpeed", "AttackStepDistance"};
 	
 	int _currentAttack = 0;
@@ -106,8 +107,11 @@ public class PlayerAnimation : MonoBehaviour
 
 	public void Attack()
 	{
+		print("Attack");
 		_walkState = null;
 		_armature.animation.FadeIn(_meleeAttacks[_currentAttack], 0, 1);
+		_currentAttack++;
+		_currentAttack %= _meleeAttacks.Length;
 		_boolValueMap["Frozen"] = true;
 	}
 
@@ -116,7 +120,6 @@ public class PlayerAnimation : MonoBehaviour
 		if (eventObject.animationState.name == "Droping_Buffering")
 		{
 			_armature.animation.FadeIn("Idle_Ground", 0.2f, 0, 0, null).resetToPose = false;
-			print("Idle_Ground");
 
 			_boolValueMap["Frozen"] = false;
 			_boolValueMap["Landing"] = false;
@@ -126,17 +129,26 @@ public class PlayerAnimation : MonoBehaviour
 		{
 			if (attack != eventObject.animationState.name) continue;
 			_boolValueMap["Frozen"] = false;
-			_currentAttack++;
-			_currentAttack %= _meleeAttacks.Length;
 			attackTimer = 0.3f;
 			_armature.animation.FadeIn("Idle_Ground", 0.2f, 0, 0, null).resetToPose = false;
-			print("Idle_Ground");
 		}
 	}
 
 	private void OnFrameEventHandler(string type, EventObject eventObject)
 	{
-		if (eventObject.name == "AttackBegin")
+		if (eventObject.name == "DelayInput")
+		{
+			_boolValueMap["DelayInput"] = true;
+			OnRecievedFrameEvent("DelayInput", 1);
+		}
+
+		else if (eventObject.name == "ReleaseInput")
+		{
+			_boolValueMap["DelayInput"] = false;
+			OnRecievedFrameEvent("DelayInput", 0);
+		}
+
+		else if (eventObject.name == "AttackBegin")
 		{
 			_boolValueMap["MeleeAttack"] = true;
 			OnRecievedFrameEvent("AttackBegin", 1);
@@ -174,17 +186,34 @@ public class PlayerAnimation : MonoBehaviour
 			_armature.flipX = !_armature.flipX;
 		}
 
+		if (_boolValueMap["Dash"])
+		{
+			_walkState = null;
+			if (_dashState == null)
+			{
+				_dashState = _armature.animation.FadeIn("Dash_Ground", 0.1f, 0);
+				_dashState.resetToPose = false;
+			}
+
+			return;
+		}
+		else if (_dashState != null)
+		{
+			_armature.animation.FadeIn("Idle_Ground", 0, 0);
+			_dashState = null;
+		}
+
 		if (_boolValueMap["Jump"] && _boolValueMap["Airborne"] == false)
 		{
 			var anim = _armature.animation.FadeIn("Jump_Ground", 0.1f, 1, 0, null);
 			anim.timeScale = 5f;
 			anim.resetToPose = false;
-
-			print("Jump_Ground");
+			
 			_walkState = null;
 			_boolValueMap["Jump"] = false;
 			_boolValueMap["Airborne"] = true;
 			_boolValueMap["Landing"] = false;
+			_boolValueMap["Frozen"] = false;
 
 			return;
 		}
@@ -197,7 +226,6 @@ public class PlayerAnimation : MonoBehaviour
 				var anim = _armature.animation.FadeIn("Droping_Buffering", 0f, 1, 0, null);
 				anim.timeScale = 3f;
 				anim.resetToPose = false;
-				print("Droping_Buffering");
 				_boolValueMap["Airborne"] = false;
 				_boolValueMap["Falling"] = false;
 				_boolValueMap["Frozen"] = true;
@@ -211,14 +239,12 @@ public class PlayerAnimation : MonoBehaviour
 					var anim = _armature.animation.FadeIn("Jump_Air", 0.2f, 1, 0, null);
 					anim.timeScale = 2f;
 					anim.resetToPose = false;
-					print("Jump_Air");
 				}
 				_boolValueMap["Falling"] = false;
 			}
 			else if (!_boolValueMap["Falling"])
 			{
 				_armature.animation.FadeIn("Droping", 0.2f, 0, 0, null).resetToPose = false;
-				print("Droping");
 				_boolValueMap["Falling"] = true;
 			}
 
@@ -234,7 +260,6 @@ public class PlayerAnimation : MonoBehaviour
 				_walkState = _armature.animation.FadeIn("Idle_Ground", 0.1f, 0, 0, null);
 				_walkState.resetToPose = false;
 				_walkState.timeScale = 0.5f;
-				print("Idle_Ground");
 				_walkState = null;
 			}
 		}
@@ -243,9 +268,7 @@ public class PlayerAnimation : MonoBehaviour
 			if (_walkState == null)
 			{
 				_walkState = _armature.animation.FadeIn("Run_Ground", 0.1f, 0, 0, null);
-				print("Run_Ground");
 				_walkState.resetToPose = false;
-				_walkState.timeScale = 0.5f;
 			}
 		}
 	}

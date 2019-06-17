@@ -9,7 +9,7 @@ public class PlayerCharacter : MonoBehaviour
 	PlayerInput _input;
 	PlayerMover _mover;
 	WeaponSystem _weaponSystem;
-	ICanDetectGround groundDetector;
+	ICanDetectGround _groundDetector;
 	PlayerAnimation _animation;
 
 	InputCommand _lastInput;
@@ -20,11 +20,42 @@ public class PlayerCharacter : MonoBehaviour
 		_mover = GetComponent<PlayerMover>();
 		_animation = GetComponent<PlayerAnimation>();
 		_weaponSystem = GetComponent<WeaponSystem>();
-		groundDetector = GetComponent<ICanDetectGround>();
+		_groundDetector = GetComponent<ICanDetectGround>();
 
+		_mover.OnMovingStateChanged += HandleMovingStateChanged;
+		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 		_input.OnReceivedInput += OnReceivedInputHandler;
-		groundDetector.OnLanding += GroundDetector_OnLanding;
+		_mover.OnDashingFinished += DashingFinishedHandler;
 		_animation.OnRecievedFrameEvent += OnRecievedFrameEvent;
+		_weaponSystem.OnPull += PullHandler;
+	}
+
+	private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
+	{
+		if (eventArgs.currentLandingState == LandingState.OnGround)
+			_animation.SetBool("Landing", true);
+	}
+
+	private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
+	{
+		print(Time.frameCount + "Moving state changed, last " + eventArgs.lastMovingState
+			+ "\ncurrent " + eventArgs.currentMovingState
+			+ "\nvelocity " + eventArgs.velocity);
+		if (eventArgs.lastMovingState == MovingState.Dash)
+		{
+			_animation.SetBool("Dash", false);
+		}
+	}
+
+	private void DashingFinishedHandler()
+	{
+		print("Dashfinished2" + +Time.frameCount);
+	}
+
+	private void PullHandler(Vector3 direction)
+	{
+		_mover.Pull(direction);
+		_animation.SetBool("Jump", true);
 	}
 
 	private void OnRecievedFrameEvent(string name, float value)
@@ -47,15 +78,13 @@ public class PlayerCharacter : MonoBehaviour
 		}
 	}
 
-	private void GroundDetector_OnLanding()
+	private void LandingHandler()
 	{
 		_animation.SetBool("Landing", true);
 	}
 
 	private void OnReceivedInputHandler(InputEventArg input)
 	{
-		if (_state._frozen) return;
-
 		switch (input._command)
 		{
 			case InputCommand.Jump:
@@ -65,6 +94,11 @@ public class PlayerCharacter : MonoBehaviour
 
 			case InputCommand.Dash:
 				_mover.Dash(_input.GetMovingDirection());
+				_animation.SetBool("Dash", true);
+				break;
+
+			case InputCommand.MeleeBegin:
+				print("Melee begin");
 				break;
 
 			case InputCommand.MeleeAttack:
@@ -72,6 +106,7 @@ public class PlayerCharacter : MonoBehaviour
 				break;
 
 			case InputCommand.MeleeChargeAttack:
+				print("Charged melee  " + input._additionalValue);
 				_weaponSystem.ChargedMeleeAttack(input._additionalValue);
 				break;
 
@@ -95,9 +130,13 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void Update()
 	{
-		_state._frozen = _animation.GetBool("Frozen") || _mover.IsDashing || _weaponSystem.Frozen;
+		_state._frozen = 
+			_animation.GetBool("Frozen")
+			|| _mover.CurrentMovingState == MovingState.Dash
+			|| _mover.PullDelaying
+			|| _weaponSystem.Frozen;
 
-		_input.DelayInput = _state._frozen;
+		_input.DelayInput = _animation.GetBool("DelayInput");
 
 		var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
 		_mover.Move(moveInput);
@@ -112,5 +151,10 @@ public class PlayerCharacter : MonoBehaviour
 			_animation.SetFloat("XSpeed", _mover.Velocity.x);
 			_animation.SetFloat("YSpeed", _mover.Velocity.y);
 		}
+	}
+
+	private void Cancel()
+	{
+
 	}
 }

@@ -24,6 +24,7 @@ public struct AttackPackage
 	public ModifiableValue _enduranceDamage;
 	public ModifiableValue _knockback;
 	public ModifiableValue _chargedPercent;
+	public float _attackRate;
 	public bool _triggerGapStagger;
 	public string _staggerAnimation;
 	public string _gapStaggerAnimation;
@@ -32,14 +33,15 @@ public struct AttackPackage
 	public Vector2 _fromDirection;
 
 	AttackPackage(int hashID, float hitPointDamage, float enduranceDamage, float knockback, 
-		float chargedPercent, bool triggerGapStun, AttackType attackType, Vector2 fromDirection,
-		string staggerAnimation, string gapStaggerAnimation)
+		float chargedPercent, float attackRate, bool triggerGapStun, AttackType attackType, 
+		Vector2 fromDirection, string staggerAnimation, string gapStaggerAnimation)
 	{
 		_hashID = hashID;
 		_hitPointDamage = new ModifiableValue(hitPointDamage);
 		_enduranceDamage = new ModifiableValue(enduranceDamage);
 		_knockback = new ModifiableValue(knockback);
 		_chargedPercent = new ModifiableValue(chargedPercent);
+		_attackRate = attackRate;
 		_triggerGapStagger = triggerGapStun;
 
 		_attackType = attackType;
@@ -52,7 +54,7 @@ public struct AttackPackage
 	{
 		var hashID = System.Guid.NewGuid().GetHashCode();
 		var package = 
-			new AttackPackage(hashID, 1, 1, 0, 0, false, AttackType.Null, Vector2.zero, "", "");
+			new AttackPackage(hashID, 0, 0, 0, 0, 0, false, AttackType.Null, Vector2.zero, "", "");
 		return package;
 	}
 

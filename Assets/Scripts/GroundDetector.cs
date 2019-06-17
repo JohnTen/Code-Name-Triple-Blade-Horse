@@ -8,7 +8,7 @@ public class GroundDetector : MonoBehaviour, ICanDetectGround
 	[SerializeField] LayerMask _groundMask;
 	[SerializeField] UpdateType _updateType;
 
-	List<Collider2D> touchedObjects;
+	[SerializeField] List<Collider2D> touchedObjects;
 	
 	private bool _onGround;
 
@@ -16,6 +16,7 @@ public class GroundDetector : MonoBehaviour, ICanDetectGround
 	public event Action OnLanding;
 	public event Action OnTakingOff;
 	public event Action OnStayGround;
+	public event Action<ICanDetectGround, LandingEventArgs> OnLandingStateChanged;
 
 	private void Awake()
 	{
@@ -40,27 +41,39 @@ public class GroundDetector : MonoBehaviour, ICanDetectGround
 		ManualUpdate();
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if ((1 << collision.gameObject.layer & _groundMask) == 0) return;
+		if (!TestContactPoints(collision.contacts)) return;
 
-		touchedObjects.Add(collision);
+		touchedObjects.Add(collision.collider);
 		if (touchedObjects.Count == 1)
-			OnLanding?.Invoke();
+			OnLandingStateChanged?.Invoke(this, new LandingEventArgs(LandingState.OnGround, LandingState.Airborne));
 	}
 
-	private void OnTriggerExit2D(Collider2D collision)
+	private void OnCollisionExit2D(Collision2D collision)
 	{
 		if ((1 << collision.gameObject.layer & _groundMask) == 0) return;
 
-		touchedObjects.Remove(collision);
+		touchedObjects.Remove(collision.collider);
 		if (touchedObjects.Count == 0)
-			OnTakingOff?.Invoke();
+			OnLandingStateChanged?.Invoke(this, new LandingEventArgs(LandingState.Airborne, LandingState.OnGround));
 	}
 
 	private void ManualUpdate()
 	{
 		if (touchedObjects.Count > 0)
 			OnStayGround?.Invoke();
+	}
+
+	private bool TestContactPoints(ContactPoint2D[] contacts)
+	{
+		foreach (var contact in contacts)
+		{
+			if (Vector2.Dot(contact.normal, Vector2.up) > 0.7f)
+				return true;
+		}
+
+		return false;
 	}
 }

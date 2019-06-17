@@ -11,9 +11,7 @@ public class TriggerGroundDetector : MonoBehaviour, ICanDetectGround
 
 	public bool IsOnGround { get; protected set; }
 
-	public event Action OnLanding;
-	public event Action OnTakingOff;
-	public event Action OnStayGround;
+	public event Action<ICanDetectGround, LandingEventArgs> OnLandingStateChanged;
 
 	protected void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -21,18 +19,12 @@ public class TriggerGroundDetector : MonoBehaviour, ICanDetectGround
 
 		if (!IsOnGround)
 		{
-			OnLanding?.Invoke();
+			OnLandingStateChanged?.Invoke(this, 
+				new LandingEventArgs(LandingState.Airborne, LandingState.OnGround));
 		}
 
 		IsOnGround = true;
 		_groundObjects.AddLast(collision.gameObject);
-	}
-
-	protected void OnTriggerStay2D(Collider2D collision)
-	{
-		if (!IsGround(collision.gameObject)) return;
-		
-		OnStayGround?.Invoke();
 	}
 
 	protected void OnTriggerExit2D(Collider2D collision)
@@ -41,7 +33,9 @@ public class TriggerGroundDetector : MonoBehaviour, ICanDetectGround
 		
 		if (IsOnGround && _groundObjects.Count <= 1)
 		{
-			OnTakingOff?.Invoke();
+			OnLandingStateChanged?.Invoke(this, 
+				new LandingEventArgs(LandingState.OnGround, LandingState.Airborne));
+
 			IsOnGround = false;
 		}
 

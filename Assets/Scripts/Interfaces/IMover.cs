@@ -5,23 +5,74 @@ using System.Threading.Tasks;
 using UnityEngine;
 using JTUtility;
 
-public interface ICanMove
+public enum MovingState
 {
-	void Move(Vector3 direction);
-
-	event Action OnBlocked;
+	Idle,
+	Move,
+	AttackStep,
+	Airborne,
+	Passive,
+	Dash,
 }
 
-public interface ICanJump
+public enum LandingState
+{
+	OnGround,
+	Airborne,
+}
+
+public class MovingEventArgs : System.EventArgs
+{
+	MovingEventArgs() { }
+	public MovingEventArgs(bool facingRight, Vector2 position, Vector2 velocity, MovingState currentMovingState, MovingState lastMovingState)
+	{
+		this.facingRight = facingRight;
+		this.position = position;
+		this.velocity = velocity;
+		this.lastMovingState = lastMovingState;
+		this.currentMovingState = currentMovingState;
+	}
+
+	public bool facingRight;
+	public Vector2 position;
+	public Vector2 velocity;
+	public MovingState lastMovingState;
+	public MovingState currentMovingState;
+}
+
+public class LandingEventArgs : System.EventArgs
+{
+	LandingEventArgs() { }
+	public LandingEventArgs(LandingState currentLandingState, LandingState lastLandingState)
+	{
+		this.lastLandingState = lastLandingState;
+		this.currentLandingState = currentLandingState;
+	}
+	
+	public LandingState lastLandingState;
+	public LandingState currentLandingState;
+}
+
+public interface ICanChangeMoveState
+{
+	event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
+}
+
+public interface ICanMove : ICanChangeMoveState
+{
+	void Move(Vector2 direction);
+}
+
+public interface ICanJump : ICanChangeMoveState
 {
 	void Jump();
 
 	event Action OnJump;
 }
 
-public interface ICanDash
+public interface ICanDash : ICanChangeMoveState
 {
-	void Dash(Vector3 direction);
+	void Dash(Vector2 direction);
 
 	event Action OnDashingBegin;
 	event Action OnDashingDelayBegin;
@@ -32,7 +83,5 @@ public interface ICanDetectGround
 {
 	bool IsOnGround { get; }
 
-	event Action OnLanding;
-	event Action OnTakingOff;
-	event Action OnStayGround;
+	event Action<ICanDetectGround, LandingEventArgs> OnLandingStateChanged;
 }

@@ -7,7 +7,6 @@ using JTUtility;
 public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 {
 	#region Fields
-	[SerializeField] bool _frozen;
 	[Header("Basic movement")]
 	[SerializeField] float _baseSpeed;
 	[SerializeField] float _maxXSpeed;
@@ -15,6 +14,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	[SerializeField] float _jumpHeight;
 
 	[Header("Dashing")]
+	[SerializeField] float dashCancelRange;
 	[SerializeField] float _airDashingDistance;
 	[SerializeField] float _airDashingDuration;
 	[SerializeField] float _airDashingDelay;
@@ -22,10 +22,6 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	[SerializeField] float _groundDashingDuration;
 	[SerializeField] float _groundDashingDelay;
 	[SerializeField] Vector2 _dashingDirection;
-
-	[Header("Attacking Step(Unadjustable, Debug only)")]
-	[SerializeField] float _attackStepSpeed;
-	[SerializeField] Vector2 _attackStepDirection;
 
 	[Header("Airborne Movement")]
 	[SerializeField] float _airborneSpeedFactor;
@@ -38,11 +34,19 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	[Header("Events")]
 	[SerializeField] BoolEvent _onChangedFacingDirection;
 
+	[Header("Debug")]
+	[SerializeField] float _attackStepSpeed;
+	[SerializeField] float _pullDelayTimer;
+	[SerializeField] Vector2 _attackStepDirection;
+	[SerializeField] Vector2 _velocity;
+	[SerializeField] Vector2 _movementVector;
+	[SerializeField] MovingState _currentMovingState;
+
+
+	CharacterState _state;
 	Rigidbody2D _rigidbody;
 	ICanDetectGround _groundDetector;
-	Vector2 _movementVector;
-
-	Vector2 _velocity;
+	
 	bool _dashing;
 	float _gravityScale;
 	float _airborneTime;
@@ -50,7 +54,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	float _dashingDelayTimer;
 	float _dashingSpeed;
 
-	List<ContactPoint2D> _contacts;
+	[SerializeField] List<ContactPoint2D> _contacts;
 
 	readonly Vector2[] _normalizedDirections =
 	{
@@ -66,27 +70,52 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	#endregion
 
 	#region Properties
-	public Vector2 FacingDirection { get; private set; } = Vector2.right;
+	public bool FacingRight { get; private set; } = true;
 	public bool IsOnGround => _groundDetector.IsOnGround;
 	public bool IsDashing => _dashing;
+	public bool PullDelaying => _pullDelayTimer > 0;
+	public bool BlockInput { get; private set; }
 	public Vector2 Velocity => _velocity;
+
+	public MovingState CurrentMovingState
+	{
+		get => _currentMovingState;
+		protected set
+		{
+			if (value == _currentMovingState) return;
+
+			var last = _currentMovingState;
+			_currentMovingState = value;
+
+			OnMovingStateChanged?.
+				Invoke(this, new MovingEventArgs(
+					_state._facingRight,
+					transform.position,
+					_velocity,
+					value,
+					last));
+		}
+	}
 
 	#endregion
 
 	#region Events
 	public event Action<bool> OnChangeDirection;
-	public event Action OnBlocked;
 	public event Action OnJump;
 	public event Action OnDashingBegin;
 	public event Action OnDashingDelayBegin;
 	public event Action OnDashingFinished;
+	public event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
+	public event Action<ICanChangeMoveState, LandingEventArgs> OnLandingStateChanged;
 	#endregion
 
 	#region Event Handlers
 
-	private void GroundDetectorOnLandingHandler()
+	private void HandleLanding(ICanDetectGround detector, LandingEventArgs eventArgs)
 	{
-		_airborneTime = 0;
+		if (eventArgs.lastLandingState != eventArgs.currentLandingState &&
+			eventArgs.currentLandingState == LandingState.OnGround)
+			_airborneTime = 0;
 	}
 
 	#endregion
@@ -96,8 +125,9 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
+		_state = GetComponent<CharacterState>();
 		_groundDetector = GetComponent<ICanDetectGround>();
-		_groundDetector.OnLanding += GroundDetectorOnLandingHandler;
+		_groundDetector.OnLandingStateChanged += HandleLanding;
 		_contacts = new List<ContactPoint2D>();
 	}
 
@@ -106,24 +136,45 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		if (!_groundDetector.IsOnGround)
 			_airborneTime += Time.fixedDeltaTime;
 
-		Moving(_movementVector);
-	}
+		if (_pullDelayTimer > 0)
+			_pullDelayTimer -= Time.deltaTime;
 
-	private void OnCollisionStay2D(Collision2D collision)
-	{
-		UpdatePhysicalContacts(collision.contacts);
+		_rigidbody.GetContacts(_contacts);
+
+		Moving(_movementVector);
+
+		CurrentMovingState = UpdateState();
 	}
 
 	#endregion
 
 	#region Interfaces
 
-	public void Dash(Vector3 direction)
+	public void CancelDash()
 	{
+		if (!_dashing) return;
+
+		_dashingDirection = Vector2.zero;
+
+		_rigidbody.gravityScale = _gravityScale;
+		_deservedDashingDistance = 0;
+		_dashingDelayTimer = 0;
+		_dashingDirection = Vector2.zero;
+		_dashing = false;
+		_airborneTime = 0;
+		OnDashingFinished?.Invoke();
+	}
+
+	public void Dash(Vector2 direction)
+	{
+		if (!_dashing)
+		{
+			_gravityScale = _rigidbody.gravityScale;
+			_rigidbody.gravityScale = 0;
+		}
+
 		_dashing = true;
 		_dashingDirection = NormalizeMovingDirection(direction);
-		_gravityScale = _rigidbody.gravityScale;
-		_rigidbody.gravityScale = 0;
 
 		if (!_groundDetector.IsOnGround || _dashingDirection.y > 0)
 		{
@@ -147,28 +198,34 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 
 		OnJump?.Invoke();
 		_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * _rigidbody.gravityScale);
+
+		CurrentMovingState = MovingState.Airborne;
 	}
 
-	public void Move(Vector3 direction)
+	public void Move(Vector2 direction)
 	{
 		_movementVector = direction;
+
 		if (direction.x != 0)
 		{
-			FacingDirection = direction.x > 0 ? Vector2.right : Vector2.left;
+			_state._facingRight = direction.x > 0;
 			OnChangeDirection?.Invoke(direction.x > 0);
 			_onChangedFacingDirection.Invoke(direction.x > 0);
 		}
 	}
 
-	public void Pull(Vector3 direction)
+	public void Pull(Vector2 direction)
 	{
 		_velocity = direction.normalized * _pullingForce;
+		_pullDelayTimer = _pullingMoveDelay;
 		_airborneTime = 0;
 	}
 
 	public void SetStepDistance(float stepLength)
 	{
-		_attackStepDirection = FacingDirection * stepLength;
+		_attackStepDirection
+			= (_state._facingRight ? Vector2.right : Vector2.left)
+			* stepLength;
 	}
 
 	public void SetStepSpeed(float speed)
@@ -258,6 +315,8 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 
 		_rigidbody.gravityScale = _gravityScale;
 		_dashingDirection = Vector2.zero;
+		_dashing = false;
+		_airborneTime = 0;
 		OnDashingFinished?.Invoke();
 	}
 
@@ -276,7 +335,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	private Vector2 NormalizeMovingDirection(Vector2 direction)
 	{
 		if (direction.sqrMagnitude < 0.03f)
-			return FacingDirection;
+			return _state._facingRight? Vector2.right: Vector2.left;
 		direction.Normalize();
 
 		var dotResult = float.NegativeInfinity;
@@ -301,7 +360,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * Time.deltaTime;
 		velocity = ApplyPhysicalContactEffects(velocity);
 
-		if (_groundDetector.IsOnGround && velocity.y <= 0)
+		if (_groundDetector.IsOnGround && velocity.y <= float.Epsilon)
 		{
 			velocity.x = movingDirection.x * _baseSpeed;
 		}
@@ -326,9 +385,25 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		_contacts.Clear();
 	}
 
-	private void UpdatePhysicalContacts(ContactPoint2D[] contactPoints)
+	private MovingState UpdateState()
 	{
-		_contacts.AddRange(contactPoints);
+		var state = CurrentMovingState;
+		var isMoving = _velocity.sqrMagnitude > 0.1f || _movementVector.sqrMagnitude > 0.1f;
+		var isStepping = _attackStepDirection.sqrMagnitude > 0;
+
+		if (isStepping)
+			return MovingState.AttackStep;
+
+		if (IsDashing)
+			return MovingState.Dash;
+
+		if (!_groundDetector.IsOnGround)
+			return MovingState.Airborne;
+
+		if (isMoving)
+			return MovingState.Move;
+
+		return MovingState.Idle;
 	}
 	
 	#endregion
