@@ -47,24 +47,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHitPointDamage: 5
   _baseEnduranceDamage: 5
-  sheath: {fileID: 0}
-  bladeLength: 0.25
   speed: 100
-  actionDelay: 0.1
+  bladeLength: 0.25
   backDistance: 0.8
   sinkingLength: 0
-  hoveringDistance: 35
-  hoveringRotateSpeed: -720
+  hoveringDistance: 15
   hoveringDuration: 5
-  dragForce: 3
+  hoveringRotateSpeed: -720
   traveledDistance: 0
-  changedDirection: 0
-  hovered: 0
-  returning: 0
-  actionTimer: 0
   hoverTimer: 0
   state: 0
   piercing: 0
+  normalAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
+  chargedAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
+  floatAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
 --- !u!96 &96102941535840232
 TrailRenderer:
   serializedVersion: 2

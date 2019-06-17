@@ -12,11 +12,15 @@ public class WeaponSystem : MonoBehaviour
 	[Space(30)]
 	[SerializeField] Sword sword;
 	[SerializeField] Sheath sheath;
+	[SerializeField] CharacterState _state;
 	[SerializeField] List<ThrowingKnife> knifesInAirList;
+	[SerializeField] AttackMove meleeMove;
+	[SerializeField] AttackMove chargedMeleeMove;
 
 	public bool Frozen { get; private set; }
 
 	public event Action<Vector3> OnPull;
+	public event Action<IAttacker, AttackMove> OnRaisingAttack;
 
 	private void Awake()
 	{
@@ -26,13 +30,24 @@ public class WeaponSystem : MonoBehaviour
 
 	public void MeleeAttack()
 	{
-		sword.Activate(AttackPackage.CreateNewPackage());
+		var package = AttackPackage.CreateNewPackage();
+		package._attackType = AttackType.Melee;
+		package._hitPointDamage.Base = _state._hitPointDamage;
+		package._enduranceDamage.Base = _state._enduranceDamage;
+		OnRaisingAttack?.Invoke(sword, meleeMove);
+
+		sword.Activate(package, meleeMove);
 	}
 
 	public void ChargedMeleeAttack(float chargedPercent)
 	{
-		sword.Charge(chargedPercent);
-		sword.Activate(AttackPackage.CreateNewPackage());
+		var package = AttackPackage.CreateNewPackage();
+		package._attackType = AttackType.ChargedMelee;
+		package._hitPointDamage.Base = _state._hitPointDamage;
+		package._enduranceDamage.Base = _state._enduranceDamage;
+		OnRaisingAttack?.Invoke(sword, chargedMeleeMove);
+
+		sword.Activate(package, chargedMeleeMove);
 	}
 
 	public void MeleeAttackEnd()
@@ -125,7 +140,7 @@ public class WeaponSystem : MonoBehaviour
 	{
 		var time = 0f;
 
-		Frozen = true;
+		//Frozen = true;
 		while (sheath.knifeCount > 0)
 		{
 			time += Time.deltaTime * allLaunchRate;
@@ -140,6 +155,6 @@ public class WeaponSystem : MonoBehaviour
 			knifesInAirList.Add(knife);
 			knife.Launch(direction, true);
 		}
-		Frozen = false;
+		//Frozen = false;
 	}
 }

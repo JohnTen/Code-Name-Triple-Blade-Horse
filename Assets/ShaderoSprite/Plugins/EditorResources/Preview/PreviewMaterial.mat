@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PreviewMaterial
-  m_Shader: {fileID: 4800000, guid: 5e85c204f931cd544a05b0a43ad97833, type: 3}
+  m_Shader: {fileID: 4800000, guid: ed4891debc9859a448579f28b2c04fa7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -96,7 +96,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_1:
-        m_Texture: {fileID: 2800000, guid: 906f2797e9ca81a4486de9bb42a96fc2, type: 3}
+        m_Texture: {fileID: 2800000, guid: d427915866b40f44d8995359b3986e56, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_2:
@@ -132,7 +132,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SourceNewTex_1:
-        m_Texture: {fileID: 2800000, guid: 03a49f9871c06874ab9f996c77d99ead, type: 3}
+        m_Texture: {fileID: 2800000, guid: b69edb07234ec174fb7843a1fbd18207, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SourceNewTex_2:
@@ -169,8 +169,8 @@ Material:
     - AnimatedMouvementUV_X_1: 0.269
     - AnimatedMouvementUV_Y_1: 0.011
     - AnimatedPingPongOffsetUV_1_OffsetX_1: 0
-    - AnimatedPingPongOffsetUV_1_OffsetY_1: 0
-    - AnimatedPingPongOffsetUV_1_Speed_1: 0.1
+    - AnimatedPingPongOffsetUV_1_OffsetY_1: 0.56
+    - AnimatedPingPongOffsetUV_1_Speed_1: 0.154
     - AnimatedPingPongOffsetUV_1_ZoomX_1: 1
     - AnimatedPingPongOffsetUV_1_ZoomY_1: 1
     - AnimatedShakeUV_1_IntenseX_1: 1
@@ -193,16 +193,16 @@ Material:
     - AnimatedZoomUV_AnimatedZoomUV_PosY_1: 0.4
     - AnimatedZoomUV_AnimatedZoomUV_Speed_1: 0.392
     - AnimatedZoomUV_AnimatedZoomUV_Zoom_1: 0.953
-    - DistortionUV_DistanceX_1: 0.215
-    - DistortionUV_DistanceX_2: 0.139
-    - DistortionUV_DistanceY_1: 0.071
-    - DistortionUV_DistanceY_2: 0.13
-    - DistortionUV_Speed_1: 0.354
+    - DistortionUV_DistanceX_1: 0.3
+    - DistortionUV_DistanceX_2: 0.3
+    - DistortionUV_DistanceY_1: 0.386
+    - DistortionUV_DistanceY_2: 0.3
+    - DistortionUV_Speed_1: 1
     - DistortionUV_Speed_2: 1
     - DistortionUV_WaveX_1: 10
     - DistortionUV_WaveX_2: 10
-    - DistortionUV_WaveY_1: 7.991
-    - DistortionUV_WaveY_2: 20.103
+    - DistortionUV_WaveY_1: 64
+    - DistortionUV_WaveY_2: 10
     - FishEyeUV_Size_1: 0.373
     - KaleidoscopeUV_Number_1: 1.779
     - KaleidoscopeUV_PosX_1: 0.507
@@ -234,6 +234,7 @@ Material:
     - SpriteSheetFrameUV_SizeY_2: 10
     - SpriteSheetFrameUV_Size_1: 4
     - SpriteSheetFrameUV_Size_2: 4
+    - TiltUpUV_TiltUpUV_Value_1: 0.041
     - TwistUV_TwistUV_Bend_1: 1
     - TwistUV_TwistUV_Bend_2: -1
     - TwistUV_TwistUV_PosX_1: 0.5
@@ -243,9 +244,9 @@ Material:
     - TwistUV_TwistUV_Radius_1: 0.5
     - TwistUV_TwistUV_Radius_2: 0.5121561
     - ZoomUV_PosX_1: 0.5
-    - ZoomUV_PosY_1: 0.5
-    - ZoomUV_Zoom_1: 1.05
-    - _Add_Fade_1: 0.936
+    - ZoomUV_PosY_1: 0.208
+    - ZoomUV_Zoom_1: 1.369
+    - _Add_Fade_1: 1.749
     - _AlphaAsAura_Fade_1: 1
     - _AlphaIntensity_Fade_1: 1
     - _AuraDisplacementPack_Size_1: 1.398
@@ -257,13 +258,13 @@ Material:
     - _Blur_Intensity_1: 1
     - _Blur_Intensity_2: 1
     - _BumpScale: 1
-    - _Burn_Speed_1: -3.395
+    - _Burn_Speed_1: -2.946
     - _Burn_Value_1: 0
-    - _CircleFade_Dist_1: 0.2
+    - _CircleFade_Dist_1: 0.188
     - _CircleFade_Dist_2: 0.2
     - _CircleFade_PosX_1: 0.5
     - _CircleFade_PosX_2: 0.5
-    - _CircleFade_PosY_1: 0.5
+    - _CircleFade_PosY_1: 0.477
     - _CircleFade_PosY_2: 0.5
     - _CircleFade_Size_1: 0.3
     - _CircleFade_Size_2: 0.3
@@ -297,13 +298,13 @@ Material:
     - _Displacement_Plus_ValueX_12: 0
     - _Displacement_Plus_ValueX_13: 0
     - _Displacement_Plus_ValueX_14: 0
-    - _Displacement_Plus_ValueY_1: 0
+    - _Displacement_Plus_ValueY_1: -0.031
     - _Displacement_Plus_ValueY_10: 0
     - _Displacement_Plus_ValueY_11: 0
     - _Displacement_Plus_ValueY_12: 0
     - _Displacement_Plus_ValueY_13: 0
     - _Displacement_Plus_ValueY_14: 0
-    - _Displacement_Value_1: 0.05
+    - _Displacement_Value_1: 0.167
     - _DstBlend: 0
     - _Emboss_Angle_1: 0
     - _Emboss_Distance_1: 0.3
@@ -346,15 +347,15 @@ Material:
     - _Generate_Donut_Size_5: 0
     - _Generate_Fire_PosX_1: 0
     - _Generate_Fire_PosX_3: 0.11153824
-    - _Generate_Fire_PosY_1: 0
+    - _Generate_Fire_PosY_1: 0.463
     - _Generate_Fire_PosY_3: 0
-    - _Generate_Fire_Precision_1: 0.05
+    - _Generate_Fire_Precision_1: 0.058
     - _Generate_Fire_Precision_3: 0.05
-    - _Generate_Fire_Smooth_1: 0.5
+    - _Generate_Fire_Smooth_1: 0.163
     - _Generate_Fire_Smooth_3: 0.34999946
-    - _Generate_Fire_Speed_1: 1
+    - _Generate_Fire_Speed_1: -1.018
     - _Generate_Fire_Speed_3: 1
-    - _Generate_Line_Size_1: 150
+    - _Generate_Line_Size_1: 39
     - _Generate_Line_Size_2: 0.5
     - _Generate_Shape_Dist_1: 0.643
     - _Generate_Shape_Dist_2: 0.01
@@ -951,7 +952,7 @@ Material:
     - _PremadeGradients_Offset_2: 0
     - _PremadeGradients_Speed_1: 0.496
     - _PremadeGradients_Speed_2: 0
-    - _RGBA_Add_Fade_1: 1.756
+    - _RGBA_Add_Fade_1: 0.436
     - _RGBA_Mul_Fade_1: 1.332
     - _RGBA_Sub_Fade_1: 1
     - _ShadowLight_Intensity_1: 1.5

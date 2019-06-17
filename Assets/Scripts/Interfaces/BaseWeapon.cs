@@ -15,7 +15,6 @@ public abstract class BaseWeapon : MonoBehaviour, IAttacker
 		OnHit?.Invoke(attackable, result, attack);
 	}
 
-	public abstract void Activate(AttackPackage attack);
+	public abstract void Activate(AttackPackage attack, AttackMove move);
 	public abstract void Deactivate();
-	public abstract AttackPackage Process(AttackPackage target);
 }

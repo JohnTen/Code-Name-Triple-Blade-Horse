@@ -5,7 +5,7 @@
 /// http://www.shadero.com #Docs                            //
 //////////////////////////////////////////////////////////////
 
-Shader "Shadero Customs/"
+Shader "Shadero Customs/New Shadero Sprite Shader"
 {
 Properties
 {
@@ -34,8 +34,8 @@ _SpriteFade("SpriteFade", Range(0, 1)) = 1.0
 SubShader
 {
 
-Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True"}
-ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off
+Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
+ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off 
 
 // required for UI.Mask
 Stencil
@@ -96,7 +96,7 @@ float2 AnimatedPingPongOffsetUV(float2 uv, float offsetx, float offsety, float z
 float time = sin(_Time * 100* speed)  * 0.1;
 speed *= time * 25;
 uv += float2(offsetx, offsety)*speed;
-uv = fmod(uv * float2(zoomx, zoomy), 1);
+uv = uv * float2(zoomx, zoomy);
 return uv;
 }
 float2 DistortionUV(float2 p, float WaveX, float WaveY, float DistanceX, float DistanceY, float Speed)
@@ -208,7 +208,7 @@ return uv;
 float4 frag (v2f i) : COLOR
 {
 float2 TiltUpUV_1 = TiltUpUV(i.texcoord,TiltUpUV_TiltUpUV_Value_1);
-float2 AnimatedPingPongOffsetUV_1 = AnimatedPingPongOffsetUV(TiltUpUV_1,0,0.1602559,1,1,0.1538459);
+float2 AnimatedPingPongOffsetUV_1 = AnimatedPingPongOffsetUV(TiltUpUV_1,0,0.5602559,1,1,0.1538459);
 float2 ZoomUV_1 = ZoomUV(AnimatedPingPongOffsetUV_1,1.369138,0.5,0.2076871);
 float2 DistortionUV_1 = DistortionUV(ZoomUV_1,9.846179,28.55381,0.846154,0.846154,1);
 float4 SourceRGBA_1 = tex2D(_SourceNewTex_1, DistortionUV_1);

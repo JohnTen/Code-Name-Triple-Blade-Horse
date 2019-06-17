@@ -59,13 +59,13 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		get => _delayingInput;
 		set
 		{
+			if (_delayingInput == value)
+				return;
+
 			if (!value && _delayingInput && _delayedInput._command != InputCommand.Null)
 			{
 				OnReceivedInput?.Invoke(_delayedInput);
 			}
-
-			if (_delayingInput == value)
-				return;
 
 			_delayingInput = value;
 			if (_delayingInput)
@@ -75,15 +75,25 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		}
 	}
 
+	public bool BlockInput
+	{
+		get;
+		set;
+	}
+
 	public event Action<InputEventArg> OnReceivedInput;
 
 	public Vector2 GetMovingDirection()
 	{
+		if (BlockInput)
+			return Vector2.zero;
 		return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY"));
 	}
 
 	public Vector2 GetAimingDirection()
 	{
+		if (BlockInput)
+			return Vector2.zero;
 		var aim = Vector2.zero;
 		if (_usingController)
 		{
@@ -95,7 +105,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			if (aim.SqrMagnitude() > 1)
 				aim.Normalize();
 		}
-
+		
 		return aim;
 	}
 
@@ -112,6 +122,8 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 
 	private void Update()
 	{
+		if (BlockInput) return;
+
 		HandleMeleeInput();
 		HandleRangeInput();
 		HandleJumpInput();

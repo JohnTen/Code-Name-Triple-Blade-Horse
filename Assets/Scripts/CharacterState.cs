@@ -9,10 +9,12 @@ public class CharacterState : MonoBehaviour
 
 	public float _enduranceRecoverRate;
 	public float _enduranceRefreshDelay;
+	public float _enduranceRecoverDelay;
+	public float _enduranceSafeThreshlod;
 
 	public float _hitPointDamage;
 	public float _enduranceDamage;
 
-	public bool _facingRight;
+	public bool _facingRight = true;
 	public bool _frozen;
 }

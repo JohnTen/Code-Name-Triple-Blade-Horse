@@ -78,5 +78,10 @@ namespace JTUtility
 			v1.RecalculateCurrentValue();
 			return v1;
 		}
+
+		public override string ToString()
+		{
+			return "Base: " + @base + ", current: " + current + ", add: " + addition + ", mul: " + multiplier;
+		}
 	}
 }

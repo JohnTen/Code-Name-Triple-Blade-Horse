@@ -6,43 +6,35 @@ using UnityEngine;
 public class Sword : BaseWeapon
 {
 	[SerializeField] float _maxChargeAttack;
-	[SerializeField] AnimationCurve _chargeAttackMultiplierCurve;
-	[SerializeField] Collider2D triggerBox;
-	[SerializeField] AttackMove normalAttack;
-	[SerializeField] AttackMove chargedAttack;
-	
+	[SerializeField] Collider2D _triggerBox;
+	[SerializeField] PlayerState _state;
+	[SerializeField] AttackMove _normalAttack;
+	[SerializeField] AttackMove _chargedAttack;
+
 	bool _activated;
-	bool _charged;
-	float _chargeAttackMultiplier;
-	AttackPackage basePackage;
+	AttackPackage _basePackage;
+	AttackMove _attackMove;
 
-	public void Charge(float percentage)
+	public override void Activate(AttackPackage attack, AttackMove move)
 	{
-		_charged = true;
-		_chargeAttackMultiplier = _chargeAttackMultiplierCurve.Evaluate(percentage) * _maxChargeAttack;
-	}
-
-	public override void Activate(AttackPackage attack)
-	{
-		basePackage = AttackPackage.CreateNewPackage(attack);
+		_basePackage = attack;
+		_attackMove = move;
 		_activated = true;
-		triggerBox.enabled = true;
+		_triggerBox.enabled = true;
 	}
 
 	public override void Deactivate()
 	{
 		_activated = false;
-		_charged = false;
-		triggerBox.enabled = false;
+		_triggerBox.enabled = false;
 	}
 
-	public override AttackPackage Process(AttackPackage target)
+	private AttackPackage Process(AttackPackage target)
 	{
-		target._attackType = _charged ? AttackType.ChargedMelee : AttackType.Melee;
 		target._hitPointDamage += _baseHitPointDamage;
-		target._hitPointDamage *= _chargeAttackMultiplier;
 		target._enduranceDamage += _baseEnduranceDamage;
-		target._knockback += 2;
+		
+		target = _attackMove.Process(target);
 
 		return target;
 	}
@@ -52,8 +44,8 @@ public class Sword : BaseWeapon
 		var attackable = other.GetComponent<IAttackable>();
 		if (!_activated || attackable == null) return;
 
-		var package = Process(basePackage);
-		package._fromDirection = other.transform.position - this.transform.position;
+		var package = Process(_basePackage);
+		package._fromDirection = _state._facingRight ? Vector2.right : Vector2.left;
 
 		var result = attackable.ReceiveAttack(ref package);
 		RaiseOnHitEvent(attackable, result, package);

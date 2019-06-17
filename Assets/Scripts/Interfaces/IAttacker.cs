@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public interface IAttacker : ICanProcess<AttackPackage>
+public interface IAttacker
 {
-	void Activate(AttackPackage attack);
+	void Activate(AttackPackage attack, AttackMove move);
 	void Deactivate();
 
 	event Action<IAttackable, AttackResult, AttackPackage> OnHit;
