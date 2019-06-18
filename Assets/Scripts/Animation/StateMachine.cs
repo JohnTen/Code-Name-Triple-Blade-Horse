@@ -12,14 +12,18 @@ public class StateMachine : MonoBehaviour
     private List<AnimationData> animationDatas;
     private void Start()
     {
-        _amature = this.GetComponent<UnityArmatureComponent>();
-        transitions = dataScriptable.transitions;
         _amature.AddDBEventListener(EventObject.START, this.OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, this.OnAnimationEventHandler);
+    }
+
+    private void Initialization()
+    {
+        _amature = this.GetComponent<UnityArmatureComponent>();
+        transitions = dataScriptable.transitions;
         animationDatas = new List<AnimationData>(dataScriptable.animationDatas);
         transitions = new List<Transition>();
 
-        foreach(var transition in dataScriptable.transitions)
+        foreach (var transition in dataScriptable.transitions)
         {
             transitions.Add(new Transition(transition));
         }
@@ -33,15 +37,13 @@ public class StateMachine : MonoBehaviour
 
         foreach (var key in dataScriptable._intState)
         {
-            stateData._intMap.Add(key,0);
+            stateData._intMap.Add(key, 0);
         }
 
         foreach (var key in dataScriptable._floatState)
         {
             stateData._floatMap.Add(key, 0.0f);
         }
-
-
     }
 
     private void AnimationPlay()
