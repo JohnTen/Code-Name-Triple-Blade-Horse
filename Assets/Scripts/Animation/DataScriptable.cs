@@ -5,7 +5,8 @@ using UnityEngine;
 public class DataScriptable : ScriptableObject
 {
     public List<Transition> transitions;
-    public Dictionary<string, bool> _boolMap;
-    public Dictionary<string, float> _floatMap;
-    public Dictionary<string, int> _intMap;
+    public List<string> _boolState;
+    public List<string> _floatState;
+    public List<string> _intState;
+    public List<AnimationData> animationDatas;
 }
