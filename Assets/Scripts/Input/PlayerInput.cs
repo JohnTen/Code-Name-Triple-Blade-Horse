@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public enum InputCommand
+public enum PlayerInputCommand
 {
 	Null,
 	Dash,
@@ -18,25 +18,7 @@ public enum InputCommand
 	WithdrawOne,
 }
 
-public struct InputEventArg
-{
-	public InputCommand _command;
-	public float _additionalValue;
-
-	public InputEventArg(InputCommand command)
-	{
-		_command = command;
-		_additionalValue = 0;
-	}
-
-	public InputEventArg(InputCommand command, float additionalValue)
-	{
-		_command = command;
-		_additionalValue = additionalValue;
-	}
-}
-
-public class PlayerInput : MonoBehaviour, IInputModelPlugable
+public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
 {
 	[SerializeField] float _meleeChargeTime;
 	[SerializeField] float _meleeMaxChargeTime;
@@ -52,7 +34,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 	bool _usingController;
 	bool _throwPressedBefore;
 	IInputModel _input;
-	InputEventArg _delayedInput;
+	InputEventArg<PlayerInputCommand> _delayedInput;
 
 	public bool DelayInput
 	{
@@ -62,7 +44,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			if (_delayingInput == value)
 				return;
 
-			if (!value && _delayingInput && _delayedInput._command != InputCommand.Null)
+			if (!value && _delayingInput && _delayedInput._command != PlayerInputCommand.Null)
 			{
 				OnReceivedInput?.Invoke(_delayedInput);
 			}
@@ -70,7 +52,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_delayingInput = value;
 			if (_delayingInput)
 			{
-				_delayedInput._command = InputCommand.Null;
+				_delayedInput._command = PlayerInputCommand.Null;
 			}
 		}
 	}
@@ -81,7 +63,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		set;
 	}
 
-	public event Action<InputEventArg> OnReceivedInput;
+	public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
 
 	public Vector2 GetMovingDirection()
 	{
@@ -131,17 +113,17 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		HandleWithdraw();
 	}
 
-	private void InvokeInputEvent(InputCommand command)
+	private void InvokeInputEvent(PlayerInputCommand command)
 	{
 		if (DelayInput)
 		{
 			_delayedInput._command = command;
 			return;
 		}
-		OnReceivedInput?.Invoke(new InputEventArg(command));
+		OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
 	}
 
-	private void InvokeInputEvent(InputCommand command, float value)
+	private void InvokeInputEvent(PlayerInputCommand command, float value)
 	{
 		if (DelayInput)
 		{
@@ -150,7 +132,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			return;
 		}
 
-		OnReceivedInput?.Invoke(new InputEventArg(command, value));
+		OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, value));
 	}
 
 	private void HandleMeleeInput()
@@ -158,7 +140,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		if (_input.GetButtonDown("Melee"))
 		{
 			_meleeChargeTimer = 0;
-			InvokeInputEvent(InputCommand.MeleeBegin);
+			InvokeInputEvent(PlayerInputCommand.MeleeBegin);
 		}
 
 		if (_input.GetButton("Melee"))
@@ -166,7 +148,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_meleeChargeTimer += Time.deltaTime;
 			if (_meleeChargeTimer > _meleeMaxChargeTime)
 			{
-				InvokeInputEvent(InputCommand.MeleeChargeAttack, 1);
+				InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, 1);
 				_meleeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -179,11 +161,11 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 					(_meleeChargeTimer - _meleeChargeTime) /
 					(_meleeMaxChargeTime - _meleeChargeTime);
 
-				InvokeInputEvent(InputCommand.MeleeChargeAttack, chargedPercent);
+				InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, chargedPercent);
 			}
 			else if (_meleeChargeTimer > 0)
 			{
-				InvokeInputEvent(InputCommand.MeleeAttack);
+				InvokeInputEvent(PlayerInputCommand.MeleeAttack);
 			}
 		}
 	}
@@ -199,7 +181,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		if (_input.GetButtonDown("Throw"))
 		{
 			_rangeChargeTimer = 0;
-			InvokeInputEvent(InputCommand.RangeBegin);
+			InvokeInputEvent(PlayerInputCommand.RangeBegin);
 		}
 
 		if (_input.GetButton("Throw"))
@@ -207,7 +189,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_rangeChargeTimer += Time.deltaTime;
 			if (_rangeChargeTimer > _rangeChargeTime)
 			{
-				InvokeInputEvent(InputCommand.RangeChargeAttack);
+				InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
 				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -215,7 +197,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		if (_input.GetButtonUp("Throw"))
 		{
 			if (_rangeChargeTimer > 0)
-				InvokeInputEvent(InputCommand.RangeAttack);
+				InvokeInputEvent(PlayerInputCommand.RangeAttack);
 		}
 	}
 
@@ -238,14 +220,14 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			{
 				_throwPressedBefore = true;
 				_rangeChargeTimer = 0;
-				InvokeInputEvent(InputCommand.RangeBegin);
+				InvokeInputEvent(PlayerInputCommand.RangeBegin);
 			}
 
 			// OnButton
 			_rangeChargeTimer += Time.deltaTime;
 			if (_rangeChargeTimer > _rangeChargeTime)
 			{
-				InvokeInputEvent(InputCommand.RangeChargeAttack);
+				InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
 				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
@@ -253,7 +235,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 		else if (_throwPressedBefore)
 		{
 			if (_rangeChargeTimer > 0)
-				InvokeInputEvent(InputCommand.RangeAttack);
+				InvokeInputEvent(PlayerInputCommand.RangeAttack);
 		}
 	}
 
@@ -261,7 +243,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 	{
 		if (_input.GetButtonDown("Jump"))
 		{
-			InvokeInputEvent(InputCommand.Jump);
+			InvokeInputEvent(PlayerInputCommand.Jump);
 		}
 	}
 
@@ -269,7 +251,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 	{
 		if (_input.GetButtonDown("Dash"))
 		{
-			InvokeInputEvent(InputCommand.Dash);
+			InvokeInputEvent(PlayerInputCommand.Dash);
 		}
 	}
 
@@ -280,14 +262,14 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable
 			_withdrawTimer += Time.deltaTime;
 			if (_withdrawTimer >= _withdrawTime)
 			{
-				InvokeInputEvent(InputCommand.WithdrawAll);
+				InvokeInputEvent(PlayerInputCommand.WithdrawAll);
 			}
 		}
 		else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
 		{
 			if (_withdrawTimer < _withdrawTime)
 			{
-				InvokeInputEvent(InputCommand.WithdrawOne);
+				InvokeInputEvent(PlayerInputCommand.WithdrawOne);
 			}
 			_withdrawTimer = 0;
 		}

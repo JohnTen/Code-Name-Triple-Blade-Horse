@@ -6,13 +6,13 @@ public class PlayerCharacter : MonoBehaviour
 {
 	[SerializeField] PlayerState _state;
 
-	PlayerInput _input;
+	ICharacterInput<PlayerInputCommand> _input;
 	PlayerMover _mover;
 	WeaponSystem _weaponSystem;
 	ICanDetectGround _groundDetector;
 	PlayerAnimation _animation;
 
-	InputCommand _lastInput;
+	PlayerInputCommand _lastInput;
 
 	private void Awake()
 	{
@@ -83,46 +83,46 @@ public class PlayerCharacter : MonoBehaviour
 		_animation.SetBool("Landing", true);
 	}
 
-	private void OnReceivedInputHandler(InputEventArg input)
+	private void OnReceivedInputHandler(InputEventArg<PlayerInputCommand> input)
 	{
 		switch (input._command)
 		{
-			case InputCommand.Jump:
+			case PlayerInputCommand.Jump:
 				_mover.Jump();
 				_animation.SetBool("Jump", true);
 				break;
 
-			case InputCommand.Dash:
+			case PlayerInputCommand.Dash:
 				_mover.Dash(_input.GetMovingDirection());
 				_animation.SetBool("Dash", true);
 				break;
 
-			case InputCommand.MeleeBegin:
+			case PlayerInputCommand.MeleeBegin:
 				print("Melee begin");
 				break;
 
-			case InputCommand.MeleeAttack:
+			case PlayerInputCommand.MeleeAttack:
 				_animation.Attack();
 				break;
 
-			case InputCommand.MeleeChargeAttack:
+			case PlayerInputCommand.MeleeChargeAttack:
 				print("Charged melee  " + input._additionalValue);
 				_weaponSystem.ChargedMeleeAttack(input._additionalValue);
 				break;
 
-			case InputCommand.RangeAttack:
+			case PlayerInputCommand.RangeAttack:
 				_weaponSystem.RangeAttack(_input.GetAimingDirection());
 				break;
 
-			case InputCommand.RangeChargeAttack:
+			case PlayerInputCommand.RangeChargeAttack:
 				_weaponSystem.ChargedRangeAttack(_input.GetAimingDirection());
 				break;
 
-			case InputCommand.WithdrawAll:
+			case PlayerInputCommand.WithdrawAll:
 				_weaponSystem.WithdrawAll();
 				break;
 
-			case InputCommand.WithdrawOne:
+			case PlayerInputCommand.WithdrawOne:
 				_weaponSystem.WithdrawOne();
 				break;
 		}
@@ -137,6 +137,7 @@ public class PlayerCharacter : MonoBehaviour
 			|| _weaponSystem.Frozen;
 
 		_input.DelayInput = _animation.GetBool("DelayInput");
+		_input.BlockInput = _mover.BlockInput;
 
 		var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
 		_mover.Move(moveInput);
