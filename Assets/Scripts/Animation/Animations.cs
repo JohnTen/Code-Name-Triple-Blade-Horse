@@ -12,6 +12,7 @@ public struct AnimationData
     public float duration; //动画播放的持续时间 The duration of current animation
     public bool isFadeOut; //动画是否淡出 Is animation fading out
     public bool isStart; //动画是否已经开始 Is animation started
+    public bool isFadeInComplete; //动画是否渐入完成
     public float fadeInTime;
 }
 

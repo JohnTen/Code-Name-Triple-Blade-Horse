@@ -1592,7 +1592,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4717973156256598485}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.066, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4717973156838373264}
@@ -1611,7 +1611,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.05}
+  m_Offset: {x: 0.073611826, y: 0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1622,7 +1622,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.1}
+  m_Size: {x: 0.7527763, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &4717973156314452553
 GameObject:
@@ -2270,10 +2270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6542d954b69544aa713f44bf1670ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseSpeed: 8
+  _baseSpeed: 6
   _maxXSpeed: 50
   _maxYSpeed: 50
-  _jumpHeight: 3
+  _jumpHeight: 2.5
   _knockbackSpeedFactor: 3
   _dashCancelRange: 0
   _airDashingDistance: 3
@@ -2284,7 +2284,7 @@ MonoBehaviour:
   _groundDashingDelay: 0
   _dashingDirection: {x: 0, y: 0}
   _airborneSpeedFactor: 0.15
-  _pullingForce: 20
+  _pullingForce: 16
   _pullingMoveDelay: 0.2
   _airborneXDecayRate: 0.02
   _airborneXMovementTimeFactor: 1
@@ -2408,7 +2408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c913488d24a759c44870e8f9f9f1dd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 8
+  fireRate: 6
   allLaunchRate: 8
   autoPickupDistance: 5
   autoReturnDistance: 45
@@ -2590,7 +2590,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.04850006}
+  m_Offset: {x: 0.07381058, y: -0.0064468384}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2601,7 +2601,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.88347626, y: 1.805893}
+  m_Size: {x: 0.7358551, y: 1.9157867}
   m_EdgeRadius: 0
 --- !u!114 &573937746945069331
 MonoBehaviour:

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using DragonBones;
 
@@ -14,6 +13,7 @@ public class StateMachine : MonoBehaviour
     {
         _amature.AddDBEventListener(EventObject.START, this.OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, this.OnAnimationEventHandler);
+        _amature.AddDBEventListener(EventObject.FADE_IN, this.OnAnimationEventHandler);
     }
 
     private void Initialization()
@@ -46,15 +46,20 @@ public class StateMachine : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        AnimationPlay();
+    }
+
     private void AnimationPlay()
     {
-        Transition transition = GetTransition(_amature.animationName);
-        if(transition != null)
+        Transition transition = GetTransition(GetCurrentAnimationName());
+        if (transition != null)
         {
             _amature.animation.FadeIn(
-                transition.nextAnim, 
-                transition.transitionTime, 
-                GetAnimationData(transition.nextAnim).playTimes);
+                        transition.nextAnim,
+                        transition.transitionTime,
+                        GetAnimationData(transition.nextAnim).playTimes);
         }
     }
 
@@ -65,9 +70,9 @@ public class StateMachine : MonoBehaviour
 
     private Transition GetTransition(string currentAnimaName)
     {
-        foreach(var transition in transitions)
+        foreach (var transition in transitions)
         {
-            if(transition.currentAnim == currentAnimaName && transition.Test(stateData))
+            if (transition.currentAnim == currentAnimaName && transition.Test(stateData))
             {
                 return transition;
             }
@@ -75,16 +80,36 @@ public class StateMachine : MonoBehaviour
         return null;
     }
 
+    public StateData GetStateData()
+    {
+        return stateData;
+    }
+
     private AnimationData GetAnimationData(string animName)
     {
-        foreach(var animationData in animationDatas)
+        foreach (var animationData in animationDatas)
         {
-            if(animationData.name == animName)
+            if (animationData.name == animName)
             {
                 return animationData;
             }
         }
         return new AnimationData();
+    }
+
+    public bool GetBool(string stateName)
+    {
+        return stateData._boolMap[stateName];
+    }
+
+    public float GetFloat(string stateName)
+    {
+        return stateData._floatMap[stateName];
+    }
+
+    public int GetInt(string stateName)
+    {
+        return stateData._intMap[stateName];
     }
 
     public void SetBool(string stateName, bool state)
@@ -115,11 +140,22 @@ public class StateMachine : MonoBehaviour
         {
             stateData._animData.isFadeOut = true;
             stateData._animData.isStart = false;
+            stateData._animData.isFadeInComplete = false;
         }
-        if(type == EventObject.START)
+        if (type == EventObject.START)
         {
             stateData._animData.isStart = true;
             stateData._animData.isFadeOut = false;
+        }
+        if (type == EventObject.FADE_IN_COMPLETE)
+        {
+            stateData._animData.isFadeInComplete = true;
+            stateData._animData.isFadeOut = false;
+        }
+
+        if (eventObject.animationState.name == stateData._animData.name)
+        {
+
         }
     }
 }
