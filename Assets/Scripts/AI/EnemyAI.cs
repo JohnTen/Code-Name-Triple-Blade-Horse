@@ -18,7 +18,8 @@ public class EnemyAI : MonoBehaviour
                     BT.Call(Alert),
                     BT.Wait(1.0f),
                     BT.If(() => { return 1 == 1; }).OpenBranch(
-                        BT.Call(MeleeAttack)
+                        BT.Call(MeleeAttack),
+                        BT.Wait(1.0F)
                      )
                 ),
                 BT.If(() => { return 2 > 1; }).OpenBranch(
