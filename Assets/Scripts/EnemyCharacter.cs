@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyInput
-{
-	Attack,
-	Jump
-}
 
 public class EnemyCharacter : MonoBehaviour
 {
