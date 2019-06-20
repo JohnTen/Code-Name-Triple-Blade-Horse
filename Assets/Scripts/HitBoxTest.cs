@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using JTUtility;
 using UnityEngine;
 
-public class HitBoxTest : MonoBehaviour, IAttackable
+public class HitBoxTest : EnemyHitBox
 {
 	[SerializeField] AttackResult returnType;
-
-	public event Action<AttackPackage> OnHit;
 
 	public AttackResult ReceiveAttack(ref AttackPackage attack)
 	{

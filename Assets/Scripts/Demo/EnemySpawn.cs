@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-	[SerializeField] Enemy _enemyPrefab;
+	[SerializeField] TempEnemyAI _enemyPrefab;
 	[SerializeField] float _range;
 	[SerializeField] float _spawnDelay = 2;
-	Enemy enemyReference;
+	TempEnemyAI enemyReference;
 	float spawnTimer;
 	bool spawned;
 	
@@ -38,7 +38,7 @@ public class EnemySpawn : MonoBehaviour
 
 	void Spawn()
 	{
-		enemyReference = Instantiate(_enemyPrefab.gameObject).GetComponent<Enemy>();
+		enemyReference = Instantiate(_enemyPrefab.gameObject).GetComponent<TempEnemyAI>();
 		enemyReference.transform.position = this.transform.position + Random.Range(-_range, _range) * Vector3.right;
 		
 		if (Random.value > 0.5f)

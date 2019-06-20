@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using JTUtility;
 using JTUtility.Platformer;
 
-[RequireComponent(typeof(PhysicalJumper))]
 public class Enemy : PhysicalMover, IAttackable
 {
 	[SerializeField] int hitPoint;
@@ -22,8 +21,9 @@ public class Enemy : PhysicalMover, IAttackable
 
 	Slider healthBar;
 
-	public event Action<AttackPackage> OnHit;
+	public event Action<AttackPackage, AttackResult> OnHit;
 
+	public Faction Faction { get; }
 	public bool Stuned => stuned;
 	public int State => state;
 	public Vector2 FirstTarget { get; set; }
@@ -31,24 +31,6 @@ public class Enemy : PhysicalMover, IAttackable
 	public bool TowardsFirstTarget;
 
 	Dictionary<int, AttackPackage> attacks = new Dictionary<int, AttackPackage>();
-
-	public void Hit(Vector3 hitDirection, float force)
-	{
-		return;
-		if (stuned) return;
-
-		hitPoint--;
-		if (hitPoint <= 0)
-			Destroy(gameObject);
-
-		hitDirection.x = hitDirection.x > 0 ? 1 : -1;
-		hitDirection.y = 0.5f;
-		hitDirection.z = 0;
-
-		stuned = true;
-		StartCoroutine(BeenHit());
-		rigidBody.AddForce(hitDirection * hitBackForce * force, ForceMode2D.Impulse);
-	}
 
 	protected override void Awake()
 	{
@@ -142,7 +124,7 @@ public class Enemy : PhysicalMover, IAttackable
 		stuned = false;
 	}
 
-	public AttackResult ReceiveAttack(ref AttackPackage attack)
+	public AttackResult ReceiveAttack(AttackPackage attack)
 	{
 		if (attacks.ContainsKey(attack._hashID)) return AttackResult.Failed;
 
@@ -162,7 +144,7 @@ public class Enemy : PhysicalMover, IAttackable
 		StartCoroutine(BeenHit());
 		rigidBody.AddForce(hitDirection * hitBackForce * attack._knockback, ForceMode2D.Impulse);
 
-		return AttackResult.Success;
+		return new AttackResult(true, attack._hitPointDamage, attack._enduranceDamage, false);
 	}
 
 	IEnumerator DelayedRemoveAttackPackage(int hashID)

@@ -12,9 +12,10 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	[SerializeField] float _maxXSpeed;
 	[SerializeField] float _maxYSpeed;
 	[SerializeField] float _jumpHeight;
+	[SerializeField] float _knockbackSpeedFactor;
 
 	[Header("Dashing")]
-	[SerializeField] float dashCancelRange;
+	[SerializeField] float _dashCancelRange;
 	[SerializeField] float _airDashingDistance;
 	[SerializeField] float _airDashingDuration;
 	[SerializeField] float _airDashingDelay;
@@ -40,6 +41,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	[SerializeField] Vector2 _attackStepDirection;
 	[SerializeField] Vector2 _velocity;
 	[SerializeField] Vector2 _movementVector;
+	[SerializeField] Vector2 _knockbackVector;
 	[SerializeField] MovingState _currentMovingState;
 
 
@@ -202,6 +204,11 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		CurrentMovingState = MovingState.Airborne;
 	}
 
+	public void Knockback(Vector2 direction)
+	{
+		_knockbackVector = Vector2.right * (direction.magnitude * Mathf.Sign(direction.x));
+	}
+
 	public void Move(Vector2 direction)
 	{
 		_movementVector = direction;
@@ -219,6 +226,15 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		_velocity = direction.normalized * _pullingForce;
 		_pullDelayTimer = _pullingMoveDelay;
 		_airborneTime = 0;
+	}
+
+	public void ResetMovement()
+	{
+		_velocity = Vector2.zero;
+		_movementVector = Vector2.zero;
+
+		CancelDash();
+		_knockbackVector = Vector2.zero;
 	}
 
 	public void SetStepDistance(float stepLength)
@@ -298,7 +314,9 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 			_deservedDashingDistance -= dashingDistance;
 
 			_rigidbody.MovePosition((Vector2)transform.position + velocity);
-			
+
+			BlockInput = _deservedDashingDistance < _dashCancelRange;
+
 			if (_deservedDashingDistance <= float.Epsilon)
 			{
 				OnDashingDelayBegin?.Invoke();
@@ -317,6 +335,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		_dashingDirection = Vector2.zero;
 		_dashing = false;
 		_airborneTime = 0;
+		BlockInput = false;
 		OnDashingFinished?.Invoke();
 	}
 
@@ -359,6 +378,21 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	{
 		velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * Time.deltaTime;
 		velocity = ApplyPhysicalContactEffects(velocity);
+
+		if (_knockbackVector.sqrMagnitude > 0)
+		{
+			var knockback = _knockbackVector.normalized * _knockbackSpeedFactor;
+			if (_knockbackVector.sqrMagnitude < knockback.sqrMagnitude)
+			{
+				_knockbackVector = Vector2.zero;
+			}
+			else
+			{
+				_knockbackVector -= knockback;
+			}
+
+			movingDirection += knockback;
+		}
 
 		if (_groundDetector.IsOnGround && velocity.y <= float.Epsilon)
 		{

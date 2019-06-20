@@ -42,12 +42,12 @@ public class Sword : BaseWeapon
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		var attackable = other.GetComponent<IAttackable>();
-		if (!_activated || attackable == null) return;
+		if (!_activated || attackable == null || attackable.Faction == Faction.Player) return;
 
 		var package = Process(_basePackage);
 		package._fromDirection = _state._facingRight ? Vector2.right : Vector2.left;
 
-		var result = attackable.ReceiveAttack(ref package);
+		var result = attackable.ReceiveAttack(package);
 		RaiseOnHitEvent(attackable, result, package);
 	}
 }
