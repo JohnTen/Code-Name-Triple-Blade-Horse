@@ -115,13 +115,13 @@ public class ThrowingKnife : BaseWeapon
 
 	private void Flying()
 	{
+		Physics2D.queriesHitTriggers = false;
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength);
 		transform.position += transform.right * speed * Time.deltaTime;
 		traveledDistance += speed * Time.deltaTime;
 
 		if (hit.collider != null)
 		{
-			print(hit.collider.name);
 			var attackable = hit.collider.GetComponent<IAttackable>();
 
 			if (hit.collider.tag == "Climbable")
@@ -137,10 +137,11 @@ public class ThrowingKnife : BaseWeapon
 				print("Enemy fly");
 				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
+				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
 			}
 			else
 			{
+				print(hit.collider.name);
 				transform.position = hit.point;
 				Hover();
 				return;
@@ -180,7 +181,7 @@ public class ThrowingKnife : BaseWeapon
 				print("Enemy return");
 				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
+				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
 			}
 		}
 
@@ -206,7 +207,7 @@ public class ThrowingKnife : BaseWeapon
 				print("Enemy hover");
 				var attack = attackPackage;
 				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(ref attack), attack);
+				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
 			}
 		}
 	}
@@ -228,6 +229,7 @@ public class ThrowingKnife : BaseWeapon
 		package._hitPointDamage.Base = _baseHitPointDamage;
 		package._enduranceDamage.Base = _baseEnduranceDamage;
 		package._attackType = type;
+		package._faction = Faction.Player;
 		package = move.Process(package);
 
 		return package;
