@@ -13,6 +13,14 @@ public enum AttackType
 	Float,
 }
 
+public enum Faction
+{
+	Null,
+	Player,
+	Enemy,
+	Environment,
+}
+
 /// <summary>
 /// A data package struct that carries data of each attack
 /// </summary>
@@ -29,12 +37,13 @@ public struct AttackPackage
 	public string _staggerAnimation;
 	public string _gapStaggerAnimation;
 
+	public Faction _faction;
 	public AttackType _attackType;
 	public Vector2 _fromDirection;
 
 	AttackPackage(int hashID, float hitPointDamage, float enduranceDamage, float knockback, 
-		float chargedPercent, float attackRate, bool triggerGapStun, AttackType attackType, 
-		Vector2 fromDirection, string staggerAnimation, string gapStaggerAnimation)
+		float chargedPercent, float attackRate, bool triggerGapStun, AttackType attackType,
+		Faction faction, Vector2 fromDirection, string staggerAnimation, string gapStaggerAnimation)
 	{
 		_hashID = hashID;
 		_hitPointDamage = new ModifiableValue(hitPointDamage);
@@ -44,6 +53,7 @@ public struct AttackPackage
 		_attackRate = attackRate;
 		_triggerGapStagger = triggerGapStun;
 
+		_faction = faction;
 		_attackType = attackType;
 		_staggerAnimation = staggerAnimation;
 		_gapStaggerAnimation = gapStaggerAnimation;
@@ -54,7 +64,8 @@ public struct AttackPackage
 	{
 		var hashID = System.Guid.NewGuid().GetHashCode();
 		var package = 
-			new AttackPackage(hashID, 0, 0, 0, 0, 0, false, AttackType.Null, Vector2.zero, "", "");
+			new AttackPackage(hashID, 0, 0, 0, 0, 0, false, AttackType.Null, Faction.Null, Vector2.zero, "", "");
+
 		return package;
 	}
 

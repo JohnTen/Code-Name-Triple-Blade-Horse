@@ -31,6 +31,7 @@ public class WeaponSystem : MonoBehaviour
 	public void MeleeAttack()
 	{
 		var package = AttackPackage.CreateNewPackage();
+		package._faction = Faction.Player;
 		package._attackType = AttackType.Melee;
 		package._hitPointDamage.Base = _state._hitPointDamage;
 		package._enduranceDamage.Base = _state._enduranceDamage;
@@ -42,6 +43,7 @@ public class WeaponSystem : MonoBehaviour
 	public void ChargedMeleeAttack(float chargedPercent)
 	{
 		var package = AttackPackage.CreateNewPackage();
+		package._faction = Faction.Player;
 		package._attackType = AttackType.ChargedMelee;
 		package._hitPointDamage.Base = _state._hitPointDamage;
 		package._enduranceDamage.Base = _state._enduranceDamage;

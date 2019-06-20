@@ -11,16 +11,20 @@ public class PlayerCharacter : MonoBehaviour
 	WeaponSystem _weaponSystem;
 	ICanDetectGround _groundDetector;
 	PlayerAnimation _animation;
+	IAttackable _hitbox;
+	HitFlash _hitFlash;
 
 	PlayerInputCommand _lastInput;
 
 	private void Awake()
 	{
-		_input = GetComponent<PlayerInput>();
+		_input = GetComponent<ICharacterInput<PlayerInputCommand>>();
 		_mover = GetComponent<PlayerMover>();
 		_animation = GetComponent<PlayerAnimation>();
 		_weaponSystem = GetComponent<WeaponSystem>();
 		_groundDetector = GetComponent<ICanDetectGround>();
+		_hitbox = GetComponentInChildren<IAttackable>();
+		_hitFlash = GetComponent<HitFlash>();
 
 		_mover.OnMovingStateChanged += HandleMovingStateChanged;
 		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
@@ -28,6 +32,22 @@ public class PlayerCharacter : MonoBehaviour
 		_mover.OnDashingFinished += DashingFinishedHandler;
 		_animation.OnRecievedFrameEvent += OnRecievedFrameEvent;
 		_weaponSystem.OnPull += PullHandler;
+		_hitbox.OnHit += HandleOnHit;
+	}
+
+	private void HandleOnHit(AttackPackage attack, AttackResult result)
+	{
+		_hitFlash.Flash();
+		_state._hitPoints -= result._finalDamage;
+		_state._endurance -= result._finalFatigue;
+		_mover.Knockback(attack._fromDirection * attack._knockback);
+
+		if (_state._hitPoints <= 0)
+		{
+			print("Player Dead");
+			_mover.ResetMovement();
+			RecoverPoint.MainRespawn(true);
+		}
 	}
 
 	private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -88,17 +108,19 @@ public class PlayerCharacter : MonoBehaviour
 		switch (input._command)
 		{
 			case PlayerInputCommand.Jump:
+				Cancel();
 				_mover.Jump();
 				_animation.SetBool("Jump", true);
 				break;
 
 			case PlayerInputCommand.Dash:
+				Cancel();
 				_mover.Dash(_input.GetMovingDirection());
 				_animation.SetBool("Dash", true);
 				break;
 
 			case PlayerInputCommand.MeleeBegin:
-				print("Melee begin");
+				Cancel();
 				break;
 
 			case PlayerInputCommand.MeleeAttack:
@@ -106,7 +128,6 @@ public class PlayerCharacter : MonoBehaviour
 				break;
 
 			case PlayerInputCommand.MeleeChargeAttack:
-				print("Charged melee  " + input._additionalValue);
 				_weaponSystem.ChargedMeleeAttack(input._additionalValue);
 				break;
 
@@ -156,6 +177,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void Cancel()
 	{
-
+		if (_mover.CurrentMovingState == MovingState.Dash)
+			_mover.CancelDash();
 	}
 }
