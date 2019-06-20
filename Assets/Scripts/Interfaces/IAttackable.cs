@@ -5,7 +5,8 @@ using JTUtility;
 
 public interface IAttackable
 {
-	AttackResult ReceiveAttack(ref AttackPackage attack);
+	Faction Faction { get; }
+	AttackResult ReceiveAttack(AttackPackage attack);
 
-	event Action<AttackPackage> OnHit;
+	event Action<AttackPackage, AttackResult> OnHit;
 }

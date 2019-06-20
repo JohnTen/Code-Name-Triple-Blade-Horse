@@ -109,7 +109,9 @@ public class PlayerAnimation : MonoBehaviour
 	{
 		print("Attack");
 		_walkState = null;
-		_armature.animation.FadeIn(_meleeAttacks[_currentAttack], 0, 1);
+		var anim = _armature.animation.FadeIn(_meleeAttacks[_currentAttack], 0, 1);
+		anim.resetToPose = false;
+		anim.timeScale = 2.5f;
 		_currentAttack++;
 		_currentAttack %= _meleeAttacks.Length;
 		_boolValueMap["Frozen"] = true;
