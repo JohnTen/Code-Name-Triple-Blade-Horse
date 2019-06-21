@@ -4,85 +4,51 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: TerrainWaterSample
   m_Shader: {fileID: 4800000, guid: a9cde6543f2604b4cbd3023847cb9c0b, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: <noninit>
-      second:
+    - <noninit>:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Foam
-      second:
+    - _Foam:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _WaterNormal
-      second:
+    - _WaterNormal:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _texcoord
-      second:
+    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: <noninit>
-      second: 0
-    - first:
-        name: _Distortion
-      second: 0.5
-    - first:
-        name: _FoamDepth
-      second: 0
-    - first:
-        name: _FoamFalloff
-      second: 0
-    - first:
-        name: _FoamSmoothness
-      second: 0
-    - first:
-        name: _FoamSpecular
-      second: 0
-    - first:
-        name: _NormalScale
-      second: 0
-    - first:
-        name: _WaterDepth
-      second: 0
-    - first:
-        name: _WaterFalloff
-      second: 0
-    - first:
-        name: _WaterSmoothness
-      second: 0
-    - first:
-        name: _WaterSpecular
-      second: 0
-    - first:
-        name: __dirty
-      second: 0
+    - <noninit>: 0
+    - _Distortion: 0.5
+    - _FoamDepth: 0
+    - _FoamFalloff: 0
+    - _FoamSmoothness: 0
+    - _FoamSpecular: 0
+    - _NormalScale: 0
+    - _WaterDepth: 0
+    - _WaterFalloff: 0
+    - _WaterSmoothness: 0
+    - _WaterSpecular: 0
+    - __dirty: 0
     m_Colors:
-    - first:
-        name: <noninit>
-      second: {r: 0, g: 3.4735182e-33, b: 0, a: 3.4734947e-33}
-    - first:
-        name: _DeepColor
-      second: {r: 0, g: 0, b: 0, a: 0}
-    - first:
-        name: _ShalowColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+    - <noninit>: {r: 0, g: 3.4735182e-33, b: 0, a: 3.4734947e-33}
+    - _DeepColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ShalowColor: {r: 1, g: 1, b: 1, a: 0}
