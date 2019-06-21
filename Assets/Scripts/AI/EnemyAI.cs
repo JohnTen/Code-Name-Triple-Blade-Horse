@@ -19,17 +19,14 @@ public class EnemyAI : MonoBehaviour
     {
         enemyRoot.OpenBranch(
             BT.Selector().OpenBranch(
-               BT.Sequence().OpenBranch(
                    BT.If(enemyBehave.AttackAction).OpenBranch(
                    BT.Call(enemyBehave.MeleeAttack),
                    BT.Wait(2.0f)
                    )),
-               BT.Sequence().OpenBranch(
                    BT.If(enemyBehave.AlertAction).OpenBranch(
                    BT.Call(enemyBehave.MoveToPlayer)
-                   )),
+                   ),
                BT.Call(enemyBehave.Patrol)
-           )
        );
     }
 
