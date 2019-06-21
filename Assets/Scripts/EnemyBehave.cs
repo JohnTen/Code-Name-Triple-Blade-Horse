@@ -11,86 +11,87 @@ public enum EnemyInput
 
 public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
 {
-    [SerializeField] GameObject _character;
-    [SerializeField] float _alertArea = 0;
-    [SerializeField] float _attackArea = 0;
-    [SerializeField] float _patrolArea = 0;
-    [SerializeField] float _stopTime = 0;
-    [SerializeField] float _error = 0;
-    Vector2 move;
-    Vector2 aim;
-    [SerializeField] bool pause = false;
-    float _stopposition;
-    float _stoprandomTime;
+    [SerializeField] float _alertArea = 5;
+    [SerializeField] float _attackArea = 1.5f;
+    [SerializeField] float _patrolArea = 5;
+    [SerializeField] float _stopTime = 1;
+    [SerializeField] float _error = 1;
+    [SerializeField] bool _pause = false;
+
+	Vector2 _move;
+	Vector2 _aim;
+	float _stopPosition;
+    float _stopRandomTime;
     Vector2 _bornPosition;
-    public bool DelayInput { get; set; }
+	Transform _character;
+
+	public bool DelayInput { get; set; }
     public bool BlockInput { get; set; }
 
     public event Action<InputEventArg<EnemyInput>> OnReceivedInput;
 
     public Vector2 GetAimingDirection()
     {
-        return aim;
+        return _aim;
     }
 
     public Vector2 GetMovingDirection()
     {
-        return move;
+        return _move;
     }
 
     public void MoveToPlayer()
     {
-        move = _character.transform.position - transform.position;
-        move.Normalize();
-        aim = move;
+        _move = _character.position - transform.position;
+        _move.Normalize();
+        _aim = _move;
     }
+
     public void Patrol()
     {
         float distance = this.transform.position.x - _bornPosition.x;
 
-        if (pause && _stoprandomTime < Time.time)
+        if (_pause && _stopRandomTime < Time.time)
         {
-            _stopposition = Random.Range(-_patrolArea, _patrolArea);
-            pause = false;
+            _stopPosition = Random.Range(-_patrolArea, _patrolArea);
+            _pause = false;
         }
-        else if (!pause && Mathf.Abs(distance - _stopposition) < _error)
+        else if (!_pause && Mathf.Abs(distance - _stopPosition) < _error)
         {
-            _stoprandomTime = Random.Range(0, _stopTime) + Time.time;
-            pause = true;
+            _stopRandomTime = Random.Range(0, _stopTime) + Time.time;
+            _pause = true;
         }
 
-        if (!pause)
+        if (!_pause)
         {
-            if (distance - _stopposition < 0)
+            if (distance - _stopPosition < 0)
             {
-                move = Vector2.right;
-                aim = move;
+                _move = Vector2.right;
+                _aim = _move;
             }
-            else if (distance - _stopposition > 0)
+            else if (distance - _stopPosition > 0)
             {
-                move = Vector2.left;
-                aim = move;
+                _move = Vector2.left;
+                _aim = _move;
             }
         }
 
-        if (pause)
+        if (_pause)
         {
-            move = Vector2.zero;
+            _move = Vector2.zero;
         }
-
-
     }
-    public void MeleeAttack()
+
+    public void Attack()
     {
-        move = (_character.transform.position - transform.position).normalized * 0.01f;
+        _move = (_character.position - transform.position).normalized * 0.01f;
         OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Attack));
     }
 
     public bool AttackAction()
     {
-
         float distance;
-        distance = Mathf.Abs(this.transform.position.x - _character.transform.position.x);
+        distance = Mathf.Abs(this.transform.position.x - _character.position.x);
         if (distance < _attackArea)
         {
             return true;
@@ -102,7 +103,7 @@ public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
     public bool AlertAction()
     {
         float distance;
-        distance = Mathf.Abs(this.transform.position.x - _character.transform.position.x);
+        distance = Mathf.Abs(this.transform.position.x - _character.position.x);
         if ( distance < _alertArea)
         {
             return true;
@@ -113,9 +114,9 @@ public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
 
     public void Awake()
     {
-        _stopposition = Random.Range(-_patrolArea, _patrolArea);
-        _stoprandomTime = Random.Range(0,_stopTime) + Time.time;
+		_character = FindObjectOfType<PlayerCharacter>().transform;
+		_stopPosition = Random.Range(-_patrolArea, _patrolArea);
+        _stopRandomTime = Random.Range(0,_stopTime) + Time.time;
         _bornPosition = this.transform.position;
     }
-
 }

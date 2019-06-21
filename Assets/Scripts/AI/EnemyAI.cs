@@ -13,7 +13,7 @@ public class EnemyAI : MonoBehaviour
         enemyRoot.OpenBranch(
             BT.Selector().OpenBranch(
                BT.If(enemyBehave.AttackAction).OpenBranch(
-                   BT.Call(enemyBehave.MeleeAttack),
+                   BT.Call(enemyBehave.Attack),
                    BT.Wait(2.0f)
                 ),
                BT.If(enemyBehave.AlertAction).OpenBranch(

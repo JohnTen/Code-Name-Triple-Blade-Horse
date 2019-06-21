@@ -11,8 +11,8 @@ public class EnemyBellWave : BaseWeapon
 	[SerializeField] Gradient _color;
 
 	bool _activated;
-	AttackPackage _basePackage;
 	float _timer;
+	AttackPackage _basePackage;
 
 	public override void Activate(AttackPackage attack, AttackMove move)
 	{
