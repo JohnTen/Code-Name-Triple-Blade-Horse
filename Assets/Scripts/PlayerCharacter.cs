@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCharacter : MonoBehaviour
 {
 	[SerializeField] PlayerState _state;
+	[SerializeField] Transform _hittingPoint;
 
 	ICharacterInput<PlayerInputCommand> _input;
 	PlayerMover _mover;
@@ -15,6 +16,8 @@ public class PlayerCharacter : MonoBehaviour
 	HitFlash _hitFlash;
 
 	PlayerInputCommand _lastInput;
+
+	public Transform HittingPoint => _hittingPoint;
 
 	private void Awake()
 	{
