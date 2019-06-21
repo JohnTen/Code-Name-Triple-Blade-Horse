@@ -1715,9 +1715,10 @@ GameObject:
   - component: {fileID: 6780041468514372463}
   - component: {fileID: 1765525190}
   - component: {fileID: 1765525183}
-  - component: {fileID: 1765525188}
   - component: {fileID: 994103942}
   - component: {fileID: 994103943}
+  - component: {fileID: 8685272295113320087}
+  - component: {fileID: 4002523837072793349}
   m_Layer: 10
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -1896,21 +1897,6 @@ MonoBehaviour:
   _flashing: 0
   _renderers: []
   _defaultColor: []
---- !u!114 &1765525188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7245046773056271541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b152821f9c185340a4c99afc88cf7ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meleeRange: 1.5
-  detectRange: 6
-  moveVector: {x: 0, y: 0}
 --- !u!114 &994103942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1943,3 +1929,37 @@ MonoBehaviour:
   _wavePrefab: {fileID: 2207159598986094266, guid: 68a5a9a274ecdbe4fb1ac7c06781e051,
     type: 3}
   _delay: 0.3334
+--- !u!114 &8685272295113320087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7245046773056271541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862de8bbe356c604aa0e4eb52d9379ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlert: 0
+  inAttackRange: 0
+  enemyBehave: {fileID: 4002523837072793349}
+--- !u!114 &4002523837072793349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7245046773056271541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba4348c3a037e643aff8a6d84f382ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _character: {fileID: 0}
+  _alertArea: 0
+  _attackArea: 0
+  _patrolArea: 0
+  _stopTime: 0
+  _error: 0
+  pause: 0
