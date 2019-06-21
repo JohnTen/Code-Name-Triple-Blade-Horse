@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100012, guid: a27076b92fc52e2479c921009379d335, type: 3}
       propertyPath: m_Name
-      value: 17_RFX_Bomb4
+      value: 17_RFX_Bomb4 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: a27076b92fc52e2479c921009379d335, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,7 +55,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11400002, guid: a27076b92fc52e2479c921009379d335, type: 3}
-    - {fileID: 11400000, guid: a27076b92fc52e2479c921009379d335, type: 3}
+    - target: {fileID: 19800004, guid: a27076b92fc52e2479c921009379d335, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: a27076b92fc52e2479c921009379d335, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: a27076b92fc52e2479c921009379d335, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: a27076b92fc52e2479c921009379d335, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a27076b92fc52e2479c921009379d335, type: 3}
