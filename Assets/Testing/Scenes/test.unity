@@ -1223,7 +1223,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &96393195
@@ -2350,7 +2350,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &194353989
@@ -2449,6 +2449,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a64c3ea16e069e44a34bb37d2f0eda3, type: 3}
+--- !u!4 &198598749 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 198598748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &207861787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,12 +2648,6 @@ Transform:
   m_Father: {fileID: 2117779125}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &250373740 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4750746678030700, guid: 3a64c3ea16e069e44a34bb37d2f0eda3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1821371867}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &260952071
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,27 +2996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41473c444ab4f415688f7c60dd72e8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  startPanel: {fileID: 0}
-  exitButtion: {fileID: 0}
-  pausePanel: {fileID: 777747079}
-  pauseExitButton: {fileID: 0}
-  onPause:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_BlockInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityUtility.BoolEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!114 &315722982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,12 +3075,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!4 &343698278 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4750746678030700, guid: 3a64c3ea16e069e44a34bb37d2f0eda3,
-    type: 3}
-  m_PrefabInstance: {fileID: 507178779}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &355665897
 GameObject:
   m_ObjectHideFlags: 0
@@ -4141,8 +4113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2dc3e3f34af98c4f8c63ecb577d52d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 1825722707}
-  weapon: {fileID: 2054570830}
 --- !u!95 &440737024
 Animator:
   serializedVersion: 3
@@ -4557,6 +4527,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a64c3ea16e069e44a34bb37d2f0eda3, type: 3}
+--- !u!4 &507178780 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 507178779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &515911434
 GameObject:
   m_ObjectHideFlags: 0
@@ -4800,10 +4775,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 40
-  _spawnDelay: 2
 --- !u!1 &531399372
 GameObject:
   m_ObjectHideFlags: 0
@@ -5022,7 +4993,7 @@ Transform:
   m_LocalPosition: {x: -1.68, y: -0.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 343698278}
+  - {fileID: 507178780}
   m_Father: {fileID: 2117779125}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.47401}
@@ -6690,7 +6661,7 @@ SpriteRenderer:
   m_Size: {x: 9.6, y: 5.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &783836350
@@ -6827,10 +6798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 30
-  _spawnDelay: 2
 --- !u!1 &832179208
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,12 +6877,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832179208}
   m_CullTransparentMesh: 0
---- !u!4 &849612829 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4750746678030700, guid: 3a64c3ea16e069e44a34bb37d2f0eda3,
-    type: 3}
-  m_PrefabInstance: {fileID: 198598748}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &856266639
 GameObject:
   m_ObjectHideFlags: 0
@@ -7408,7 +7369,7 @@ Transform:
   m_LocalPosition: {x: -1.7991675, y: -0.059009314, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 250373740}
+  - {fileID: 1821371868}
   m_Father: {fileID: 2117779125}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.47401}
@@ -8606,10 +8567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 20
-  _spawnDelay: 2
 --- !u!1 &1081591213
 GameObject:
   m_ObjectHideFlags: 0
@@ -9417,10 +9374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 30
-  _spawnDelay: 2
 --- !u!1 &1433989135
 GameObject:
   m_ObjectHideFlags: 0
@@ -9795,10 +9748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 40
-  _spawnDelay: 2
 --- !u!1 &1506703478
 GameObject:
   m_ObjectHideFlags: 0
@@ -11609,7 +11558,7 @@ SpriteRenderer:
   m_Size: {x: 21.601093, y: 10.79}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1733641755
@@ -11669,10 +11618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 25
-  _spawnDelay: 2
 --- !u!1 &1762392971
 GameObject:
   m_ObjectHideFlags: 0
@@ -11837,8 +11782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2dc3e3f34af98c4f8c63ecb577d52d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 1825722707}
-  weapon: {fileID: 1763351574}
 --- !u!114 &1763351574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11854,31 +11797,10 @@ MonoBehaviour:
   _baseHitPointDamage: 15
   _baseEnduranceDamage: 34
   _maxChargeAttack: 3
-  _maxChargeTime: 2
-  _chargeAttackMultiplierCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.43889758
-      outSlope: 0.43889758
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.7672862
-    - serializedVersion: 3
-      time: 1
-      value: 3
-      inSlope: 6.0397077
-      outSlope: 6.0397077
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.07490736
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _triggerBox: {fileID: 0}
+  _state: {fileID: 0}
+  _normalAttack: {fileID: 0}
+  _chargedAttack: {fileID: 0}
 --- !u!50 &1763351575
 Rigidbody2D:
   serializedVersion: 4
@@ -12716,6 +12638,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a64c3ea16e069e44a34bb37d2f0eda3, type: 3}
+--- !u!4 &1821371868 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1821371867}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1825722701
 GameObject:
   m_ObjectHideFlags: 0
@@ -12753,15 +12680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c828c5445aa7174794ae8603a134dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jump: 0
-  _airborne: 1
-  _dropping: 0
-  _landing: 0
-  _xSpeed: 0
-  _ySpeed: 0
-  _armatureComponent: {fileID: 1172743360}
-  meleeHandler: {fileID: 1763351573}
-  attackTimer: 0
 --- !u!114 &1825722703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12774,11 +12692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4f920a9ef64c444b7b12de391897e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allLaunchTime: 0.3
-  withdrawTime: 0.3
-  sheath: {fileID: 2117779126}
-  aimingLine: {fileID: 697365356}
-  aimingLineBase: {fileID: 222903874}
 --- !u!114 &1825722704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12791,18 +12704,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d723b54bcc25614593bb6deea07ad7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeAttackRate: 3
-  meleeAttackDuration: {x: 0, y: 1}
-  meleeAnimator: {fileID: 440737024}
-  bladeStart: {fileID: 397622363}
-  bladeEnd: {fileID: 194353990}
-  meleeAttackTimer: -1
-  lastAttackPositionStart: {x: 0, y: 0, z: 0}
-  lastAttackPositionEnd: {x: 0, y: 0, z: 0}
-  attackedEnemy: {fileID: 0}
-  player: {fileID: 1825722707}
-  animation: {fileID: 1825722702}
-  repeatAttack: 0
 --- !u!114 &1825722705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12815,17 +12716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ce550739910804b8f6528a74977087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 8
-  allLaunchTime: 0.3
-  allLaunchRange: 4
-  allLaunchRate: 8
-  pullingForce: 45
-  autoPickupDistance: 5
-  autoReturnDistance: 45
-  allLaunchTimer: 0
-  sheath: {fileID: 2117779126}
-  player: {fileID: 1825722707}
-  knifesInAirList: []
 --- !u!114 &1825722706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12851,43 +12741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879144fb7908d8442a2189217df2e5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  characterBound:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  maxXSpeed: 60
-  maxYSpeed: 60
-  airSpeed: 15
-  sprite: {fileID: 96393194}
-  groundDetector: {fileID: 1825722706}
-  attackStepSpeed: 15
-  attackStep: {x: 0, y: 0}
-  airborneXDecayRate: 0.02
-  airborneXMovementTimeFactor: 1
-  airborneXMovementCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 1.5083389
-      outSlope: 1.5083389
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.17971015
-    - serializedVersion: 3
-      time: 1
-      value: 0.02
-      inSlope: -0.8938629
-      outSlope: -0.8938629
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &1825722708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12900,11 +12753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755ba5b9262f69e4fa42b9d381bda3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 6
-  dashingDistance: 6
-  dashingDuration: 0.2
-  direction: {x: 0, y: 0}
-  dashing: 0
 --- !u!61 &1825722709
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14293,31 +14141,10 @@ MonoBehaviour:
   _baseHitPointDamage: 10
   _baseEnduranceDamage: 34
   _maxChargeAttack: 3
-  _maxChargeTime: 2
-  _chargeAttackMultiplierCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.43889758
-      outSlope: 0.43889758
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.7672862
-    - serializedVersion: 3
-      time: 1
-      value: 3
-      inSlope: 6.0397077
-      outSlope: 6.0397077
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.07490736
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _triggerBox: {fileID: 0}
+  _state: {fileID: 0}
+  _normalAttack: {fileID: 0}
+  _chargedAttack: {fileID: 0}
 --- !u!1 &2056034866
 GameObject:
   m_ObjectHideFlags: 0
@@ -14883,27 +14710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41473c444ab4f415688f7c60dd72e8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  startPanel: {fileID: 0}
-  exitButtion: {fileID: 0}
-  pausePanel: {fileID: 777747079}
-  pauseExitButton: {fileID: 0}
-  onPause:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1825722703}
-        m_MethodName: set_BlockInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityUtility.BoolEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!1 &2087529715
 GameObject:
   m_ObjectHideFlags: 0
@@ -15057,7 +14863,7 @@ Transform:
   m_LocalPosition: {x: -1.4995097, y: -0.10149193, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 849612829}
+  - {fileID: 198598749}
   m_Father: {fileID: 2117779125}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -60.474003}
@@ -15186,15 +14992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a8f8668f56a634fb8907a1d7be25d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfKnife: 3
-  launchPosition: {fileID: 222903874}
-  sheathPositions:
-  - {fileID: 2092074690}
-  - {fileID: 573145072}
-  - {fileID: 888842746}
-  allKnifes: []
-  knifePrefab: {fileID: 114409296157640428, guid: 3a64c3ea16e069e44a34bb37d2f0eda3,
-    type: 3}
 --- !u!1 &2130356870
 GameObject:
   m_ObjectHideFlags: 0
@@ -15238,7 +15035,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faed63da3eb7224ba33acbe76825dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 7245046773056271536, guid: fa151b51bcca95c43926367cc0dc9bb1,
-    type: 3}
-  _range: 40
-  _spawnDelay: 2

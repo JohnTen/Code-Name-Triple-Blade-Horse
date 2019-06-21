@@ -4,121 +4,79 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: UISpriteFX
   m_Shader: {fileID: 4800000, guid: 3c052549f290c6c4b9c355438462eb57, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _AlphaTex
-      second:
+    - _AlphaTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BumpMap
-      second:
+    - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 2800000, guid: a938a23627266284eaec972333d657de, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MatCap
-      second:
+    - _MatCap:
         m_Texture: {fileID: 2800000, guid: a938a23627266284eaec972333d657de, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Matcap
-      second:
+    - _Matcap:
         m_Texture: {fileID: 2800000, guid: b23676ff9cac20a4c9c7b9333f055f1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Normal
-      second:
+    - _Normal:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Ring
-      second:
+    - _Ring:
         m_Texture: {fileID: 2800000, guid: a99649a3ac7df724eb781c969383e632, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _RotateMask
-      second:
+    - _RotateMask:
         m_Texture: {fileID: 2800000, guid: 800ff50c9cc42bb4c99ea4b57ccd019e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Texture0
-      second:
+    - _Texture0:
         m_Texture: {fileID: 2800000, guid: ce384aed77a765144bdb41c367961753, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Texture1
-      second:
+    - _Texture1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _TextureSample1
-      second:
+    - _TextureSample1:
         m_Texture: {fileID: 2800000, guid: 84508b93f15f2b64386ec07486afc7a3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _texcoord
-      second:
+    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: PixelSnap
-      second: 0
-    - first:
-        name: _Emission
-      second: 1
-    - first:
-        name: _MatCapAccurate
-      second: 0
-    - first:
-        name: __dirty
-      second: 0
+    - PixelSnap: 0
+    - _Emission: 1
+    - _MatCapAccurate: 0
+    - __dirty: 0
     m_Colors:
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _CustomUVS
-      second: {r: 0, g: 0, b: 0.5, a: 1}
-    - first:
-        name: _RingColor
-      second: {r: 0, g: 1, b: 0.3793103, a: 1}
-    - first:
-        name: _SSS
-      second: {r: 0.9632353, g: 0.06374347, b: 0.23123497, a: 0}
-    - first:
-        name: _TransmissionParams
-      second: {r: 0.1, g: 8, b: 3, a: 1}
-    - first:
-        name: _Vector0
-      second: {r: 0, g: 0, b: 0, a: 0}
-    - first:
-        name: _Vector1
-      second: {r: 0, g: -0.06, b: 0.98, a: 2.54}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CustomUVS: {r: 0, g: 0, b: 0.5, a: 1}
+    - _RingColor: {r: 0, g: 1, b: 0.3793103, a: 1}
+    - _SSS: {r: 0.9632353, g: 0.06374347, b: 0.23123497, a: 0}
+    - _TransmissionParams: {r: 0.1, g: 8, b: 3, a: 1}
+    - _Vector0: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector1: {r: 0, g: -0.06, b: 0.98, a: 2.54}

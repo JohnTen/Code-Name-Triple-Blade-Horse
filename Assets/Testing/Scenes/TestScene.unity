@@ -2771,7 +2771,8 @@ MonoBehaviour:
   _maxXSpeed: 50
   _maxYSpeed: 50
   _jumpHeight: 5
-  dashCancelRange: 0
+  _knockbackSpeedFactor: 0
+  _dashCancelRange: 0
   _airDashingDistance: 3
   _airDashingDuration: 0.2
   _airDashingDelay: 0
@@ -2828,6 +2829,7 @@ MonoBehaviour:
   _attackStepDirection: {x: 0, y: 0}
   _velocity: {x: 0, y: 0}
   _movementVector: {x: 0, y: 0}
+  _knockbackVector: {x: 0, y: 0}
   _currentMovingState: 0
 --- !u!50 &1539016280
 Rigidbody2D:

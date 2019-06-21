@@ -83,7 +83,12 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 		}
 		else
 		{
-			aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - _aimingPivot.position);
+			var diff = _aimingPivot.position.z - Camera.main.transform.position.z;
+			var screenPos = Input.mousePosition + Vector3.forward * diff;
+
+			aim = (Camera.main.ScreenToWorldPoint(screenPos) - _aimingPivot.position);
+			print(screenPos);
+			Debug.DrawLine(Camera.main.ScreenToWorldPoint(screenPos), _aimingPivot.position);
 			if (aim.SqrMagnitude() > 1)
 				aim.Normalize();
 		}
