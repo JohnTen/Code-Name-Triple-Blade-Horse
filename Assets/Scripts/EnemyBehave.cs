@@ -17,6 +17,7 @@ public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
     [SerializeField] float _stopTime = 1;
     [SerializeField] float _error = 1;
     [SerializeField] bool _pause = false;
+    [SerializeField] bool partol;
 
 	Vector2 _move;
 	Vector2 _aim;

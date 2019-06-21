@@ -1957,12 +1957,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba4348c3a037e643aff8a6d84f382ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alertArea: 6
-  _attackArea: 5
+  _alertArea: 5
+  _attackArea: 3
   _patrolArea: 5
   _stopTime: 1
   _error: 1
   _pause: 0
+  partol: 0
 --- !u!114 &229426671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1990,6 +1991,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ring
+      objectReference: {fileID: 0}
+    - target: {fileID: 7846033178098005897, guid: 3683d39484991524a82afaff7aa94699,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7846033178098005897, guid: 3683d39484991524a82afaff7aa94699,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7846033178098005898, guid: 3683d39484991524a82afaff7aa94699,
         type: 3}
@@ -2055,16 +2066,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7846033178098005897, guid: 3683d39484991524a82afaff7aa94699,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7846033178098005897, guid: 3683d39484991524a82afaff7aa94699,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7846033177673438413, guid: 3683d39484991524a82afaff7aa94699,
         type: 3}

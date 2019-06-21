@@ -38,7 +38,7 @@ public class EnemySpawn : MonoBehaviour
 
 	void Spawn()
 	{
-		enemyReference = Instantiate(_enemyPrefab.gameObject);
+		enemyReference = Instantiate(_enemyPrefab.gameObject, transform.position, transform.rotation);
 		enemyReference.transform.position = this.transform.position + Random.Range(-_range, _range) * Vector3.right;
 	}
 }
