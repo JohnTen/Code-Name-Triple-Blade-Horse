@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7933238098468937588}
   - component: {fileID: 3201129926354611197}
   - component: {fileID: 4930131954170647495}
+  - component: {fileID: -3176771937423459479}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
@@ -89,17 +90,6 @@ MonoBehaviour:
   OnEnterTrigger2D:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7933238098468937588}
-        m_MethodName: Respwn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2421920320834817517}
         m_MethodName: TriggerTrap
         m_Mode: 1
@@ -109,7 +99,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7933238098468937588}
+        m_MethodName: Respwn
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: JTUtility.Collider2DEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
@@ -692,3 +693,29 @@ PolygonCollider2D:
       - {x: 0.015, y: 0.66499996}
       - {x: -0.125, y: 0.655}
       - {x: -0.114999995, y: 0.655}
+--- !u!61 &-3176771937423459479
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421920320834817516}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 8.45, y: 3.41}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 8.45, y: 3.41}
+  m_EdgeRadius: 0

@@ -15,9 +15,9 @@ public class RecoverPoint : MonoBehaviour
 	{
 		if (recover)
 		{
-			lastMajorRecoverPoint._player._hitPoints.ResetCurrentValue();
 			lastMajorRecoverPoint._player.transform.position = lastMajorRecoverPoint._position;
-		}
+            lastMajorRecoverPoint._player._hitPoints.ResetCurrentValue();
+        }
 		else
 		{
 			lastMinorRecoverPoint._player.transform.position = lastMinorRecoverPoint._position;
@@ -34,7 +34,8 @@ public class RecoverPoint : MonoBehaviour
 		if (set) return;
 
 		lastMajorRecoverPoint = this;
-		_position = transform.position;
+        lastMinorRecoverPoint = this;
+        _position = transform.position;
 	}
 
 	public void SetAsMinorPoint()
