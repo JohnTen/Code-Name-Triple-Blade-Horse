@@ -28,7 +28,6 @@ public class HitBox : MonoBehaviour, IAttackable
 
 	public virtual AttackResult ReceiveAttack(AttackPackage attack)
 	{
-		print(attack._faction);
 		if (attacksFreqTimer.ContainsKey(attack._hashID)
 		 || attack._attackType == AttackType.Null
 		 || attack._faction == this.Faction)
@@ -39,6 +38,7 @@ public class HitBox : MonoBehaviour, IAttackable
 
 		var result = new AttackResult
 		{
+			_attackable = this,
 			_attackSuccess = true,
 			_finalDamage = attack._hitPointDamage,
 			_finalFatigue = attack._enduranceDamage,

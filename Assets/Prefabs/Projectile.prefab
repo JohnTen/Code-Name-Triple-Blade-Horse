@@ -4850,6 +4850,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHitPointDamage: 15
   _baseEnduranceDamage: 15
+  _baseAttackRate: 1
+  _knockback: 1
+  _defaultType: 2
+  _faction: 2
   _existTime: 5
   _speed:
     m_Mode: 0
@@ -4885,7 +4889,6 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 45
-  _knockback: 1
   _followTarget: 1
   _rotateTowardsFlyingDirection: 1
   _destroyEffectPrefab: {fileID: 4909369315728882231, guid: 35f519c123fca7b4299c1dc9c94cbca7,
@@ -19431,6 +19434,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3297398683413649894, guid: 256fdebc5a51663438a8eefbe455d8e0,
         type: 3}
       propertyPath: simulationSpeed
@@ -19529,11 +19537,6 @@ PrefabInstance:
     - target: {fileID: 3297398683413649894, guid: 256fdebc5a51663438a8eefbe455d8e0,
         type: 3}
       propertyPath: ShapeModule.radiusThickness
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
-        type: 3}
-      propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -19616,6 +19619,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3297398683413649894, guid: 256fdebc5a51663438a8eefbe455d8e0,
         type: 3}
       propertyPath: simulationSpeed
@@ -19714,11 +19722,6 @@ PrefabInstance:
     - target: {fileID: 3297398683413649894, guid: 256fdebc5a51663438a8eefbe455d8e0,
         type: 3}
       propertyPath: ShapeModule.radiusThickness
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
-        type: 3}
-      propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -18,6 +18,7 @@ public class EnemyCharacter : MonoBehaviour
 	private void Awake()
 	{
 		_mover = GetComponent<EnemyMover>();
+		_state = GetComponent<EnemyState>();
 		_input = GetComponent<ICharacterInput<EnemyInput>>();
 		_input.OnReceivedInput += HandleReceivedInput;
 		_hitBox.OnHit += HandleOnHit;
@@ -53,10 +54,6 @@ public class EnemyCharacter : MonoBehaviour
 				//_weapon.Attack();
 				_launcher.LaunchDirection = _state._facingRight ? Vector2.right : Vector2.left;
 				_launcher.Launch();
-				break;
-
-			case EnemyInput.Jump:
-				_mover.Jump();
 				break;
 		}
 	}

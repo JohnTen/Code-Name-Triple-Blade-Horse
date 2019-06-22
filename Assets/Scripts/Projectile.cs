@@ -9,7 +9,6 @@ public class Projectile : BaseWeapon
 	[SerializeField] float _existTime;
 	[SerializeField] ParticleSystem.MinMaxCurve _speed;
 	[SerializeField] ParticleSystem.MinMaxCurve _torque;
-	[SerializeField] float _knockback;
 	[SerializeField] bool _followTarget;
 	[SerializeField] bool _rotateTowardsFlyingDirection;
 	[SerializeField] GameObject _destroyEffectPrefab;
@@ -18,7 +17,6 @@ public class Projectile : BaseWeapon
 	[SerializeField] Transform _target;
 	[SerializeField] float _existTimer;
 	[SerializeField] Vector2 _direction;
-	AttackPackage _baseAttack;
 	Rigidbody2D _rigidbody;
 
 	public event Action<Projectile, Collider2D> OnDestorying;
@@ -49,43 +47,19 @@ public class Projectile : BaseWeapon
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		var attackable = collision.collider.GetComponent<IAttackable>();
+		var toTarget = collision.transform.position.x - this.transform.position.x;
+		var direction = toTarget > 0 ? Vector2.right : Vector2.left;
 
-		if (attackable != null && attackable.Faction == _baseAttack._faction)
+		if (attackable != null && attackable.Faction == Faction)
 		{
 			Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
 			return;
 		}
 
-		if (attackable != null)
-		{
-			var package = Process(_baseAttack);
-			var toTarget = collision.transform.position.x - this.transform.position.x;
-			package._fromDirection = toTarget > 0 ? Vector2.right : Vector2.left;
-
-			var result = attackable.ReceiveAttack(package);
-			RaiseOnHitEvent(attackable, result, package);
-		}
+		Attack(attackable, direction);
 
 		DestroySelf(collision);
 		return;
-	}
-
-	private AttackPackage Process(AttackPackage target)
-	{
-		target._hitPointDamage += _baseHitPointDamage;
-		target._enduranceDamage += _baseEnduranceDamage;
-		target._attackRate = 1;
-		target._attackType = AttackType.Melee;
-		target._knockback += _knockback;
-
-		return target;
-	}
-
-	public void InitializeDirection(Vector2 direction)
-	{
-		_direction = direction.normalized;
-		if (_rotateTowardsFlyingDirection)
-			transform.right = _direction;
 	}
 
 	private void Move()
@@ -128,14 +102,10 @@ public class Projectile : BaseWeapon
 		return direction;
 	}
 
-	public override void Activate(AttackPackage attack, AttackMove move)
+	public void InitializeDirection(Vector2 direction)
 	{
-		_baseAttack = attack;
-		_baseAttack._faction = Faction.Enemy;
-	}
-
-	public override void Deactivate()
-	{
-	
+		_direction = direction.normalized;
+		if (_rotateTowardsFlyingDirection)
+			transform.right = _direction;
 	}
 }

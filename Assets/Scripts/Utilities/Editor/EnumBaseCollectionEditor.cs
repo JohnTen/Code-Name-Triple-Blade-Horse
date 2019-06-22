@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-using JTUtility;
 
 namespace JTUtility.Editor
 {
