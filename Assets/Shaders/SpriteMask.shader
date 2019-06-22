@@ -5,12 +5,14 @@
 /// http://www.shadero.com #Docs                            //
 //////////////////////////////////////////////////////////////
 
-Shader "Shadero Previews/PreviewXATXQ1"
+Shader "Shadero Customs/SpriteMask"
 {
 Properties
 {
 [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 _NewTex_1("NewTex_1(RGB)", 2D) = "white" { }
+_FadeToAlpha_Fade_1("_FadeToAlpha_Fade_1", Range(0, 1)) = 1
+_MaskAlpha_Fade_1("_MaskAlpha_Fade_1", Range(0, 1)) = 0
 _SpriteFade("SpriteFade", Range(0, 1)) = 1.0
 
 // required for UI.Mask
@@ -28,8 +30,6 @@ SubShader
 
 Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
 ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off 
-
-GrabPass { "_GrabTexture"  } 
 
 // required for UI.Mask
 Stencil
@@ -60,21 +60,19 @@ struct v2f
 {
 float2 texcoord  : TEXCOORD0;
 float4 vertex   : SV_POSITION;
-float2 screenuv : TEXCOORD1;
 float4 color    : COLOR;
 };
 
-sampler2D _GrabTexture;
 sampler2D _MainTex;
 float _SpriteFade;
 sampler2D _NewTex_1;
+float _FadeToAlpha_Fade_1;
+float _MaskAlpha_Fade_1;
 
 v2f vert(appdata_t IN)
 {
 v2f OUT;
 OUT.vertex = UnityObjectToClipPos(IN.vertex);
-float4 screenpos = ComputeGrabScreenPos(OUT.vertex);
-OUT.screenuv = screenpos.xy / screenpos.w;
 OUT.texcoord = IN.texcoord;
 OUT.color = IN.color;
 return OUT;
@@ -89,7 +87,11 @@ return float4(txt.rgb, txt.a*fade);
 float4 frag (v2f i) : COLOR
 {
 float4 NewTex_1 = tex2D(_NewTex_1, i.texcoord);
-float4 FinalResult = NewTex_1;
+float4 _MainTex_1 = tex2D(_MainTex, i.texcoord);
+float4 FadeToAlpha_1 = FadeToAlpha(_MainTex_1,_FadeToAlpha_Fade_1);
+float4 MaskAlpha_1=NewTex_1;
+MaskAlpha_1.a = lerp(FadeToAlpha_1.a, 1 - FadeToAlpha_1.a,_MaskAlpha_Fade_1);
+float4 FinalResult = MaskAlpha_1;
 FinalResult.rgb *= i.color.rgb;
 FinalResult.a = FinalResult.a * _SpriteFade * i.color.a;
 return FinalResult;
