@@ -165,7 +165,7 @@ public class StateMachineTest : MonoBehaviour
            new Transition(
            "Idle_Ground",
            "Run_Ground",
-           0f,
+           0.0f,
            (sd) =>
            {
                if (stateData._boolMap["Run"] && !stateData._animData.isStart)
