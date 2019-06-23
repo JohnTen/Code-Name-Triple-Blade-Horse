@@ -69,7 +69,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 	{
 		if (BlockInput)
 			return Vector2.zero;
-        return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY"));
+		return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY")).normalized;
 	}
 
 	public Vector2 GetAimingDirection()
@@ -83,7 +83,11 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 		}
 		else
 		{
-			aim = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - _aimingPivot.position);
+			var diff = _aimingPivot.position.z - Camera.main.transform.position.z;
+			var screenPos = Input.mousePosition + Vector3.forward * diff;
+
+			aim = (Camera.main.ScreenToWorldPoint(screenPos) - _aimingPivot.position);
+			Debug.DrawLine(Camera.main.ScreenToWorldPoint(screenPos), _aimingPivot.position);
 			if (aim.SqrMagnitude() > 1)
 				aim.Normalize();
 		}
@@ -234,6 +238,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 		// OnButtonUp
 		else if (_throwPressedBefore)
 		{
+			_throwPressedBefore = false;
 			if (_rangeChargeTimer > 0)
 				InvokeInputEvent(PlayerInputCommand.RangeAttack);
 		}

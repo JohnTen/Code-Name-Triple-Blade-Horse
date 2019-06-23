@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7663651174609122532}
   - component: {fileID: 9158159751159049354}
   - component: {fileID: -3319730506116467163}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BellWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHitPointDamage: 15
   _baseEnduranceDamage: 15
+  _baseAttackRate: 1
+  _knockback: 1
+  _defaultType: 1
+  _faction: 2
   _attackDuration: 0.4
   _maxSize: 3
-  _knockback: 1
   _attackShape: {fileID: 1411965759082697003}
   _color:
     serializedVersion: 2
@@ -128,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1399607563853639794}
   - component: {fileID: 1411965759082697003}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

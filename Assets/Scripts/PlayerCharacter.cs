@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCharacter : MonoBehaviour
 {
 	[SerializeField] PlayerState _state;
+	[SerializeField] Transform _hittingPoint;
 
 	ICharacterInput<PlayerInputCommand> _input;
 	PlayerMover _mover;
@@ -15,6 +16,8 @@ public class PlayerCharacter : MonoBehaviour
 	HitFlash _hitFlash;
 
 	PlayerInputCommand _lastInput;
+
+	public Transform HittingPoint => _hittingPoint;
 
 	private void Awake()
 	{
@@ -29,7 +32,6 @@ public class PlayerCharacter : MonoBehaviour
 		_mover.OnMovingStateChanged += HandleMovingStateChanged;
 		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 		_input.OnReceivedInput += OnReceivedInputHandler;
-		_mover.OnDashingFinished += DashingFinishedHandler;
 		_animation.OnRecievedFrameEvent += OnRecievedFrameEvent;
 		_weaponSystem.OnPull += PullHandler;
 		_hitbox.OnHit += HandleOnHit;
@@ -58,18 +60,10 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
 	{
-		print(Time.frameCount + "Moving state changed, last " + eventArgs.lastMovingState
-			+ "\ncurrent " + eventArgs.currentMovingState
-			+ "\nvelocity " + eventArgs.velocity);
 		if (eventArgs.lastMovingState == MovingState.Dash)
 		{
 			_animation.SetBool("Dash", false);
 		}
-	}
-
-	private void DashingFinishedHandler()
-	{
-		print("Dashfinished2" + +Time.frameCount);
 	}
 
 	private void PullHandler(Vector3 direction)
@@ -114,7 +108,10 @@ public class PlayerCharacter : MonoBehaviour
 				break;
 
 			case PlayerInputCommand.Dash:
+				if (_state._stamina <= 0) break;
+
 				Cancel();
+				_state._stamina -= 1;
 				_mover.Dash(_input.GetMovingDirection());
 				_animation.SetBool("Dash", true);
 				break;

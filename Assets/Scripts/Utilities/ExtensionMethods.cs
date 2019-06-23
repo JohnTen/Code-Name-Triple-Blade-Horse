@@ -109,6 +109,11 @@ namespace JTUtility
 			return UnityEngine.Random.Range(vec.x, vec.y + 1);
 		}
 
+		public static T PickRandom<T>(this T[] array)
+		{
+			return array[UnityEngine.Random.Range(0, array.Length)];
+		}
+
 		public static float LerpBetween(this Vector2 vec, float t)
 		{
 			return Mathf.Lerp(vec.x, vec.y, t);
@@ -128,6 +133,23 @@ namespace JTUtility
 		}
 
 		public static Vector3 Rotate(this Vector3 vector, float x, float y, float z)
+		{
+			return Quaternion.Euler(x, y, z) * vector;
+		}
+
+		public static Vector2 Rotate(this Vector2 vector, float angles)
+		{
+			var cosA = Mathf.Cos(angles);
+			var sinA = Mathf.Sin(angles);
+			var rotated = vector;
+
+			rotated.x = cosA * vector.x - sinA * vector.y;
+			rotated.y = sinA * vector.x + cosA * vector.y;
+
+			return rotated;
+		}
+
+		public static Vector2 Rotate(this Vector2 vector, float x, float y, float z)
 		{
 			return Quaternion.Euler(x, y, z) * vector;
 		}

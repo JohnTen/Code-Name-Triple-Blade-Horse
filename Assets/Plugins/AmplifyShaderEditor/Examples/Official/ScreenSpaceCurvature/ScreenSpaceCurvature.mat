@@ -4,28 +4,26 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: ScreenSpaceCurvature
   m_Shader: {fileID: 4800000, guid: ca4f0ee6d6a8ba64daf8e646ef287a6a, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION
   m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _rock_n
-      second:
+    - _rock_n:
         m_Texture: {fileID: 2800000, guid: ff56e280f640c70488a8852477081d01, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _ScaleFactor
-      second: 2
-    - first:
-        name: __dirty
-      second: 0
+    - _ScaleFactor: 2
+    - __dirty: 0
     m_Colors: []

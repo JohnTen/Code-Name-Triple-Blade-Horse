@@ -144,7 +144,7 @@ public class Enemy : PhysicalMover, IAttackable
 		StartCoroutine(BeenHit());
 		rigidBody.AddForce(hitDirection * hitBackForce * attack._knockback, ForceMode2D.Impulse);
 
-		return new AttackResult(true, attack._hitPointDamage, attack._enduranceDamage, false);
+		return new AttackResult(this, true, attack._hitPointDamage, attack._enduranceDamage, false);
 	}
 
 	IEnumerator DelayedRemoveAttackPackage(int hashID)
