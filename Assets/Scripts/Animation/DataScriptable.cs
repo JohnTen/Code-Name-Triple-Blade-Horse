@@ -9,4 +9,13 @@ public class DataScriptable : ScriptableObject
     public List<string> _floatState;
     public List<string> _intState;
     public List<AnimationData> animationDatas;
+
+    private DataScriptable()
+    {
+        transitions = new List<Transition>();
+        _boolState = new List<string>();
+        _floatState = new List<string>();
+        _intState = new List<string>();
+        animationDatas = new List<AnimationData>();
+    }
 }

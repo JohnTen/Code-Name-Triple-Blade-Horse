@@ -69,7 +69,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 	{
 		if (BlockInput)
 			return Vector2.zero;
-		return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY"));
+        return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY"));
 	}
 
 	public Vector2 GetAimingDirection()
