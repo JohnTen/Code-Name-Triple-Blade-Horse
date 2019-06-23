@@ -10,95 +10,76 @@ Shader "Shadero Customs/SpriteMask"
 Properties
 {
 [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+_Color ("Tint", Color) = (1,1,1,1)
+[HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
+[HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
+[PerRendererData] _AlphaTex("External Alpha", 2D) = "white" {}
+[PerRendererData] _EnableExternalAlpha("Enable External Alpha", Float) = 0
 _NewTex_1("NewTex_1(RGB)", 2D) = "white" { }
-_FadeToAlpha_Fade_1("_FadeToAlpha_Fade_1", Range(0, 1)) = 1
-_MaskAlpha_Fade_1("_MaskAlpha_Fade_1", Range(0, 1)) = 0
+_MaskRGBA_Fade_1("_MaskRGBA_Fade_1", Range(0, 1)) = 0
 _SpriteFade("SpriteFade", Range(0, 1)) = 1.0
-
-// required for UI.Mask
-[HideInInspector]_StencilComp("Stencil Comparison", Float) = 8
-[HideInInspector]_Stencil("Stencil ID", Float) = 0
-[HideInInspector]_StencilOp("Stencil Operation", Float) = 0
-[HideInInspector]_StencilWriteMask("Stencil Write Mask", Float) = 255
-[HideInInspector]_StencilReadMask("Stencil Read Mask", Float) = 255
-[HideInInspector]_ColorMask("Color Mask", Float) = 15
 
 }
 
 SubShader
 {
-
-Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
-ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off 
-
-// required for UI.Mask
-Stencil
+Tags
 {
-Ref [_Stencil]
-Comp [_StencilComp]
-Pass [_StencilOp]
-ReadMask [_StencilReadMask]
-WriteMask [_StencilWriteMask]
+"Queue" = "Transparent"
+"IgnoreProjector" = "True"
+"RenderType" = "Transparent"
+"PreviewType" = "Plane"
+"CanUseSpriteAtlas" = "True"
+
 }
 
-Pass
-{
+Cull Off
+Lighting Off
+ZWrite Off
+Blend SrcAlpha OneMinusSrcAlpha
+
 
 CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag
-#pragma fragmentoption ARB_precision_hint_fastest
-#include "UnityCG.cginc"
 
-struct appdata_t{
-float4 vertex   : POSITION;
-float4 color    : COLOR;
-float2 texcoord : TEXCOORD0;
-};
-
-struct v2f
+#pragma surface surf Lambert vertex:vert  nolightmap nodynlightmap keepalpha noinstancing
+#pragma multi_compile _ PIXELSNAP_ON
+#pragma multi_compile _ ETC1_EXTERNAL_ALPHA
+#include "UnitySprites.cginc"
+struct Input
 {
-float2 texcoord  : TEXCOORD0;
-float4 vertex   : SV_POSITION;
-float4 color    : COLOR;
+float2 uv_MainTex;
+float4 color;
 };
 
-sampler2D _MainTex;
 float _SpriteFade;
 sampler2D _NewTex_1;
-float _FadeToAlpha_Fade_1;
-float _MaskAlpha_Fade_1;
+float _MaskRGBA_Fade_1;
 
-v2f vert(appdata_t IN)
+void vert(inout appdata_full v, out Input o)
 {
-v2f OUT;
-OUT.vertex = UnityObjectToClipPos(IN.vertex);
-OUT.texcoord = IN.texcoord;
-OUT.color = IN.color;
-return OUT;
+v.vertex.xy *= _Flip.xy;
+#if defined(PIXELSNAP_ON)
+v.vertex = UnityPixelSnap (v.vertex);
+#endif
+UNITY_INITIALIZE_OUTPUT(Input, o);
+o.color = v.color * _Color * _RendererColor;
 }
 
 
-float4 FadeToAlpha(float4 txt,float fade)
+void surf(Input i, inout SurfaceOutput o)
 {
-return float4(txt.rgb, txt.a*fade);
-}
-
-float4 frag (v2f i) : COLOR
-{
-float4 NewTex_1 = tex2D(_NewTex_1, i.texcoord);
-float4 _MainTex_1 = tex2D(_MainTex, i.texcoord);
-float4 FadeToAlpha_1 = FadeToAlpha(_MainTex_1,_FadeToAlpha_Fade_1);
-float4 MaskAlpha_1=NewTex_1;
-MaskAlpha_1.a = lerp(FadeToAlpha_1.a, 1 - FadeToAlpha_1.a,_MaskAlpha_Fade_1);
-float4 FinalResult = MaskAlpha_1;
-FinalResult.rgb *= i.color.rgb;
-FinalResult.a = FinalResult.a * _SpriteFade * i.color.a;
-return FinalResult;
+float4 NewTex_1 = tex2D(_NewTex_1, i.uv_MainTex);
+float4 _MainTex_1 = tex2D(_MainTex, i.uv_MainTex);
+float4 MaskRGBA_1=NewTex_1;
+MaskRGBA_1.a = lerp(_MainTex_1.r * NewTex_1.a, (1 - _MainTex_1.r) * NewTex_1.a,_MaskRGBA_Fade_1);
+float4 FinalResult = MaskRGBA_1;
+o.Albedo = FinalResult.rgb* i.color.rgb;
+o.Alpha = FinalResult.a * _SpriteFade * i.color.a;
+o.Normal = UnpackNormal(float4(1,1,0,1));
+clip(o.Alpha - 0.05);
 }
 
 ENDCG
 }
-}
-Fallback "Sprites/Default"
+Fallback "Sprites /Default"
 }
