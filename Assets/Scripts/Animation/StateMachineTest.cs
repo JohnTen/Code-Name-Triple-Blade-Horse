@@ -73,8 +73,9 @@ public class StateMachineTest : MonoBehaviour
             0f,
             (sd) =>
             {
-                if (stateData._boolMap["MeleeAttack"])
+                if (stateData._boolMap["MeleeAttack"] &&  !stateData._animData.isStart)
                 {
+                    stateData._boolMap["MeleeAttack"] = false;
                     return true;
                 }
                 else return false;
@@ -101,6 +102,7 @@ public class StateMachineTest : MonoBehaviour
             {
                 if (stateData._boolMap["MeleeAttack2"])
                 {
+                    stateData._boolMap["MeleeAttack2"] = false;
                     return true;
                 }
                 return false;
@@ -127,6 +129,7 @@ public class StateMachineTest : MonoBehaviour
             {
                 if (stateData._boolMap["MeleeAttack3"])
                 {
+                    stateData._boolMap["MeleeAttack3"] = false;
                     return true;
                 }
                 return false;
@@ -178,33 +181,17 @@ public class StateMachineTest : MonoBehaviour
         {
             stateData._boolMap["MeleeAttack"] = true;
         }
-        else
-        {
-            stateData._boolMap["MeleeAttack"] = false;
-        }
         if (Input.GetKeyDown(KeyCode.K))
         {
             stateData._boolMap["MeleeAttack2"] = true;
-        }
-        else
-        {
-            stateData._boolMap["MeleeAttack2"] = false;
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
             stateData._boolMap["MeleeAttack3"] = true;
         }
-        else
-        {
-            stateData._boolMap["MeleeAttack3"] = false;
-        }
         if (Input.GetKey(KeyCode.C))
         {
             stateData._boolMap["Run"] = true;
-        }
-        else if(Input.GetKeyUp(KeyCode.C))
-        {
-            stateData._boolMap["Run"] = false;
         }
 
     }
@@ -213,7 +200,7 @@ public class StateMachineTest : MonoBehaviour
     {
         SetState();
         AnimationPlay();
-        print(GetCurrentAnimationName() + " "  + stateData._animData.isCompleted);
+        print("CurrentAnimationName:" + GetCurrentAnimationName() + " isStarted??? "  + stateData._animData.isStart);
         //print(GetCurrentAnimationName());
     }
 
@@ -329,6 +316,7 @@ public class StateMachineTest : MonoBehaviour
         if(type == EventObject.COMPLETE)
         {
             stateData._animData.isCompleted = true;
+            stateData._animData.isStart = false;
             SetStateAnimData();
         }
     }

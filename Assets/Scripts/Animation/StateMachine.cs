@@ -5,42 +5,43 @@ using JTUtility;
 
 public class StateMachine : MonoBehaviour
 {
-    private StateData stateData;
-    private DataScriptable dataScriptable;
     private UnityArmatureComponent _amature;
+    private DataScriptable dataScriptable;
+    private StateData stateData;
     private List<Transition> transitions;
     private List<AnimationData> animationDatas;
-    public event Action<string, MyEventArgs> ReceiveFrameEvent;
     private MyEventArgs eventArgs;
+    public event Action<string, MyEventArgs> ReceiveFrameEvent;
     Transition transitionTest = null;
     private void Awake()
     {
         _amature = this.GetComponent<UnityArmatureComponent>();
-
     }
+
     private void Start()
     {
-       
+
         Initialization();
         _amature.AddDBEventListener(EventObject.START, OnAnimationEventHandler);
-        _amature.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_IN, OnAnimationEventHandler);
-        _amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
+        _amature.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
+        //_amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
     }
 
     private void Initialization()
     {
         dataScriptable = ScriptableObject.CreateInstance<DataScriptable>();
-        //transitions = dataScriptable.transitions;
         animationDatas = new List<AnimationData>(dataScriptable.animationDatas);
+        //对transition进行初始化
         dataScriptable.transitions = new List<Transition>();
         transitions = new List<Transition>();
         foreach (var transition in dataScriptable.transitions)
         {
-            transitions.Add(new Transition(transition));
+            //transitions.Add(new Transition(transition));
+            transitions.Add(transition);
         }
-
+        //对stateData进行初始化
         stateData = new StateData();
         foreach (var key in dataScriptable._boolState)
         {
@@ -56,6 +57,8 @@ public class StateMachine : MonoBehaviour
         {
             stateData._floatMap.Add(key, 0.0f);
         }
+        //设置当前状态下的动画数据值
+        SetStateAnimData();
     }
 
 
@@ -69,16 +72,18 @@ public class StateMachine : MonoBehaviour
 
     private void AnimationPlay()
     {
-        //transitionTest = GetTransition(GetCurrentAnimationName());
-        transitionTest = dataScriptable.transitions[0];
-        if (transitionTest != null && Input.GetKeyDown(KeyCode.N))
+
+        transitionTest = GetTransition(stateData._animData.name);
+        if (transitionTest != null)
         {
+            print("nextAnim: " + transitionTest.nextAnim);
             _amature.animation.FadeIn(
                         transitionTest.nextAnim,
                         transitionTest.transitionTime,
-                        GetAnimationData(transitionTest.nextAnim).playTimes).resetToPose = false;
+                        1).resetToPose = false;
 
         }
+
     }
 
     public string GetCurrentAnimationName()
@@ -156,6 +161,7 @@ public class StateMachine : MonoBehaviour
 
     private void OnAnimationEventHandler(string type, EventObject eventObject)
     {
+
         if (type == EventObject.START)
         {
             stateData._animData.isStart = true;
@@ -176,15 +182,16 @@ public class StateMachine : MonoBehaviour
         if (type == EventObject.COMPLETE)
         {
             stateData._animData.isCompleted = true;
+            stateData._animData.isStart = false;
             SetStateAnimData();
         }
     }
 
-    private void OnFrameEventHandler(string type , EventObject eventObject)
+    private void OnFrameEventHandler(string type, EventObject eventObject)
     {
-        foreach(var key in stateData._boolMap)
+        foreach (var key in stateData._boolMap)
         {
-            if(eventObject.name == key.Key)
+            if (eventObject.name == key.Key)
             {
                 stateData._boolMap[key.Key] = eventObject.data.GetInt(0) != 0;
                 return;
@@ -211,7 +218,5 @@ public class StateMachine : MonoBehaviour
                         eventObject.animationState.playTimes,
                         eventObject.animationState.currentPlayTimes);
         ReceiveFrameEvent?.Invoke(eventObject.name, eventArgs);
-
-
     }
 }
