@@ -154,9 +154,13 @@ public class StateMachineTest : MonoBehaviour
            0f,
            (sd) =>
            {
-               if (stateData._boolMap["Run"])
+               if (stateData._boolMap["Run"] && !stateData._animData.isStart)
                {
                    return true;
+               }
+               if(stateData._animData.isCompleted && stateData._boolMap["Run"])
+               {
+                   stateData._animData.isStart = false;
                }
                return false;
            }));
@@ -167,12 +171,29 @@ public class StateMachineTest : MonoBehaviour
            0f,
            (sd) =>
            {
-               if (sd._animData.isCompleted)
+               if (sd._animData.isCompleted && !stateData._boolMap["Run"])
                {
                    return true;
                }
                return false;
            }));
+        dataScriptable.transitions.Add(
+            new Transition(
+            "Run_Ground",
+            "Run_Ground",
+            0.0f,
+            (sd) =>
+            {
+                 if (stateData._boolMap["Run"] && !stateData._animData.isStart)
+                 {
+                     return true;
+                 }
+                 if (stateData._animData.isCompleted && stateData._boolMap["Run"])
+                 {
+                     stateData._animData.isStart = false;
+                 }
+                 return false;
+            }));
 
     }
     private void SetState()
@@ -192,6 +213,10 @@ public class StateMachineTest : MonoBehaviour
         if (Input.GetKey(KeyCode.C))
         {
             stateData._boolMap["Run"] = true;
+        }
+        else if(Input.GetKeyUp(KeyCode.C))
+        {
+            stateData._boolMap["Run"] = false;
         }
 
     }
