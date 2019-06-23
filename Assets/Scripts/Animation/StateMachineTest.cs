@@ -6,6 +6,7 @@ using JTUtility;
 public class StateMachineTest : MonoBehaviour
 {
     private UnityArmatureComponent _amature;
+    private DragonBones.AnimationState currentAnimationState;
     private DataScriptable dataScriptable;
     private StateData stateData;
     private List<Transition> transitions;
@@ -100,7 +101,7 @@ public class StateMachineTest : MonoBehaviour
             0f,
             (sd) =>
             {
-                if (stateData._boolMap["MeleeAttack2"])
+                if (stateData._boolMap["MeleeAttack2"] && !stateData._animData.isStart)
                 {
                     stateData._boolMap["MeleeAttack2"] = false;
                     return true;
@@ -127,7 +128,7 @@ public class StateMachineTest : MonoBehaviour
             0f,
             (sd) =>
             {
-                if (stateData._boolMap["MeleeAttack3"])
+                if (stateData._boolMap["MeleeAttack3"] && !stateData._animData.isStart)
                 {
                     stateData._boolMap["MeleeAttack3"] = false;
                     return true;
@@ -142,6 +143,19 @@ public class StateMachineTest : MonoBehaviour
            (sd) =>
            {
                if (sd._animData.isCompleted && !stateData._boolMap["MeleeAttack"])
+               {
+                   return true;
+               }
+               return false;
+           }));
+        dataScriptable.transitions.Add(
+           new Transition(
+           "ATK_Melee_Ground_3",
+           "ATK_Melee_Ground_1",
+           0f,
+           (sd) =>
+           {
+               if (stateData._boolMap["MeleeAttack"] && !stateData._animData.isStart)
                {
                    return true;
                }
@@ -375,6 +389,9 @@ public class StateMachineTest : MonoBehaviour
         eventArgs = new MyEventArgs(
                         eventObject.animationState.isPlaying,
                         eventObject.animationState.playTimes,
+                        eventObject.animationState.currentPlayTimes);
+        print(eventObject.animationState.isPlaying + " " +
+                        eventObject.animationState.playTimes + " " +
                         eventObject.animationState.currentPlayTimes);
         ReceiveFrameEvent?.Invoke(eventObject.name, eventArgs);
     }
