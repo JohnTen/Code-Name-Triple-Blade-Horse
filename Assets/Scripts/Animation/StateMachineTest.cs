@@ -3,7 +3,7 @@ using UnityEngine;
 using DragonBones;
 using JTUtility;
 
-public class StateMachine : MonoBehaviour
+public class StateMachineTest : MonoBehaviour
 {
     private UnityArmatureComponent _amature;
     private DataScriptable dataScriptable;
@@ -36,6 +36,7 @@ public class StateMachine : MonoBehaviour
         //对transition进行初始化
         dataScriptable.transitions = new List<Transition>();
         transitions = new List<Transition>();
+        DataScriptableInit();
         foreach (var transition in dataScriptable.transitions)
         {
             //transitions.Add(new Transition(transition));
@@ -60,14 +61,172 @@ public class StateMachine : MonoBehaviour
         //设置当前状态下的动画数据值
         SetStateAnimData();
     }
+    /// ****************以下为测试代码，实例化dataScriptable****************///
+    private void DataScriptableInit()
+    {
+        dataScriptable._boolState = new List<string> { "Jump", "Run", "Airborne", "Landing", "Falling", "Frozen", "MeleeAttack", "MeleeAttack2", "MeleeAttack3" };
+        dataScriptable._floatState = new List<string> { "XSpeed", "YSpeed", "AttackStepSpeed", "AttackStepDistance" };
+        dataScriptable.transitions.Add(
+            new Transition(
+            "Idle_Ground",
+            "ATK_Melee_Ground_1",
+            0f,
+            (sd) =>
+            {
+                if (stateData._boolMap["MeleeAttack"] &&  !stateData._animData.isStart)
+                {
+                    stateData._boolMap["MeleeAttack"] = false;
+                    return true;
+                }
+                else return false;
+            }));
+        dataScriptable.transitions.Add(
+            new Transition(
+            "ATK_Melee_Ground_1",
+            "Idle_Ground",
+            0f,
+            (sd) =>
+            {
+                if (sd._animData.isCompleted && !stateData._boolMap["MeleeAttack2"])
+                {
+                    return true;
+                }
+                return false;
+            }));
+        dataScriptable.transitions.Add(
+            new Transition(
+            "ATK_Melee_Ground_1",
+            "ATK_Melee_Ground_2",
+            0f,
+            (sd) =>
+            {
+                if (stateData._boolMap["MeleeAttack2"])
+                {
+                    stateData._boolMap["MeleeAttack2"] = false;
+                    return true;
+                }
+                return false;
+            }));
+        dataScriptable.transitions.Add(
+           new Transition(
+           "ATK_Melee_Ground_2",
+           "Idle_Ground",
+           0f,
+           (sd) =>
+           {
+               if (sd._animData.isCompleted && !stateData._boolMap["MeleeAttack3"])
+               {
+                   return true;
+               }
+               return false;
+           }));
+        dataScriptable.transitions.Add(
+            new Transition(
+            "ATK_Melee_Ground_2",
+            "ATK_Melee_Ground_3",
+            0f,
+            (sd) =>
+            {
+                if (stateData._boolMap["MeleeAttack3"])
+                {
+                    stateData._boolMap["MeleeAttack3"] = false;
+                    return true;
+                }
+                return false;
+            }));
+        dataScriptable.transitions.Add(
+           new Transition(
+           "ATK_Melee_Ground_3",
+           "Idle_Ground",
+           0f,
+           (sd) =>
+           {
+               if (sd._animData.isCompleted && !stateData._boolMap["MeleeAttack"])
+               {
+                   return true;
+               }
+               return false;
+           }));
+        dataScriptable.transitions.Add(
+           new Transition(
+           "Idle_Ground",
+           "Run_Ground",
+           0f,
+           (sd) =>
+           {
+               if (stateData._boolMap["Run"] && !stateData._animData.isStart)
+               {
+                   return true;
+               }
+               if(stateData._animData.isCompleted && stateData._boolMap["Run"])
+               {
+                   stateData._animData.isStart = false;
+               }
+               return false;
+           }));
+        dataScriptable.transitions.Add(
+           new Transition(
+           "Run_Ground",
+           "Idle_Ground",
+           0f,
+           (sd) =>
+           {
+               if (sd._animData.isCompleted && !stateData._boolMap["Run"])
+               {
+                   return true;
+               }
+               return false;
+           }));
+        dataScriptable.transitions.Add(
+            new Transition(
+            "Run_Ground",
+            "Run_Ground",
+            0.0f,
+            (sd) =>
+            {
+                 if (stateData._boolMap["Run"] && !stateData._animData.isStart)
+                 {
+                     return true;
+                 }
+                 if (stateData._animData.isCompleted && stateData._boolMap["Run"])
+                 {
+                     stateData._animData.isStart = false;
+                 }
+                 return false;
+            }));
 
+    }
+    private void SetState()
+    {
+        if(Input.GetKeyDown(KeyCode.J))
+        {
+            stateData._boolMap["MeleeAttack"] = true;
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            stateData._boolMap["MeleeAttack2"] = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            stateData._boolMap["MeleeAttack3"] = true;
+        }
+        if (Input.GetKey(KeyCode.C))
+        {
+            stateData._boolMap["Run"] = true;
+        }
+        else if(Input.GetKeyUp(KeyCode.C))
+        {
+            stateData._boolMap["Run"] = false;
+        }
 
-
+    }
+    /// ****************以上为测试代码****************///
     private void Update()
     {
+        SetState();
         AnimationPlay();
-        //print(_amature.animationName);
-        print(dataScriptable.transitions[0].currentAnim);
+        print("CurrentAnimationName:" + GetCurrentAnimationName() + " isStarted??? "  + stateData._animData.isStart);
+        //print(GetCurrentAnimationName());
     }
 
     private void AnimationPlay()
@@ -76,28 +235,28 @@ public class StateMachine : MonoBehaviour
         transitionTest = GetTransition(stateData._animData.name);
         if (transitionTest != null)
         {
-            print("nextAnim: " + transitionTest.nextAnim);
+            print("nextAnim: " +transitionTest.nextAnim);
             _amature.animation.FadeIn(
                         transitionTest.nextAnim,
                         transitionTest.transitionTime,
                         1).resetToPose = false;
 
         }
-
+        
     }
 
     public string GetCurrentAnimationName()
     {
-        return _amature.animationName;
+        return _amature.animation.lastAnimationName;
     }
 
     private Transition GetTransition(string currentAnimaName)
     {
         foreach (var transition in transitions)
         {
-            if (transition.currentAnim == currentAnimaName && 
-                transition.Test(stateData) && 
-                transition != null)
+            if (transition != null &&
+                transition.currentAnim == currentAnimaName &&
+                transition.Test(stateData))
             {
                 return transition;
             }
@@ -154,7 +313,7 @@ public class StateMachine : MonoBehaviour
 
     private void SetStateAnimData()
     {
-        stateData._animData.name = _amature.animationName;
+        stateData._animData.name = GetCurrentAnimationName();
         stateData._animData.playTimes = _amature.animation.animationConfig.playTimes;
         stateData._animData.fadeInTime = _amature.animation.animationConfig.fadeInTime;
     }
@@ -168,10 +327,10 @@ public class StateMachine : MonoBehaviour
             stateData._animData.isCompleted = false;
             stateData._animData.isFadeInComplete = false;
         }
-        if (type == EventObject.FADE_IN)
+        if(type == EventObject.FADE_IN)
         {
             stateData._animData.isFadeIn = true;
-
+            
         }
         if (type == EventObject.FADE_IN_COMPLETE)
         {
@@ -179,7 +338,7 @@ public class StateMachine : MonoBehaviour
             //stateData._animData.isCompleted = true;
             //stateData._animData.isStart = true;
         }
-        if (type == EventObject.COMPLETE)
+        if(type == EventObject.COMPLETE)
         {
             stateData._animData.isCompleted = true;
             stateData._animData.isStart = false;
