@@ -23,6 +23,7 @@ public class StateMachine : MonoBehaviour
        
         Initialization();
         _amature.AddDBEventListener(EventObject.START, OnAnimationEventHandler);
+        _amature.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_IN, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
@@ -57,6 +58,8 @@ public class StateMachine : MonoBehaviour
         }
     }
 
+
+
     private void Update()
     {
         AnimationPlay();
@@ -73,7 +76,7 @@ public class StateMachine : MonoBehaviour
             _amature.animation.FadeIn(
                         transitionTest.nextAnim,
                         transitionTest.transitionTime,
-                        GetAnimationData(transitionTest.nextAnim).playTimes);
+                        GetAnimationData(transitionTest.nextAnim).playTimes).resetToPose = false;
 
         }
     }
