@@ -27,7 +27,7 @@ public class StateMachineTest : MonoBehaviour
         _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.FADE_IN, OnAnimationEventHandler);
         _amature.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
-        //_amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
+        _amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
     }
 
     private void Initialization()
