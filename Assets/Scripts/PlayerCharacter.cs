@@ -125,6 +125,7 @@ public class PlayerCharacter : MonoBehaviour
 
 			case PlayerInputCommand.MeleeAttack:
 				_animator.SetBool("MeleeAttak", true);
+                _animator.Attack();
 				break;
 
 			case PlayerInputCommand.MeleeChargeAttack:
