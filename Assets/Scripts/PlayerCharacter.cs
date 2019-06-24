@@ -12,7 +12,7 @@ public class PlayerCharacter : MonoBehaviour
 	PlayerMover _mover;
 	WeaponSystem _weaponSystem;
 	ICanDetectGround _groundDetector;
-	PlayerAnimation _animator;
+	StateMachine _animator;
 	IAttackable _hitbox;
 	HitFlash _hitFlash;
 
@@ -24,7 +24,7 @@ public class PlayerCharacter : MonoBehaviour
 	{
 		_input = GetComponent<ICharacterInput<PlayerInputCommand>>();
 		_mover = GetComponent<PlayerMover>();
-		_animator = GetComponent<PlayerAnimation>();
+		_animator = GetComponent<StateMachine>();
 		_weaponSystem = GetComponent<WeaponSystem>();
 		_groundDetector = GetComponent<ICanDetectGround>();
 		_hitbox = GetComponentInChildren<IAttackable>();
@@ -33,12 +33,12 @@ public class PlayerCharacter : MonoBehaviour
 		_mover.OnMovingStateChanged += HandleMovingStateChanged;
 		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 		_input.OnReceivedInput += OnReceivedInputHandler;
-		_animator.OnRecievedFrameEvent += HandleAnimationFrameEvent;
+		_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 		_weaponSystem.OnPull += PullHandler;
 		_hitbox.OnHit += HandleOnHit;
 	}
 
-	private void HandleAnimationFrameEvent(string name, float value)
+	private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 	{
 		if (name == "AttackBegin")
 		{
@@ -50,11 +50,11 @@ public class PlayerCharacter : MonoBehaviour
 		}
 		else if (name == "AttackStepDistance")
 		{
-			_mover.SetStepDistance(value);
+			_mover.SetStepDistance(eventArgs._floatData);
 		}
 		else if (name == "AttackStepSpeed")
 		{
-			_mover.SetStepSpeed(value);
+			_mover.SetStepSpeed(eventArgs._floatData);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class PlayerCharacter : MonoBehaviour
 	private void PullHandler(Vector3 direction)
 	{
 		_mover.Pull(direction);
-		_animator.SetBool("Jump", true);
+		_animator.SetToggle("Jump", true);
 	}
 
 	private void LandingHandler()
@@ -107,7 +107,7 @@ public class PlayerCharacter : MonoBehaviour
 			case PlayerInputCommand.Jump:
 				Cancel();
 				_mover.Jump();
-				_animator.SetBool("Jump", true);
+				_animator.SetToggle("Jump", true);
 				break;
 
 			case PlayerInputCommand.Dash:
@@ -157,6 +157,7 @@ public class PlayerCharacter : MonoBehaviour
 			|| _mover.PullDelaying
 			|| _weaponSystem.Frozen;
 
+		_animator.SetBool("Landing", _groundDetector.IsOnGround);
 		_input.DelayInput = _animator.GetBool("DelayInput");
 		_input.BlockInput = _mover.BlockInput;
 
@@ -170,8 +171,12 @@ public class PlayerCharacter : MonoBehaviour
 		}
 		else
 		{
-			_animator.SetFloat("XSpeed", _mover.Velocity.x);
-			_animator.SetFloat("YSpeed", _mover.Velocity.y);
+			_animator.SetFloat("XSpeed", moveInput.x);
+			_animator.SetFloat("YSpeed", moveInput.y);
+			if (moveInput.x != 0)
+			{
+				_animator.FlipX = moveInput.x < 0;
+			}
 		}
 	}
 

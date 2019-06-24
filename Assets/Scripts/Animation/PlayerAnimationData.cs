@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JTUtility;
 
 namespace TripleBladeHorse.Animation
 {
 	[CreateAssetMenu(menuName = "AnimationFSMData/PlayerFSMData")]
-	public class PlayerFSMData : FSMData
+	public class PlayerAnimationData : FSMData
 	{
-		public PlayerFSMData()
+		public PlayerAnimationData()
 		{
 			InitalizeStates();
 			InitalizeAnimations();
@@ -19,24 +20,28 @@ namespace TripleBladeHorse.Animation
 		{
 			_animationDatas = new List<Animation>()
 			{
-				new Animation("Idle_Ground", 1, 0),
-				new Animation("Run_Ground", 1, 0),
-				new Animation("Dash_Ground", 1, 0),
-				new Animation("Jump_Ground", 1, 1),
-				new Animation("Jump_Air", 1, 1),
-				new Animation("Droping", 1, 1),
-				new Animation("Droping_Buffering", 1, 1),
-				new Animation("ATK_Melee_Ground_1", 1, 1),
-				new Animation("ATK_Melee_Ground_2", 1, 1),
-				new Animation("ATK_Melee_Ground_3", 1, 1),
+				new Animation("Idle_Ground", 0.5f, 0, 0),
+				new Animation("Run_Ground", 1, 0, 0),
+				new Animation("Dash_Ground", 1, 0, 0),
+				new Animation("Jump_Ground", 5, 1, 0.2f),
+				new Animation("Jump_Air", 2, 1, 0.2f),
+				new Animation("Droping", 1, 1, 0f),
+				new Animation("Droping_Buffering", 3, 1, 0.3f),
+				new Animation("ATK_Melee_Ground_1", 2.5f, 1, 0.7f),
+				new Animation("ATK_Melee_Ground_2", 2.5f, 1, 0.7f),
+				new Animation("ATK_Melee_Ground_3", 2.5f, 1, 0.7f),
 			};
 		}
 
 		public override void InitalizeStates()
 		{
-			_boolState = new List<StrBoolPair>()
+			_toggleState = new List<StrBoolPair>()
 			{
 				new StrBoolPair() {Key = "Jump", Value = false},
+			};
+
+			_boolState = new List<StrBoolPair>()
+			{
 				new StrBoolPair() {Key = "Dash", Value = false},
 				new StrBoolPair() {Key = "Airborne", Value = false},
 				new StrBoolPair() {Key = "Landing", Value = false},
@@ -62,7 +67,12 @@ namespace TripleBladeHorse.Animation
 			_transitions = new List<Transition>()
 			{
 				new Transition(
-					"Idle_Ground", "Run_Ground", 0.2f,
+					"Idle_Ground", "Jump_Ground", 0.1f,
+					(sd) => {
+						return sd._toggleMap["Jump"] && !sd._boolMap["Airborne"];
+					}),
+				new Transition(
+					"Idle_Ground", "Run_Ground", 0.1f,
 					(sd) => {
 						return Mathf.Abs(sd._floatMap["XSpeed"]) > float.Epsilon;
 					}),
@@ -72,24 +82,19 @@ namespace TripleBladeHorse.Animation
 						return sd._boolMap["Dash"];
 					}),
 				new Transition(
-					"Idle_Ground", "Jump_Ground", 0.1f,
-					(sd) => {
-						return sd._boolMap["Jump"] && !sd._boolMap["Airborne"];
-					}),
-				new Transition(
 					"Idle_Ground", "ATK_Melee_Ground_1", 0.1f,
 					(sd) => {
 						return sd._boolMap["MeleeAttack"];
 					}),
 				new Transition(
-					"Run_Ground", "Idle_Ground", 0.2f,
-					(sd) => {
-						return Mathf.Abs(sd._floatMap["XSpeed"]) <= float.Epsilon;
-					}),
-				new Transition(
 					"Run_Ground", "Jump_Ground", 0.1f,
 					(sd) => {
-						return sd._boolMap["Jump"] && !sd._boolMap["Airborne"];
+						return sd._toggleMap["Jump"] && !sd._boolMap["Airborne"];
+					}),
+				new Transition(
+					"Run_Ground", "Idle_Ground", 0.1f,
+					(sd) => {
+						return Mathf.Abs(sd._floatMap["XSpeed"]) <= float.Epsilon;
 					}),
 				new Transition(
 					"Run_Ground", "ATK_Melee_Ground_1", 0.1f,
@@ -105,6 +110,11 @@ namespace TripleBladeHorse.Animation
 					"Droping", "Droping_Buffering", 0f,
 					(sd) => {
 						return sd._boolMap["Landing"];
+					}),
+				new Transition(
+					"Droping_Buffering", "Idle_Ground", 0.1f,
+					(sd) => {
+						return sd._current.completed;
 					}),
 				new Transition(
 					"ATK_Melee_Ground_1", "Idle_Ground", 0.1f,
