@@ -20,6 +20,8 @@ public class ThrowingKnife : BaseWeapon
 	[SerializeField] float hoveringDistance;
 	[SerializeField] float hoveringDuration;
 	[SerializeField] float hoveringRotateSpeed;
+	[SerializeField] float normalAttackRate;
+	[SerializeField] float floatAttackRate;
 	[Space(30)]
 	[SerializeField] float traveledDistance;
 	[SerializeField] float hoverTimer;
@@ -31,7 +33,6 @@ public class ThrowingKnife : BaseWeapon
 
 	bool activated;
 	Sheath sheath;
-	AttackPackage attackPackage;
 
 	public KnifeState State
 	{
@@ -66,14 +67,11 @@ public class ThrowingKnife : BaseWeapon
 		transform.position = sheath.LaunchPosition.position;
 		transform.right = direction;
 
-		if (isPiercing)
-		{
-			attackPackage = CreateNewPackage(AttackType.ChargedRange, chargedAttack);
-		}
-		else
-		{
-			attackPackage = CreateNewPackage(AttackType.Range, normalAttack);
-		}
+		Activate(AttackPackage.CreateNewPackage(), null);
+		_attackMove = isPiercing ? chargedAttack : normalAttack;
+		_defaultType = isPiercing ? AttackType.ChargedRange : AttackType.Range;
+		_baseAttackRate = normalAttackRate;
+
 
 		return true;
 	}
@@ -85,8 +83,9 @@ public class ThrowingKnife : BaseWeapon
 		piercing = false;
 		state = KnifeState.Hover;
 
-		attackPackage = CreateNewPackage(AttackType.Float, floatAttack);
-		attackPackage._attackRate = 0.2f;
+		_attackMove = floatAttack;
+		_defaultType = AttackType.Float;
+		_baseAttackRate = floatAttackRate;
 
 		return true;
 	}
@@ -99,14 +98,9 @@ public class ThrowingKnife : BaseWeapon
 		transform.parent = null;
 		state = KnifeState.Returning;
 
-		if (piercing)
-		{
-			attackPackage = CreateNewPackage(AttackType.ChargedRange, chargedAttack);
-		}
-		else
-		{
-			attackPackage = CreateNewPackage(AttackType.Range, normalAttack);
-		}
+		_attackMove = piercing ? chargedAttack : normalAttack;
+		_defaultType = piercing ? AttackType.ChargedRange : AttackType.Range;
+		_baseAttackRate = normalAttackRate;
 
 		Returning();
 
@@ -134,10 +128,10 @@ public class ThrowingKnife : BaseWeapon
 			else if (hit.collider.tag == "Player") { }
 			else if (attackable != null)
 			{
-				print("Enemy fly");
-				var attack = attackPackage;
-				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
+				print(hit.collider.name);
+				var direction = hit.collider.transform.position - transform.position;
+				direction = direction.x > 0 ? Vector2.right : Vector2.left;
+				Attack(attackable, direction);
 			}
 			else
 			{
@@ -158,6 +152,7 @@ public class ThrowingKnife : BaseWeapon
 
 		if (dir.sqrMagnitude <= backDistance * backDistance)
 		{
+			Deactivate();
 			sheath.PutBackKnife(this);
 			state = KnifeState.InSheath;
 
@@ -174,15 +169,7 @@ public class ThrowingKnife : BaseWeapon
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength);
 		if (hit.collider != null)
 		{
-			var attackable = hit.collider.GetComponent<IAttackable>();
-
-			if (attackable != null)
-			{
-				print("Enemy return");
-				var attack = attackPackage;
-				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
-			}
+			TryAttack(hit.collider.transform);
 		}
 
 		transform.position += transform.right * speed * Time.deltaTime;
@@ -200,27 +187,21 @@ public class ThrowingKnife : BaseWeapon
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, bladeLength);
 		if (hit.collider != null)
 		{
-			var attackable = hit.collider.GetComponent<IAttackable>();
-
-			if (attackable != null)
-			{
-				print("Enemy hover");
-				var attack = attackPackage;
-				attack._fromDirection = hit.collider.transform.position - transform.position;
-				RaiseOnHitEvent(attackable, attackable.ReceiveAttack(attack), attack);
-			}
+			TryAttack(hit.collider.transform);
 		}
 	}
 
-	public override void Activate(AttackPackage attack, AttackMove move)
+	private bool TryAttack(Transform target)
 	{
-		attackPackage = attack;
-		activated = true;
-	}
+		var attackable = target.GetComponent<IAttackable>();
+		if (IsAttackable(attackable))
+		{
+			var direction = target.position - transform.position;
+			direction = direction.x > 0 ? Vector2.right : Vector2.left;
+			return Attack(attackable, direction);
+		}
 
-	public override void Deactivate()
-	{
-		activated = false;
+		return false;
 	}
 
 	private AttackPackage CreateNewPackage(AttackType type, AttackMove move)

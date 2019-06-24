@@ -18,7 +18,7 @@ public class PlayerAnimation : MonoBehaviour
 	
 	int _currentAttack = 0;
 	string[] _meleeAttacks = { "ATK_Melee_Ground_1", "ATK_Melee_Ground_2", "ATK_Melee_Ground_3" };
-	
+
 	[SerializeField] UnityArmatureComponent _armatureComponent;
 
 	[SerializeField] float attackTimer;

@@ -13,9 +13,14 @@ public class WeaponSystem : MonoBehaviour
 	[SerializeField] Sword sword;
 	[SerializeField] Sheath sheath;
 	[SerializeField] CharacterState _state;
-	[SerializeField] List<ThrowingKnife> knifesInAirList;
 	[SerializeField] AttackMove meleeMove;
 	[SerializeField] AttackMove chargedMeleeMove;
+	[SerializeField] GameObject _attackEffectPrefab;
+	[SerializeField] AudioSource _audio;
+	[SerializeField] AudioClip[] _normalMeleeSFX;
+
+	GameObject _currentAttackEffect;
+	List<ThrowingKnife> knifesInAirList;
 
 	public bool Frozen { get; private set; }
 
@@ -38,6 +43,14 @@ public class WeaponSystem : MonoBehaviour
 		OnRaisingAttack?.Invoke(sword, meleeMove);
 
 		sword.Activate(package, meleeMove);
+
+		if (_currentAttackEffect) return;
+		_currentAttackEffect = Instantiate(_attackEffectPrefab);
+		_currentAttackEffect.transform.SetParent(sword.transform);
+		_currentAttackEffect.transform.localPosition = Vector3.zero;
+
+		_audio.clip = _normalMeleeSFX.PickRandom();
+		_audio.Play();
 	}
 
 	public void ChargedMeleeAttack(float chargedPercent)
@@ -50,11 +63,21 @@ public class WeaponSystem : MonoBehaviour
 		OnRaisingAttack?.Invoke(sword, chargedMeleeMove);
 
 		sword.Activate(package, chargedMeleeMove);
+
+		if (_currentAttackEffect) return;
+		_currentAttackEffect = Instantiate(_attackEffectPrefab);
+		_currentAttackEffect.transform.SetParent(sword.transform);
+		_currentAttackEffect.transform.localPosition = Vector3.zero;
 	}
 
 	public void MeleeAttackEnd()
 	{
 		sword.Deactivate();
+
+		if (_currentAttackEffect)
+		{
+			Destroy(_currentAttackEffect);
+		}
 	}
 
 	public void RangeAttack(Vector2 direction)

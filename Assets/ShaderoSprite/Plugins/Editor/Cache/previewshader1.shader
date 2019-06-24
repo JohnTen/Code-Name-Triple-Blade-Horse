@@ -10,11 +10,7 @@ Shader "Shadero Previews/PreviewXATXQ1"
 Properties
 {
 [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-DistortionUV_WaveX_2("DistortionUV_WaveX_2", Range(0, 128)) = 10
-DistortionUV_WaveY_2("DistortionUV_WaveY_2", Range(0, 128)) = 10
-DistortionUV_DistanceX_2("DistortionUV_DistanceX_2", Range(0, 1)) = 0.3
-DistortionUV_DistanceY_2("DistortionUV_DistanceY_2", Range(0, 1)) = 0.3
-DistortionUV_Speed_2("DistortionUV_Speed_2", Range(-2, 2)) = 1
+_NewTex_1("NewTex_1(RGB)", 2D) = "white" { }
 _SpriteFade("SpriteFade", Range(0, 1)) = 1.0
 
 // required for UI.Mask
@@ -71,11 +67,7 @@ float4 color    : COLOR;
 sampler2D _GrabTexture;
 sampler2D _MainTex;
 float _SpriteFade;
-float DistortionUV_WaveX_2;
-float DistortionUV_WaveY_2;
-float DistortionUV_DistanceX_2;
-float DistortionUV_DistanceY_2;
-float DistortionUV_Speed_2;
+sampler2D _NewTex_1;
 
 v2f vert(appdata_t IN)
 {
@@ -89,60 +81,15 @@ return OUT;
 }
 
 
-float2 DistortionUV(float2 p, float WaveX, float WaveY, float DistanceX, float DistanceY, float Speed)
+float4 FadeToAlpha(float4 txt,float fade)
 {
-Speed *=_Time*100;
-p.x= p.x+sin(p.y*WaveX + Speed)*DistanceX*0.05;
-p.y= p.y+cos(p.x*WaveY + Speed)*DistanceY*0.05;
-return p;
-}
-float Generate_Fire_hash2D(float2 x)
-{
-return frac(sin(dot(x, float2(13.454, 7.405)))*12.3043);
+return float4(txt.rgb, txt.a*fade);
 }
 
-float Generate_Fire_voronoi2D(float2 uv, float precision)
-{
-float2 fl = floor(uv);
-float2 fr = frac(uv);
-float res = 1.0;
-for (int j = -1; j <= 1; j++)
-{
-for (int i = -1; i <= 1; i++)
-{
-float2 p = float2(i, j);
-float h = Generate_Fire_hash2D(fl + p);
-float2 vp = p - fr + h;
-float d = dot(vp, vp);
-res += 1.0 / pow(d, 8.0);
-}
-}
-return pow(1.0 / res, precision);
-}
-
-float4 Generate_Fire(float2 uv, float posX, float posY, float precision, float smooth, float speed, float black)
-{
-uv += float2(posX, posY);
-float t = _Time*60*speed;
-float up0 = Generate_Fire_voronoi2D(uv * float2(6.0, 4.0) + float2(0, -t), precision);
-float up1 = 0.5 + Generate_Fire_voronoi2D(uv * float2(6.0, 4.0) + float2(42, -t ) + 30.0, precision);
-float finalMask = up0 * up1  + (1.0 - uv.y);
-finalMask += (1.0 - uv.y)* 0.5;
-finalMask *= 0.7 - abs(uv.x - 0.5);
-float4 result = smoothstep(smooth, 0.95, finalMask);
-result.a = saturate(result.a + black);
-return result;
-}
-float2 FlipUV_V(float2 uv)
-{
-uv.y = 1 - uv.y;
-return uv;
-}
 float4 frag (v2f i) : COLOR
 {
-float2 DistortionUV_2 = DistortionUV(i.screenuv,DistortionUV_WaveX_2,DistortionUV_WaveY_2,DistortionUV_DistanceX_2,DistortionUV_DistanceY_2,DistortionUV_Speed_2);
-float4 _MainTex_1 = tex2D(_MainTex,DistortionUV_2);
-float4 FinalResult = _MainTex_1;
+float4 NewTex_1 = tex2D(_NewTex_1, i.texcoord);
+float4 FinalResult = NewTex_1;
 FinalResult.rgb *= i.color.rgb;
 FinalResult.a = FinalResult.a * _SpriteFade * i.color.a;
 return FinalResult;

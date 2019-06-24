@@ -9,6 +9,7 @@ public class EnemyCharacter : MonoBehaviour
 	[SerializeField] EnemyState _state;
 	[SerializeField] EnemyAnimation _animation;
 	[SerializeField] EnemyWeapon _weapon;
+	[SerializeField] ProjectileLauncher _launcher;
 	[SerializeField] HitFlash _flash;
 	[SerializeField] HitBox _hitBox;
 
@@ -17,9 +18,11 @@ public class EnemyCharacter : MonoBehaviour
 	private void Awake()
 	{
 		_mover = GetComponent<EnemyMover>();
+		_state = GetComponent<EnemyState>();
 		_input = GetComponent<ICharacterInput<EnemyInput>>();
 		_input.OnReceivedInput += HandleReceivedInput;
 		_hitBox.OnHit += HandleOnHit;
+		_launcher.Target = FindObjectOfType<PlayerCharacter>().HittingPoint;
 	}
 
 	private void HandleOnHit(AttackPackage attack, AttackResult result)
@@ -48,11 +51,9 @@ public class EnemyCharacter : MonoBehaviour
 		{
 			case EnemyInput.Attack:
 				_animation.Attack();
-				_weapon.Attack();
-				break;
-
-			case EnemyInput.Jump:
-				_mover.Jump();
+				//_weapon.Attack();
+				_launcher.LaunchDirection = _state._facingRight ? Vector2.right : Vector2.left;
+				_launcher.Launch();
 				break;
 		}
 	}

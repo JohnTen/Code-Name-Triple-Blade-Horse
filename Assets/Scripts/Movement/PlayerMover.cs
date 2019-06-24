@@ -4,7 +4,7 @@ using UnityEngine;
 using JTUtility;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
+public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash, ICanBlockInput
 {
 	#region Fields
 	[Header("Basic movement")]
@@ -58,7 +58,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 
 	[SerializeField] List<ContactPoint2D> _contacts;
 
-	readonly Vector2[] _normalizedDirections =
+	readonly static Vector2[] _normalizedDirections =
 	{
 		new Vector2( 0,  1),
 		new Vector2( 1,  1).normalized,
@@ -77,6 +77,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 	public bool IsDashing => _dashing;
 	public bool PullDelaying => _pullDelayTimer > 0;
 	public bool BlockInput { get; private set; }
+	public bool DelayInput { get; private set; }
 	public Vector2 Velocity => _velocity;
 
 	public MovingState CurrentMovingState
@@ -176,7 +177,7 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		}
 
 		_dashing = true;
-		_dashingDirection = NormalizeMovingDirection(direction);
+		_dashingDirection = GetOctadDirection(direction);
 
 		if (!_groundDetector.IsOnGround || _dashingDirection.y > 0)
 		{
@@ -351,27 +352,12 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash
 		ResetPhysicalContacts();
 	}
 
-	private Vector2 NormalizeMovingDirection(Vector2 direction)
+	private Vector2 GetOctadDirection(Vector2 direction)
 	{
 		if (direction.sqrMagnitude < 0.03f)
 			return _state._facingRight? Vector2.right: Vector2.left;
-		direction.Normalize();
 
-		var dotResult = float.NegativeInfinity;
-		var closestDirection = direction;
-
-		foreach (var dir in _normalizedDirections)
-		{
-			var dot = Vector2.Dot(direction, dir);
-
-			if (dot > dotResult)
-			{
-				dotResult = dot;
-				closestDirection = dir;
-			}
-		}
-
-		return closestDirection;
+		return DirectionalHelper.NormalizeOctadDirection(direction);
 	}
 
 	private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)

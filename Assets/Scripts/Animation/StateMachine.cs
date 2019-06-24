@@ -1,35 +1,48 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DragonBones;
+using JTUtility;
 
 public class StateMachine : MonoBehaviour
 {
-    private StateData stateData;
-    private DataScriptable dataScriptable;
     private UnityArmatureComponent _amature;
+    private DataScriptable dataScriptable;
+    private StateData stateData;
     private List<Transition> transitions;
     private List<AnimationData> animationDatas;
+    private MyEventArgs eventArgs;
+    public event Action<string, MyEventArgs> ReceiveFrameEvent;
+    Transition transitionTest = null;
+    private void Awake()
+    {
+        _amature = this.GetComponent<UnityArmatureComponent>();
+    }
+
     private void Start()
     {
-        _amature.AddDBEventListener(EventObject.START, this.OnAnimationEventHandler);
-        _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, this.OnAnimationEventHandler);
-        _amature.AddDBEventListener(EventObject.FADE_IN, this.OnAnimationEventHandler);
+
+        Initialization();
+        _amature.AddDBEventListener(EventObject.START, OnAnimationEventHandler);
+        _amature.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, OnAnimationEventHandler);
+        _amature.AddDBEventListener(EventObject.FADE_IN, OnAnimationEventHandler);
+        _amature.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
+        //_amature.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
     }
 
     private void Initialization()
     {
-        _amature = this.GetComponent<UnityArmatureComponent>();
-        transitions = dataScriptable.transitions;
+        dataScriptable = ScriptableObject.CreateInstance<DataScriptable>();
         animationDatas = new List<AnimationData>(dataScriptable.animationDatas);
+        //对transition进行初始化
+        dataScriptable.transitions = new List<Transition>();
         transitions = new List<Transition>();
-
         foreach (var transition in dataScriptable.transitions)
         {
-            transitions.Add(new Transition(transition));
+            //transitions.Add(new Transition(transition));
+            transitions.Add(transition);
         }
-
+        //对stateData进行初始化
         stateData = new StateData();
-
         foreach (var key in dataScriptable._boolState)
         {
             stateData._boolMap.Add(key, false);
@@ -44,23 +57,33 @@ public class StateMachine : MonoBehaviour
         {
             stateData._floatMap.Add(key, 0.0f);
         }
+        //设置当前状态下的动画数据值
+        SetStateAnimData();
     }
+
+
 
     private void Update()
     {
         AnimationPlay();
+        //print(_amature.animationName);
+        print(dataScriptable.transitions[0].currentAnim);
     }
 
     private void AnimationPlay()
     {
-        Transition transition = GetTransition(GetCurrentAnimationName());
-        if (transition != null)
+
+        transitionTest = GetTransition(stateData._animData.name);
+        if (transitionTest != null)
         {
+            print("nextAnim: " + transitionTest.nextAnim);
             _amature.animation.FadeIn(
-                        transition.nextAnim,
-                        transition.transitionTime,
-                        GetAnimationData(transition.nextAnim).playTimes);
+                        transitionTest.nextAnim,
+                        transitionTest.transitionTime,
+                        1).resetToPose = false;
+
         }
+
     }
 
     public string GetCurrentAnimationName()
@@ -72,7 +95,9 @@ public class StateMachine : MonoBehaviour
     {
         foreach (var transition in transitions)
         {
-            if (transition.currentAnim == currentAnimaName && transition.Test(stateData))
+            if (transition.currentAnim == currentAnimaName && 
+                transition.Test(stateData) && 
+                transition != null)
             {
                 return transition;
             }
@@ -136,26 +161,62 @@ public class StateMachine : MonoBehaviour
 
     private void OnAnimationEventHandler(string type, EventObject eventObject)
     {
-        if (type == EventObject.FADE_OUT_COMPLETE)
-        {
-            stateData._animData.isFadeOut = true;
-            stateData._animData.isStart = false;
-            stateData._animData.isFadeInComplete = false;
-        }
+
         if (type == EventObject.START)
         {
             stateData._animData.isStart = true;
-            stateData._animData.isFadeOut = false;
+            stateData._animData.isCompleted = false;
+            stateData._animData.isFadeInComplete = false;
+        }
+        if (type == EventObject.FADE_IN)
+        {
+            stateData._animData.isFadeIn = true;
+
         }
         if (type == EventObject.FADE_IN_COMPLETE)
         {
             stateData._animData.isFadeInComplete = true;
-            stateData._animData.isFadeOut = false;
+            //stateData._animData.isCompleted = true;
+            //stateData._animData.isStart = true;
         }
-
-        if (eventObject.animationState.name == stateData._animData.name)
+        if (type == EventObject.COMPLETE)
         {
-
+            stateData._animData.isCompleted = true;
+            stateData._animData.isStart = false;
+            SetStateAnimData();
         }
+    }
+
+    private void OnFrameEventHandler(string type, EventObject eventObject)
+    {
+        foreach (var key in stateData._boolMap)
+        {
+            if (eventObject.name == key.Key)
+            {
+                stateData._boolMap[key.Key] = eventObject.data.GetInt(0) != 0;
+                return;
+            }
+        }
+        foreach (var key in dataScriptable._intState)
+        {
+            if (eventObject.name == key)
+            {
+                stateData._intMap[key] = eventObject.data.GetInt(0);
+                return;
+            }
+        }
+        foreach (var key in dataScriptable._floatState)
+        {
+            if (eventObject.name == key)
+            {
+                stateData._floatMap[key] = eventObject.data.GetFloat(0);
+                return;
+            }
+        }
+        eventArgs = new MyEventArgs(
+                        eventObject.animationState.isPlaying,
+                        eventObject.animationState.playTimes,
+                        eventObject.animationState.currentPlayTimes);
+        ReceiveFrameEvent?.Invoke(eventObject.name, eventArgs);
     }
 }

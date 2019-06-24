@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4750746678030700}
   - component: {fileID: 114409296157640428}
   - component: {fileID: 96102941535840232}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHitPointDamage: 8
   _baseEnduranceDamage: 8
+  _baseAttackRate: 1
+  _knockback: 0
+  _defaultType: 2
+  _faction: 1
   speed: 40
   bladeLength: 0.25
   backDistance: 0.8
@@ -54,6 +58,8 @@ MonoBehaviour:
   hoveringDistance: 12
   hoveringDuration: 5
   hoveringRotateSpeed: -720
+  normalAttackRate: 0
+  floatAttackRate: 0
   traveledDistance: 0
   hoverTimer: 0
   state: 0
@@ -183,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8818100173993470380}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5123091193175797506}
   - component: {fileID: 6785294428845112252}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7732800193228834177}
   - component: {fileID: 3596745851396732376}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

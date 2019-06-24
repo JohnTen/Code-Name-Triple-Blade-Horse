@@ -7,7 +7,6 @@ public class EnemyMover : MonoBehaviour, ICanMove
 {
 	[Header("Basic movement")]
 	[SerializeField] float _baseSpeed;
-	[SerializeField] float _jumpHeight;
 	[SerializeField] float _knockbackSpeedFactor;
 
 	[Header("Events")]
@@ -64,15 +63,6 @@ public class EnemyMover : MonoBehaviour, ICanMove
 			(_velocity.sqrMagnitude > 0.1f || _movementVector.sqrMagnitude > 0.1f) ?
 			MovingState.Move :
 			MovingState.Idle;
-	}
-
-	public void Jump()
-	{
-		if (!_groundDetector.IsOnGround) return;
-		
-		_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * _rigidbody.gravityScale);
-
-		CurrentMovingState = MovingState.Airborne;
 	}
 
 	public void Move(Vector2 direction)
