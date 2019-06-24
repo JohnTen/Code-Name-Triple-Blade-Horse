@@ -149,11 +149,6 @@ namespace JTUtility
 			return rotated;
 		}
 
-		public static Vector2 Rotate(this Vector2 vector, float x, float y, float z)
-		{
-			return Quaternion.Euler(x, y, z) * vector;
-		}
-
 		public static bool IsIncluded(this Vector2 bound, float value)
 		{
 			return value >= bound.x && value <= bound.y;
@@ -190,6 +185,11 @@ namespace JTUtility
 				dict.Add(key, addValue);
 				return true;
 			}
+		}
+
+		public static void Add<K, V>(this IDictionary<K, V> dictionary, PairedValue<K, V> pair)
+		{
+			dictionary.Add(pair.Key, pair.Value);
 		}
 
 		// From TOMS...

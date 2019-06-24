@@ -47,8 +47,8 @@ public class Projectile : BaseWeapon
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		var attackable = collision.collider.GetComponent<IAttackable>();
-		var toTarget = collision.transform.position.x - this.transform.position.x;
-		var direction = toTarget > 0 ? Vector2.right : Vector2.left;
+		var toTarget = collision.transform.position - this.transform.position;
+		var direction = DirectionalHelper.NormalizeHorizonalDirection(toTarget);
 
 		if (attackable != null && attackable.Faction == Faction)
 		{
@@ -56,7 +56,7 @@ public class Projectile : BaseWeapon
 			return;
 		}
 
-		Attack(attackable, direction);
+		TryAttack(attackable, direction);
 
 		DestroySelf(collision);
 		return;

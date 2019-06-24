@@ -20,7 +20,7 @@ public class WeaponSystem : MonoBehaviour
 	[SerializeField] AudioClip[] _normalMeleeSFX;
 
 	GameObject _currentAttackEffect;
-	List<ThrowingKnife> knifesInAirList;
+	[SerializeField] List<ThrowingKnife> knifesInAirList;
 
 	public bool Frozen { get; private set; }
 
@@ -103,8 +103,10 @@ public class WeaponSystem : MonoBehaviour
 			if (knifesInAirList[i].State == KnifeState.Flying)
 				continue;
 
-			if (knifesInAirList[i].StuckedOnClimbable)
+			if (knifesInAirList[i].Stuck)
+			{
 				OnPull?.Invoke((knifesInAirList[i].transform.position - transform.position).normalized);
+			}
 			knifesInAirList[i].Withdraw();
 		}
 	}
@@ -126,9 +128,17 @@ public class WeaponSystem : MonoBehaviour
 
 		if (knifeIndex >= 0)
 		{
-			if (knifesInAirList[knifeIndex].StuckedOnClimbable)
+			if (knifesInAirList[knifeIndex].Stuck)
 				OnPull?.Invoke((knifesInAirList[knifeIndex].transform.position - transform.position).normalized);
 			knifesInAirList[knifeIndex].Withdraw();
+		}
+	}
+
+	public void ResetWeapon()
+	{
+		while (knifesInAirList.Count > 0)
+		{
+			knifesInAirList[0].RetractInstantly();
 		}
 	}
 
@@ -154,11 +164,14 @@ public class WeaponSystem : MonoBehaviour
 				knife.Withdraw();
 			}
 
-			if (knife.State == KnifeState.Stuck && !knife.StuckedOnClimbable && dir.sqrMagnitude < autoPickupDistance * autoPickupDistance)
+			if (knife.State == KnifeState.Stuck && !knife.Stuck && dir.sqrMagnitude < autoPickupDistance * autoPickupDistance)
 			{
 				knife.Withdraw();
 			}
 		}
+
+		if (Input.GetKeyDown(KeyCode.P))
+			ResetWeapon();
 	}
 
 	IEnumerator LaunchAllKnife(Vector3 direction)

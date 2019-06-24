@@ -24,6 +24,6 @@ public class Sword : BaseWeapon
 	{
 		var attackable = other.GetComponent<IAttackable>();
 		var attackDirection = _state._facingRight ? Vector2.right : Vector2.left;
-		Attack(attackable, attackDirection);
+		TryAttack(attackable, attackDirection);
 	}
 }

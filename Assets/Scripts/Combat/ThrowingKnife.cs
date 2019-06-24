@@ -20,9 +20,10 @@ public class ThrowingKnife : BaseWeapon
 	[SerializeField] float hoveringDistance;
 	[SerializeField] float hoveringDuration;
 	[SerializeField] float hoveringRotateSpeed;
-	[SerializeField] float normalAttackRate;
-	[SerializeField] float floatAttackRate;
-	[Space(30)]
+	[SerializeField] float normalAttackRate = 1;
+	[SerializeField] float floatAttackRate = 0.2f;
+	[SerializeField] LayerMask rayCastMask;
+	[Header("Debug")]
 	[SerializeField] float traveledDistance;
 	[SerializeField] float hoverTimer;
 	[SerializeField] KnifeState state;
@@ -30,9 +31,13 @@ public class ThrowingKnife : BaseWeapon
 	[SerializeField] AttackMove normalAttack;
 	[SerializeField] AttackMove chargedAttack;
 	[SerializeField] AttackMove floatAttack;
+	[SerializeField] AttackMove drawStuckAttack;
+	
 
 	bool activated;
 	Sheath sheath;
+	ICanStickKnife stuckOn;
+	IAttackable stuckAttack;
 
 	public KnifeState State
 	{
@@ -40,7 +45,10 @@ public class ThrowingKnife : BaseWeapon
 		set { state = value; }
 	}
 
-	public bool StuckedOnClimbable { get; private set; }
+	public ICanStickKnife StuckOn => stuckOn;
+	public IAttackable StuckAttack => stuckAttack;
+
+	public bool Stuck { get; private set; }
 
 	private void Update()
 	{
@@ -102,44 +110,50 @@ public class ThrowingKnife : BaseWeapon
 		_defaultType = piercing ? AttackType.ChargedRange : AttackType.Range;
 		_baseAttackRate = normalAttackRate;
 
+		if (stuckOn != null)
+		{
+			if (stuckOn.TryTakeOut(this.gameObject))
+			{
+				var direction = sheath.transform.position - this.transform.position;
+				direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
+				TryAttack(stuckAttack, direction);
+			}
+
+			stuckOn = null;
+		}
+
 		Returning();
 
 		return true;
 	}
 
+	public void RetractInstantly()
+	{
+		Deactivate();
+		sheath.PutBackKnife(this);
+		if (stuckOn != null)
+		{
+			stuckOn.TryTakeOut(this.gameObject);
+		}
+		stuckOn = null;
+		stuckAttack = null;
+
+		Stuck = false;
+		hoverTimer = 0;
+		traveledDistance = 0;
+		state = KnifeState.InSheath;
+	}
+
 	private void Flying()
 	{
 		Physics2D.queriesHitTriggers = false;
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength, rayCastMask);
 		transform.position += transform.right * speed * Time.deltaTime;
 		traveledDistance += speed * Time.deltaTime;
 
 		if (hit.collider != null)
 		{
-			var attackable = hit.collider.GetComponent<IAttackable>();
-
-			if (hit.collider.tag == "Climbable")
-			{
-				StuckedOnClimbable = true;
-				state = KnifeState.Stuck;
-				transform.position = (Vector3)hit.point + transform.right * sinkingLength;
-				return;
-			}
-			else if (hit.collider.tag == "Player") { }
-			else if (attackable != null)
-			{
-				print(hit.collider.name);
-				var direction = hit.collider.transform.position - transform.position;
-				direction = direction.x > 0 ? Vector2.right : Vector2.left;
-				Attack(attackable, direction);
-			}
-			else
-			{
-				print(hit.collider.name);
-				transform.position = hit.point;
-				Hover();
-				return;
-			}
+			HandleFlyingCollision(hit);
 		}
 
 		if (traveledDistance >= hoveringDistance)
@@ -157,7 +171,7 @@ public class ThrowingKnife : BaseWeapon
 			state = KnifeState.InSheath;
 
 			hoverTimer = 0;
-			StuckedOnClimbable = false;
+			Stuck = false;
 			traveledDistance = 0;
 			return;
 		}
@@ -166,7 +180,7 @@ public class ThrowingKnife : BaseWeapon
 
 		Debug.DrawRay(transform.position, transform.right * (speed * Time.deltaTime + bladeLength), Color.red);
 
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength, rayCastMask);
 		if (hit.collider != null)
 		{
 			TryAttack(hit.collider.transform);
@@ -184,7 +198,7 @@ public class ThrowingKnife : BaseWeapon
 			Withdraw();
 
 		Debug.DrawRay(transform.position, transform.right * bladeLength, Color.red);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, bladeLength);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, bladeLength, rayCastMask);
 		if (hit.collider != null)
 		{
 			TryAttack(hit.collider.transform);
@@ -197,11 +211,50 @@ public class ThrowingKnife : BaseWeapon
 		if (IsAttackable(attackable))
 		{
 			var direction = target.position - transform.position;
-			direction = direction.x > 0 ? Vector2.right : Vector2.left;
-			return Attack(attackable, direction);
+			direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
+			return TryAttack(attackable, direction);
 		}
 
 		return false;
+	}
+
+	private void HandleFlyingCollision(RaycastHit2D hit)
+	{
+		var stickable = hit.collider.GetComponent<ICanStickKnife>();
+		var attackable = hit.collider.GetComponent<IAttackable>();
+
+		if (stickable != null && stickable.TryStick(this.gameObject))
+		{
+			Stuck = true;
+			state = KnifeState.Stuck;
+			transform.position = (Vector3)hit.point + transform.right * sinkingLength;
+			transform.SetParent(hit.collider.transform);
+			stuckOn = stickable;
+		}
+
+		if (IsAttackable(attackable))
+		{
+			print(hit.collider.name);
+			var direction = hit.collider.transform.position - transform.position;
+			direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
+
+			if (Stuck)
+			{
+				_defaultType = AttackType.StuckNDraw;
+				_attackMove = drawStuckAttack;
+			}
+
+			if (TryAttack(attackable, direction) && Stuck)
+			{
+				stuckAttack = attackable;
+			}
+		}
+
+		if (attackable == null && !Stuck)
+		{
+			print(hit.collider.name);
+			Hover();
+		}
 	}
 
 	private AttackPackage CreateNewPackage(AttackType type, AttackMove move)

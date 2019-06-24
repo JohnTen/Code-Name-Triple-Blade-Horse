@@ -58,8 +58,11 @@ MonoBehaviour:
   hoveringDistance: 12
   hoveringDuration: 5
   hoveringRotateSpeed: -720
-  normalAttackRate: 0
-  floatAttackRate: 0
+  normalAttackRate: 1
+  floatAttackRate: 0.2
+  rayCastMask:
+    serializedVersion: 2
+    m_Bits: 11521
   traveledDistance: 0
   hoverTimer: 0
   state: 0
@@ -67,6 +70,7 @@ MonoBehaviour:
   normalAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
   chargedAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
   floatAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
+  drawStuckAttack: {fileID: 0}
 --- !u!96 &96102941535840232
 TrailRenderer:
   serializedVersion: 2
@@ -75,7 +79,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422545191621314}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
