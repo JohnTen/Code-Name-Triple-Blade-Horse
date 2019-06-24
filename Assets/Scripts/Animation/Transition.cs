@@ -1,31 +1,36 @@
 ﻿using JTUtility;
 
-public class Transition
+namespace TripleBladeHorse.Animation
 {
-    public string currentAnim;
-    public string nextAnim;
+	public class Transition
+	{
+		public const string Any = "_ANY";
 
-    Func<bool, StateData> rule;
-    public float transitionTime;
+		public string currentAnim;
+		public string nextAnim;
 
-    public Transition(Transition transition)
-    {
-        this.currentAnim = transition.currentAnim;
-        this.nextAnim = transition.nextAnim;
-        this.transitionTime = transition.transitionTime;
-        this.rule = transition.rule;
-    }
+		Func<bool, FSMState> rule;
+		public float transitionTime;
 
-    public Transition(string currentAnim, string nextAnim, float transitionTime, Func<bool, StateData> rule)
-    {
-        this.currentAnim = currentAnim;
-        this.nextAnim = nextAnim;
-        this.transitionTime = transitionTime;
-        this.rule = rule;
-    }
+		public Transition(Transition transition)
+		{
+			this.currentAnim = transition.currentAnim;
+			this.nextAnim = transition.nextAnim;
+			this.transitionTime = transition.transitionTime;
+			this.rule = transition.rule;
+		}
 
-    public bool Test( StateData stateData)
-    {
-        return rule(stateData);
-    }
+		public Transition(string currentAnim, string nextAnim, float transitionTime, Func<bool, FSMState> rule)
+		{
+			this.currentAnim = currentAnim;
+			this.nextAnim = nextAnim;
+			this.transitionTime = transitionTime;
+			this.rule = rule;
+		}
+
+		public bool Test(FSMState stateData)
+		{
+			return rule(stateData);
+		}
+	}
 }

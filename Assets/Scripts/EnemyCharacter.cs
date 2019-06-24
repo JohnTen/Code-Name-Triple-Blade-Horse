@@ -58,5 +58,8 @@ public class EnemyCharacter : MonoBehaviour
 		}
 	}
 
-	
+	private void Dying()
+	{
+
+	}
 }

@@ -83,6 +83,11 @@ public class PlayerAnimation : MonoBehaviour
 	private void Start()
 	{
 		_armature = this._armatureComponent.armature;
+		_armatureComponent.AddDBEventListener(EventObject.START, OnAnimationEventHandler);
+		_armatureComponent.AddDBEventListener(EventObject.FADE_IN, OnAnimationEventHandler);
+		_armatureComponent.AddDBEventListener(EventObject.FADE_IN_COMPLETE, OnAnimationEventHandler);
+		_armatureComponent.AddDBEventListener(EventObject.FADE_OUT, OnAnimationEventHandler);
+		_armatureComponent.AddDBEventListener(EventObject.FADE_OUT_COMPLETE, OnAnimationEventHandler);
 		_armatureComponent.AddDBEventListener(EventObject.COMPLETE, OnAnimationEventHandler);
 		_armatureComponent.AddDBEventListener(EventObject.FRAME_EVENT, OnFrameEventHandler);
 	}
@@ -119,6 +124,19 @@ public class PlayerAnimation : MonoBehaviour
 
 	private void OnAnimationEventHandler(string type, EventObject eventObject)
 	{
+		if (type == EventObject.START)
+			print(Time.frameCount + " Start " + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type == EventObject.FADE_IN)
+			print(Time.frameCount + " Fade in " + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type == EventObject.FADE_IN_COMPLETE)
+			print(Time.frameCount + " Fade in complete" + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type == EventObject.FADE_OUT)
+			print(Time.frameCount + " Fade out " + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type == EventObject.FADE_OUT_COMPLETE)
+			print(Time.frameCount + " Fade out complete " + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type == EventObject.COMPLETE)
+			print(Time.frameCount + " Complete" + eventObject.name + " " + eventObject.animationState._animationData.name);
+		if (type != EventObject.COMPLETE) return;
 		if (eventObject.animationState.name == "Droping_Buffering")
 		{
 			_armature.animation.FadeIn("Idle_Ground", 0.2f, 0, 0, null).resetToPose = false;

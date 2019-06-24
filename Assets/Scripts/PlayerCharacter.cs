@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TripleBladeHorse.Animation;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerCharacter : MonoBehaviour
 	PlayerMover _mover;
 	WeaponSystem _weaponSystem;
 	ICanDetectGround _groundDetector;
-	PlayerAnimation _animation;
+	PlayerAnimation _animator;
 	IAttackable _hitbox;
 	HitFlash _hitFlash;
 
@@ -23,7 +24,7 @@ public class PlayerCharacter : MonoBehaviour
 	{
 		_input = GetComponent<ICharacterInput<PlayerInputCommand>>();
 		_mover = GetComponent<PlayerMover>();
-		_animation = GetComponent<PlayerAnimation>();
+		_animator = GetComponent<PlayerAnimation>();
 		_weaponSystem = GetComponent<WeaponSystem>();
 		_groundDetector = GetComponent<ICanDetectGround>();
 		_hitbox = GetComponentInChildren<IAttackable>();
@@ -32,9 +33,29 @@ public class PlayerCharacter : MonoBehaviour
 		_mover.OnMovingStateChanged += HandleMovingStateChanged;
 		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 		_input.OnReceivedInput += OnReceivedInputHandler;
-		_animation.OnRecievedFrameEvent += OnRecievedFrameEvent;
+		_animator.OnRecievedFrameEvent += HandleAnimationFrameEvent;
 		_weaponSystem.OnPull += PullHandler;
 		_hitbox.OnHit += HandleOnHit;
+	}
+
+	private void HandleAnimationFrameEvent(string name, float value)
+	{
+		if (name == "AttackBegin")
+		{
+			_weaponSystem.MeleeAttack();
+		}
+		else if (name == "AttackEnd")
+		{
+			_weaponSystem.MeleeAttackEnd();
+		}
+		else if (name == "AttackStepDistance")
+		{
+			_mover.SetStepDistance(value);
+		}
+		else if (name == "AttackStepSpeed")
+		{
+			_mover.SetStepSpeed(value);
+		}
 	}
 
 	private void HandleOnHit(AttackPackage attack, AttackResult result)
@@ -55,46 +76,28 @@ public class PlayerCharacter : MonoBehaviour
 	private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
 	{
 		if (eventArgs.currentLandingState == LandingState.OnGround)
-			_animation.SetBool("Landing", true);
+		{
+			_animator.SetBool("Landing", true);
+		}
 	}
 
 	private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
 	{
 		if (eventArgs.lastMovingState == MovingState.Dash)
 		{
-			_animation.SetBool("Dash", false);
+			_animator.SetBool("Dash", false);
 		}
 	}
 
 	private void PullHandler(Vector3 direction)
 	{
 		_mover.Pull(direction);
-		_animation.SetBool("Jump", true);
-	}
-
-	private void OnRecievedFrameEvent(string name, float value)
-	{
-		if (name == "AttackBegin")
-		{
-			_weaponSystem.MeleeAttack();
-		}
-		else if (name == "AttackEnd")
-		{
-			_weaponSystem.MeleeAttackEnd();
-		}
-		else if (name == "AttackStepDistance")
-		{
-			_mover.SetStepDistance(value);
-		}
-		else if (name == "AttackStepSpeed")
-		{
-			_mover.SetStepSpeed(value);
-		}
+		_animator.SetBool("Jump", true);
 	}
 
 	private void LandingHandler()
 	{
-		_animation.SetBool("Landing", true);
+		_animator.SetBool("Landing", true);
 	}
 
 	private void OnReceivedInputHandler(InputEventArg<PlayerInputCommand> input)
@@ -104,7 +107,7 @@ public class PlayerCharacter : MonoBehaviour
 			case PlayerInputCommand.Jump:
 				Cancel();
 				_mover.Jump();
-				_animation.SetBool("Jump", true);
+				_animator.SetBool("Jump", true);
 				break;
 
 			case PlayerInputCommand.Dash:
@@ -113,7 +116,7 @@ public class PlayerCharacter : MonoBehaviour
 				Cancel();
 				_state._stamina -= 1;
 				_mover.Dash(_input.GetMovingDirection());
-				_animation.SetBool("Dash", true);
+				_animator.SetBool("Dash", true);
 				break;
 
 			case PlayerInputCommand.MeleeBegin:
@@ -121,7 +124,7 @@ public class PlayerCharacter : MonoBehaviour
 				break;
 
 			case PlayerInputCommand.MeleeAttack:
-				_animation.Attack();
+				_animator.SetBool("MeleeAttak", true);
 				break;
 
 			case PlayerInputCommand.MeleeChargeAttack:
@@ -149,12 +152,12 @@ public class PlayerCharacter : MonoBehaviour
 	private void Update()
 	{
 		_state._frozen = 
-			_animation.GetBool("Frozen")
+			_animator.GetBool("Frozen")
 			|| _mover.CurrentMovingState == MovingState.Dash
 			|| _mover.PullDelaying
 			|| _weaponSystem.Frozen;
 
-		_input.DelayInput = _animation.GetBool("DelayInput");
+		_input.DelayInput = _animator.GetBool("DelayInput");
 		_input.BlockInput = _mover.BlockInput;
 
 		var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
@@ -162,13 +165,13 @@ public class PlayerCharacter : MonoBehaviour
 
 		if (_state._frozen)
 		{
-			_animation.SetFloat("XSpeed", 0);
-			_animation.SetFloat("YSpeed", 0);
+			_animator.SetFloat("XSpeed", 0);
+			_animator.SetFloat("YSpeed", 0);
 		}
 		else
 		{
-			_animation.SetFloat("XSpeed", _mover.Velocity.x);
-			_animation.SetFloat("YSpeed", _mover.Velocity.y);
+			_animator.SetFloat("XSpeed", _mover.Velocity.x);
+			_animator.SetFloat("YSpeed", _mover.Velocity.y);
 		}
 	}
 

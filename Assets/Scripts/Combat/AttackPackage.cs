@@ -11,6 +11,7 @@ public enum AttackType
 	ChargedMelee,
 	ChargedRange,
 	Float,
+	StuckNDraw,
 }
 
 public enum Faction

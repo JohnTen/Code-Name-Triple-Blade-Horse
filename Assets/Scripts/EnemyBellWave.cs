@@ -36,8 +36,8 @@ public class EnemyBellWave : BaseWeapon
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		var attackable = collision.GetComponent<IAttackable>();
-		var toTarget = collision.transform.position.x - this.transform.position.x;
-		var direction = toTarget > 0 ? Vector2.right : Vector2.left;
-		Attack(attackable, direction);
+		var toTarget = collision.transform.position - this.transform.position;
+		var direction = DirectionalHelper.NormalizeHorizonalDirection(toTarget);
+		TryAttack(attackable, direction);
 	}
 }

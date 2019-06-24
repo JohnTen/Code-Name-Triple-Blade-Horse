@@ -9,6 +9,7 @@ public class EnemyHitBox : HitBox
 
 	public event Action<int> OnComboCancel;
 	public event Action<int> OnComboRaise;
+	public event Action OnComboExceeded;
 
 	protected override void ApplyDamageMultiplier(ref AttackResult result, AttackPackage attack)
 	{
@@ -24,11 +25,23 @@ public class EnemyHitBox : HitBox
 		_state._currentComboTimes++;
 		RaiseComboRaise(_state._currentComboTimes);
 		_state._currentComboInterval = _state._comboMaxInterval;
+
+		if (_state._currentComboTimes > _state._comboMaxTimes)
+		{
+			RaiseComboExceeded();
+			_state._currentComboTimes = 0;
+			_state._currentComboInterval = 0;
+		}
 	}
 
 	protected virtual void RaiseComboCancel(int comboTimes)
 	{
 		OnComboCancel?.Invoke(comboTimes);
+	}
+
+	protected virtual void RaiseComboExceeded()
+	{
+		OnComboExceeded?.Invoke();
 	}
 
 	protected virtual void RaiseComboRaise(int comboTimes)

@@ -58,7 +58,7 @@ public abstract class BaseWeapon : MonoBehaviour, IAttacker
 		return target;
 	}
 
-	protected virtual bool Attack(IAttackable attackable, Vector2 attackDirection)
+	protected virtual bool TryAttack(IAttackable attackable, Vector2 attackDirection)
 	{
 		if (!IsAttackable(attackable)) return false;
 

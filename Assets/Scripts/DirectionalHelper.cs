@@ -96,5 +96,23 @@ public static class DirectionalHelper
 		return closestDirection;
 	}
 
+	public static Vector2 NormalizeHorizonalDirection(Vector2 direction)
+	{
+		return direction.x < 0 ? Vector2.left : Vector2.right;
+	}
+
+	public static Vector2 NormalizeVerticalDirection(Vector2 direction)
+	{
+		return direction.y < 0 ? Vector2.down : Vector2.up;
+	}
+
+	public static Vector2 NormalizeQuadDirection(Vector2 direction)
+	{
+		return
+			Mathf.Abs(direction.y) > Mathf.Abs(direction.x)?
+				NormalizeVerticalDirection(direction) :
+				NormalizeHorizonalDirection(direction);
+	}
+
 	#endregion
 }

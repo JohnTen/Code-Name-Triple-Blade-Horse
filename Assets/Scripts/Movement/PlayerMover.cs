@@ -149,6 +149,11 @@ public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash, ICanBloc
 		CurrentMovingState = UpdateState();
 	}
 
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		print(collision.collider.name);
+	}
+
 	#endregion
 
 	#region Interfaces
