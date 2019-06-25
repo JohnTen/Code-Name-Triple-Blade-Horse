@@ -9,10 +9,157 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 4e445aeb606a6db4f9c672486ad99d72, type: 3}
   m_Name: Player FSM Data
   m_EditorClassIdentifier: Assembly-CSharp:TripleBladeHorse.Animation:PlayerFSMData
-  _animationDatas: []
-  _boolState: []
-  _floatState: []
+  _defaultAnimation:
+    name: Idle_Ground
+    timeScale: 0.5
+    playTimes: 0
+    duration: 0
+    playing: 0
+    cancelPercent: 0
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  _animationDatas:
+  - name: Idle_Ground
+    timeScale: 0.5
+    playTimes: 0
+    duration: 0
+    playing: 0
+    cancelPercent: 0
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Run_Ground
+    timeScale: 1
+    playTimes: 0
+    duration: 0
+    playing: 0
+    cancelPercent: 0
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Dash_Ground
+    timeScale: 1
+    playTimes: 0
+    duration: 0
+    playing: 0
+    cancelPercent: 0
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Jump_Ground
+    timeScale: 5
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.2
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Jump_Air
+    timeScale: 2
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.2
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Droping
+    timeScale: 1
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Droping_Buffering
+    timeScale: 3
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.3
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: ATK_Melee_Ground_1
+    timeScale: 2.5
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.7
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: ATK_Melee_Ground_2
+    timeScale: 2.5
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.7
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: ATK_Melee_Ground_3
+    timeScale: 2.5
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 0.7
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  _toggleState:
+  - key: Jump
+    value: 0
+  _boolState:
+  - key: Dash
+    value: 0
+  - key: Airborne
+    value: 0
+  - key: Landing
+    value: 0
+  - key: Frozen
+    value: 0
+  - key: MeleeAttack
+    value: 0
+  - key: DelayInput
+    value: 0
+  - key: BlockInput
+    value: 0
+  _floatState:
+  - key: XSpeed
+    value: 0
+  - key: YSpeed
+    value: 0
+  - key: AttackStepSpeed
+    value: 0
+  - key: AttackStepDistance
+    value: 0
   _intState: []

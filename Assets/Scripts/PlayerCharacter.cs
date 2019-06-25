@@ -40,19 +40,19 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 	{
-		if (name == "AttackBegin")
+		if (eventArgs._name == "AttackBegin")
 		{
 			_weaponSystem.MeleeAttack();
 		}
-		else if (name == "AttackEnd")
+		else if (eventArgs._name == "AttackEnd")
 		{
 			_weaponSystem.MeleeAttackEnd();
 		}
-		else if (name == "AttackStepDistance")
+		else if (eventArgs._name == "AttackStepDistance")
 		{
 			_mover.SetStepDistance(eventArgs._floatData);
 		}
-		else if (name == "AttackStepSpeed")
+		else if (eventArgs._name == "AttackStepSpeed")
 		{
 			_mover.SetStepSpeed(eventArgs._floatData);
 		}
@@ -78,6 +78,11 @@ public class PlayerCharacter : MonoBehaviour
 		if (eventArgs.currentLandingState == LandingState.OnGround)
 		{
 			_animator.SetBool("Landing", true);
+			_animator.SetBool("Airborne", false);
+		}
+		else
+		{
+			_animator.SetBool("Airborne", true);
 		}
 	}
 
@@ -97,7 +102,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void LandingHandler()
 	{
-		_animator.SetBool("Landing", true);
+		_animator.SetBool("BlockInput", true);
 	}
 
 	private void OnReceivedInputHandler(InputEventArg<PlayerInputCommand> input)
@@ -124,8 +129,8 @@ public class PlayerCharacter : MonoBehaviour
 				break;
 
 			case PlayerInputCommand.MeleeAttack:
-				_animator.SetBool("MeleeAttak", true);
-                _animator.Attack();
+				_animator.SetToggle("MeleeAttack", true);
+				_animator.SetBool("DelayInput", true);
 				break;
 
 			case PlayerInputCommand.MeleeChargeAttack:
@@ -160,7 +165,7 @@ public class PlayerCharacter : MonoBehaviour
 
 		_animator.SetBool("Landing", _groundDetector.IsOnGround);
 		_input.DelayInput = _animator.GetBool("DelayInput");
-		_input.BlockInput = _mover.BlockInput;
+		_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
 
 		var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
 		_mover.Move(moveInput);
@@ -173,7 +178,7 @@ public class PlayerCharacter : MonoBehaviour
 		else
 		{
 			_animator.SetFloat("XSpeed", moveInput.x);
-			_animator.SetFloat("YSpeed", moveInput.y);
+			_animator.SetFloat("YSpeed", _mover.Velocity.y);
 			if (moveInput.x != 0)
 			{
 				_animator.FlipX = moveInput.x < 0;

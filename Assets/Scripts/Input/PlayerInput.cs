@@ -25,12 +25,14 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 	[SerializeField] float _rangeChargeTime;
 	[SerializeField] float _withdrawTime;
 	[SerializeField] Transform _aimingPivot;
+	[SerializeField] bool _delayingInput;
+	[SerializeField] bool blockInput;
 
 	float _meleeChargeTimer;
 	float _rangeChargeTimer;
 	float _withdrawTimer;
 
-	bool _delayingInput;
+	//bool _delayingInput;
 	bool _usingController;
 	bool _throwPressedBefore;
 	IInputModel _input;
@@ -59,8 +61,8 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 
 	public bool BlockInput
 	{
-		get;
-		set;
+		get => blockInput;
+		set => blockInput = value;
 	}
 
 	public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
