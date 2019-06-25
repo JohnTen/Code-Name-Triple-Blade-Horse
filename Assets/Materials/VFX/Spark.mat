@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dash
+  m_Name: Spark
   m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION
-  m_LightmapFlags: 0
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -20,11 +20,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - DisplacementPack_1:
-        m_Texture: {fileID: 2800000, guid: c8fd432fdc1842a4fa711a3abbfba593, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - SpriteSheetUVAnimPack_1:
-        m_Texture: {fileID: 2800000, guid: 8eed5e45d7ac1294cbb9bcaff00d86b1, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -48,15 +52,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 00772754d22547c4ca949dc80c09b7e0, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 18afed4f9e654c740b9df980a8d9c4bd, type: 3}
+        m_Scale: {x: 1, y: 0.83}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_1:
-        m_Texture: {fileID: 2800000, guid: 77435af4775ac8e40871e845cdd67be9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 84508b93f15f2b64386ec07486afc7a3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_2:
@@ -72,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_5:
-        m_Texture: {fileID: 2800000, guid: 9b73bbbc270e34740a57be558dcab4d8, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -84,83 +88,101 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SourceNewTex_1:
-        m_Texture: {fileID: 2800000, guid: 77435af4775ac8e40871e845cdd67be9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SourceNewTex_2:
-        m_Texture: {fileID: 2800000, guid: 63292e74212b202498c50a4edb718bea, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - DistortionUV_DistanceX_1: 0.129
-    - DistortionUV_DistanceY_1: 0.114
-    - DistortionUV_Speed_1: -2
-    - DistortionUV_WaveX_1: 10.4
-    - DistortionUV_WaveY_1: 10
-    - ResizeUV_X_1: 0
-    - ResizeUV_Y_1: 0
-    - ResizeUV_ZoomX_1: 1
-    - ResizeUV_ZoomY_1: 1
+    - AnimatedInfiniteZoomUV_Intensity_1: 2.921
+    - AnimatedInfiniteZoomUV_PosX_1: 0.235
+    - AnimatedInfiniteZoomUV_PosY_1: -0.036
+    - AnimatedInfiniteZoomUV_Speed_1: -5.214
+    - AnimatedInfiniteZoomUV_Zoom_1: 0.54
+    - AnimatedTwistUV_AnimatedTwistUV_Bend_1: 0.197
+    - AnimatedTwistUV_AnimatedTwistUV_PosX_1: 0.25
+    - AnimatedTwistUV_AnimatedTwistUV_PosY_1: 0.5
+    - AnimatedTwistUV_AnimatedTwistUV_Radius_1: 0.5
+    - AnimatedTwistUV_AnimatedTwistUV_Speed_1: 0
+    - PixelSnap: 0
+    - PolarCoordinatesUV_Size_1: 0.317
+    - PositionUV_X_1: 0.014
+    - PositionUV_Y_1: 0
+    - _Add_Fade_1: 0.465
     - _AutomaticLerp_Speed_1: 0.4051357
-    - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
-    - _CircleFade_Dist_2: 0.2647388
+    - _CircleFade_Dist_1: 0.2
+    - _CircleFade_Dist_2: 0.2
+    - _CircleFade_PosX_1: 0.5
     - _CircleFade_PosX_2: 0.5
-    - _CircleFade_PosY_2: 1.238448
-    - _CircleFade_Size_2: 0.9756321
+    - _CircleFade_PosY_1: 0.8692334
+    - _CircleFade_PosY_2: 0.4942322
+    - _CircleFade_Size_1: 0.4256427
+    - _CircleFade_Size_2: 0.325641
+    - _CircleHole_Dist_1: 0.259
+    - _CircleHole_PosX_1: 0.313
+    - _CircleHole_PosY_1: 0.473
+    - _CircleHole_Size_1: 0.786
     - _ColorHSV_Brightness_1: 1
     - _ColorHSV_Hue_1: 180
     - _ColorHSV_Saturation_1: 1
     - _ColorMask: 15
-    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DisplacementPack_Size_1: 3
     - _DisplacementPack_ValueX_1: 0
     - _DisplacementPack_ValueY_1: -0.374
-    - _DistortionBlend: 0.5
-    - _DistortionEnabled: 0
-    - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0
     - _DstBlend: 0
-    - _EmissionEnabled: 0
-    - _FlipbookMode: 0
-    - _Generate_Fire_PosX_1: 0.01346765
-    - _Generate_Fire_PosX_2: -0.69
-    - _Generate_Fire_PosY_1: -0.1673185
-    - _Generate_Fire_PosY_2: 2
-    - _Generate_Fire_Precision_1: 0.07724449
-    - _Generate_Fire_Precision_2: 0.45
-    - _Generate_Fire_Smooth_1: 0.6429508
-    - _Generate_Fire_Smooth_2: 0
-    - _Generate_Fire_Speed_1: 1.33334
-    - _Generate_Fire_Speed_2: -2
-    - _Generate_Shape_Dist_1: 1
-    - _Generate_Shape_PosX_1: 0.468
-    - _Generate_Shape_PosY_1: 0.5
-    - _Generate_Shape_Rotation_1: 0
-    - _Generate_Shape_Side_1: 15
-    - _Generate_Shape_Size_1: 0.4
+    - _EnableExternalAlpha: 0
+    - _Generate_3DPlanet_CloudDistortion_1: 1.744
+    - _Generate_3DPlanet_CloudIntensity_1: -0.095
+    - _Generate_3DPlanet_CloudVolume_1: 0.522
+    - _Generate_3DPlanet_HaloIntensity_1: 0.4
+    - _Generate_3DPlanet_HaloSize_1: -0.045
+    - _Generate_3DPlanet_InsideShadow_1: 0.126
+    - _Generate_3DPlanet_LightDirection_X_1: -1.147
+    - _Generate_3DPlanet_LightDirection_Y_1: -1.643
+    - _Generate_3DPlanet_LightDirection_Z_1: 0.914
+    - _Generate_3DPlanet_RotationX_1: 0.101
+    - _Generate_3DPlanet_RotationY_1: 0.133
+    - _Generate_3DPlanet_Speed_1: 3.68
+    - _Generate_3DPlanet_StrangeX_1: 0.297
+    - _Generate_3DPlanet_StrangeY_1: -0.032
+    - _Generate_Donut_PosX_1: 0.5
+    - _Generate_Donut_PosY_1: 0.5
+    - _Generate_Donut_SizeDonut_1: -0.582
+    - _Generate_Donut_SizeSmooth_1: 0.159
+    - _Generate_Donut_Size_1: 0.618
+    - _Generate_Fire_PosX_1: 0
+    - _Generate_Fire_PosY_1: -0.223077
+    - _Generate_Fire_Precision_1: 0.1397436
+    - _Generate_Fire_Smooth_1: 0.4089745
+    - _Generate_Fire_Speed_1: 1.323078
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _InvFade: 1
     - _LerpUV_Fade_1: 0.097
-    - _LightingEnabled: 1
-    - _Mask2uv_Fade_259: 1
+    - _MaskRGBA_Fade_1: 0
+    - _MaskRGBA_Fade_2: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OperationBlend_Fade_1: 1
     - _OperationBlend_Fade_2: 1
     - _Parallax: 0.02
+    - _PlasmaFX_Fade_1: 0.151
+    - _PlasmaFX_Speed_1: 0.745
     - _PremadeGradients_Fade_1: 1
     - _PremadeGradients_Offset_1: 0
     - _PremadeGradients_Speed_1: 0.496
-    - _RGBA_Add_Fade_1: 1.653841
+    - _RGBA_Mul_Fade_1: 1.275
     - _ShadowLight_Intensity_1: 1.433
     - _ShadowLight_NoSprite_1: 0
     - _ShadowLight_PosX_1: 0
@@ -174,10 +196,8 @@ Material:
     - _ShinyFX_Speed_1: 1.407
     - _Simple_Displacement_Rotative_Rotation_1: -0.239
     - _Simple_Displacement_Rotative_Value_1: -0.11
+    - _Simple_Displacement_Value_1: 0.011
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 0
-    - _SoftParticlesFarFadeDistance: 1
-    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _SpriteFade: 1
     - _SpriteSheetUVAnimPack_Blend_1: 0.801642
@@ -190,27 +210,36 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
+    - _ThresholdSmooth_Smooth_1: 0.025
+    - _ThresholdSmooth_Value_1: -0.9
+    - _TurnAlphaToBlack_Fade_1: 1
     - _UVSec: 0
-    - _WorldGrassUV_GrassDirection_1: -3
-    - _WorldGrassUV_Shadowintensity_1: 0.55
-    - _WorldGrassUV_WindDirection_1: -0.5
-    - _WorldGrassUV_WindSpeed_1: 1
-    - _WorldGrassUV_Worldsize_1: 2
-    - _WorldGrassUV_Zoom_1: 0.025
+    - _WorldGrassUV_GrassDirection_1: -6
+    - _WorldGrassUV_Shadowintensity_1: 0.38
+    - _WorldGrassUV_WindDirection_1: 0.1
+    - _WorldGrassUV_WindSpeed_1: 0
+    - _WorldGrassUV_Worldsize_1: 1.1
+    - _WorldGrassUV_Zoom_1: 0.001
     - _ZWrite: 1
     m_Colors:
-    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorRGBA_Color_1: {r: 0.9056604, g: 0.1751052, b: 0.06407974, a: 1}
+    - _EmisColor: {r: 0.2, g: 0.2, b: 0.2, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor_Color_1: {r: 0.27843142, g: 1, b: 0, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _FourGradients_Color1_1: {r: 1, g: 0, b: 0, a: 0}
     - _FourGradients_Color2_1: {r: 0, g: 1, b: 0, a: 0}
     - _FourGradients_Color3_1: {r: 1, g: 0.616, b: 0, a: 0.172}
     - _FourGradients_Color4_1: {r: 1, g: 0.4852941, b: 0, a: 0.316}
+    - _Generate_3DPlanet_CloudColor_1: {r: 0.6486502, g: 0.04576898, b: 0.00383091,
+        a: 0.1344416}
+    - _Generate_3DPlanet_HaloColor_1: {r: 0.1700116, g: 0.05716026, b: 0.2595478,
+        a: 0.841851}
+    - _Generate_3DPlanet_Light_Color_1: {r: 0.353443, g: 0.538434, b: 0.725597, a: 0.1747127}
     - _Palette4Swapping_Color1_1: {r: 0.1921569, g: 0.1176471, b: 0.08627451, a: 1}
     - _Palette4Swapping_Color2_1: {r: 0.6784314, g: 0.5647059, b: 0.3647059, a: 1}
     - _Palette4Swapping_Color3_1: {r: 0.2392157, g: 0.6352941, b: 0.2627451, a: 1}
     - _Palette4Swapping_Color4_1: {r: 1, g: 0.9803922, b: 0.8470589, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowLight_Color_1: {r: 1, g: 0.7728195, b: 0.1764706, a: 1}
-    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
-    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 0.5}
