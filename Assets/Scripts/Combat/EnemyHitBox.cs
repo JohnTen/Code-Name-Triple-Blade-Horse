@@ -3,61 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public class EnemyHitBox : HitBox
+namespace TripleBladeHorse.Combat
 {
-	[SerializeField] EnemyState _state;
-
-	public event Action<int> OnComboCancel;
-	public event Action<int> OnComboRaise;
-	public event Action OnComboExceeded;
-
-	protected override void ApplyDamageMultiplier(ref AttackResult result, AttackPackage attack)
+	public class EnemyHitBox : HitBox
 	{
-		base.ApplyDamageMultiplier(ref result, attack);
+		[SerializeField] EnemyState _state;
 
-		if (_isWeakSpot)
-			ApplyComboDamage(ref result, attack);
-	}
+		public event Action<int> OnComboCancel;
+		public event Action<int> OnComboRaise;
+		public event Action OnComboExceeded;
 
-	protected virtual void ApplyComboDamage(ref AttackResult result, AttackPackage attack)
-	{
-		result._finalDamage += _state._currentComboTimes * _state._comboAdditiveDamage;
-		_state._currentComboTimes++;
-		RaiseComboRaise(_state._currentComboTimes);
-		_state._currentComboInterval = _state._comboMaxInterval;
-
-		if (_state._currentComboTimes > _state._comboMaxTimes)
+		protected override void ApplyDamageMultiplier(ref AttackResult result, AttackPackage attack)
 		{
-			RaiseComboExceeded();
-			_state._currentComboTimes = 0;
-			_state._currentComboInterval = 0;
+			base.ApplyDamageMultiplier(ref result, attack);
+
+			if (_isWeakSpot)
+				ApplyComboDamage(ref result, attack);
 		}
-	}
 
-	protected virtual void RaiseComboCancel(int comboTimes)
-	{
-		OnComboCancel?.Invoke(comboTimes);
-	}
-
-	protected virtual void RaiseComboExceeded()
-	{
-		OnComboExceeded?.Invoke();
-	}
-
-	protected virtual void RaiseComboRaise(int comboTimes)
-	{
-		OnComboRaise?.Invoke(comboTimes);
-	}
-
-	protected virtual void Update()
-	{
-		if (_state._currentComboInterval > 0)
+		protected virtual void ApplyComboDamage(ref AttackResult result, AttackPackage attack)
 		{
-			_state._currentComboInterval -= Time.deltaTime;
-			if (_state._currentComboInterval <= 0)
+			result._finalDamage += _state._currentComboTimes * _state._comboAdditiveDamage;
+			_state._currentComboTimes++;
+			RaiseComboRaise(_state._currentComboTimes);
+			_state._currentComboInterval = _state._comboMaxInterval;
+
+			if (_state._currentComboTimes > _state._comboMaxTimes)
 			{
-				RaiseComboCancel(_state._currentComboTimes);
+				RaiseComboExceeded();
 				_state._currentComboTimes = 0;
+				_state._currentComboInterval = 0;
+			}
+		}
+
+		protected virtual void RaiseComboCancel(int comboTimes)
+		{
+			OnComboCancel?.Invoke(comboTimes);
+		}
+
+		protected virtual void RaiseComboExceeded()
+		{
+			OnComboExceeded?.Invoke();
+		}
+
+		protected virtual void RaiseComboRaise(int comboTimes)
+		{
+			OnComboRaise?.Invoke(comboTimes);
+		}
+
+		protected virtual void Update()
+		{
+			if (_state._currentComboInterval > 0)
+			{
+				_state._currentComboInterval -= Time.deltaTime;
+				if (_state._currentComboInterval <= 0)
+				{
+					RaiseComboCancel(_state._currentComboTimes);
+					_state._currentComboTimes = 0;
+				}
 			}
 		}
 	}

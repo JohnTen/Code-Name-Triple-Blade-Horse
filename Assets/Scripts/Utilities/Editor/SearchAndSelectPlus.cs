@@ -3,40 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class SearchAndSelectPlus : EditorWindow
+namespace JTUtility.Editor
 {
-	string tagText = "";
-
-	[MenuItem("Search Helper/Search && Select++")]
-	static void Init()
+	public class SearchAndSelectPlus : EditorWindow
 	{
-		GetWindow<SearchAndSelectPlus>().Show();
-	}
+		string tagText = "";
 
-	private void OnGUI()
-	{
-		GUILayout.BeginVertical();
-		IncreaseIndent();
-		GUILayout.BeginHorizontal();
-		tagText = EditorGUILayout.TagField("Tag: ", tagText);
-
-		if (GUILayout.Button("Select"))
+		[MenuItem("Search Helper/Search && Select++")]
+		static void Init()
 		{
-			Selection.objects = GameObject.FindGameObjectsWithTag(tagText);
+			GetWindow<SearchAndSelectPlus>().Show();
 		}
-		GUILayout.EndHorizontal();
-		DecreaseIndent();
-		GUILayout.EndVertical();
-	}
 
-	private void IncreaseIndent()
-	{
-		GUILayout.BeginHorizontal();
-		GUILayout.Space(20);
-	}
+		private void OnGUI()
+		{
+			GUILayout.BeginVertical();
+			IncreaseIndent();
+			GUILayout.BeginHorizontal();
+			tagText = EditorGUILayout.TagField("Tag: ", tagText);
 
-	private void DecreaseIndent()
-	{
-		GUILayout.EndHorizontal();
+			if (GUILayout.Button("Select"))
+			{
+				Selection.objects = GameObject.FindGameObjectsWithTag(tagText);
+			}
+			GUILayout.EndHorizontal();
+			DecreaseIndent();
+			GUILayout.EndVertical();
+		}
+
+		private void IncreaseIndent()
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Space(20);
+		}
+
+		private void DecreaseIndent()
+		{
+			GUILayout.EndHorizontal();
+		}
 	}
 }

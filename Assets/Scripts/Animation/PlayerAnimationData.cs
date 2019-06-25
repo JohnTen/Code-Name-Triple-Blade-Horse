@@ -37,8 +37,6 @@ namespace TripleBladeHorse.Animation
 			public const string YSpeed = "YSpeed";
 		}
 
-
-
 		public PlayerAnimationData()
 		{
 			InitalizeStates();

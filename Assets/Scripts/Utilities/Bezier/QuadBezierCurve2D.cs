@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityUtility.Bezier
+namespace JTUtility.Bezier
 {
 	[Serializable]
 	public class QuadBezierCurve2D
