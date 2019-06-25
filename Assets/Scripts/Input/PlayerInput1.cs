@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public enum PlayerInputCommand
-{
-	Null,
-	Dash,
-	Jump,
-	RangeBegin,
-	RangeAttack,
-	RangeChargeAttack,
-	MeleeBegin,
-	MeleeAttack,
-	MeleeChargeAttack,
-	WithdrawAll,
-	WithdrawOne,
-}
+//public enum PlayerInputCommand
+//{
+//	Null,
+//	Dash,
+//	Jump,
+//	RangeBegin,
+//	RangeAttack,
+//	RangeChargeAttack,
+//	MeleeBegin,
+//	MeleeAttack,
+//	MeleeChargeAttack,
+//	WithdrawAll,
+//	WithdrawOne,
+//}
 
-public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
+public class PlayerInput1 : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
 {
 	[SerializeField] float _meleeChargeTime;
 	[SerializeField] float _meleeMaxChargeTime;
@@ -246,7 +246,7 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 
 	private void HandleJumpInput()
 	{
-		if (GetMovingDirection().y > 0.5f)
+		if (_input.GetButtonDown("Jump"))
 		{
 			InvokeInputEvent(PlayerInputCommand.Jump);
 		}
@@ -258,30 +258,58 @@ public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<P
 		{
 			InvokeInputEvent(PlayerInputCommand.Dash);
 		}
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            InvokeInputEvent(PlayerInputCommand.Dash);
-        }
-
 	}
 
 	private void HandleWithdraw()
 	{
-		if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
-		{
-			_withdrawTimer += Time.deltaTime;
-			if (_withdrawTimer >= _withdrawTime)
-			{
-				InvokeInputEvent(PlayerInputCommand.WithdrawAll);
-			}
-		}
-		else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
-		{
-			if (_withdrawTimer < _withdrawTime)
-			{
-				InvokeInputEvent(PlayerInputCommand.WithdrawOne);
-			}
-			_withdrawTimer = 0;
-		}
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //	_withdrawTimer += Time.deltaTime;
+        //	if (_withdrawTimer >= _withdrawTime)
+        //	{
+        //		InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+        //	}
+        //}
+        //else if (Input.GetKeyUp(KeyCode.W))
+        //{
+        //	if (_withdrawTimer < _withdrawTime)
+        //	{
+        //		InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+        //	}
+        //	_withdrawTimer = 0;
+        //}
+
+        var throwpressed = false;
+        if(GetMovingDirection().y > 0.5f)
+        {
+            throwpressed = true;
+        }
+
+        if(throwpressed)
+        {
+            //ButtonDown
+            if(!_throwPressedBefore)
+            {
+                _throwPressedBefore = true;
+                _withdrawTimer = 0;
+            }
+
+            //GetButton
+            _withdrawTimer += Time.deltaTime;
+            if(_withdrawTimer > _withdrawTime)
+            {
+                InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+                _withdrawTimer = float.NegativeInfinity;
+            }
+        }
+        //ButtonUp
+        else if(_throwPressedBefore)
+        {
+            _throwPressedBefore = false;
+            if(_withdrawTimer>0)
+            {
+                InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+            }
+        }
 	}
 }
