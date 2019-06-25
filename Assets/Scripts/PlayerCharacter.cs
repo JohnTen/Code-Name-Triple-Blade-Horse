@@ -40,6 +40,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 	{
+		print(eventArgs._name);
 		if (eventArgs._name == "AttackBegin")
 		{
 			_weaponSystem.MeleeAttack();
