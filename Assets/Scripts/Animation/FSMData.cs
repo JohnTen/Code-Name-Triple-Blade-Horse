@@ -9,6 +9,7 @@ namespace TripleBladeHorse.Animation
 	{
 		public Animation _defaultAnimation;
 		public List<Animation> _animationDatas;
+		public List<StrBoolPair> _toggleState;
 		public List<StrBoolPair> _boolState;
 		public List<StrFloatPair> _floatState;
 		public List<StrIntPair> _intState;

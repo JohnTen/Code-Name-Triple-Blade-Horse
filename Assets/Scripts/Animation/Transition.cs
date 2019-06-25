@@ -1,4 +1,5 @@
-﻿using JTUtility;
+﻿using System.Collections.Generic;
+using JTUtility;
 
 namespace TripleBladeHorse.Animation
 {
@@ -6,7 +7,7 @@ namespace TripleBladeHorse.Animation
 	{
 		public const string Any = "_ANY";
 
-		public string currentAnim;
+		public List<string> currentAnims;
 		public string nextAnim;
 
 		Func<bool, FSMState> rule;
@@ -14,7 +15,7 @@ namespace TripleBladeHorse.Animation
 
 		public Transition(Transition transition)
 		{
-			this.currentAnim = transition.currentAnim;
+			this.currentAnims = transition.currentAnims;
 			this.nextAnim = transition.nextAnim;
 			this.transitionTime = transition.transitionTime;
 			this.rule = transition.rule;
@@ -22,14 +23,24 @@ namespace TripleBladeHorse.Animation
 
 		public Transition(string currentAnim, string nextAnim, float transitionTime, Func<bool, FSMState> rule)
 		{
-			this.currentAnim = currentAnim;
+			this.currentAnims = new List<string>();
+			this.currentAnims.Add(currentAnim);
 			this.nextAnim = nextAnim;
 			this.transitionTime = transitionTime;
 			this.rule = rule;
 		}
 
-		public bool Test(FSMState stateData)
+		public Transition(string[] currentAnims, string nextAnim, float transitionTime, Func<bool, FSMState> rule)
 		{
+			this.currentAnims = new List<string>(currentAnims);
+			this.nextAnim = nextAnim;
+			this.transitionTime = transitionTime;
+			this.rule = rule;
+		}
+
+		public bool Test(string currentAnimation, FSMState stateData)
+		{
+			if (!currentAnims.Contains(currentAnimation) && !currentAnims.Contains(Any)) return false;
 			return rule(stateData);
 		}
 	}

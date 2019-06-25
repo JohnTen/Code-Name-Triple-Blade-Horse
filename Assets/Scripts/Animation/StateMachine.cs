@@ -59,6 +59,14 @@ namespace TripleBladeHorse.Animation
 		private List<Animation> animationDatas;
 		#endregion
 
+		#region Properties
+		public bool FlipX
+		{
+			get => _armature.armature.flipX;
+			set => _armature.armature.flipX = value;
+		}
+		#endregion
+
 		#region Events
 		public event Action<AnimationEventArg> OnAnimationStateChange;
 		public event Action<FrameEventEventArg> OnReceiveFrameEvent;
@@ -80,6 +88,7 @@ namespace TripleBladeHorse.Animation
 		private void Update()
 		{
 			UpdateAnimation();
+			ResetToggleState();
 		}
 		#endregion
 
@@ -104,6 +113,11 @@ namespace TripleBladeHorse.Animation
 			return stateData._intMap[stateName];
 		}
 
+		public bool GetToggle(string stateName)
+		{
+			return stateData._toggleMap[stateName];
+		}
+
 		public void SetBool(string stateName, bool state)
 		{
 			stateData._boolMap[stateName] = state;
@@ -117,6 +131,11 @@ namespace TripleBladeHorse.Animation
 		public void SetInt(string stateName, int state)
 		{
 			stateData._intMap[stateName] = state;
+		}
+
+		public void SetToggle(string stateName, bool state)
+		{
+			stateData._toggleMap[stateName] = state;
 		}
 		#endregion
 
@@ -145,6 +164,11 @@ namespace TripleBladeHorse.Animation
 				stateData._intMap.Add(pair);
 			}
 
+			foreach (var pair in _data._toggleState)
+			{
+				stateData._toggleMap.Add(pair);
+			}
+
 			UpdateCurrentAnimation();
 		}
 
@@ -156,10 +180,22 @@ namespace TripleBladeHorse.Animation
 				print("nextAnim: " + transition.nextAnim);
 				var animation = GetAnimation(transition.nextAnim);
 
-				_armature.animation.FadeIn(
+				var anim = _armature.animation.FadeIn(
 					transition.nextAnim,
 					transition.transitionTime,
-					animation.playTimes).resetToPose = false;
+					animation.playTimes);
+
+				anim.timeScale = animation.timeScale;
+				anim.resetToPose = false;
+			}
+		}
+
+		private void ResetToggleState()
+		{
+			var keys = new List<string>(stateData._toggleMap.Keys);
+			foreach (var key in keys)
+			{
+				stateData._toggleMap[key] = false;
 			}
 		}
 
@@ -179,9 +215,7 @@ namespace TripleBladeHorse.Animation
 		{
 			foreach (var transition in transitions)
 			{
-				if ((transition.currentAnim == currentAnimaName ||
-					transition.currentAnim == Transition.Any) &&
-					transition.Test(stateData))
+				if (transition.Test(currentAnimaName, stateData))
 				{
 					return transition;
 				}

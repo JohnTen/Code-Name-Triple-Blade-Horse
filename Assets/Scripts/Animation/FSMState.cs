@@ -7,6 +7,7 @@ namespace TripleBladeHorse.Animation
 	public class FSMState
 	{
 		public Dictionary<string, bool> _boolMap;
+		public Dictionary<string, bool> _toggleMap;
 		public Dictionary<string, float> _floatMap;
 		public Dictionary<string, int> _intMap;
 		public Animation _current;
@@ -15,6 +16,7 @@ namespace TripleBladeHorse.Animation
 		public FSMState()
 		{
 			_boolMap = new Dictionary<string, bool>();
+			_toggleMap = new Dictionary<string, bool>();
 			_intMap = new Dictionary<string, int>();
 			_floatMap = new Dictionary<string, float>();
 		}
