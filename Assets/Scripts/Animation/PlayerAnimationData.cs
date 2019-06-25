@@ -20,12 +20,14 @@ namespace TripleBladeHorse.Animation
 			public const string ATK_Melee_Ground_1 = "ATK_Melee_Ground_1";
 			public const string ATK_Melee_Ground_2 = "ATK_Melee_Ground_2";
 			public const string ATK_Melee_Ground_3 = "ATK_Melee_Ground_3";
+			public const string Hitten_Ground = "Hitten_Ground";
 		}
 		
 		class Stat
 		{
 			public const string Jump = "Jump";
 			public const string MeleeAttack = "MeleeAttack";
+			public const string Stagger = "Stagger";
 			public const string Dash = "Dash";
 			public const string Airborne = "Airborne";
 			public const string Frozen = "Frozen";
@@ -33,8 +35,6 @@ namespace TripleBladeHorse.Animation
 			public const string BlockInput = "BlockInput";
 			public const string XSpeed = "XSpeed";
 			public const string YSpeed = "YSpeed";
-			public const string AttackStepSpeed = "AttackStepSpeed";
-			public const string AttackStepDistance = "AttackStepDistance";
 		}
 
 
@@ -61,6 +61,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.ATK_Melee_Ground_1, 2.5f, 1, 0.7f),
 				new Animation(Anim.ATK_Melee_Ground_2, 2.5f, 1, 0.7f),
 				new Animation(Anim.ATK_Melee_Ground_3, 2.5f, 1, 0.7f),
+				new Animation(Anim.Hitten_Ground, 0.5f, 1, 0.7f),
 			};
 		}
 
@@ -85,8 +86,6 @@ namespace TripleBladeHorse.Animation
 			{
 				new StrFloatPair() {Key = Stat.XSpeed, Value = 0},
 				new StrFloatPair() {Key = Stat.YSpeed, Value = 0},
-				new StrFloatPair() {Key = Stat.AttackStepSpeed, Value = 0},
-				new StrFloatPair() {Key = Stat.AttackStepDistance, Value = 0},
 			};
 
 			_intState = new List<StrIntPair>();
@@ -96,11 +95,40 @@ namespace TripleBladeHorse.Animation
 		{
 			_transitions = new List<Transition>()
 			{
+
+				//// Hitten_Ground
+				new Transition(
+					Transition.Any, Anim.Hitten_Ground, 0f,
+					(sd) => {
+						return sd._toggleMap[Stat.Stagger];
+					}),
+				new Transition(
+					Anim.Hitten_Ground, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Hitten_Ground, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
+					}),
+				new Transition(
+					Anim.Hitten_Ground, Anim.ATK_Melee_Ground_1, 0f,
+					(sd) => {
+						return sd._toggleMap[Stat.MeleeAttack];
+					}),
+
 				//// Idle_Ground
 				new Transition(
 					Anim.Idle_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
+					}),
+
+				new Transition(
+					Anim.Idle_Ground, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
 
 				new Transition(
@@ -125,6 +153,11 @@ namespace TripleBladeHorse.Animation
 					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
 				new Transition(
 					Anim.Run_Ground, Anim.Idle_Ground, 0.1f,
@@ -168,10 +201,27 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Jump_Ground, Anim.Droping, 0.1f,
 					(sd) => {
-						return sd._floatMap[Stat.YSpeed] <= 0;
+						return sd._floatMap[Stat.YSpeed] < 0;
+					}),
+				
+				//// Jump_Air
+				new Transition(
+					Anim.Jump_Air, Anim.Droping, 0.05f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] < 0;
+					}),
+				new Transition(
+					Anim.Jump_Air, Anim.Dash_Ground, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Dash];
 					}),
 
 				//// Droping
+				new Transition(
+					Anim.Droping, Anim.Jump_Air, 0.05f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] > 0 || sd._toggleMap[Stat.Jump];
+					}),
 				new Transition(
 					Anim.Droping, Anim.Dash_Ground, 0.05f,
 					(sd) => {
@@ -185,9 +235,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Droping_Buffering
 				new Transition(
+					Anim.Droping_Buffering, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._toggleMap[Stat.Jump];
+					}),
+				new Transition(
 					Anim.Droping_Buffering, Anim.Idle_Ground, 0.1f,
 					(sd) => {
-						return sd._current.completed;
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Droping_Buffering, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
 					}),
 				
 				//// ATK_Melee_Ground_1

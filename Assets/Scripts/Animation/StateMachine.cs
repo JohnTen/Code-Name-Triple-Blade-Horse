@@ -54,6 +54,8 @@ namespace TripleBladeHorse.Animation
 		[SerializeField] FSMData _data;
 		[SerializeField] UnityArmatureComponent _armature;
 
+		[Header("Debug")]
+		[SerializeField]
 		private FSMState stateData;
 		private List<Transition> transitions;
 		private List<Animation> animationDatas;

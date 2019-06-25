@@ -33,9 +33,19 @@ public class PlayerCharacter : MonoBehaviour
 		_mover.OnMovingStateChanged += HandleMovingStateChanged;
 		_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 		_input.OnReceivedInput += OnReceivedInputHandler;
+		_animator.OnAnimationStateChange += HandleAnimationStateChange;
 		_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 		_weaponSystem.OnPull += PullHandler;
 		_hitbox.OnHit += HandleOnHit;
+	}
+
+	private void HandleAnimationStateChange(AnimationEventArg eventArgs)
+	{
+		if (eventArgs._state == TripleBladeHorse.Animation.AnimationState.FadingIn &&
+			(eventArgs._animation.name == "ATK_Melee_Ground_1" ||
+			eventArgs._animation.name == "ATK_Melee_Ground_2" ||
+			eventArgs._animation.name == "ATK_Melee_Ground_3"))
+			_animator.SetBool("DelayInput", true);
 	}
 
 	private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
@@ -78,7 +88,6 @@ public class PlayerCharacter : MonoBehaviour
 	{
 		if (eventArgs.currentLandingState == LandingState.OnGround)
 		{
-			_animator.SetBool("Landing", true);
 			_animator.SetBool("Airborne", false);
 		}
 		else
@@ -131,7 +140,6 @@ public class PlayerCharacter : MonoBehaviour
 
 			case PlayerInputCommand.MeleeAttack:
 				_animator.SetToggle("MeleeAttack", true);
-				_animator.SetBool("DelayInput", true);
 				break;
 
 			case PlayerInputCommand.MeleeChargeAttack:
@@ -163,8 +171,7 @@ public class PlayerCharacter : MonoBehaviour
 			|| _mover.CurrentMovingState == MovingState.Dash
 			|| _mover.PullDelaying
 			|| _weaponSystem.Frozen;
-
-		_animator.SetBool("Landing", _groundDetector.IsOnGround);
+		
 		_input.DelayInput = _animator.GetBool("DelayInput");
 		_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
 
