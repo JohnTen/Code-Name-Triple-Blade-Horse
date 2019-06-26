@@ -1342,7 +1342,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &90987786
@@ -1431,6 +1431,7 @@ GameObject:
   - component: {fileID: 92026510}
   - component: {fileID: 92026509}
   - component: {fileID: 92026508}
+  - component: {fileID: 92026511}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -1552,6 +1553,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &92026511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92026506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &99909108
 GameObject:
   m_ObjectHideFlags: 0
@@ -3741,7 +3760,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &419932421
@@ -3866,7 +3885,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &420251509
@@ -4276,6 +4295,7 @@ GameObject:
   - component: {fileID: 460667959}
   - component: {fileID: 460667958}
   - component: {fileID: 460667957}
+  - component: {fileID: 460667960}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -4397,6 +4417,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &460667960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460667955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &466065854
 GameObject:
   m_ObjectHideFlags: 0
@@ -5233,7 +5271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -109.980865, y: -20.197231, z: 0}
+  m_LocalPosition: {x: -109.79437, y: -20.197231, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 926173655}
@@ -5447,6 +5485,7 @@ GameObject:
   - component: {fileID: 540623848}
   - component: {fileID: 540623847}
   - component: {fileID: 540623846}
+  - component: {fileID: 540623849}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -5568,6 +5607,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &540623849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540623844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &547936464
 GameObject:
   m_ObjectHideFlags: 0
@@ -6103,7 +6160,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &586838805
@@ -7626,7 +7683,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 710631603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -109.980865, y: -20.197231, z: 0}
+  m_LocalPosition: {x: -109.79437, y: -20.197231, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 363776902}
@@ -8103,6 +8160,7 @@ GameObject:
   - component: {fileID: 797008933}
   - component: {fileID: 797008932}
   - component: {fileID: 797008931}
+  - component: {fileID: 797008934}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -8224,6 +8282,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &797008934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797008929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &798789834
 GameObject:
   m_ObjectHideFlags: 0
@@ -9472,7 +9548,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!1 &891608206
@@ -9606,6 +9682,7 @@ GameObject:
   - component: {fileID: 891741088}
   - component: {fileID: 891741087}
   - component: {fileID: 891741086}
+  - component: {fileID: 891741089}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -9727,6 +9804,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &891741089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891741084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &897315727
 GameObject:
   m_ObjectHideFlags: 0
@@ -9955,7 +10050,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &907483043
@@ -10286,7 +10381,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!1 &925263198
@@ -10680,7 +10775,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &966329386
@@ -11077,7 +11172,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!1 &994162858
@@ -11128,7 +11223,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &994162861
@@ -11390,7 +11485,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1007701141
@@ -11766,7 +11861,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1041908843
@@ -12378,7 +12473,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1083036154
@@ -12852,7 +12947,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1140228074
@@ -15072,6 +15167,7 @@ GameObject:
   - component: {fileID: 1417522227}
   - component: {fileID: 1417522226}
   - component: {fileID: 1417522225}
+  - component: {fileID: 1417522228}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -15193,6 +15289,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1417522228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417522223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &1421933375
 GameObject:
   m_ObjectHideFlags: 0
@@ -15581,6 +15695,7 @@ GameObject:
   - component: {fileID: 1437055693}
   - component: {fileID: 1437055692}
   - component: {fileID: 1437055691}
+  - component: {fileID: 1437055694}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -15702,6 +15817,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1437055694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437055689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &1441714934
 GameObject:
   m_ObjectHideFlags: 0
@@ -18111,6 +18244,7 @@ GameObject:
   - component: {fileID: 1640161032}
   - component: {fileID: 1640161031}
   - component: {fileID: 1640161030}
+  - component: {fileID: 1640161033}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -18233,6 +18367,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1640161033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640161028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &1646000946
 GameObject:
   m_ObjectHideFlags: 0
@@ -18434,7 +18586,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1662623711
@@ -19725,6 +19877,7 @@ GameObject:
   - component: {fileID: 1765154059}
   - component: {fileID: 1765154058}
   - component: {fileID: 1765154057}
+  - component: {fileID: 1765154060}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -19846,6 +19999,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1765154060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765154055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &1768221665
 GameObject:
   m_ObjectHideFlags: 0
@@ -20496,7 +20667,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1804355428
@@ -20704,7 +20875,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1809614648
@@ -22150,7 +22321,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!1 &1962963157
@@ -22749,6 +22920,7 @@ GameObject:
   - component: {fileID: 1985982793}
   - component: {fileID: 1985982792}
   - component: {fileID: 1985982791}
+  - component: {fileID: 1985982794}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -22870,6 +23042,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1985982794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985982789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &1988016010
 GameObject:
   m_ObjectHideFlags: 0
@@ -22997,7 +23187,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &1988345244
@@ -23086,6 +23276,7 @@ GameObject:
   - component: {fileID: 1998422103}
   - component: {fileID: 1998422102}
   - component: {fileID: 1998422101}
+  - component: {fileID: 1998422104}
   m_Layer: 0
   m_Name: Symbol_Plarform
   m_TagString: Climbable
@@ -23207,6 +23398,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1998422104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998422099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canStick: 0
+  _canPullingJump: 0
+  _restoredStamina: 0
+  _maxStuckedKnife: 3
+  _pullForceFactor: 0
+  stuckObj: []
 --- !u!1 &2028032426
 GameObject:
   m_ObjectHideFlags: 0
@@ -23361,7 +23570,7 @@ MonoBehaviour:
   _canStick: 0
   _canPullingJump: 0
   _restoredStamina: 0
-  _maxStuckedKnife: 0
+  _maxStuckedKnife: 3
   _pullForceFactor: 0
   stuckObj: []
 --- !u!61 &2039121470
@@ -24922,6 +25131,181 @@ PrefabInstance:
         type: 3}
       propertyPath: _stamina.current
       value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.13070874
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9914208
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.9395486
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.8021264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.22741611
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9737977
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.957241
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.8733315
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.52849084
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.848939
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.1978981
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.590699
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.01981719
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9998036
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.99968684
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.741143
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.093566604
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.628582
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.3321725
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94321865
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.73111916
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.3651037
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04963519
+      objectReference: {fileID: 0}
+    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.76323
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.04567877
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9989562
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2354619
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.890847
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593844376978086918, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.604528
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891715440308728924, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.926678
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003648542374499285, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.874454
       objectReference: {fileID: 0}
     - target: {fileID: 4717973155428363883, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}

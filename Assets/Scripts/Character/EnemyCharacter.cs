@@ -17,6 +17,7 @@ namespace TripleBladeHorse
 		[SerializeField] HitFlash _flash;
 		[SerializeField] HitBox _hitBox;
 
+		bool dying;
 		FSM _animator;
 		ICharacterInput<EnemyInput> _input;
 
@@ -29,6 +30,15 @@ namespace TripleBladeHorse
 			_input.OnReceivedInput += HandleReceivedInput;
 			_hitBox.OnHit += HandleOnHit;
 			_launcher.Target = FindObjectOfType<PlayerCharacter>().HittingPoint;
+			_animator.Subscribe(Animation.AnimationState.Completed, HandleAnimationEvent);
+		}
+
+		private void HandleAnimationEvent(AnimationEventArg eventArgs)
+		{
+			if (eventArgs._animation.name != "Death_Ground")
+				return;
+
+			Destroy(this.gameObject);
 		}
 
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
@@ -39,11 +49,14 @@ namespace TripleBladeHorse
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
 			if (_state._hitPoints < 0)
-				Destroy(this.gameObject);
+			{
+				Dying();
+			}
 		}
 
 		private void Update()
 		{
+			if (dying) return;
 			_input.BlockInput = _animator.GetBool("BlockInput");
 			_state._frozen = _animator.GetBool("BlockInput");
 
@@ -56,6 +69,7 @@ namespace TripleBladeHorse
 
 		private void HandleReceivedInput(InputEventArg<EnemyInput> eventArgs)
 		{
+			if (dying) return;
 			switch (eventArgs._command)
 			{
 				case EnemyInput.Attack:
@@ -68,7 +82,10 @@ namespace TripleBladeHorse
 
 		private void Dying()
 		{
+			dying = true;
+			_animator.SetBool("Death", true);
 
+			GetComponent<Rigidbody2D>().simulated = false;
 		}
 	}
 }
