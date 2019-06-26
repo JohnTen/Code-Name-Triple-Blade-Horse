@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public interface IAttackable
+namespace TripleBladeHorse.Combat
 {
-	Faction Faction { get; }
-	AttackResult ReceiveAttack(AttackPackage attack);
+	public interface IAttackable
+	{
+		Faction Faction { get; }
+		AttackResult ReceiveAttack(AttackPackage attack);
 
-	event Action<AttackPackage, AttackResult> OnHit;
+		event Action<AttackPackage, AttackResult> OnHit;
+	}
 }

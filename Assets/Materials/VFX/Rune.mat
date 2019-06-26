@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rune
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e96d3d822c497804a9f5c6a5e83312f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 227d754c4a3ee014b8ee95d9028a9294, type: 3}
         m_Scale: {x: 1, y: 0.83}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -116,7 +116,11 @@ Material:
     - PositionUV_Y_1: 0
     - _Add_Fade_1: 0.465
     - _AutomaticLerp_Speed_1: 0.4051357
+    - _BlendOp: 0
     - _BumpScale: 1
+    - _CameraFadingEnabled: 0
+    - _CameraFarFadeDistance: 2
+    - _CameraNearFadeDistance: 1
     - _CircleFade_Dist_1: 0.2
     - _CircleFade_Dist_2: 0.2
     - _CircleFade_PosX_1: 0.5
@@ -133,13 +137,20 @@ Material:
     - _ColorHSV_Hue_1: 180
     - _ColorHSV_Saturation_1: 1
     - _ColorMask: 15
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DisplacementPack_Size_1: 3
     - _DisplacementPack_ValueX_1: 0
     - _DisplacementPack_ValueY_1: -0.374
+    - _DistortionBlend: 0.5
+    - _DistortionEnabled: 0
+    - _DistortionStrength: 1
+    - _DistortionStrengthScaled: 0
     - _DstBlend: 0
+    - _EmissionEnabled: 0
     - _EnableExternalAlpha: 0
+    - _FlipbookMode: 0
     - _Generate_3DPlanet_CloudDistortion_1: 1.744
     - _Generate_3DPlanet_CloudIntensity_1: -0.095
     - _Generate_3DPlanet_CloudVolume_1: 0.522
@@ -167,8 +178,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _InvFade: 1
+    - _InvFade: 0.47
     - _LerpUV_Fade_1: 0.097
+    - _LightingEnabled: 1
     - _MaskRGBA_Fade_1: 0
     - _MaskRGBA_Fade_2: 0
     - _Metallic: 0
@@ -189,6 +201,7 @@ Material:
     - _ShadowLight_PosY_1: -0.069
     - _ShadowLight_Precision_1: 10.774
     - _ShadowLight_Size_1: 1.102
+    - _Shininess: 0.078125
     - _ShinyFX_Intensity_1: 1.218
     - _ShinyFX_Pos_1: -0.07
     - _ShinyFX_Size_1: -0.092
@@ -198,6 +211,9 @@ Material:
     - _Simple_Displacement_Rotative_Value_1: -0.11
     - _Simple_Displacement_Value_1: 0.011
     - _SmoothnessTextureChannel: 0
+    - _SoftParticlesEnabled: 0
+    - _SoftParticlesFarFadeDistance: 1
+    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _SpriteFade: 1
     - _SpriteSheetUVAnimPack_Blend_1: 0.801642
@@ -222,6 +238,7 @@ Material:
     - _WorldGrassUV_Zoom_1: 0.001
     - _ZWrite: 1
     m_Colors:
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmisColor: {r: 0.2, g: 0.2, b: 0.2, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -242,4 +259,6 @@ Material:
     - _Palette4Swapping_Color4_1: {r: 1, g: 0.9803922, b: 0.8470589, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowLight_Color_1: {r: 1, g: 0.7728195, b: 0.1764706, a: 1}
-    - _TintColor: {r: 1, g: 1, b: 1, a: 0.5}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 0.011764706}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace JTUtility
+namespace JTUtility.Editor
 {
 	[CustomPropertyDrawer(typeof(PairedValue), true)]
 	public class PairedValueDrawer : PropertyDrawer
