@@ -164,8 +164,6 @@ namespace TripleBladeHorse
 
 		private void HandleMeleeInput()
 		{
-			if (Input.GetKey(KeyCode.LeftShift)) return;
-
 			if (_input.GetButtonDown("Melee"))
 			{
 				_meleeChargeTimer = 0;
@@ -206,8 +204,6 @@ namespace TripleBladeHorse
 				HandleControllerRangeInput();
 				return;
 			}
-
-			if (Input.GetKey(KeyCode.LeftShift)) return;
 
 			if (_input.GetButtonDown("Throw"))
 			{
@@ -281,7 +277,7 @@ namespace TripleBladeHorse
 
 		private void HandleDashInput()
 		{
-			if (Input.GetKey(KeyCode.LeftShift) && _input.GetButtonDown("Melee"))
+			if (_input.GetButtonDown("Dash"))
 			{
 				InvokeInputEvent(PlayerInputCommand.Dash);
 			}
@@ -289,27 +285,6 @@ namespace TripleBladeHorse
 
 		private void HandleWithdraw()
 		{
-			if (!_usingController && Input.GetKey(KeyCode.LeftShift))
-			{
-				if (_input.GetButton("Throw"))
-				{
-					_withdrawTimer += Time.deltaTime;
-					if (_withdrawTimer >= _withdrawTime)
-					{
-						InvokeInputEvent(PlayerInputCommand.WithdrawAll);
-					}
-				}
-				else if (_input.GetButtonUp("Throw"))
-				{
-					if (_withdrawTimer < _withdrawTime)
-					{
-						InvokeInputEvent(PlayerInputCommand.WithdrawOne);
-					}
-					_withdrawTimer = 0;
-				}
-			}
-
-			if (!_usingController) return;
 			if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
 			{
 				_withdrawTimer += Time.deltaTime;

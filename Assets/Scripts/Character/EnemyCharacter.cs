@@ -74,7 +74,7 @@ namespace TripleBladeHorse
 			{
 				case EnemyInput.Attack:
 					_animator.SetToggle("Attack", true);
-					_launcher.LaunchDirection = _state._facingRight ? Vector2.right : Vector2.left;
+					_launcher.LaunchDirection = _input.GetMovingDirection().x > 0 ? Vector2.right : Vector2.left;
 					_launcher.Launch();
 					break;
 			}
@@ -84,6 +84,7 @@ namespace TripleBladeHorse
 		{
 			dying = true;
 			_animator.SetBool("Death", true);
+			_launcher.Interrupt();
 
 			GetComponent<Rigidbody2D>().simulated = false;
 		}
