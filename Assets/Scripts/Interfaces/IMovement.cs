@@ -49,17 +49,13 @@ namespace TripleBladeHorse.Movement
 	public interface ICanJump : ICanChangeMoveState
 	{
 		void Jump();
-
-		event Action OnJump;
 	}
 
 	public interface ICanDash : ICanChangeMoveState
 	{
 		void Dash(Vector2 direction);
-
-		event Action OnDashingBegin;
-		event Action OnDashingDelayBegin;
-		event Action OnDashingFinished;
+		event Action OnBeginDashingInvincible;
+		event Action OnStopDashingInvincible;
 	}
 
 	public interface ICanDetectGround

@@ -12,7 +12,6 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] Transform[] sheathPositions;
 		[SerializeField] Queue<ThrowingKnife> knifesInSheath;
 		[SerializeField] List<ThrowingKnife> allKnifes;
-		[SerializeField] ThrowingKnife knifePrefab;
 
 		public float ReloadSpeed { get; set; } = 3;
 		public Transform LaunchPosition => launchPosition;
@@ -25,17 +24,11 @@ namespace TripleBladeHorse.Combat
 		private void Awake()
 		{
 			knifesInSheath = new Queue<ThrowingKnife>();
-			allKnifes = new List<ThrowingKnife>();
 
-			for (int i = 0; i < numberOfKnife; i++)
+			for (int i = 0; i < allKnifes.Count; i++)
 			{
-				var knife = Instantiate(knifePrefab.gameObject).GetComponent<ThrowingKnife>();
-				knife.transform.parent = sheathPositions[i];
-				knife.transform.position = sheathPositions[i].position;
-				knife.transform.rotation = sheathPositions[i].rotation;
-				knife.SetSheath(this);
-				knifesInSheath.Enqueue(knife);
-				allKnifes.Add(knife);
+				allKnifes[i].SetSheath(this);
+				knifesInSheath.Enqueue(allKnifes[i]);
 			}
 		}
 

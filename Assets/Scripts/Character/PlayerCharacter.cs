@@ -20,6 +20,9 @@ namespace TripleBladeHorse
 		IAttackable _hitbox;
 		HitFlash _hitFlash;
 
+		List<Collider2D> colliders;
+		List<int> colliderLayers;
+
 		public Transform HittingPoint => _hittingPoint;
 
 		private void Awake()
@@ -32,13 +35,42 @@ namespace TripleBladeHorse
 			_hitbox = GetComponentInChildren<IAttackable>();
 			_hitFlash = GetComponent<HitFlash>();
 
+			colliders = new List<Collider2D>();
+			colliderLayers = new List<int>();
+
 			_mover.OnMovingStateChanged += HandleMovingStateChanged;
+			_mover.OnBeginDashingInvincible += HandleDashingInvincibleBegin;
+			_mover.OnStopDashingInvincible += HandleDashingInvincibleStop;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 			_input.OnReceivedInput += OnReceivedInputHandler;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += PullHandler;
 			_hitbox.OnHit += HandleOnHit;
+		}
+
+		private void HandleDashingInvincibleStop()
+		{
+			if (colliders.Count == 0) return;
+			
+			for (int i = 0; i < colliders.Count; i++)
+			{
+				colliders[i].gameObject.layer = colliderLayers[i];
+			}
+
+			colliders.Clear();
+		}
+
+		private void HandleDashingInvincibleBegin()
+		{
+			colliderLayers.Clear();
+			GetComponentsInChildren(colliders);
+
+			foreach (var collider in colliders)
+			{
+				colliderLayers.Add(collider.gameObject.layer);
+				collider.gameObject.layer = LayerMask.NameToLayer("PlayerDash");
+			}
 		}
 
 		private void HandleAnimationEvent(AnimationEventArg eventArgs)

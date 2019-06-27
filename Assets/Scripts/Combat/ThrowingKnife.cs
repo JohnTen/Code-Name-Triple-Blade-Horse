@@ -77,10 +77,10 @@ namespace TripleBladeHorse.Combat
 			transform.position = sheath.LaunchPosition.position;
 			transform.right = direction;
 
-			Activate(AttackPackage.CreateNewPackage(), null);
 			_attackMove = isPiercing ? chargedAttack : normalAttack;
 			_defaultType = isPiercing ? AttackType.ChargedRange : AttackType.Range;
 			_baseAttackRate = normalAttackRate;
+			Activate(AttackPackage.CreateNewPackage(), _attackMove);
 
 
 			return true;
@@ -92,10 +92,11 @@ namespace TripleBladeHorse.Combat
 
 			piercing = false;
 			state = KnifeState.Hover;
-
+			
 			_attackMove = floatAttack;
 			_defaultType = AttackType.Float;
 			_baseAttackRate = floatAttackRate;
+			Activate(AttackPackage.CreateNewPackage(), _attackMove);
 
 			return true;
 		}
@@ -107,10 +108,11 @@ namespace TripleBladeHorse.Combat
 
 			transform.parent = null;
 			state = KnifeState.Returning;
-
+			
 			_attackMove = piercing ? chargedAttack : normalAttack;
 			_defaultType = piercing ? AttackType.ChargedRange : AttackType.Range;
 			_baseAttackRate = normalAttackRate;
+			Activate(AttackPackage.CreateNewPackage(), _attackMove);
 
 			if (stuckOn != null)
 			{
@@ -149,11 +151,13 @@ namespace TripleBladeHorse.Combat
 		private void Flying()
 		{
 			Physics2D.queriesHitTriggers = false;
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength, rayCastMask);
+			Physics2D.queriesStartInColliders = true;
+			var distance = speed * Time.deltaTime + bladeLength;
+			var hits = Physics2D.RaycastAll(transform.position, transform.right, distance, rayCastMask);
 			transform.position += transform.right * speed * Time.deltaTime;
 			traveledDistance += speed * Time.deltaTime;
 
-			if (hit.collider != null)
+			foreach (var hit in hits)
 			{
 				HandleFlyingCollision(hit);
 			}
@@ -165,6 +169,7 @@ namespace TripleBladeHorse.Combat
 		private void Returning()
 		{
 			var dir = sheath.transform.position - transform.position;
+			var distance = speed * Time.deltaTime + bladeLength;
 
 			if (dir.sqrMagnitude <= backDistance * backDistance)
 			{
@@ -180,10 +185,12 @@ namespace TripleBladeHorse.Combat
 
 			transform.right = dir;
 
-			Debug.DrawRay(transform.position, transform.right * (speed * Time.deltaTime + bladeLength), Color.red);
+			Debug.DrawRay(transform.position, transform.right * distance, Color.red);
 
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, speed * Time.deltaTime + bladeLength, rayCastMask);
-			if (hit.collider != null)
+			Physics2D.queriesHitTriggers = false;
+			Physics2D.queriesStartInColliders = true;
+			var hits = Physics2D.RaycastAll(transform.position, transform.right, distance, rayCastMask);
+			foreach (var hit in hits)
 			{
 				TryAttack(hit.collider.transform);
 			}
@@ -199,9 +206,11 @@ namespace TripleBladeHorse.Combat
 			if (hoverTimer > hoveringDuration)
 				Withdraw();
 
+			Physics2D.queriesHitTriggers = false;
+			Physics2D.queriesStartInColliders = true;
 			Debug.DrawRay(transform.position, transform.right * bladeLength, Color.red);
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, bladeLength, rayCastMask);
-			if (hit.collider != null)
+			var hits = Physics2D.RaycastAll(transform.position, transform.right, bladeLength, rayCastMask);
+			foreach (var hit in hits)
 			{
 				TryAttack(hit.collider.transform);
 			}
@@ -225,7 +234,7 @@ namespace TripleBladeHorse.Combat
 			var stickable = hit.collider.GetComponent<ICanStickKnife>();
 			var attackable = hit.collider.GetComponent<IAttackable>();
 
-			if (stickable != null && stickable.TryStick(this.gameObject))
+			if (!Stuck && stickable != null && stickable.TryStick(this.gameObject))
 			{
 				Stuck = true;
 				state = KnifeState.Stuck;

@@ -56,9 +56,9 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.Jump_Air, 2, 1, 0.2f),
 				new Animation(Anim.Droping, 1, 1, 0f),
 				new Animation(Anim.Droping_Buffering, 3, 1, 0.3f),
-				new Animation(Anim.ATK_Melee_Ground_1, 1f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_2, 1f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_3, 1f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_1, 1.25f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_2, 1.25f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_3, 1.25f, 1, 0.7f),
 				new Animation(Anim.Hitten_Ground, 0.5f, 1, 0.7f),
 			};
 		}

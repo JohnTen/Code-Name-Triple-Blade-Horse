@@ -17,7 +17,9 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] float _knockbackSpeedFactor;
 
 		[Header("Dashing")]
-		[SerializeField] float _dashCancelRange;
+		[SerializeField] float _dashCancelPercent;
+		[SerializeField] float _dashInvincibleBeginPercent;
+		[SerializeField] float _dashInvincibleStopPercent;
 		[SerializeField] float _airDashingDistance;
 		[SerializeField] float _airDashingDuration;
 		[SerializeField] float _airDashingDelay;
@@ -38,6 +40,7 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] BoolEvent _onChangedFacingDirection;
 
 		[Header("Debug")]
+		[SerializeField] float _currentDashingPercent;
 		[SerializeField] float _attackStepSpeed;
 		[SerializeField] float _pullDelayTimer;
 		[SerializeField] Vector2 _attackStepDirection;
@@ -55,6 +58,7 @@ namespace TripleBladeHorse.Movement
 		float _gravityScale;
 		float _airborneTime;
 		float _deservedDashingDistance;
+		float _leftDashingDistance;
 		float _dashingDelayTimer;
 		float _dashingSpeed;
 
@@ -106,10 +110,8 @@ namespace TripleBladeHorse.Movement
 
 		#region Events
 		public event Action<bool> OnChangeDirection;
-		public event Action OnJump;
-		public event Action OnDashingBegin;
-		public event Action OnDashingDelayBegin;
-		public event Action OnDashingFinished;
+		public event Action OnBeginDashingInvincible;
+		public event Action OnStopDashingInvincible;
 		public event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
 		public event Action<ICanChangeMoveState, LandingEventArgs> OnLandingStateChanged;
 		#endregion
@@ -165,6 +167,8 @@ namespace TripleBladeHorse.Movement
 			if (!_dashing) return;
 
 			_dashingDirection = Vector2.zero;
+			if (_currentDashingPercent > _dashInvincibleBeginPercent)
+				OnStopDashingInvincible?.Invoke();
 
 			_rigidbody.gravityScale = _gravityScale;
 			_deservedDashingDistance = 0;
@@ -172,7 +176,6 @@ namespace TripleBladeHorse.Movement
 			_dashingDirection = Vector2.zero;
 			_dashing = false;
 			_airborneTime = 0;
-			OnDashingFinished?.Invoke();
 		}
 
 		public void Dash(Vector2 direction)
@@ -185,28 +188,28 @@ namespace TripleBladeHorse.Movement
 
 			_dashing = true;
 			_dashingDirection = GetOctadDirection(direction);
+			_currentDashingPercent = 0;
 
 			if (!_groundDetector.IsOnGround || _dashingDirection.y > 0)
 			{
 				_dashingDelayTimer = _airDashingDelay;
 				_deservedDashingDistance = _airDashingDistance;
+				_leftDashingDistance = _airDashingDistance;
 				_dashingSpeed = _airDashingDistance / _airDashingDuration;
 			}
 			else
 			{
 				_dashingDelayTimer = _groundDashingDelay;
 				_deservedDashingDistance = _groundDashingDistance;
+				_leftDashingDistance = _groundDashingDistance;
 				_dashingSpeed = _groundDashingDistance / _groundDashingDuration;
 			}
-
-			OnDashingBegin?.Invoke();
 		}
 
 		public void Jump()
 		{
 			if (!_groundDetector.IsOnGround) return;
-
-			OnJump?.Invoke();
+			
 			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * _rigidbody.gravityScale);
 
 			CurrentMovingState = MovingState.Airborne;
@@ -242,6 +245,7 @@ namespace TripleBladeHorse.Movement
 			_movementVector = Vector2.zero;
 
 			CancelDash();
+			BlockInput = false;
 			_knockbackVector = Vector2.zero;
 		}
 
@@ -310,24 +314,34 @@ namespace TripleBladeHorse.Movement
 
 			_velocity = Vector2.zero;
 			_rigidbody.velocity = Vector2.zero;
-			if (_deservedDashingDistance > float.Epsilon)
+			if (_leftDashingDistance > float.Epsilon)
 			{
+				var previousPercent = _currentDashingPercent;
 				var dashingDistance = _dashingSpeed * Time.deltaTime;
 				var velocity = ApplyPhysicalContactEffects(_dashingDirection);
 
-				if (dashingDistance > _deservedDashingDistance)
-					dashingDistance = _deservedDashingDistance;
+				if (dashingDistance > _leftDashingDistance)
+					dashingDistance = _leftDashingDistance;
 
 				velocity *= dashingDistance;
-				_deservedDashingDistance -= dashingDistance;
+				_leftDashingDistance -= dashingDistance;
 
 				_rigidbody.MovePosition((Vector2)transform.position + velocity);
 
-				BlockInput = _deservedDashingDistance < _dashCancelRange;
+				_currentDashingPercent = 1 - _leftDashingDistance / _deservedDashingDistance;
 
-				if (_deservedDashingDistance <= float.Epsilon)
+				BlockInput = _currentDashingPercent >= _dashCancelPercent;
+
+				if (previousPercent < _dashInvincibleBeginPercent &&
+					_currentDashingPercent > _dashInvincibleBeginPercent)
 				{
-					OnDashingDelayBegin?.Invoke();
+					OnBeginDashingInvincible?.Invoke();
+				}
+
+				if (previousPercent < _dashInvincibleStopPercent &&
+					_currentDashingPercent >= _dashInvincibleStopPercent)
+				{
+					OnStopDashingInvincible?.Invoke();
 				}
 
 				return;
@@ -344,7 +358,6 @@ namespace TripleBladeHorse.Movement
 			_dashing = false;
 			_airborneTime = 0;
 			BlockInput = false;
-			OnDashingFinished?.Invoke();
 		}
 
 		private void Moving(Vector3 direction)

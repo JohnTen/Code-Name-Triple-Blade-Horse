@@ -201,7 +201,6 @@ namespace TripleBladeHorse.Animation
 			var transition = GetTransition(stateData._current.name);
 			if (transition != null)
 			{
-				print("nextAnim: " + transition.nextAnim);
 				var animation = GetAnimation(transition.nextAnim);
 
 				var anim = _armature.animation.FadeIn(
