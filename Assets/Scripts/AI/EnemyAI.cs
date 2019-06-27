@@ -7,6 +7,8 @@ namespace TripleBladeHorse.AI
 {
 	public class EnemyAI : MonoBehaviour
 	{
+		[SerializeField] float _attackInterval = 2f;
+
 		Root enemyRoot = BT.Root();
 		public EnemyBehave enemyBehave;
 
@@ -16,7 +18,7 @@ namespace TripleBladeHorse.AI
 				BT.Selector().OpenBranch(
 				   BT.If(enemyBehave.AttackAction).OpenBranch(
 					   BT.Call(enemyBehave.Attack),
-					   BT.Wait(2.0f)
+					   BT.Wait(_attackInterval)
 					),
 				   BT.If(enemyBehave.AlertAction).OpenBranch(
 					   BT.Call(enemyBehave.MoveToPlayer)
@@ -25,13 +27,10 @@ namespace TripleBladeHorse.AI
 				   )
 		   );
 		}
-
-		// Update is called once per frame
+		
 		void Update()
 		{
 			enemyRoot.Tick();
 		}
-
-
 	}
 }
