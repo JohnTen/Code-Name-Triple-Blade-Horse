@@ -19,7 +19,7 @@ namespace TripleBladeHorse.AI
 		[SerializeField] float _stopTime = 1;
 		[SerializeField] float _error = 1;
 		[SerializeField] bool _pause = false;
-		[SerializeField] bool partol;
+		[SerializeField] bool _partol;
 
 		Vector2 _move;
 		Vector2 _aim;

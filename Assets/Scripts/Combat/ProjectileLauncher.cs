@@ -27,5 +27,11 @@ namespace TripleBladeHorse.Combat
 			projectile.InitializeDirection(LaunchDirection);
 			projectile.Activate(AttackPackage.CreateNewPackage(), null);
 		}
+
+		public void Interrupt()
+		{
+			CancelInvoke();
+			_launchEffect.Stop();
+		}
 	}
 }
