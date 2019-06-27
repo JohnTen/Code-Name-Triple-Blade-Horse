@@ -251,14 +251,14 @@ namespace TripleBladeHorse.Animation
 				
 				//// ATK_Melee_Ground_1
 				new Transition(
-					Anim.ATK_Melee_Ground_1, Anim.ATK_Melee_Ground_2, 0f,
+					Anim.ATK_Melee_Ground_1, Anim.ATK_Melee_Ground_2, 0.05f,
 					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack];
+						return sd._toggleMap[Stat.MeleeAttack] && !sd._boolMap[Stat.DelayInput];
 					}),
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Jump_Ground, 0.1f,
 					(sd) => {
-						return sd._toggleMap[Stat.Jump];
+						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.DelayInput];
 					}),
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Idle_Ground, 0.1f,
@@ -273,7 +273,7 @@ namespace TripleBladeHorse.Animation
 				
 				//// ATK_Melee_Ground_2
 				new Transition(
-					Anim.ATK_Melee_Ground_2, Anim.ATK_Melee_Ground_3, 0f,
+					Anim.ATK_Melee_Ground_2, Anim.ATK_Melee_Ground_3, 0.05f,
 					(sd) => {
 						return sd._toggleMap[Stat.MeleeAttack];
 					}),
@@ -295,7 +295,7 @@ namespace TripleBladeHorse.Animation
 				
 				//// ATK_Melee_Ground_3
 				new Transition(
-					Anim.ATK_Melee_Ground_3, Anim.ATK_Melee_Ground_1, 0f,
+					Anim.ATK_Melee_Ground_3, Anim.ATK_Melee_Ground_1, 0.05f,
 					(sd) => {
 						return sd._toggleMap[Stat.MeleeAttack];
 					}),

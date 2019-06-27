@@ -27,7 +27,12 @@ namespace TripleBladeHorse.Animation
 		#endregion
 
 		#region Events
-		public event Action<AnimationEventArg> OnAnimationStateChange;
+		event Action<AnimationEventArg> OnAnimationFadingIn;
+		event Action<AnimationEventArg> OnAnimationFadeInComplete;
+		event Action<AnimationEventArg> OnAnimationFadingOut;
+		event Action<AnimationEventArg> OnAnimationFadeOutComplete;
+		event Action<AnimationEventArg> OnAnimationStart;
+		event Action<AnimationEventArg> OnAnimationCompleted;
 		public event Action<FrameEventEventArg> OnReceiveFrameEvent;
 		#endregion
 
@@ -95,6 +100,66 @@ namespace TripleBladeHorse.Animation
 		public void SetToggle(string stateName, bool state)
 		{
 			stateData._toggleMap[stateName] = state;
+		}
+
+		public void Subscribe(AnimationState state, Action<AnimationEventArg> handler)
+		{
+			switch (state)
+			{
+				case AnimationState.FadingIn:
+					OnAnimationFadingIn += handler;
+					break;
+
+				case AnimationState.FadeInComplete:
+					OnAnimationFadeInComplete += handler;
+					break;
+
+				case AnimationState.FadingOut:
+					OnAnimationFadingOut += handler;
+					break;
+
+				case AnimationState.FadeOutComplete:
+					OnAnimationFadeOutComplete += handler;
+					break;
+
+				case AnimationState.Start:
+					OnAnimationStart += handler;
+					break;
+
+				case AnimationState.Completed:
+					OnAnimationCompleted += handler;
+					break;
+			}
+		}
+
+		public void Unsubscribe(AnimationState state, Action<AnimationEventArg> handler)
+		{
+			switch (state)
+			{
+				case AnimationState.FadingIn:
+					OnAnimationFadingIn -= handler;
+					break;
+
+				case AnimationState.FadeInComplete:
+					OnAnimationFadeInComplete -= handler;
+					break;
+
+				case AnimationState.FadingOut:
+					OnAnimationFadingOut -= handler;
+					break;
+
+				case AnimationState.FadeOutComplete:
+					OnAnimationFadeOutComplete -= handler;
+					break;
+
+				case AnimationState.Start:
+					OnAnimationStart -= handler;
+					break;
+
+				case AnimationState.Completed:
+					OnAnimationCompleted -= handler;
+					break;
+			}
 		}
 		#endregion
 
@@ -200,7 +265,7 @@ namespace TripleBladeHorse.Animation
 				stateData._previous.playing = false;
 				stateData._previous.fadingIn = false;
 
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.FadingOut, stateData._previous));
+				OnAnimationFadingOut?.Invoke(new AnimationEventArg(AnimationState.FadingOut, stateData._previous));
 			}
 			else if (type == EventObject.FADE_IN)
 			{
@@ -209,30 +274,30 @@ namespace TripleBladeHorse.Animation
 				stateData._current.fadeInComplete = false;
 				stateData._current.playing = false;
 				stateData._current.completed = false;
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.FadingIn, stateData._current));
+				OnAnimationFadingIn?.Invoke(new AnimationEventArg(AnimationState.FadingIn, stateData._current));
 			}
 			else if (type == EventObject.FADE_OUT_COMPLETE)
 			{
 				stateData._previous.fadingOut = false;
 				stateData._previous.fadeOutComplete = true;
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.FadeOutComplete, stateData._previous));
+				OnAnimationFadeOutComplete?.Invoke(new AnimationEventArg(AnimationState.FadeOutComplete, stateData._previous));
 			}
 			else if (type == EventObject.FADE_IN_COMPLETE)
 			{
 				stateData._current.fadeInComplete = true;
 				stateData._current.fadingIn = false;
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.FadeInComplete, stateData._current));
+				OnAnimationFadeInComplete?.Invoke(new AnimationEventArg(AnimationState.FadeInComplete, stateData._current));
 			}
 			else if (type == EventObject.START)
 			{
 				stateData._current.playing = true;
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.Start, stateData._current));
+				OnAnimationStart?.Invoke(new AnimationEventArg(AnimationState.Start, stateData._current));
 			}
 			else if (type == EventObject.COMPLETE)
 			{
 				stateData._current.completed = true;
 				stateData._current.playing = false;
-				OnAnimationStateChange?.Invoke(new AnimationEventArg(AnimationState.Completed, stateData._current));
+				OnAnimationCompleted?.Invoke(new AnimationEventArg(AnimationState.Completed, stateData._current));
 			}
 		}
 

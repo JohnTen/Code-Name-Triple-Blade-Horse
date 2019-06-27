@@ -35,19 +35,38 @@ namespace TripleBladeHorse
 			_mover.OnMovingStateChanged += HandleMovingStateChanged;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 			_input.OnReceivedInput += OnReceivedInputHandler;
-			_animator.OnAnimationStateChange += HandleAnimationStateChange;
+			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += PullHandler;
 			_hitbox.OnHit += HandleOnHit;
 		}
 
-		private void HandleAnimationStateChange(AnimationEventArg eventArgs)
+		private void HandleAnimationEvent(AnimationEventArg eventArgs)
 		{
-			if (eventArgs._state == TripleBladeHorse.Animation.AnimationState.FadingIn &&
-				(eventArgs._animation.name == "ATK_Melee_Ground_1" ||
+			if (eventArgs._animation.name == "ATK_Melee_Ground_1" ||
 				eventArgs._animation.name == "ATK_Melee_Ground_2" ||
-				eventArgs._animation.name == "ATK_Melee_Ground_3"))
+				eventArgs._animation.name == "ATK_Melee_Ground_3")
+			{
 				_animator.SetBool("DelayInput", true);
+				_input.DelayInput = true;
+			}
+			else
+			{
+				_animator.SetBool("DelayInput", false);
+				_input.DelayInput = false;
+			}
+
+			if (eventArgs._animation.name == "Droping_Buffering" ||
+				eventArgs._animation.name == "Hitten_Ground")
+			{
+				_animator.SetBool("BlockInput", true);
+				_input.BlockInput = true;
+			}
+			else
+			{
+				_animator.SetBool("BlockInput", false);
+				_input.BlockInput = false;
+			}
 		}
 
 		private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
@@ -123,9 +142,11 @@ namespace TripleBladeHorse
 			switch (input._command)
 			{
 				case PlayerInputCommand.Jump:
+					if (!_groundDetector.IsOnGround) break;
 					Cancel();
 					_mover.Jump();
 					_animator.SetToggle("Jump", true);
+					print("Jump");
 					break;
 
 				case PlayerInputCommand.Dash:
@@ -133,8 +154,14 @@ namespace TripleBladeHorse
 
 					Cancel();
 					_state._stamina -= 1;
-					_mover.Dash(_input.GetMovingDirection());
+					var moveInput = _input.GetMovingDirection();
+					_mover.Dash(moveInput);
+
 					_animator.SetBool("Dash", true);
+					if (moveInput.x != 0)
+					{
+						_animator.FlipX = moveInput.x < 0;
+					}
 					break;
 
 				case PlayerInputCommand.MeleeBegin:
@@ -143,6 +170,7 @@ namespace TripleBladeHorse
 
 				case PlayerInputCommand.MeleeAttack:
 					_animator.SetToggle("MeleeAttack", true);
+					print("Attack");
 					break;
 
 				case PlayerInputCommand.MeleeChargeAttack:
@@ -201,6 +229,10 @@ namespace TripleBladeHorse
 		{
 			if (_mover.CurrentMovingState == MovingState.Dash)
 				_mover.CancelDash();
+
+			_animator.SetBool("Frozen", false);
+			_animator.SetBool("DelayInput", false);
+			_animator.SetBool("BlockInput", false);
 		}
 	}
 }
