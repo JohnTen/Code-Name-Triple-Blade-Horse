@@ -9,22 +9,30 @@ namespace TripleBladeHorse
 {
 	public class PlayerCharacter : MonoBehaviour
 	{
-		[SerializeField] PlayerState _state;
+		#region Fields
 		[SerializeField] Transform _hittingPoint;
-
+		[SerializeField] PlayerState _state;
+		
+		FSM _animator;
+		ICanDetectGround _groundDetector;
+		IAttackable _hitbox;
+		HitFlash _hitFlash;
 		ICharacterInput<PlayerInputCommand> _input;
 		PlayerMover _mover;
 		WeaponSystem _weaponSystem;
-		ICanDetectGround _groundDetector;
-		FSM _animator;
-		IAttackable _hitbox;
-		HitFlash _hitFlash;
 
-		List<Collider2D> colliders;
 		List<int> colliderLayers;
+		List<Collider2D> colliders;
 
+		float _enduranceRefreshTimer;
+		float _enduranceRecoverTimer;
+		#endregion
+
+		#region Properties
 		public Transform HittingPoint => _hittingPoint;
+		#endregion
 
+		#region Unity Messages
 		private void Awake()
 		{
 			_input = GetComponent<ICharacterInput<PlayerInputCommand>>();
@@ -42,38 +50,48 @@ namespace TripleBladeHorse
 			_mover.OnBeginDashingInvincible += HandleDashingInvincibleBegin;
 			_mover.OnStopDashingInvincible += HandleDashingInvincibleStop;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
-			_input.OnReceivedInput += OnReceivedInputHandler;
-			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationEvent);
+			_input.OnReceivedInput += HandleReceivedInput;
+			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeinEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
-			_weaponSystem.OnPull += PullHandler;
+			_weaponSystem.OnPull += HandlePull;
 			_hitbox.OnHit += HandleOnHit;
 		}
 
-		private void HandleDashingInvincibleStop()
+		private void Update()
 		{
-			if (colliders.Count == 0) return;
-			
-			for (int i = 0; i < colliders.Count; i++)
+			_state._frozen =
+				_animator.GetBool("Frozen")
+				|| _mover.CurrentMovingState == MovingState.Dash
+				|| _mover.PullDelaying
+				|| _weaponSystem.Frozen;
+
+			_input.DelayInput = _animator.GetBool("DelayInput");
+			_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
+
+			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
+			_mover.Move(moveInput);
+
+			if (_state._frozen)
 			{
-				colliders[i].gameObject.layer = colliderLayers[i];
+				_animator.SetFloat("XSpeed", 0);
+				_animator.SetFloat("YSpeed", 0);
+			}
+			else
+			{
+				_animator.SetFloat("XSpeed", moveInput.x);
+				_animator.SetFloat("YSpeed", _mover.Velocity.y);
+				if (moveInput.x != 0)
+				{
+					_animator.FlipX = moveInput.x < 0;
+				}
 			}
 
-			colliders.Clear();
+			HandleEndurance();
 		}
+		#endregion
 
-		private void HandleDashingInvincibleBegin()
-		{
-			colliderLayers.Clear();
-			GetComponentsInChildren(colliders);
-
-			foreach (var collider in colliders)
-			{
-				colliderLayers.Add(collider.gameObject.layer);
-				collider.gameObject.layer = LayerMask.NameToLayer("PlayerDash");
-			}
-		}
-
-		private void HandleAnimationEvent(AnimationEventArg eventArgs)
+		#region Event Handlers
+		private void HandleAnimationFadeinEvent(AnimationEventArg eventArgs)
 		{
 			if (eventArgs._animation.name == "ATK_Melee_Ground_1" ||
 				eventArgs._animation.name == "ATK_Melee_Ground_2" ||
@@ -122,20 +140,47 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleOnHit(AttackPackage attack, AttackResult result)
+		private void HandleDashingInvincibleBegin()
 		{
-			_hitFlash.Flash();
-			_state._hitPoints -= result._finalDamage;
-			_state._endurance -= result._finalFatigue;
-			_mover.Knockback(attack._fromDirection * attack._knockback);
+			colliderLayers.Clear();
+			GetComponentsInChildren(colliders);
 
-			if (_state._hitPoints <= 0)
+			foreach (var collider in colliders)
 			{
-				print("Player Dead");
-				_mover.ResetMovement();
-				_weaponSystem.ResetWeapon();
-				RecoverPoint.MainRespawn(true);
+				colliderLayers.Add(collider.gameObject.layer);
+				collider.gameObject.layer = LayerMask.NameToLayer("PlayerDash");
 			}
+		}
+
+		private void HandleDashingInvincibleStop()
+		{
+			if (colliders.Count == 0) return;
+
+			for (int i = 0; i < colliders.Count; i++)
+			{
+				colliders[i].gameObject.layer = colliderLayers[i];
+			}
+
+			colliders.Clear();
+		}
+
+		private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
+		{
+			if (eventArgs.lastMovingState == MovingState.Dash)
+			{
+				_animator.SetBool("Dash", false);
+			}
+		}
+
+		private void HandlePull(Vector3 direction)
+		{
+			_mover.Pull(direction);
+			_animator.SetToggle("Jump", true);
+		}
+
+		private void HandleLanding()
+		{
+			_animator.SetBool("BlockInput", true);
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -150,26 +195,29 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
+		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
-			if (eventArgs.lastMovingState == MovingState.Dash)
+			_hitFlash.Flash();
+			_state._hitPoints -= result._finalDamage;
+			_state._endurance -= result._finalFatigue;
+			_mover.Knockback(attack._fromDirection * attack._knockback);
+
+			if (_state._hitPoints <= 0)
 			{
-				_animator.SetBool("Dash", false);
+				print("Player Dead");
+				_mover.ResetMovement();
+				_weaponSystem.ResetWeapon();
+				RecoverPoint.MainRespawn(true);
+			}
+
+			if (_state._endurance <= 0)
+			{
+				_state._endurance.Current = 0;
+				_animator.SetToggle("Stagger", true);
 			}
 		}
 
-		private void PullHandler(Vector3 direction)
-		{
-			_mover.Pull(direction);
-			_animator.SetToggle("Jump", true);
-		}
-
-		private void LandingHandler()
-		{
-			_animator.SetBool("BlockInput", true);
-		}
-
-		private void OnReceivedInputHandler(InputEventArg<PlayerInputCommand> input)
+		private void HandleReceivedInput(InputEventArg<PlayerInputCommand> input)
 		{
 			switch (input._command)
 			{
@@ -226,37 +274,9 @@ namespace TripleBladeHorse
 					break;
 			}
 		}
+		#endregion
 
-		private void Update()
-		{
-			_state._frozen =
-				_animator.GetBool("Frozen")
-				|| _mover.CurrentMovingState == MovingState.Dash
-				|| _mover.PullDelaying
-				|| _weaponSystem.Frozen;
-
-			_input.DelayInput = _animator.GetBool("DelayInput");
-			_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
-
-			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
-			_mover.Move(moveInput);
-
-			if (_state._frozen)
-			{
-				_animator.SetFloat("XSpeed", 0);
-				_animator.SetFloat("YSpeed", 0);
-			}
-			else
-			{
-				_animator.SetFloat("XSpeed", moveInput.x);
-				_animator.SetFloat("YSpeed", _mover.Velocity.y);
-				if (moveInput.x != 0)
-				{
-					_animator.FlipX = moveInput.x < 0;
-				}
-			}
-		}
-
+		#region Private Methods
 		private void Cancel()
 		{
 			if (_mover.CurrentMovingState == MovingState.Dash)
@@ -266,5 +286,32 @@ namespace TripleBladeHorse
 			_animator.SetBool("DelayInput", false);
 			_animator.SetBool("BlockInput", false);
 		}
+
+		private void HandleEndurance()
+		{
+			if (_state._endurance < _state._enduranceSafeThreshlod)
+			{
+				_enduranceRefreshTimer += Time.deltaTime;
+			}
+			else
+			{
+				_enduranceRefreshTimer = 0;
+			}
+
+			if (_enduranceRefreshTimer >= _state._enduranceRefreshDelay)
+			{
+				_state._endurance.ResetCurrentValue();
+			}
+
+			if (_enduranceRecoverTimer < _state._enduranceRecoverDelay)
+			{
+				_enduranceRecoverTimer += Time.deltaTime;
+			}
+			else if (!_state._endurance.IsFull())
+			{
+				_state._endurance += _state._enduranceRecoverRate * Time.deltaTime;
+			}
+		}
+		#endregion
 	}
 }

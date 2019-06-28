@@ -43,7 +43,7 @@ namespace JTUtility
 
 		private void RecalculateCurrentValue()
 		{
-			current = (@base + addition) * multiplier;
+			current = @base * multiplier + addition;
 		}
 
 		public static implicit operator float(ModifiableValue value)

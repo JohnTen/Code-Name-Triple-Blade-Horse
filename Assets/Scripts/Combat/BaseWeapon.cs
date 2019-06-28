@@ -45,9 +45,9 @@ namespace TripleBladeHorse.Combat
 
 		protected virtual AttackPackage Process(AttackPackage target)
 		{
-			target._hitPointDamage += _baseHitPointDamage;
-			target._enduranceDamage += _baseEnduranceDamage;
-			target._knockback += _knockback;
+			target._hitPointDamage.Base += _baseHitPointDamage;
+			target._enduranceDamage.Base += _baseEnduranceDamage;
+			target._knockback.Base += _knockback;
 			target._attackRate = _baseAttackRate;
 			target._attackType = _defaultType;
 			target._faction = Faction;
