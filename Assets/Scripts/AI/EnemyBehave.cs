@@ -20,6 +20,7 @@ namespace TripleBladeHorse.AI
 		[SerializeField] float _error = 1;
 		[SerializeField] bool _pause = false;
 		[SerializeField] bool _partol;
+		[SerializeField] CharacterState _state;
 
 		Vector2 _move;
 		Vector2 _aim;
@@ -106,8 +107,8 @@ namespace TripleBladeHorse.AI
 		public bool AlertAction()
 		{
 			float distance;
-			distance = Mathf.Abs(this.transform.position.x - _character.position.x);
-			if (distance < _alertArea)
+			distance = this.transform.position.x - _character.position.x;
+			if (Mathf.Abs(distance) < _alertArea && (distance > 0) != _state._facingRight)
 			{
 				return true;
 			}

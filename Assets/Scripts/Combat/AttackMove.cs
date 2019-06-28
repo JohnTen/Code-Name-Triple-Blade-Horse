@@ -35,7 +35,7 @@ namespace TripleBladeHorse.Combat
 		{
 			target._hitPointDamage *= hitPointDamageFactor * damageCurve.Evaluate(target._chargedPercent);
 			target._enduranceDamage *= enduranceDamageFactor;
-			target._knockback += knockbackDistance;
+			target._knockback.Base += knockbackDistance;
 			target._triggerGapStagger = canTriggerGapStagger;
 			target._gapStaggerAnimation = gapStaggerAnimation;
 			target._staggerAnimation = staggerAnimation;

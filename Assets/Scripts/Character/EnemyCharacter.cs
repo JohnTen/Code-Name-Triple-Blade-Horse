@@ -19,6 +19,8 @@ namespace TripleBladeHorse
 
 		bool dying;
 		FSM _animator;
+		float _enduranceRefreshTimer;
+		float _enduranceRecoverTimer;
 		ICharacterInput<EnemyInput> _input;
 
 		private void Awake()
@@ -35,7 +37,7 @@ namespace TripleBladeHorse
 
 		private void HandleAnimationEvent(AnimationEventArg eventArgs)
 		{
-			if (eventArgs._animation.name != "Death_Ground")
+			if (eventArgs._animation.name != "Monster1_Death_Ground")
 				return;
 
 			Destroy(this.gameObject);
@@ -48,9 +50,17 @@ namespace TripleBladeHorse
 			_mover.Knockback(attack._fromDirection * attack._knockback);
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
+
 			if (_state._hitPoints < 0)
 			{
 				Dying();
+			}
+
+			if (_state._endurance <= 0)
+			{
+				_state._endurance.Current = 0;
+				_animator.SetToggle(attack._staggerAnimation, true);
+				_launcher.Interrupt();
 			}
 		}
 
@@ -78,6 +88,8 @@ namespace TripleBladeHorse
 					_launcher.Launch();
 					break;
 			}
+
+			HandleEndurance();
 		}
 
 		private void Dying()
@@ -87,6 +99,32 @@ namespace TripleBladeHorse
 			_launcher.Interrupt();
 
 			GetComponent<Rigidbody2D>().simulated = false;
+		}
+
+		private void HandleEndurance()
+		{
+			if (_state._endurance < _state._enduranceSafeThreshlod)
+			{
+				_enduranceRefreshTimer += Time.deltaTime;
+			}
+			else
+			{
+				_enduranceRefreshTimer = 0;
+			}
+
+			if (_enduranceRefreshTimer >= _state._enduranceRefreshDelay)
+			{
+				_state._endurance.ResetCurrentValue();
+			}
+
+			if (_enduranceRecoverTimer < _state._enduranceRecoverDelay)
+			{
+				_enduranceRecoverTimer += Time.deltaTime;
+			}
+			else if (!_state._endurance.IsFull())
+			{
+				_state._endurance += _state._enduranceRecoverRate * Time.deltaTime;
+			}
 		}
 	}
 }

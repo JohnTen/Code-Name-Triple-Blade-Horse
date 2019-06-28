@@ -29,6 +29,11 @@ namespace JTUtility
 			Current = Base;
 		}
 
+		public bool IsFull()
+		{
+			return Mathf.Abs(Current - Base) <= float.Epsilon;
+		}
+
 		public static implicit operator float(StateValue value)
 		{
 			return value.current;
