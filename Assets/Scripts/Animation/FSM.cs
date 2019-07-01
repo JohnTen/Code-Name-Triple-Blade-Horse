@@ -202,6 +202,20 @@ namespace TripleBladeHorse.Animation
 			if (transition != null)
 			{
 				var animation = GetAnimation(transition.nextAnim);
+				
+				// Update previous animation
+				stateData._previous = stateData._current;
+				stateData._previous.fadingOut = true;
+				stateData._previous.fadeOutComplete = false;
+				stateData._previous.playing = false;
+				stateData._previous.fadingIn = false;
+
+				// Update current animation
+				stateData._current = GetAnimation(transition.nextAnim);
+				stateData._current.fadingIn = true;
+				stateData._current.fadeInComplete = false;
+				stateData._current.playing = false;
+				stateData._current.completed = false;
 
 				var anim = _armature.animation.FadeIn(
 					transition.nextAnim,
@@ -258,21 +272,10 @@ namespace TripleBladeHorse.Animation
 		{
 			if (type == EventObject.FADE_OUT)
 			{
-				stateData._previous = GetAnimation(eventObject.animationState._animationData.name);
-				stateData._previous.fadingOut = true;
-				stateData._previous.fadeOutComplete = false;
-				stateData._previous.playing = false;
-				stateData._previous.fadingIn = false;
-
 				OnAnimationFadingOut?.Invoke(new AnimationEventArg(AnimationState.FadingOut, stateData._previous));
 			}
 			else if (type == EventObject.FADE_IN)
 			{
-				stateData._current = GetAnimation(eventObject.animationState._animationData.name);
-				stateData._current.fadingIn = true;
-				stateData._current.fadeInComplete = false;
-				stateData._current.playing = false;
-				stateData._current.completed = false;
 				OnAnimationFadingIn?.Invoke(new AnimationEventArg(AnimationState.FadingIn, stateData._current));
 			}
 			else if (type == EventObject.FADE_OUT_COMPLETE)
