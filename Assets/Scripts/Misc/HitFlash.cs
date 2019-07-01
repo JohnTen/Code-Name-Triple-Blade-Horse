@@ -31,7 +31,14 @@ namespace TripleBladeHorse
 				_defaultColor.Clear();
 				foreach (var renderer in _renderers)
 				{
-					_defaultColor.Add(renderer.material.color);
+					if (renderer.material.HasProperty("_Color"))
+					{
+						_defaultColor.Add(renderer.material.color);
+					}
+					else
+					{
+						_defaultColor.Add(Color.white);
+					}
 				}
 			}
 			else
