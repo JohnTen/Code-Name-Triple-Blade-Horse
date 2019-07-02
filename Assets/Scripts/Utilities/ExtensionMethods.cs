@@ -139,8 +139,8 @@ namespace JTUtility
 
 		public static Vector2 Rotate(this Vector2 vector, float angles)
 		{
-			var cosA = Mathf.Cos(angles);
-			var sinA = Mathf.Sin(angles);
+			var cosA = Mathf.Cos(angles * Mathf.Deg2Rad);
+			var sinA = Mathf.Sin(angles * Mathf.Deg2Rad);
 			var rotated = vector;
 
 			rotated.x = cosA * vector.x - sinA * vector.y;

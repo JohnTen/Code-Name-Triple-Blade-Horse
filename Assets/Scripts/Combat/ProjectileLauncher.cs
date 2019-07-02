@@ -10,13 +10,20 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] Projectile _prefab;
 		[SerializeField] float _delay = 0.3334f;
 		[SerializeField] ParticleSystem _launchEffect;
+		[SerializeField] AttackMove _move;
+		[SerializeField] Vector2 _launchDirection = Vector2.right;
 
 		public Transform Target { get; set; }
-		public Vector2 LaunchDirection { get; set; } = Vector2.right;
+		public Vector2 LaunchDirection
+		{
+			get => _launchDirection;
+			set => _launchDirection = value;
+		}
 
 		public void Launch()
 		{
-			_launchEffect.Play();
+			if (_launchEffect != null)
+				_launchEffect.Play();
 			Invoke("StartAttack", _delay);
 		}
 
@@ -25,7 +32,7 @@ namespace TripleBladeHorse.Combat
 			var projectile = Instantiate(_prefab.gameObject, _attackPoint.position, Quaternion.identity).GetComponent<Projectile>();
 			projectile.Target = Target;
 			projectile.InitializeDirection(LaunchDirection);
-			projectile.Activate(AttackPackage.CreateNewPackage(), null);
+			projectile.Activate(AttackPackage.CreateNewPackage(), _move);
 		}
 
 		public void Interrupt()

@@ -5,14 +5,12 @@
 /// http://www.shadero.com #Docs                            //
 //////////////////////////////////////////////////////////////
 
-Shader "Shadero Customs/New Shadero Sprite Shader 1"
+Shader "Shadero Customs/Fill Color"
 {
 Properties
 {
 [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-_Generate_Line_Size_1("_Generate_Line_Size_1", Range(0, 256)) = 1
-_MaskAlpha_Fade_1("_MaskAlpha_Fade_1", Range(0, 1)) = 0
-_SpriteFade("SpriteFade", Range(0, 1)) = 1.0
+_Color("_Color", COLOR) = (0,1,1,1)
 
 // required for UI.Mask
 [HideInInspector]_StencilComp("Stencil Comparison", Float) = 8
@@ -63,9 +61,7 @@ float4 color    : COLOR;
 };
 
 sampler2D _MainTex;
-float _SpriteFade;
-float _Generate_Line_Size_1;
-float _MaskAlpha_Fade_1;
+float4 _Color;
 
 v2f vert(appdata_t IN)
 {
@@ -76,28 +72,11 @@ OUT.color = IN.color;
 return OUT;
 }
 
-
-float4 Generate_Lines(float uvs, float size, float black)
-{
-float4 r = step(0.5 / size, fmod(uvs, 1 / size));
-r.a = saturate(r.a + black);
-return r;
-}
-float4 FadeToAlpha(float4 txt,float fade)
-{
-return float4(txt.rgb, txt.a*fade);
-}
-
 float4 frag (v2f i) : COLOR
 {
 float4 _MainTex_1 = tex2D(_MainTex, i.texcoord);
-float4 _Generate_Line_1 = Generate_Lines(i.texcoord.x,_Generate_Line_Size_1,0);
-float4 MaskAlpha_1=_MainTex_1;
-MaskAlpha_1.a = lerp(_Generate_Line_1.a, 1 - _Generate_Line_1.a,_MaskAlpha_Fade_1);
-float4 FinalResult = MaskAlpha_1;
-FinalResult.rgb *= i.color.rgb;
-FinalResult.a = FinalResult.a * _SpriteFade * i.color.a;
-return FinalResult;
+float4 result = float4(_Color.rgb, _MainTex_1.a * _Color.a * i.color.a);
+return result;
 }
 
 ENDCG

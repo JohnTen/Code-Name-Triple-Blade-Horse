@@ -68,22 +68,19 @@ namespace TripleBladeHorse
 			_input.DelayInput = _animator.GetBool("DelayInput");
 			_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
 
-			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
+			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
 			_mover.Move(moveInput);
 
 			if (_state._frozen)
 			{
 				_animator.SetFloat("XSpeed", 0);
-				_animator.SetFloat("YSpeed", 0);
+				_animator.SetFloat("YSpeed", _mover.Velocity.y);
 			}
 			else
 			{
 				_animator.SetFloat("XSpeed", moveInput.x);
 				_animator.SetFloat("YSpeed", _mover.Velocity.y);
-				if (moveInput.x != 0)
-				{
-					_animator.FlipX = moveInput.x < 0;
-				}
+				UpdateFacingDirection(moveInput);
 			}
 
 			HandleEndurance();
@@ -174,8 +171,8 @@ namespace TripleBladeHorse
 
 		private void HandlePull(Vector3 direction)
 		{
-			_mover.Pull(direction);
 			_animator.SetToggle("Jump", true);
+			_mover.Pull(direction);
 		}
 
 		private void HandleLanding()
@@ -230,17 +227,23 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.Dash:
-					if (_state._stamina <= 0) break;
 
 					Cancel();
-					_state._stamina -= 1;
 					var moveInput = _input.GetMovingDirection();
-					_mover.Dash(moveInput);
+					var airDash = !_groundDetector.IsOnGround || moveInput.y > 0;
+					
+					UpdateFacingDirection(moveInput);
 
-					_animator.SetBool("Dash", true);
-					if (moveInput.x != 0)
+					if (_state._stamina > 0)
 					{
-						_animator.FlipX = moveInput.x < 0;
+						_mover.Dash(moveInput);
+						_state._stamina -= 1;
+						_animator.SetBool("Dash", true);
+					}
+					else if (!airDash)
+					{
+						_mover.ShortDash(moveInput);
+						_animator.SetBool("Dash", true);
 					}
 					break;
 
@@ -310,6 +313,15 @@ namespace TripleBladeHorse
 			else if (!_state._endurance.IsFull())
 			{
 				_state._endurance += _state._enduranceRecoverRate * Time.deltaTime;
+			}
+		}
+		
+		void UpdateFacingDirection(Vector2 movementInput)
+		{
+			if (movementInput.x != 0)
+			{
+				_state._facingRight = movementInput.x > 0;
+				_animator.FlipX = !_state._facingRight;
 			}
 		}
 		#endregion

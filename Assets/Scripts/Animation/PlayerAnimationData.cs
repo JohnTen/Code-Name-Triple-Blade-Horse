@@ -11,11 +11,11 @@ namespace TripleBladeHorse.Animation
 		class Anim
 		{
 			public const string Idle_Ground = "Idle_Ground_New";
-			public const string Run_Ground = "Run_Ground";
+			public const string Run_Ground = "Run_Ground_old";
 			public const string Dash_Ground = "Dash_Ground";
 			public const string Jump_Ground = "Jump_Ground";
 			public const string Jump_Air = "Jump_Air";
-			public const string Droping = "Droping";
+			public const string Dropping = "Droping";
 			public const string Droping_Buffering = "Droping_Buffering";
 			public const string ATK_Melee_Ground_1 = "ATK_Melee_Ground_1";
 			public const string ATK_Melee_Ground_2 = "ATK_Melee_Ground_2";
@@ -50,15 +50,15 @@ namespace TripleBladeHorse.Animation
 			_animationDatas = new List<Animation>()
 			{
 				new Animation(Anim.Idle_Ground, 0.5f, 0, 0),
-				new Animation(Anim.Run_Ground, 1, 0, 0),
+				new Animation(Anim.Run_Ground, 1.5f, 0, 0),
 				new Animation(Anim.Dash_Ground, 1, 0, 0),
 				new Animation(Anim.Jump_Ground, 5, 1, 0.2f),
 				new Animation(Anim.Jump_Air, 2, 1, 0.2f),
-				new Animation(Anim.Droping, 1, 1, 0f),
+				new Animation(Anim.Dropping, 1, 1, 0f),
 				new Animation(Anim.Droping_Buffering, 3, 1, 0.3f),
-				new Animation(Anim.ATK_Melee_Ground_1, 1.25f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_2, 1.25f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_3, 1.25f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_1, 1.4f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_2, 1.4f, 1, 0.7f),
+				new Animation(Anim.ATK_Melee_Ground_3, 1.4f, 1, 0.7f),
 				new Animation(Anim.Hitten_Ground, 0.5f, 1, 0.7f),
 			};
 		}
@@ -94,7 +94,6 @@ namespace TripleBladeHorse.Animation
 		{
 			_transitions = new List<Transition>()
 			{
-
 				//// Hitten_Ground
 				new Transition(
 					Transition.Any, Anim.Hitten_Ground, 0f,
@@ -131,6 +130,12 @@ namespace TripleBladeHorse.Animation
 					}),
 
 				new Transition(
+					Anim.Idle_Ground, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] < 0.1f && sd._boolMap[Stat.Airborne];
+					}),
+
+				new Transition(
 					Anim.Idle_Ground, Anim.Run_Ground, 0.1f,
 					(sd) => {
 						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
@@ -151,12 +156,17 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
-						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
+						return sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
 					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
+					}),
+				new Transition(
+					Anim.Run_Ground, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] < 0.1f && sd._boolMap[Stat.Airborne];
 					}),
 				new Transition(
 					Anim.Run_Ground, Anim.Idle_Ground, 0.1f,
@@ -176,7 +186,7 @@ namespace TripleBladeHorse.Animation
 
 				//// Dash_Ground
 				new Transition(
-					Anim.Dash_Ground, Anim.Droping, 0.1f,
+					Anim.Dash_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
 						return !sd._boolMap[Stat.Dash] && sd._boolMap[Stat.Airborne];
 					}),
@@ -198,14 +208,19 @@ namespace TripleBladeHorse.Animation
 						return sd._boolMap[Stat.Dash];
 					}),
 				new Transition(
-					Anim.Jump_Ground, Anim.Droping, 0.1f,
+					Anim.Jump_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
+					}),
+				new Transition(
+					Anim.Jump_Ground, Anim.Droping_Buffering, 0.1f,
+					(sd) => {
+						return !sd._boolMap[Stat.Airborne] && sd._floatMap[Stat.YSpeed] <= float.Epsilon;
 					}),
 				
 				//// Jump_Air
 				new Transition(
-					Anim.Jump_Air, Anim.Droping, 0.05f,
+					Anim.Jump_Air, Anim.Dropping, 0.05f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
 					}),
@@ -214,20 +229,25 @@ namespace TripleBladeHorse.Animation
 					(sd) => {
 						return sd._boolMap[Stat.Dash];
 					}),
+				new Transition(
+					Anim.Jump_Air, Anim.Droping_Buffering, 0.1f,
+					(sd) => {
+						return !sd._boolMap[Stat.Airborne];
+					}),
 
 				//// Droping
 				new Transition(
-					Anim.Droping, Anim.Jump_Air, 0.05f,
+					Anim.Dropping, Anim.Jump_Air, 0.05f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] > 0 || sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
-					Anim.Droping, Anim.Dash_Ground, 0.05f,
+					Anim.Dropping, Anim.Dash_Ground, 0.05f,
 					(sd) => {
 						return sd._boolMap[Stat.Dash];
 					}),
 				new Transition(
-					Anim.Droping, Anim.Droping_Buffering, 0f,
+					Anim.Dropping, Anim.Droping_Buffering, 0f,
 					(sd) => {
 						return !sd._boolMap[Stat.Airborne];
 					}),
@@ -261,6 +281,11 @@ namespace TripleBladeHorse.Animation
 						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.DelayInput];
 					}),
 				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Ground, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Dash];
+					}),
+				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
@@ -283,6 +308,11 @@ namespace TripleBladeHorse.Animation
 						return sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Ground, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Dash];
+					}),
+				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
@@ -303,6 +333,11 @@ namespace TripleBladeHorse.Animation
 					Anim.ATK_Melee_Ground_3, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.Jump];
+					}),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Ground, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Dash];
 					}),
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Idle_Ground, 0.1f,

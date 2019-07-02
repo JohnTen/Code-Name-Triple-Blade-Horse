@@ -6,7 +6,7 @@ using JTUtility;
 namespace TripleBladeHorse.Movement
 {
 	[RequireComponent(typeof(Rigidbody2D))]
-	public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash, ICanBlockInput
+	public class PlayerMover : MonoBehaviour, ICanMove, ICanJump, ICanDash, ICanBlockInput, ICanStandOnMovingPlatform
 	{
 		#region Fields
 		[Header("Basic movement")]
@@ -26,6 +26,9 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] float _groundDashingDistance;
 		[SerializeField] float _groundDashingDuration;
 		[SerializeField] float _groundDashingDelay;
+		[SerializeField] float _shortGroundDashingDistance;
+		[SerializeField] float _shortGroundDashingDuration;
+		[SerializeField] float _shortGroundDashingDelay;
 		[SerializeField] Vector2 _dashingDirection;
 
 		[Header("Airborne Movement")]
@@ -48,9 +51,11 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] Vector2 _movementVector;
 		[SerializeField] Vector2 _knockbackVector;
 		[SerializeField] MovingState _currentMovingState;
+		[SerializeField] bool onPlatform;
+		[SerializeField] List<Collider2D> _ignoredColliders;
 
 
-		CharacterState _state;
+		PlayerState _state;
 		Rigidbody2D _rigidbody;
 		ICanDetectGround _groundDetector;
 
@@ -132,10 +137,11 @@ namespace TripleBladeHorse.Movement
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody2D>();
-			_state = GetComponent<CharacterState>();
+			_state = GetComponent<PlayerState>();
 			_groundDetector = GetComponent<ICanDetectGround>();
 			_groundDetector.OnLandingStateChanged += HandleLanding;
 			_contacts = new List<ContactPoint2D>();
+			_ignoredColliders = new List<Collider2D>();
 		}
 
 		private void FixedUpdate()
@@ -146,7 +152,7 @@ namespace TripleBladeHorse.Movement
 			if (_pullDelayTimer > 0)
 				_pullDelayTimer -= Time.deltaTime;
 
-			_rigidbody.GetContacts(_contacts);
+			UpdateContacts();
 
 			Moving(_movementVector);
 
@@ -155,12 +161,26 @@ namespace TripleBladeHorse.Movement
 
 		private void OnCollisionEnter2D(Collision2D collision)
 		{
-			print(collision.collider.name);
+			if (_ignoredColliders.Contains(collision.collider)) return;
+
+			var effector = collision.collider.GetComponent<PlatformEffector2D>();
+			if (effector == null) return;
+
+			if (!IsEffectivePlatformContact(effector, collision.contacts))
+			{
+				_ignoredColliders.Add(collision.collider);
+			}
+		}
+
+		private void OnCollisionExit2D(Collision2D collision)
+		{
+			if (!_ignoredColliders.Contains(collision.collider)) return;
+			_ignoredColliders.Remove(collision.collider);
 		}
 
 		#endregion
 
-		#region Interfaces
+		#region Public Methods
 
 		public void CancelDash()
 		{
@@ -176,6 +196,7 @@ namespace TripleBladeHorse.Movement
 			_dashingDirection = Vector2.zero;
 			_dashing = false;
 			_airborneTime = 0;
+			BlockInput = false;
 		}
 
 		public void Dash(Vector2 direction)
@@ -204,6 +225,24 @@ namespace TripleBladeHorse.Movement
 				_leftDashingDistance = _groundDashingDistance;
 				_dashingSpeed = _groundDashingDistance / _groundDashingDuration;
 			}
+		}
+
+		public void ShortDash(Vector2 direction)
+		{
+			if (!_dashing)
+			{
+				_gravityScale = _rigidbody.gravityScale;
+				_rigidbody.gravityScale = 0;
+			}
+
+			_dashing = true;
+			_dashingDirection = GetHorizontalDirection(direction);
+			_currentDashingPercent = 0;
+
+			_dashingDelayTimer = _shortGroundDashingDelay;
+			_deservedDashingDistance = _shortGroundDashingDistance;
+			_leftDashingDistance = _shortGroundDashingDistance;
+			_dashingSpeed = _shortGroundDashingDistance / _shortGroundDashingDuration;
 		}
 
 		public void Jump()
@@ -245,8 +284,17 @@ namespace TripleBladeHorse.Movement
 			_movementVector = Vector2.zero;
 
 			CancelDash();
-			BlockInput = false;
 			_knockbackVector = Vector2.zero;
+		}
+
+		public void EnterPlatform()
+		{
+			onPlatform = true;
+		}
+
+		public void LeavePlatform()
+		{
+			onPlatform = false;
 		}
 
 		public void SetStepDistance(float stepLength)
@@ -291,21 +339,20 @@ namespace TripleBladeHorse.Movement
 		{
 			if (_attackStepDirection.sqrMagnitude <= 0) return;
 
-			var targetPos = Vector2.MoveTowards(
-				transform.position,
-				(Vector2)transform.position + _attackStepDirection,
-				_attackStepSpeed * Time.deltaTime);
+			var movingDistance = _attackStepSpeed * Time.deltaTime;
+			var leftDistance = _attackStepDirection.magnitude;
 
-			_rigidbody.MovePosition(targetPos);
-			if (targetPos == (Vector2)transform.position + _attackStepDirection)
+			if (movingDistance > leftDistance)
 			{
-				_attackStepDirection = Vector3.zero;
+				movingDistance = leftDistance;
 			}
-			else
-			{
-				_attackStepDirection -= _attackStepDirection.normalized *
-					_attackStepSpeed * Time.deltaTime;
-			}
+
+			var movingVector = movingDistance / leftDistance * _attackStepDirection;
+
+			var targetPos = (Vector2)transform.position + movingVector;
+
+			MoveTo(targetPos);
+			_attackStepDirection -= movingVector;
 		}
 
 		private void HandleDashing()
@@ -326,7 +373,7 @@ namespace TripleBladeHorse.Movement
 				velocity *= dashingDistance;
 				_leftDashingDistance -= dashingDistance;
 
-				_rigidbody.MovePosition((Vector2)transform.position + velocity);
+				MoveTo((Vector2)transform.position + velocity);
 
 				_currentDashingPercent = 1 - _leftDashingDistance / _deservedDashingDistance;
 
@@ -364,12 +411,33 @@ namespace TripleBladeHorse.Movement
 		{
 			_velocity = ProcessVelocity(_velocity, direction);
 
-			_rigidbody.MovePosition((Vector2)transform.position + _velocity * Time.deltaTime);
+			MoveTo((Vector2)transform.position + _velocity * Time.deltaTime);
 
 			HandleAttackStepping();
 			HandleDashing();
 
 			ResetPhysicalContacts();
+		}
+
+		private void MoveTo(Vector2 position)
+		{
+			if (onPlatform)
+			{
+				transform.position = (Vector3)position;
+			}
+			else
+			{
+				_rigidbody.MovePosition(position);
+			}
+		}
+
+		private Vector2 GetHorizontalDirection(Vector2 direction)
+		{
+			if (direction.sqrMagnitude < 0.03f || direction.x < 0.03f)
+				return _state._facingRight ? Vector2.right : Vector2.left;
+
+			print(direction);
+			return DirectionalHelper.NormalizeHorizonalDirection(direction);
 		}
 
 		private Vector2 GetOctadDirection(Vector2 direction)
@@ -378,6 +446,30 @@ namespace TripleBladeHorse.Movement
 				return _state._facingRight ? Vector2.right : Vector2.left;
 
 			return DirectionalHelper.NormalizeOctadDirection(direction);
+		}
+
+		private bool IsEffectivePlatformContact(PlatformEffector2D effector, ContactPoint2D[] contacts)
+		{
+			for (int i = 0; i < contacts.Length; i++)
+			{
+				var minAngle = -effector.surfaceArc * 0.5f + effector.rotationalOffset;
+				var maxAngle = effector.surfaceArc * 0.5f + effector.rotationalOffset;
+				var contactAngle = Vector2.SignedAngle(Vector2.up, contacts[i].normal);
+				if (contactAngle > minAngle && contactAngle < maxAngle) return true;
+
+				if (effector.sideArc > 0)
+				{
+					minAngle = -effector.sideArc * 0.5f + effector.rotationalOffset + 90;
+					maxAngle = -effector.sideArc * 0.5f + effector.rotationalOffset + 90;
+					if (contactAngle > minAngle && contactAngle < maxAngle) return true;
+
+					minAngle -= 180;
+					maxAngle -= 180;
+					if (contactAngle > minAngle && contactAngle < maxAngle) return true;
+				}
+			}
+
+			return false;
 		}
 
 		private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)
@@ -423,6 +515,18 @@ namespace TripleBladeHorse.Movement
 		private void ResetPhysicalContacts()
 		{
 			_contacts.Clear();
+		}
+
+		private void UpdateContacts()
+		{
+			_rigidbody.GetContacts(_contacts);
+			for (int i = 0; i < _contacts.Count; i++)
+			{
+				if (!_ignoredColliders.Contains(_contacts[i].collider)) continue;
+
+				_contacts.RemoveAt(i);
+				i--;
+			}
 		}
 
 		private MovingState UpdateState()

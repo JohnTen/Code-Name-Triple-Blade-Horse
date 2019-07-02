@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ghoul Animation Data
   m_EditorClassIdentifier: 
   _defaultAnimation:
-    name: Idle_Ground
+    name: Monster1_Idle_Ground
     timeScale: 1
     playTimes: 0
     duration: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
     fadeInComplete: 0
     fadeOutComplete: 0
   _animationDatas:
-  - name: Idle_Ground
+  - name: Monster1_Idle_Ground
     timeScale: 1
     playTimes: 0
     duration: 0
@@ -36,7 +36,7 @@ MonoBehaviour:
     fadingOut: 0
     fadeInComplete: 0
     fadeOutComplete: 0
-  - name: Walk_Ground
+  - name: Monster1_Walk_Ground
     timeScale: 1
     playTimes: 0
     duration: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
     fadingOut: 0
     fadeInComplete: 0
     fadeOutComplete: 0
-  - name: ATK_Ground
+  - name: Monster1_ATK_Ground
     timeScale: 1
     playTimes: 1
     duration: 0
@@ -58,7 +58,40 @@ MonoBehaviour:
     fadingOut: 0
     fadeInComplete: 0
     fadeOutComplete: 0
-  - name: Death_Ground
+  - name: Monster1_Death_Ground
+    timeScale: 1
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 1
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Monster1_Hitten_Small
+    timeScale: 1
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 1
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Monster1_Hitten_Mid
+    timeScale: 1
+    playTimes: 1
+    duration: 0
+    playing: 0
+    cancelPercent: 1
+    completed: 0
+    fadingIn: 0
+    fadingOut: 0
+    fadeInComplete: 0
+    fadeOutComplete: 0
+  - name: Monster1_Hitten_Strong
     timeScale: 1
     playTimes: 1
     duration: 0
@@ -72,7 +105,11 @@ MonoBehaviour:
   _toggleState:
   - key: Attack
     value: 0
-  - key: Stagger
+  - key: Stagger_Weak
+    value: 0
+  - key: Stagger_Mediocre
+    value: 0
+  - key: Stagger_Strong
     value: 0
   _boolState:
   - key: Death

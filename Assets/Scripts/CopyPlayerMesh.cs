@@ -7,23 +7,18 @@ public class CopyPlayerMesh : MonoBehaviour
     [SerializeField]
     GameObject partOfPlayer;
     [SerializeField]
-    GameObject armatureNameObj;
-
+    Material customShaderMaterial;
     Transform[] armatureNameChildObj;
     Transform[] childGameObjectsTrans;
 
-    int hash;
-    MeshFilter testObj;
-
     public float velocityOfTransparent;
 
-    private void Start()
+    public void SetEchoMesh(GameObject armature)
     {
-        armatureNameObj = GameObject.Find("armatureName");
-        armatureNameChildObj = armatureNameObj.GetComponentsInChildren<Transform>();
+        armatureNameChildObj = armature.GetComponentsInChildren<Transform>();
         for (int i = 0; i < armatureNameChildObj.Length; i++)
         {
-            if (armatureNameChildObj[i].name != "armatureName" && armatureNameChildObj[i].name != "Sword")
+            if (armatureNameChildObj[i].GetComponent<MeshRenderer>()!= null)
             {
                 GameObject instance = (GameObject)Instantiate(partOfPlayer);
                 instance.transform.parent = this.gameObject.transform;
@@ -37,15 +32,13 @@ public class CopyPlayerMesh : MonoBehaviour
                 instance.AddComponent<MeshFilter>();
                 instance.GetComponent<MeshRenderer>().material =
                         armatureNameChildObj[i].GetComponent<MeshRenderer>().material;
+                instance.GetComponent<MeshRenderer>().material =
+                        customShaderMaterial;
                 var mesh = new Mesh();
                 CopyMesh(ref mesh, armatureNameChildObj[i].GetComponent<MeshFilter>().sharedMesh);
                 instance.GetComponent<MeshFilter>().mesh = mesh;
             }
         }
-
-        testObj = armatureNameChildObj[3].GetComponent<MeshFilter>();
-        hash = testObj.mesh.GetHashCode();
-        print("Hash Test " + hash);
     }
 
     private void Update()
@@ -56,12 +49,12 @@ public class CopyPlayerMesh : MonoBehaviour
             if(childObj.GetComponent<MeshRenderer>() != null)
             {
                 Color color = childObj.GetComponent<MeshRenderer>().material.color;
-                color.a = Mathf.Lerp(color.a, 0, velocityOfTransparent * Time.deltaTime);
+                color.a -=  velocityOfTransparent * Time.deltaTime;
+                color.a = Mathf.Clamp01(color.a);
                 childObj.GetComponent<MeshRenderer>().material.color = color;
             }
         }
 
-        print("Hash " + hash);
     }
 
     private void CopyMesh(ref Mesh output, Mesh input)
