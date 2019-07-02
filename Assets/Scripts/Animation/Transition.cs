@@ -7,7 +7,7 @@ namespace TripleBladeHorse.Animation
 	{
 		public const string Any = "_ANY";
 
-		public List<string> currentAnims;
+		public string currentAnim;
 		public string nextAnim;
 
 		Func<bool, FSMState> rule;
@@ -15,7 +15,7 @@ namespace TripleBladeHorse.Animation
 
 		public Transition(Transition transition)
 		{
-			this.currentAnims = transition.currentAnims;
+			this.currentAnim = transition.currentAnim;
 			this.nextAnim = transition.nextAnim;
 			this.transitionTime = transition.transitionTime;
 			this.rule = transition.rule;
@@ -23,16 +23,7 @@ namespace TripleBladeHorse.Animation
 
 		public Transition(string currentAnim, string nextAnim, float transitionTime, Func<bool, FSMState> rule)
 		{
-			this.currentAnims = new List<string>();
-			this.currentAnims.Add(currentAnim);
-			this.nextAnim = nextAnim;
-			this.transitionTime = transitionTime;
-			this.rule = rule;
-		}
-
-		public Transition(string[] currentAnims, string nextAnim, float transitionTime, Func<bool, FSMState> rule)
-		{
-			this.currentAnims = new List<string>(currentAnims);
+			this.currentAnim = currentAnim;
 			this.nextAnim = nextAnim;
 			this.transitionTime = transitionTime;
 			this.rule = rule;
@@ -40,7 +31,7 @@ namespace TripleBladeHorse.Animation
 
 		public bool Test(string currentAnimation, FSMState stateData)
 		{
-			if (!currentAnims.Contains(currentAnimation) && !currentAnims.Contains(Any)) return false;
+			if (currentAnim != currentAnimation && currentAnim != Any) return false;
 			return rule(stateData);
 		}
 	}

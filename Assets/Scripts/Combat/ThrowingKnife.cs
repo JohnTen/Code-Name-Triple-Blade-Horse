@@ -218,7 +218,7 @@ namespace TripleBladeHorse.Combat
 
 		private bool TryAttack(Transform target)
 		{
-			var attackable = target.GetComponent<IAttackable>();
+			var attackable = target.GetComponentInParent<IAttackable>();
 			if (IsAttackable(attackable))
 			{
 				var direction = target.position - transform.position;
@@ -232,7 +232,7 @@ namespace TripleBladeHorse.Combat
 		private void HandleFlyingCollision(RaycastHit2D hit)
 		{
 			var stickable = hit.collider.GetComponent<ICanStickKnife>();
-			var attackable = hit.collider.GetComponent<IAttackable>();
+			var attackable = hit.collider.GetComponentInParent<IAttackable>();
 
 			if (!Stuck && stickable != null && stickable.TryStick(this.gameObject))
 			{

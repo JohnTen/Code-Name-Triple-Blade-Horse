@@ -142,6 +142,11 @@ namespace TripleBladeHorse.Combat
 			{
 				knifesInAirList[0].RetractInstantly();
 			}
+
+			if (_currentAttackEffect)
+			{
+				Destroy(_currentAttackEffect);
+			}
 		}
 
 		private void Sheath_OnRecievedKnife(ThrowingKnife knife)
