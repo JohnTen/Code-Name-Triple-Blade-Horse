@@ -28,6 +28,7 @@ namespace TripleBladeHorse.AI
 		float _stopRandomTime;
 		Vector2 _bornPosition;
 		Transform _character;
+        float _distance;
 
 		public bool DelayInput { get; set; }
 		public bool BlockInput { get; set; }
@@ -53,14 +54,14 @@ namespace TripleBladeHorse.AI
 
 		public void Patrol()
 		{
-			float distance = this.transform.position.x - _bornPosition.x;
+			float patrolDis = this.transform.position.x - _bornPosition.x;
 
 			if (_pause && _stopRandomTime < Time.time)
 			{
 				_stopPosition = Random.Range(-_patrolArea, _patrolArea);
 				_pause = false;
 			}
-			else if (!_pause && Mathf.Abs(distance - _stopPosition) < _error)
+			else if (!_pause && Mathf.Abs(patrolDis - _stopPosition) < _error)
 			{
 				_stopRandomTime = Random.Range(0, _stopTime) + Time.time;
 				_pause = true;
@@ -68,12 +69,12 @@ namespace TripleBladeHorse.AI
 
 			if (!_pause)
 			{
-				if (distance - _stopPosition < 0)
+				if (patrolDis - _stopPosition < 0)
 				{
 					_move = Vector2.right;
 					_aim = _move;
 				}
-				else if (distance - _stopPosition > 0)
+				else if (patrolDis - _stopPosition > 0)
 				{
 					_move = Vector2.left;
 					_aim = _move;
@@ -94,9 +95,7 @@ namespace TripleBladeHorse.AI
 
 		public bool AttackAction()
 		{
-			float distance;
-			distance = Mathf.Abs(this.transform.position.x - _character.position.x);
-			if (distance < _attackArea)
+			if (Mathf.Abs(_distance) < _attackArea)
 			{
 				return true;
 			}
@@ -106,15 +105,31 @@ namespace TripleBladeHorse.AI
 
 		public bool AlertAction()
 		{
-			float distance;
-			distance = this.transform.position.x - _character.position.x;
-			if (Mathf.Abs(distance) < _alertArea && (distance > 0) != _state._facingRight)
+            float _backAlertArea;
+            _backAlertArea = _alertArea * 0.2f;
+			if ((IsFacing() && Mathf.Abs(_distance)<_alertArea) || Mathf.Abs(_distance)<_backAlertArea )
 			{
 				return true;
 			}
 
 			return false;
 		}
+
+        bool IsFacing()
+        {
+            if(_distance > 0 && !_state._facingRight)
+            {
+                return true;
+            }
+            else if(_distance < 0 && _state._facingRight)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 		public void Awake()
 		{
@@ -123,5 +138,10 @@ namespace TripleBladeHorse.AI
 			_stopRandomTime = Random.Range(0, _stopTime) + Time.time;
 			_bornPosition = this.transform.position;
 		}
-	}
+
+        public void Update()
+        {
+            _distance = this.transform.position.x - _character.position.x;
+        }
+    }
 }
