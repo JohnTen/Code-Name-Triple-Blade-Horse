@@ -16,16 +16,16 @@ namespace TripleBladeHorse.AI
 		{
             enemyRoot.OpenBranch(
                 BT.Selector().OpenBranch(
-                   BT.Sequence().OpenBranch(
-                       BT.Condition(enemyBehave.AttackAction),
-                       BT.Call(enemyBehave.Attack),
-                       BT.Wait(_attackInterval)
+                    BT.Sequence().OpenBranch(
+                        BT.Condition(enemyBehave.AttackAction),
+						BT.Call(enemyBehave.Attack),
+						BT.Wait(_attackInterval)
                     ),
-                   BT.Sequence().OpenBranch(
-                       BT.Condition(enemyBehave.AlertAction),
-					   BT.Call(enemyBehave.MoveToPlayer)
+                    BT.Sequence().OpenBranch(
+                        BT.Condition(enemyBehave.AlertAction),
+					    BT.Call(enemyBehave.MoveToPlayer)
 					   ),
-				   BT.Call(enemyBehave.Patrol)
+				    BT.Call(enemyBehave.Patrol)
 				   )
 		   );
 		}
