@@ -9,6 +9,7 @@ namespace TripleBladeHorse.AI
 	{
 		Attack,
 		Jump,
+		Dodge,
 	}
 
 	public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
@@ -29,6 +30,7 @@ namespace TripleBladeHorse.AI
 		Vector2 _bornPosition;
 		Transform _character;
         float _distance;
+		//Timer attackTimer = new Timer();
 
 		public bool DelayInput { get; set; }
 		public bool BlockInput { get; set; }
@@ -91,6 +93,21 @@ namespace TripleBladeHorse.AI
 		{
 			_move = (_character.position - transform.position).normalized * 0.01f;
 			OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Attack));
+			//attackTimer.Start(2);
+		}
+
+		public bool needDodge()
+		{
+            return false; 
+                //!attackTimer.IsReachedTime();
+		}
+
+		public void Dodge()
+		{
+			_move = transform.position - _character.position;
+			_move.Normalize();
+			_aim = -_move;
+			//OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Dodge));
 		}
 
 		public bool AttackAction()
@@ -137,6 +154,7 @@ namespace TripleBladeHorse.AI
 			_stopPosition = Random.Range(-_patrolArea, _patrolArea);
 			_stopRandomTime = Random.Range(0, _stopTime) + Time.time;
 			_bornPosition = this.transform.position;
+			//attackTimer.Start(2);
 		}
 
         public void Update()
