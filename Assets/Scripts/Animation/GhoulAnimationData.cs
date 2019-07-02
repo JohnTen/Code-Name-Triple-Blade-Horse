@@ -15,8 +15,8 @@ namespace TripleBladeHorse.Animation
 			public const string ATK_Ground = "Monster1_ATK_Ground";
 			public const string Death_Ground = "Monster1_Death_Ground";
 			public const string Stagger_Weak = "Monster1_Hitten_Small";
-			public const string Stagger_Med = "Monster1_Hitten_Mid";
-			public const string Stagger_Strong = "Monster1_Hitten_Strong";
+			public const string Stagger_Med = "Monster1_Hitten_Normal";
+			public const string Stagger_Strong = "Monster1_Hitten_Big";
 		}
 
 		class Stat

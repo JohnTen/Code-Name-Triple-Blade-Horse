@@ -48,7 +48,7 @@ namespace TripleBladeHorse.Combat
 
 		private void OnCollisionEnter2D(Collision2D collision)
 		{
-			var attackable = collision.collider.GetComponent<IAttackable>();
+			var attackable = collision.collider.GetComponentInParent<IAttackable>();
 			var toTarget = collision.transform.position - this.transform.position;
 			var direction = DirectionalHelper.NormalizeHorizonalDirection(toTarget);
 

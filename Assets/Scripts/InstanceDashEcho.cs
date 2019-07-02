@@ -8,9 +8,13 @@ public class InstanceDashEcho : MonoBehaviour
 {
     [SerializeField]
     private GameObject DashEchoPrefab;
-    public float DistanceBtwSpawns;
-    public Vector3 startPositionBtwSpawns;
-    public float destoryTime;
+    [SerializeField]
+    private GameObject armature;
+    [SerializeField]
+    private float DistanceBtwSpawns;
+    [SerializeField]
+    private float destoryTime;
+    private Vector3 startPositionBtwSpawns;
     private bool isDash = false;
     private bool isDashOver = true;
     private PlayerMover playerMover;
@@ -49,6 +53,7 @@ public class InstanceDashEcho : MonoBehaviour
                         DashEchoPrefab,
                         startPositionBtwSpawns,
                         Quaternion.identity);
+                instance.GetComponent<CopyPlayerMesh>().SetEchoMesh(armature);
                 Destroy(instance, destoryTime);
             }
         }
