@@ -1909,7 +1909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862de8bbe356c604aa0e4eb52d9379ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackInterval: 4
+  _attackInterval: 2
   enemyBehave: {fileID: 4002523837072793349}
 --- !u!114 &4002523837072793349
 MonoBehaviour:
@@ -1925,6 +1925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alertArea: 10
   _attackArea: 5
+  _dodgeArea: 3
   _patrolArea: 6
   _stopTime: 5
   _error: 1
