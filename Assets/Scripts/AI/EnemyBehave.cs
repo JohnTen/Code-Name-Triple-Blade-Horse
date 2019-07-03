@@ -10,6 +10,7 @@ namespace TripleBladeHorse.AI
 		Attack,
 		Jump,
 		Dodge,
+		Alert,
 	}
 
 	public class EnemyBehave : MonoBehaviour, ICharacterInput<EnemyInput>
@@ -53,6 +54,11 @@ namespace TripleBladeHorse.AI
 			_move = _character.position - transform.position;
 			_move.Normalize();
 			_aim = _move;
+		}
+
+		public void Alert(){
+			_move = (_character.position - transform.position).normalized * 0.01f;
+			OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Alert));
 		}
 
 		public void Patrol()
