@@ -1942,6 +1942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alertArea: 10
   _attackArea: 5
+  _dodgeArea: 2
   _patrolArea: 6
   _stopTime: 5
   _error: 1
@@ -1964,6 +1965,8 @@ MonoBehaviour:
   _prefab: {fileID: 723063179992359638, guid: 7cb889d7397e6414ebfa1fb3fff6af08, type: 3}
   _delay: 1
   _launchEffect: {fileID: 7846033176540631519}
+  _move: {fileID: 0}
+  _launchDirection: {x: 1, y: 0}
 --- !u!114 &2189121745417613817
 MonoBehaviour:
   m_ObjectHideFlags: 0

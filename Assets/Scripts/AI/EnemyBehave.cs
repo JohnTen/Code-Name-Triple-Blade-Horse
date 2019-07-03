@@ -16,6 +16,7 @@ namespace TripleBladeHorse.AI
 	{
 		[SerializeField] float _alertArea = 5;
 		[SerializeField] float _attackArea = 1.5f;
+		[SerializeField] float _dodgeArea = 1f;
 		[SerializeField] float _patrolArea = 5;
 		[SerializeField] float _stopTime = 1;
 		[SerializeField] float _error = 1;
@@ -98,8 +99,13 @@ namespace TripleBladeHorse.AI
 
 		public bool needDodge()
 		{
-            return false; 
-                //!attackTimer.IsReachedTime();
+            if(Mathf.Abs(_distance)<_dodgeArea){
+				return true;
+			}
+
+			return false;			
+			 
+            //!attackTimer.IsReachedTime();
 		}
 
 		public void Dodge()
