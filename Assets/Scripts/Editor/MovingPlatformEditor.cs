@@ -3,168 +3,172 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(MovingPlatform)), CanEditMultipleObjects]
-public class MoverEditor : Editor
+namespace TripleBladeHorse.Editor
 {
-	MovingPlatform mover;
-
-	SerializedProperty startingPercentage;
-
-	SerializedProperty useDirectionHandle;
-	SerializedProperty handleSize;
-	SerializedProperty lineColor;
-	SerializedProperty pointAColor;
-	SerializedProperty pointBColor;
-	SerializedProperty dragPointColor;
-	SerializedProperty percentageHandleOffset;
-
-	SerializedProperty running;
-
-	Dictionary<Object, Vector3> lastWorldPositionMap = new Dictionary<Object, Vector3>();
-
-	private void OnEnable()
+	[CustomEditor(typeof(MovingPlatform)), CanEditMultipleObjects]
+	public class MoverEditor : UnityEditor.Editor
 	{
-		mover = target as MovingPlatform;
+		MovingPlatform mover;
 
-		startingPercentage = serializedObject.FindProperty("startingPercentage");
+		SerializedProperty startingPercentage;
 
-		useDirectionHandle = serializedObject.FindProperty("useDirectionHandle");
-		handleSize = serializedObject.FindProperty("handleSize");
-		lineColor = serializedObject.FindProperty("lineColor");
-		pointAColor = serializedObject.FindProperty("pointAColor");
-		pointBColor = serializedObject.FindProperty("pointBColor");
-		dragPointColor = serializedObject.FindProperty("dragPointColor");
-		percentageHandleOffset = serializedObject.FindProperty("percentageHandleOffset");
+		SerializedProperty useDirectionHandle;
+		SerializedProperty handleSize;
+		SerializedProperty lineColor;
+		SerializedProperty pointAColor;
+		SerializedProperty pointBColor;
+		SerializedProperty dragPointColor;
+		SerializedProperty percentageHandleOffset;
 
-		running = serializedObject.FindProperty("running");
+		SerializedProperty running;
 
-		lastWorldPositionMap.Clear();
-		lastWorldPositionMap.Add(target, mover.transform.position);
-	}
+		Dictionary<Object, Vector3> lastWorldPositionMap = new Dictionary<Object, Vector3>();
 
-	private void OnSceneGUI()
-	{
-		mover = target as MovingPlatform;
-		if (!lastWorldPositionMap.ContainsKey(target))
-			lastWorldPositionMap.Add(target, mover.transform.position);
-		
-		if (running.boolValue) return;
-
-		CheckLastWorldPosition();
-		DrawStartPoint();
-		DrawDraggingHandle();
-
-		if (useDirectionHandle.boolValue)
+		private void OnEnable()
 		{
-			DrawDirectionHandle();
+			mover = target as MovingPlatform;
+
+			startingPercentage = serializedObject.FindProperty("startingPercentage");
+
+			useDirectionHandle = serializedObject.FindProperty("useDirectionHandle");
+			handleSize = serializedObject.FindProperty("handleSize");
+			lineColor = serializedObject.FindProperty("lineColor");
+			pointAColor = serializedObject.FindProperty("pointAColor");
+			pointBColor = serializedObject.FindProperty("pointBColor");
+			dragPointColor = serializedObject.FindProperty("dragPointColor");
+			percentageHandleOffset = serializedObject.FindProperty("percentageHandleOffset");
+
+			running = serializedObject.FindProperty("running");
+
+			lastWorldPositionMap.Clear();
+			lastWorldPositionMap.Add(target, mover.transform.position);
 		}
-		DrawLine();
 
-		lastWorldPositionMap[target] = mover.transform.position;
-	}
+		private void OnSceneGUI()
+		{
+			mover = target as MovingPlatform;
+			if (!lastWorldPositionMap.ContainsKey(target))
+				lastWorldPositionMap.Add(target, mover.transform.position);
 
-	private void DrawLine()
-	{
-		Handles.color = lineColor.colorValue;
-		Handles.DrawLine(mover.StartPoint, mover.EndPoint);
-	}
+			if (running.boolValue) return;
 
-	private void CheckLastWorldPosition()
-	{
-		if (mover.transform.position == lastWorldPositionMap[target]) return;
-		
-		var diff = mover.transform.position - lastWorldPositionMap[target];
-		mover.StartPoint += diff;
-	}
+			CheckLastWorldPosition();
+			DrawStartPoint();
+			DrawDraggingHandle();
 
-	private void DrawStartPoint()
-	{
-		Handles.color = pointAColor.colorValue;
-		var handlePos = mover.StartPoint;
+			if (useDirectionHandle.boolValue)
+			{
+				DrawDirectionHandle();
+			}
+			DrawLine();
 
-		EditorGUI.BeginChangeCheck();
-		handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
-		if (!EditorGUI.EndChangeCheck()) return;
+			lastWorldPositionMap[target] = mover.transform.position;
+		}
 
-		Undo.RecordObject(mover, "Change Start Point");
-		handlePos.z = mover.transform.position.z;
-		mover.StartPoint = handlePos;
+		private void DrawLine()
+		{
+			Handles.color = lineColor.colorValue;
+			Handles.DrawLine(mover.StartPoint, mover.EndPoint);
+		}
 
-		mover.StartingPercentage = GetPercentage();
-		mover.transform.position = GetDragPointPos();
-	}
+		private void CheckLastWorldPosition()
+		{
+			if (mover.transform.position == lastWorldPositionMap[target]) return;
 
-	private void DrawDirectionHandle()
-	{
-		Handles.color = pointBColor.colorValue;
-		var handlePos = mover.EndPoint;
+			var diff = mover.transform.position - lastWorldPositionMap[target];
+			mover.StartPoint += diff;
+		}
 
-		EditorGUI.BeginChangeCheck();
-		handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
-		if (!EditorGUI.EndChangeCheck()) return;
+		private void DrawStartPoint()
+		{
+			Handles.color = pointAColor.colorValue;
+			var handlePos = mover.StartPoint;
 
-		Undo.RecordObject(mover, "Change Direction and Distance");
-		handlePos.z = mover.transform.position.z;
-		var dir = handlePos - mover.StartPoint;
-		mover.Distance = dir.magnitude;
-		mover.Angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.forward);
-		mover.Angle += mover.Angle < 0 ? 360 : 0;
+			EditorGUI.BeginChangeCheck();
+			handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
+			if (!EditorGUI.EndChangeCheck()) return;
 
-		mover.StartingPercentage = GetPercentage();
-		mover.transform.position = GetDragPointPos();
-	}
+			Undo.RecordObject(mover, "Change Start Point");
+			handlePos.z = mover.transform.position.z;
+			mover.StartPoint = handlePos;
 
-	private void DrawDraggingHandle()
-	{
-		var offset = RotateVector(Vector3.up, mover.Angle) * percentageHandleOffset.floatValue;
-		var handlePos = GetDragPointPos() + offset;
+			mover.StartingPercentage = GetPercentage();
+			mover.transform.position = GetDragPointPos();
+		}
 
-		Handles.color = dragPointColor.colorValue;
-		Handles.DrawLine(mover.StartPoint + offset, mover.EndPoint + offset);
+		private void DrawDirectionHandle()
+		{
+			Handles.color = pointBColor.colorValue;
+			var handlePos = mover.EndPoint;
 
-		EditorGUI.BeginChangeCheck();
-		handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
-		if (!EditorGUI.EndChangeCheck()) return;
+			EditorGUI.BeginChangeCheck();
+			handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
+			if (!EditorGUI.EndChangeCheck()) return;
 
-		var a2b = mover.Direction * mover.Distance;
-		Undo.RecordObject(mover, "Change Percentage");
+			Undo.RecordObject(mover, "Change Direction and Distance");
+			handlePos.z = mover.transform.position.z;
+			var dir = handlePos - mover.StartPoint;
+			mover.Distance = dir.magnitude;
+			mover.Angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.forward);
+			mover.Angle += mover.Angle < 0 ? 360 : 0;
 
-		handlePos -= mover.StartPoint + offset;
-		
-		if (Vector3.Dot(handlePos, a2b) < 0)
-			handlePos = Vector3.zero;
-		else
-			handlePos = Vector3.Project(handlePos, a2b);
+			mover.StartingPercentage = GetPercentage();
+			mover.transform.position = GetDragPointPos();
+		}
 
-		mover.StartingPercentage = Mathf.Clamp01(handlePos.magnitude / a2b.magnitude);
-		mover.transform.position = GetDragPointPos();
-	}
+		private void DrawDraggingHandle()
+		{
+			var offset = RotateVector(Vector3.up, mover.Angle) * percentageHandleOffset.floatValue;
+			var handlePos = GetDragPointPos() + offset;
 
-	private Vector3 GetDragPointPos()
-	{
-		return Vector3.Lerp(mover.StartPoint, mover.EndPoint, mover.StartingPercentage);
-	}
+			Handles.color = dragPointColor.colorValue;
+			Handles.DrawLine(mover.StartPoint + offset, mover.EndPoint + offset);
 
-	private float GetPercentage()
-	{
-		var a2b = mover.Direction * mover.Distance;
-		var pos = mover.transform.position - mover.StartPoint;
-		
-		if (Vector3.Dot(pos, a2b) < 0)
-			return 0;
-		else
-			pos = Vector3.Project(pos, a2b);
+			EditorGUI.BeginChangeCheck();
+			handlePos = Handles.FreeMoveHandle(handlePos, Quaternion.identity, handleSize.floatValue, Vector3.one, Handles.DotHandleCap);
+			if (!EditorGUI.EndChangeCheck()) return;
 
-		return Mathf.Clamp01(pos.magnitude / a2b.magnitude);
-	}
+			var a2b = mover.Direction * mover.Distance;
+			Undo.RecordObject(mover, "Change Percentage");
 
-	private Vector3 RotateVector(Vector3 vector, float angle)
-	{
-		var rad = Mathf.Deg2Rad * angle;
-		var x = Mathf.Cos(rad) * vector.x - Mathf.Sin(rad) * vector.y;
-		var y = Mathf.Sin(rad) * vector.x + Mathf.Cos(rad) * vector.y;
-		vector.x = x;
-		vector.y = y;
-		return vector;
+			handlePos -= mover.StartPoint + offset;
+
+			if (Vector3.Dot(handlePos, a2b) < 0)
+				handlePos = Vector3.zero;
+			else
+				handlePos = Vector3.Project(handlePos, a2b);
+
+			mover.StartingPercentage = Mathf.Clamp01(handlePos.magnitude / a2b.magnitude);
+			mover.transform.position = GetDragPointPos();
+		}
+
+		private Vector3 GetDragPointPos()
+		{
+			return Vector3.Lerp(mover.StartPoint, mover.EndPoint, mover.StartingPercentage);
+		}
+
+		private float GetPercentage()
+		{
+			var a2b = mover.Direction * mover.Distance;
+			var pos = mover.transform.position - mover.StartPoint;
+
+			if (Vector3.Dot(pos, a2b) < 0)
+				return 0;
+			else
+				pos = Vector3.Project(pos, a2b);
+
+			return Mathf.Clamp01(pos.magnitude / a2b.magnitude);
+		}
+
+		private Vector3 RotateVector(Vector3 vector, float angle)
+		{
+			var rad = Mathf.Deg2Rad * angle;
+			var x = Mathf.Cos(rad) * vector.x - Mathf.Sin(rad) * vector.y;
+			var y = Mathf.Sin(rad) * vector.x + Mathf.Cos(rad) * vector.y;
+			vector.x = x;
+			vector.y = y;
+			return vector;
+		}
 	}
 }
+

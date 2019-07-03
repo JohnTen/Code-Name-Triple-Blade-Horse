@@ -1716,7 +1716,6 @@ GameObject:
   - component: {fileID: 6780041468514372463}
   - component: {fileID: 1765525190}
   - component: {fileID: 1765525183}
-  - component: {fileID: 994103943}
   - component: {fileID: 8685272295113320087}
   - component: {fileID: 4002523837072793349}
   - component: {fileID: 229426671}
@@ -1797,7 +1796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mover: {fileID: 9078495507301438513}
   _state: {fileID: 6780041468514372463}
-  _weapon: {fileID: 994103943}
+  _weapon: {fileID: 0}
   _launcher: {fileID: 229426671}
   _flash: {fileID: 1765525183}
   _hitBox: {fileID: 2532255941325045429}
@@ -1845,8 +1844,8 @@ MonoBehaviour:
   _enduranceRefreshDelay: 6
   _enduranceRecoverDelay: 1
   _enduranceSafeThreshlod: 40
-  _hitPointDamage: 0
-  _enduranceDamage: 0
+  _hitPointDamage: 1
+  _enduranceDamage: 1
   _facingRight: 1
   _frozen: 0
   _comboAdditiveDamage: 0
@@ -1898,22 +1897,6 @@ MonoBehaviour:
   _flashing: 0
   _renderers: []
   _defaultColor: []
---- !u!114 &994103943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7245046773056271541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c8bf60cc3eab1247905f124b6b8f220, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackPoint: {fileID: 72776264}
-  _wavePrefab: {fileID: 2207159598986094266, guid: 68a5a9a274ecdbe4fb1ac7c06781e051,
-    type: 3}
-  _delay: 0.3334
 --- !u!114 &8685272295113320087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1964,6 +1947,8 @@ MonoBehaviour:
   _prefab: {fileID: 723063179992359638, guid: 7cb889d7397e6414ebfa1fb3fff6af08, type: 3}
   _delay: 1
   _launchEffect: {fileID: 7846033176540631519}
+  _move: {fileID: 11400000, guid: 8b57ea990999a8f4a82a6dcfad6b57d3, type: 2}
+  _launchDirection: {x: 1, y: 0}
 --- !u!114 &2189121745417613817
 MonoBehaviour:
   m_ObjectHideFlags: 0

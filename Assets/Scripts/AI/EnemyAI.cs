@@ -16,6 +16,10 @@ namespace TripleBladeHorse.AI
 		{
             enemyRoot.OpenBranch(
                 BT.Selector().OpenBranch(
+					BT.Sequence().OpenBranch(
+						BT.Condition(enemyBehave.needDodge),
+						BT.Call(enemyBehave.Dodge)
+					),
                     BT.Sequence().OpenBranch(
                         BT.Condition(enemyBehave.AttackAction),
 						BT.Call(enemyBehave.Attack),

@@ -1,24 +1,28 @@
 ﻿using UnityEngine;
 
-public class BreakablePlatform : MonoBehaviour
+namespace TripleBladeHorse
 {
-	[SerializeField] float breakTime = 2;
-	[SerializeField] float reappearTime = 2;
-
-	public void StartBreaking()
+	public class BreakablePlatform : MonoBehaviour
 	{
-		if (!IsInvoking())
-			Invoke("Break", breakTime);
-	}
+		[SerializeField] float breakTime = 2;
+		[SerializeField] float reappearTime = 2;
 
-	private void Break()
-	{
-		this.gameObject.SetActive(false);
-		Invoke("Reappear", reappearTime);
-	}
+		public void StartBreaking()
+		{
+			if (!IsInvoking())
+				Invoke("Break", breakTime);
+		}
 
-	private void Reappear()
-	{
-		this.gameObject.SetActive(true);
+		private void Break()
+		{
+			this.gameObject.SetActive(false);
+			Invoke("Reappear", reappearTime);
+		}
+
+		private void Reappear()
+		{
+			this.gameObject.SetActive(true);
+		}
 	}
 }
+

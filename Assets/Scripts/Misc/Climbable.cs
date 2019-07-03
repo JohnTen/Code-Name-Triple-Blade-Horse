@@ -37,7 +37,5 @@ namespace TripleBladeHorse
 			stuckObj.Remove(obj);
 			return true;
 		}
-
-
 	}
 }
