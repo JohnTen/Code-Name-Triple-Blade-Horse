@@ -31,7 +31,7 @@ namespace JTUtility
 
 		public bool IsFull()
 		{
-			return Mathf.Abs(Current - Base) <= float.Epsilon;
+			return Base - Current <= float.Epsilon;
 		}
 
 		public static implicit operator float(StateValue value)

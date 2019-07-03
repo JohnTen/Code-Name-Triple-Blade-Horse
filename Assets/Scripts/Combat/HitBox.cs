@@ -38,6 +38,7 @@ namespace TripleBladeHorse.Combat
 			attacksFreqTimer.Add(attack._hashID, attack._attackRate);
 			StartCoroutine(RemoveTimer(attack._hashID));
 
+			
 			var result = new AttackResult
 			{
 				_attackable = this,

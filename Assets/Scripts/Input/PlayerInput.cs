@@ -147,6 +147,7 @@ namespace TripleBladeHorse
 				_delayedInput._command = command;
 				return;
 			}
+
 			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
 		}
 

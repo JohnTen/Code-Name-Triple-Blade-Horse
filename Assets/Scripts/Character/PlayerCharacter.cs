@@ -104,7 +104,9 @@ namespace TripleBladeHorse
 			}
 
 			if (eventArgs._animation.name == "Droping_Buffering" ||
-				eventArgs._animation.name == "Hitten_Ground")
+				eventArgs._animation.name == "Hitten_Ground_Small" ||
+				eventArgs._animation.name == "Hitten_Ground_Normal" ||
+				eventArgs._animation.name == "Hitten_Ground_Big")
 			{
 				_animator.SetBool("BlockInput", true);
 				_input.BlockInput = true;
@@ -165,7 +167,7 @@ namespace TripleBladeHorse
 		{
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
-				_animator.SetBool("Dash", false);
+				_animator.SetToggle("DashEnd", true);
 			}
 		}
 
@@ -197,8 +199,9 @@ namespace TripleBladeHorse
 			_hitFlash.Flash();
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
+			_enduranceRecoverTimer = 0;
 			_mover.Knockback(attack._fromDirection * attack._knockback);
-
+			
 			if (_state._hitPoints <= 0)
 			{
 				print("Player Dead");
@@ -210,7 +213,7 @@ namespace TripleBladeHorse
 			if (_state._endurance <= 0)
 			{
 				_state._endurance.Current = 0;
-				_animator.SetToggle("Stagger", true);
+				_animator.SetToggle(attack._staggerAnimation, true);
 			}
 		}
 
@@ -230,6 +233,11 @@ namespace TripleBladeHorse
 
 					Cancel();
 					var moveInput = _input.GetMovingDirection();
+					if (moveInput == Vector2.zero)
+						moveInput = _state._facingRight ? Vector2.right : Vector2.left;
+					else
+						moveInput = DirectionalHelper.NormalizeOctadDirection(moveInput);
+
 					var airDash = !_groundDetector.IsOnGround || moveInput.y > 0;
 					
 					UpdateFacingDirection(moveInput);
@@ -238,13 +246,16 @@ namespace TripleBladeHorse
 					{
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
-						_animator.SetBool("Dash", true);
 					}
 					else if (!airDash)
 					{
 						_mover.ShortDash(moveInput);
-						_animator.SetBool("Dash", true);
 					}
+					_animator.SetToggle("DashBegin", true);
+					_animator.SetFloat("XSpeed", moveInput.x);
+					_animator.SetFloat("YSpeed", moveInput.y);
+
+					_animator.UpdateAnimationState();
 					break;
 
 				case PlayerInputCommand.MeleeBegin:

@@ -52,7 +52,6 @@ namespace TripleBladeHorse.Animation
 		private void Update()
 		{
 			UpdateAnimation();
-			ResetToggleState();
 		}
 		#endregion
 
@@ -161,6 +160,11 @@ namespace TripleBladeHorse.Animation
 					break;
 			}
 		}
+
+		public void UpdateAnimationState()
+		{
+			UpdateAnimation();
+		}
 		#endregion
 
 		#region Private/Protected Methods
@@ -225,6 +229,8 @@ namespace TripleBladeHorse.Animation
 				anim.timeScale = animation.timeScale;
 				anim.resetToPose = false;
 			}
+
+			ResetToggleState();
 		}
 
 		private void ResetToggleState()
