@@ -12,29 +12,93 @@ namespace TripleBladeHorse.Animation
 		{
 			public const string Idle_Ground = "Idle_Ground_New";
 			public const string Run_Ground = "Run_Ground_old";
-			public const string Dash_Ground = "Dash_Ground";
-			public const string Jump_Ground = "Jump_Ground";
+			public const string Dash_Up = "Dash_Air_Up";
+			public const string Dash_Down = "Dash_Air_Down";
+			public const string Dash_Horizontal = "Dash_Ground";
+			public const string Dash_Diagonal_Up = "Dash_Ground_Slant_Up";
+			public const string Dash_Diagonal_Down = "Dash_Ground_Slant_Down";
 			public const string Jump_Air = "Jump_Air";
+			public const string Jump_Ground = "Jump_Ground";
 			public const string Dropping = "Droping";
-			public const string Droping_Buffering = "Droping_Buffering";
+			public const string Dropping_Buffering = "Droping_Buffering";
 			public const string ATK_Melee_Ground_1 = "ATK_Melee_Ground_1";
 			public const string ATK_Melee_Ground_2 = "ATK_Melee_Ground_2";
 			public const string ATK_Melee_Ground_3 = "ATK_Melee_Ground_3";
-			public const string Hitten_Ground = "Hitten_Ground";
+			public const string Stagger_Weak = "Hitten_Ground_Small";
+			public const string Stagger_Med = "Hitten_Ground_Normal";
+			public const string Stagger_Strong = "Hitten_Ground_Big";
 		}
 		
 		class Stat
 		{
 			public const string Jump = "Jump";
 			public const string MeleeAttack = "MeleeAttack";
-			public const string Stagger = "Stagger";
-			public const string Dash = "Dash";
+			public const string DashBegin = "DashBegin";
+			public const string DashEnd = "DashEnd";
+			public const string WeakStagger = "Stagger_Weak";
+			public const string MidStagger = "Stagger_Mediocre";
+			public const string StrongStagger = "Stagger_Strong";
 			public const string Airborne = "Airborne";
 			public const string Frozen = "Frozen";
 			public const string DelayInput = "DelayInput";
 			public const string BlockInput = "BlockInput";
 			public const string XSpeed = "XSpeed";
 			public const string YSpeed = "YSpeed";
+		}
+
+		class GeneralFunction
+		{
+			public static Func<bool, FSMState> Jump = 
+				(sd) => 
+				{
+					return sd._toggleMap[Stat.Jump];
+				};
+
+			public static Func<bool, FSMState> Start_Attack =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.MeleeAttack];
+				};
+
+			public static Func<bool, FSMState> Dash_Horizontal =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.DashBegin]
+					&& (Mathf.Abs(sd._floatMap[Stat.YSpeed]) <= float.Epsilon
+					&& Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon);
+				};
+
+			public static Func<bool, FSMState> Dash_Diagonal_Up =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.DashBegin]
+					&& (sd._floatMap[Stat.YSpeed] > float.Epsilon
+					&& Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon);
+				};
+
+			public static Func<bool, FSMState> Dash_Diagonal_Down =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.DashBegin]
+					&& (sd._floatMap[Stat.YSpeed] < -float.Epsilon
+					&& Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon);
+				};
+
+			public static Func<bool, FSMState> Dash_Up =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.DashBegin]
+					&& (sd._floatMap[Stat.YSpeed] > float.Epsilon
+					&& Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon);
+				};
+
+			public static Func<bool, FSMState> Dash_Down =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.DashBegin]
+					&& (sd._floatMap[Stat.YSpeed] < float.Epsilon
+					&& Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon);
+				};
 		}
 
 		public PlayerAnimationData()
@@ -51,15 +115,21 @@ namespace TripleBladeHorse.Animation
 			{
 				new Animation(Anim.Idle_Ground, 0.5f, 0, 0),
 				new Animation(Anim.Run_Ground, 1.5f, 0, 0),
-				new Animation(Anim.Dash_Ground, 1, 0, 0),
+				new Animation(Anim.Dash_Horizontal, 1, 0, 0),
+				new Animation(Anim.Dash_Up, 1, 0, 0),
+				new Animation(Anim.Dash_Down, 1, 0, 0),
+				new Animation(Anim.Dash_Diagonal_Up, 1, 0, 0),
+				new Animation(Anim.Dash_Diagonal_Down, 1, 0, 0),
 				new Animation(Anim.Jump_Ground, 5, 1, 0.2f),
 				new Animation(Anim.Jump_Air, 2, 1, 0.2f),
 				new Animation(Anim.Dropping, 1, 1, 0f),
-				new Animation(Anim.Droping_Buffering, 3, 1, 0.3f),
+				new Animation(Anim.Dropping_Buffering, 3, 1, 0.3f),
 				new Animation(Anim.ATK_Melee_Ground_1, 1.4f, 1, 0.7f),
 				new Animation(Anim.ATK_Melee_Ground_2, 1.4f, 1, 0.7f),
 				new Animation(Anim.ATK_Melee_Ground_3, 1.4f, 1, 0.7f),
-				new Animation(Anim.Hitten_Ground, 0.5f, 1, 0.7f),
+				new Animation(Anim.Stagger_Weak, 1f, 1, 0.7f),
+				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f),
+				new Animation(Anim.Stagger_Strong, 1f, 1, 0.7f),
 			};
 		}
 
@@ -68,13 +138,16 @@ namespace TripleBladeHorse.Animation
 			_toggleState = new List<StrBoolPair>()
 			{
 				new StrBoolPair() {Key = Stat.Jump, Value = false},
+				new StrBoolPair() {Key = Stat.DashBegin, Value = false},
+				new StrBoolPair() {Key = Stat.DashEnd, Value = false},
 				new StrBoolPair() {Key = Stat.MeleeAttack, Value = false},
-				new StrBoolPair() {Key = Stat.Stagger, Value = false},
+				new StrBoolPair() {Key = Stat.StrongStagger, Value = false},
+				new StrBoolPair() {Key = Stat.MidStagger, Value = false},
+				new StrBoolPair() {Key = Stat.WeakStagger, Value = false},
 			};
 
 			_boolState = new List<StrBoolPair>()
 			{
-				new StrBoolPair() {Key = Stat.Dash, Value = false},
 				new StrBoolPair() {Key = Stat.Airborne, Value = false},
 				new StrBoolPair() {Key = Stat.Frozen, Value = false},
 				new StrBoolPair() {Key = Stat.DelayInput, Value = false},
@@ -94,39 +167,115 @@ namespace TripleBladeHorse.Animation
 		{
 			_transitions = new List<Transition>()
 			{
-				//// Hitten_Ground
+				//// Stagger_Strong
 				new Transition(
-					Transition.Any, Anim.Hitten_Ground, 0f,
+					Transition.Any, Anim.Stagger_Strong, 0.05f,
 					(sd) => {
-						return sd._toggleMap[Stat.Stagger];
+						return sd._toggleMap[Stat.StrongStagger];
 					}),
 				new Transition(
-					Anim.Hitten_Ground, Anim.Idle_Ground, 0.1f,
+					Anim.Stagger_Strong, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
 					}),
 				new Transition(
-					Anim.Hitten_Ground, Anim.Run_Ground, 0.1f,
+					Anim.Stagger_Strong, Anim.Run_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
 					}),
 				new Transition(
-					Anim.Hitten_Ground, Anim.ATK_Melee_Ground_1, 0f,
+					Anim.Stagger_Strong, Anim.Jump_Ground, 0.1f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.Stagger_Strong, Anim.ATK_Melee_Ground_1, 0.05f,
+					GeneralFunction.Start_Attack),
+				new Transition(
+					Anim.Stagger_Strong, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Stagger_Strong, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				
+				//// Stagger_Mediocre
+				
+				new Transition(
+					Transition.Any, Anim.Stagger_Med, 0.05f,
 					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack];
+						return sd._toggleMap[Stat.MidStagger] && sd._current.name != Anim.Stagger_Strong;
 					}),
+				new Transition(
+					Anim.Stagger_Med, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Stagger_Med, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
+					}),
+				new Transition(
+					Anim.Stagger_Med, Anim.Jump_Ground, 0.1f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.Stagger_Med, Anim.ATK_Melee_Ground_1, 0.05f,
+					GeneralFunction.Start_Attack),
+				new Transition(
+					Anim.Stagger_Med, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Stagger_Med, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				
+				//// Stagger_Weak
+				new Transition(
+					Transition.Any, Anim.Stagger_Weak, 0.05f,
+					(sd) => {
+						return sd._toggleMap[Stat.WeakStagger] && (sd._current.name != Anim.Stagger_Med || sd._current.name != Anim.Stagger_Strong);
+					}),
+				new Transition(
+					Anim.Stagger_Weak, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Stagger_Weak, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
+					}),
+				new Transition(
+					Anim.Stagger_Weak, Anim.Jump_Ground, 0.1f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.Stagger_Weak, Anim.ATK_Melee_Ground_1, 0.05f,
+					GeneralFunction.Start_Attack),
+				new Transition(
+					Anim.Stagger_Weak, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Stagger_Weak, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
 
 				//// Idle_Ground
+				new Transition(
+					Anim.Idle_Ground, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Idle_Ground, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Idle_Ground, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Idle_Ground, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Idle_Ground, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+
 				new Transition(
 					Anim.Idle_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
-					}),
-
-				new Transition(
-					Anim.Idle_Ground, Anim.Jump_Ground, 0.1f,
-					(sd) => {
-						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
 
 				new Transition(
@@ -142,26 +291,36 @@ namespace TripleBladeHorse.Animation
 					}),
 
 				new Transition(
-					Anim.Idle_Ground, Anim.Dash_Ground, 0.05f,
+					Anim.Idle_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
-						return sd._boolMap[Stat.Dash];
+						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
+
 				new Transition(
 					Anim.Idle_Ground, Anim.ATK_Melee_Ground_1, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack];
-					}),
+					GeneralFunction.Start_Attack),
 				
 				//// Run_Ground
+				new Transition(
+					Anim.Run_Ground, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Run_Ground, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Run_Ground, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Run_Ground, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Run_Ground, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+
 				new Transition(
 					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.Jump];
-					}),
-				new Transition(
-					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
-					(sd) => {
-						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
 				new Transition(
 					Anim.Run_Ground, Anim.Dropping, 0.1f,
@@ -174,99 +333,291 @@ namespace TripleBladeHorse.Animation
 						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
 					}),
 				new Transition(
-					Anim.Run_Ground, Anim.Dash_Ground, 0.05f,
+					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
-						return sd._boolMap[Stat.Dash];
+						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
 					}),
+
 				new Transition(
 					Anim.Run_Ground, Anim.ATK_Melee_Ground_1, 0.1f,
 					(sd) => {
 						return sd._toggleMap[Stat.MeleeAttack];
 					}),
 
-				//// Dash_Ground
-				new Transition(
-					Anim.Dash_Ground, Anim.Dropping, 0.1f,
-					(sd) => {
-						return !sd._boolMap[Stat.Dash] && sd._boolMap[Stat.Airborne];
-					}),
-				new Transition(
-					Anim.Dash_Ground, Anim.Idle_Ground, 0.1f,
-					(sd) => {
-						return !sd._boolMap[Stat.Dash] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
-					}),
-				new Transition(
-					Anim.Dash_Ground, Anim.Run_Ground, 0.1f,
-					(sd) => {
-						return !sd._boolMap[Stat.Dash] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
-					}),
-
 				//// Jump_Ground
 				new Transition(
-					Anim.Jump_Ground, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
+					Anim.Jump_Ground, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Jump_Ground, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Jump_Ground, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Jump_Ground, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Jump_Ground, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Jump_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
 					}),
 				new Transition(
-					Anim.Jump_Ground, Anim.Droping_Buffering, 0.1f,
+					Anim.Jump_Ground, Anim.Dropping_Buffering, 0.1f,
 					(sd) => {
 						return !sd._boolMap[Stat.Airborne] && sd._floatMap[Stat.YSpeed] <= float.Epsilon;
 					}),
 				
 				//// Jump_Air
 				new Transition(
+					Anim.Jump_Air, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Jump_Air, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Jump_Air, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Jump_Air, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Jump_Air, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
 					Anim.Jump_Air, Anim.Dropping, 0.05f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
 					}),
 				new Transition(
-					Anim.Jump_Air, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
-				new Transition(
-					Anim.Jump_Air, Anim.Droping_Buffering, 0.1f,
+					Anim.Jump_Air, Anim.Dropping_Buffering, 0.1f,
 					(sd) => {
 						return !sd._boolMap[Stat.Airborne];
 					}),
 
 				//// Droping
 				new Transition(
+					Anim.Dropping, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dropping, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dropping, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dropping, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dropping, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
 					Anim.Dropping, Anim.Jump_Air, 0.05f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] > 0 || sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
-					Anim.Dropping, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
-				new Transition(
-					Anim.Dropping, Anim.Droping_Buffering, 0f,
+					Anim.Dropping, Anim.Dropping_Buffering, 0f,
 					(sd) => {
 						return !sd._boolMap[Stat.Airborne];
 					}),
 				
 				//// Droping_Buffering
 				new Transition(
-					Anim.Droping_Buffering, Anim.Jump_Ground, 0.1f,
+					Anim.Dropping_Buffering, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
-					Anim.Droping_Buffering, Anim.Idle_Ground, 0.1f,
+					Anim.Dropping_Buffering, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && sd._floatMap[Stat.XSpeed] <= float.Epsilon;
 					}),
 				new Transition(
-					Anim.Droping_Buffering, Anim.Run_Ground, 0.1f,
+					Anim.Dropping_Buffering, Anim.Run_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && sd._floatMap[Stat.XSpeed] > float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dropping_Buffering, Anim.ATK_Melee_Ground_1, 0.1f,
+					GeneralFunction.Start_Attack),
+				
+				//// Dash_Horizontal
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+				
+				//// Dash_Up
+				new Transition(
+					Anim.Dash_Up, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dash_Up, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dash_Up, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dash_Up, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dash_Up, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Up, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Up, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dash_Up, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+				
+				//// Dash_Down
+				new Transition(
+					Anim.Dash_Down, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dash_Down, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dash_Down, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dash_Down, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dash_Down, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Down, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Down, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dash_Down, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+				
+				//// Dash_Diagonal_Up
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dash_Diagonal_Up, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+				
+				//// Dash_Diagonal_Down
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.Dash_Diagonal_Down, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
 				
 				//// ATK_Melee_Ground_1
@@ -281,10 +632,11 @@ namespace TripleBladeHorse.Animation
 						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.DelayInput];
 					}),
 				new Transition(
-					Anim.ATK_Melee_Ground_1, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Idle_Ground, 0.1f,
 					(sd) => {
@@ -297,21 +649,19 @@ namespace TripleBladeHorse.Animation
 					}),
 				
 				//// ATK_Melee_Ground_2
+				
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.ATK_Melee_Ground_3, 0.05f,
-					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack];
-					}),
+					GeneralFunction.Start_Attack),
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Jump_Ground, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.Jump];
-					}),
+					GeneralFunction.Jump),
 				new Transition(
-					Anim.ATK_Melee_Ground_2, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Idle_Ground, 0.1f,
 					(sd) => {
@@ -326,19 +676,16 @@ namespace TripleBladeHorse.Animation
 				//// ATK_Melee_Ground_3
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.ATK_Melee_Ground_1, 0.05f,
-					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack];
-					}),
+					GeneralFunction.Start_Attack),
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Jump_Ground, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.Jump];
-					}),
+					GeneralFunction.Jump),
 				new Transition(
-					Anim.ATK_Melee_Ground_3, Anim.Dash_Ground, 0.05f,
-					(sd) => {
-						return sd._boolMap[Stat.Dash];
-					}),
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Idle_Ground, 0.1f,
 					(sd) => {
