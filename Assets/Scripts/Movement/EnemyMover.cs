@@ -8,7 +8,7 @@ namespace TripleBladeHorse.Movement
 	public class EnemyMover : MonoBehaviour, ICanMove
 	{
 		[Header("Basic movement")]
-		[SerializeField] float _baseSpeed;
+		[SerializeField] public float _baseSpeed;
 		[SerializeField] float _knockbackSpeedFactor;
 
 		[Header("Events")]
