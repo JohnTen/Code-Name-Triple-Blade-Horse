@@ -12,6 +12,7 @@ namespace TripleBladeHorse.Animation
 		public int playTimes; //动画播放的循环次数
 		public float duration; //动画播放的持续时间 The duration of current animation
 		public bool playing; //动画是否已经开始 Is animation started
+		public float cancelPercent;
 		public bool completed;
 		public bool fadingIn;
 		public bool fadingOut;
@@ -22,11 +23,12 @@ namespace TripleBladeHorse.Animation
 		//public bool isFadeIn;
 		//public float fadeInTime;
 
-		public Animation(string name, float timeScale, int playTimes)
+		public Animation(string name, float timeScale, int playTimes, float cancelPercent)
 		{
 			this.name = name;
 			this.timeScale = timeScale;
 			this.playTimes = playTimes;
+			this.cancelPercent = cancelPercent;
 			this.duration = 0;
 			this.playing = false;
 			this.completed = false;
@@ -34,7 +36,7 @@ namespace TripleBladeHorse.Animation
 			this.fadingOut = false;
 			this.fadeInComplete = false;
 			this.fadeOutComplete = false;
-	}
+		}
 	}
 }
 

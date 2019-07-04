@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public interface IAttacker
+namespace TripleBladeHorse.Combat
 {
-	void Activate(AttackPackage attack, AttackMove move);
-	void Deactivate();
+	public interface IAttacker
+	{
+		void Activate(AttackPackage attack, AttackMove move);
+		void Deactivate();
 
-	event Action<IAttackable, AttackResult, AttackPackage> OnHit;
+		event Action<IAttackable, AttackResult, AttackPackage> OnHit;
+	}
 }

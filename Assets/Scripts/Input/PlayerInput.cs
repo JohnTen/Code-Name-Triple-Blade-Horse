@@ -3,280 +3,305 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public enum PlayerInputCommand
+namespace TripleBladeHorse
 {
-	Null,
-	Dash,
-	Jump,
-	RangeBegin,
-	RangeAttack,
-	RangeChargeAttack,
-	MeleeBegin,
-	MeleeAttack,
-	MeleeChargeAttack,
-	WithdrawAll,
-	WithdrawOne,
-}
-
-public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
-{
-	[SerializeField] float _meleeChargeTime;
-	[SerializeField] float _meleeMaxChargeTime;
-	[SerializeField] float _rangeChargeTime;
-	[SerializeField] float _withdrawTime;
-	[SerializeField] Transform _aimingPivot;
-
-	float _meleeChargeTimer;
-	float _rangeChargeTimer;
-	float _withdrawTimer;
-
-	bool _delayingInput;
-	bool _usingController;
-	bool _throwPressedBefore;
-	IInputModel _input;
-	InputEventArg<PlayerInputCommand> _delayedInput;
-
-	public bool DelayInput
+	public enum PlayerInputCommand
 	{
-		get => _delayingInput;
-		set
+		Null,
+		Dash,
+		Jump,
+		RangeBegin,
+		RangeAttack,
+		RangeChargeAttack,
+		MeleeBegin,
+		MeleeAttack,
+		MeleeChargeAttack,
+		WithdrawAll,
+		WithdrawOne,
+	}
+
+	public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
+	{
+		[SerializeField] float _meleeChargeTime;
+		[SerializeField] float _meleeMaxChargeTime;
+		[SerializeField] float _rangeChargeTime;
+		[SerializeField] float _withdrawTime;
+		[SerializeField] Transform _aimingPivot;
+		[SerializeField] LineRenderer _aimingLine;
+		[SerializeField] bool _delayingInput;
+		[SerializeField] bool blockInput;
+
+		float _meleeChargeTimer;
+		float _rangeChargeTimer;
+		float _withdrawTimer;
+
+		//bool _delayingInput;
+		bool _usingController;
+		bool _throwPressedBefore;
+		IInputModel _input;
+		InputEventArg<PlayerInputCommand> _delayedInput;
+
+		public bool DelayInput
 		{
-			if (_delayingInput == value)
+			get => _delayingInput;
+			set
+			{
+				if (_delayingInput == value)
+					return;
+
+				if (!value && _delayingInput && _delayedInput._command != PlayerInputCommand.Null)
+				{
+					OnReceivedInput?.Invoke(_delayedInput);
+				}
+
+				_delayingInput = value;
+				if (_delayingInput)
+				{
+					_delayedInput._command = PlayerInputCommand.Null;
+				}
+			}
+		}
+
+		public bool BlockInput
+		{
+			get => blockInput;
+			set => blockInput = value;
+		}
+
+		public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
+
+		public Vector2 GetMovingDirection()
+		{
+			if (BlockInput)
+				return Vector2.zero;
+			return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY")).normalized;
+		}
+
+		public Vector2 GetAimingDirection()
+		{
+			if (BlockInput)
+			{
+				_aimingLine.enabled = false;
+				return Vector2.zero;
+			}
+
+			var aim = Vector2.zero;
+			if (_usingController)
+			{
+				aim = new Vector2(_input.GetAxis("LookX"), _input.GetAxis("LookY"));
+				if (aim.sqrMagnitude > 0.025f)
+				{
+					_aimingLine.enabled = true;
+					_aimingLine.SetPosition(0, _aimingPivot.position + (Vector3)aim.normalized * 2);
+					_aimingLine.SetPosition(1, _aimingPivot.position + (Vector3)aim.normalized * 2.1f);
+					_aimingLine.SetPosition(2, _aimingPivot.position + (Vector3)aim.normalized * 2.2f);
+					_aimingLine.SetPosition(3, _aimingPivot.position + (Vector3)aim.normalized * 2.3f);
+					_aimingLine.SetPosition(4, _aimingPivot.position + (Vector3)aim.normalized * 2.4f);
+					_aimingLine.SetPosition(5, _aimingPivot.position + (Vector3)aim.normalized * 2.5f);
+				}
+				else
+				{
+					_aimingLine.enabled = false;
+				}
+			}
+			else
+			{
+				var diff = _aimingPivot.position.z - Camera.main.transform.position.z;
+				var screenPos = Input.mousePosition + Vector3.forward * diff;
+
+				aim = (Camera.main.ScreenToWorldPoint(screenPos) - _aimingPivot.position);
+				Debug.DrawLine(Camera.main.ScreenToWorldPoint(screenPos), _aimingPivot.position);
+				if (aim.SqrMagnitude() > 1)
+					aim.Normalize();
+			}
+
+			return aim;
+		}
+
+		public void SetInputModel(IInputModel model)
+		{
+			_input = model;
+			_usingController = model is ControllerInputModel;
+		}
+
+		private void Start()
+		{
+			InputManager.Instance.RegisterPluggable(0, this);
+		}
+
+		private void Update()
+		{
+			if (BlockInput) return;
+
+			HandleMeleeInput();
+			HandleRangeInput();
+			HandleJumpInput();
+			HandleDashInput();
+			HandleWithdraw();
+		}
+
+		private void InvokeInputEvent(PlayerInputCommand command)
+		{
+			if (DelayInput)
+			{
+				_delayedInput._command = command;
 				return;
-
-			if (!value && _delayingInput && _delayedInput._command != PlayerInputCommand.Null)
-			{
-				OnReceivedInput?.Invoke(_delayedInput);
 			}
 
-			_delayingInput = value;
-			if (_delayingInput)
+			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
+		}
+
+		private void InvokeInputEvent(PlayerInputCommand command, float value)
+		{
+			if (DelayInput)
 			{
-				_delayedInput._command = PlayerInputCommand.Null;
+				_delayedInput._command = command;
+				_delayedInput._additionalValue = value;
+				return;
 			}
-		}
-	}
 
-	public bool BlockInput
-	{
-		get;
-		set;
-	}
-
-	public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
-
-	public Vector2 GetMovingDirection()
-	{
-		if (BlockInput)
-			return Vector2.zero;
-		return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY")).normalized;
-	}
-
-	public Vector2 GetAimingDirection()
-	{
-		if (BlockInput)
-			return Vector2.zero;
-		var aim = Vector2.zero;
-		if (_usingController)
-		{
-			aim = new Vector2(_input.GetAxis("LookX"), _input.GetAxis("LookY"));
-		}
-		else
-		{
-			var diff = _aimingPivot.position.z - Camera.main.transform.position.z;
-			var screenPos = Input.mousePosition + Vector3.forward * diff;
-
-			aim = (Camera.main.ScreenToWorldPoint(screenPos) - _aimingPivot.position);
-			Debug.DrawLine(Camera.main.ScreenToWorldPoint(screenPos), _aimingPivot.position);
-			if (aim.SqrMagnitude() > 1)
-				aim.Normalize();
-		}
-		
-		return aim;
-	}
-
-	public void SetInputModel(IInputModel model)
-	{
-		_input = model;
-		_usingController = model is ControllerInputModel;
-	}
-
-	private void Start()
-	{
-		InputManager.Instance.RegisterPluggable(0, this);
-	}
-
-	private void Update()
-	{
-		if (BlockInput) return;
-
-		HandleMeleeInput();
-		HandleRangeInput();
-		HandleJumpInput();
-		HandleDashInput();
-		HandleWithdraw();
-	}
-
-	private void InvokeInputEvent(PlayerInputCommand command)
-	{
-		if (DelayInput)
-		{
-			_delayedInput._command = command;
-			return;
-		}
-		OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
-	}
-
-	private void InvokeInputEvent(PlayerInputCommand command, float value)
-	{
-		if (DelayInput)
-		{
-			_delayedInput._command = command;
-			_delayedInput._additionalValue = value;
-			return;
+			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, value));
 		}
 
-		OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, value));
-	}
-
-	private void HandleMeleeInput()
-	{
-		if (_input.GetButtonDown("Melee"))
+		private void HandleMeleeInput()
 		{
-			_meleeChargeTimer = 0;
-			InvokeInputEvent(PlayerInputCommand.MeleeBegin);
-		}
-
-		if (_input.GetButton("Melee"))
-		{
-			_meleeChargeTimer += Time.deltaTime;
-			if (_meleeChargeTimer > _meleeMaxChargeTime)
+			if (_input.GetButtonDown("Melee"))
 			{
-				InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, 1);
-				_meleeChargeTimer = float.NegativeInfinity;
+				_meleeChargeTimer = 0;
+				InvokeInputEvent(PlayerInputCommand.MeleeBegin);
+			}
+
+			if (_input.GetButton("Melee"))
+			{
+				_meleeChargeTimer += Time.deltaTime;
+				if (_meleeChargeTimer > _meleeMaxChargeTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, 1);
+					_meleeChargeTimer = float.NegativeInfinity;
+				}
+			}
+
+			if (_input.GetButtonUp("Melee"))
+			{
+				if (_meleeChargeTimer > _meleeChargeTime)
+				{
+					var chargedPercent =
+						(_meleeChargeTimer - _meleeChargeTime) /
+						(_meleeMaxChargeTime - _meleeChargeTime);
+
+					InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, chargedPercent);
+				}
+				else if (_meleeChargeTimer > 0)
+				{
+					InvokeInputEvent(PlayerInputCommand.MeleeAttack);
+				}
 			}
 		}
 
-		if (_input.GetButtonUp("Melee"))
+		private void HandleRangeInput()
 		{
-			if (_meleeChargeTimer > _meleeChargeTime)
+			if (_usingController)
 			{
-				var chargedPercent =
-					(_meleeChargeTimer - _meleeChargeTime) /
-					(_meleeMaxChargeTime - _meleeChargeTime);
-
-				InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, chargedPercent);
+				HandleControllerRangeInput();
+				return;
 			}
-			else if (_meleeChargeTimer > 0)
+
+			if (_input.GetButtonDown("Throw"))
 			{
-				InvokeInputEvent(PlayerInputCommand.MeleeAttack);
-			}
-		}
-	}
-
-	private void HandleRangeInput()
-	{
-		if (_usingController)
-		{
-			HandleControllerRangeInput();
-			return;
-		}
-
-		if (_input.GetButtonDown("Throw"))
-		{
-			_rangeChargeTimer = 0;
-			InvokeInputEvent(PlayerInputCommand.RangeBegin);
-		}
-
-		if (_input.GetButton("Throw"))
-		{
-			_rangeChargeTimer += Time.deltaTime;
-			if (_rangeChargeTimer > _rangeChargeTime)
-			{
-				InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
-				_rangeChargeTimer = float.NegativeInfinity;
-			}
-		}
-
-		if (_input.GetButtonUp("Throw"))
-		{
-			if (_rangeChargeTimer > 0)
-				InvokeInputEvent(PlayerInputCommand.RangeAttack);
-		}
-	}
-
-	private void HandleControllerRangeInput()
-	{
-		var throwPressed = false;
-
-		if (GetAimingDirection().sqrMagnitude > 0.25f)
-		{
-			if (_input.GetAxis("Throw") > 0.3f)
-			{
-				throwPressed = true;
-			}
-		}
-
-		if (throwPressed)
-		{
-			// OnButtonDown
-			if (!_throwPressedBefore)
-			{
-				_throwPressedBefore = true;
 				_rangeChargeTimer = 0;
 				InvokeInputEvent(PlayerInputCommand.RangeBegin);
 			}
 
-			// OnButton
-			_rangeChargeTimer += Time.deltaTime;
-			if (_rangeChargeTimer > _rangeChargeTime)
+			if (_input.GetButton("Throw"))
 			{
-				InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
-				_rangeChargeTimer = float.NegativeInfinity;
+				_rangeChargeTimer += Time.deltaTime;
+				if (_rangeChargeTimer > _rangeChargeTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
+					_rangeChargeTimer = float.NegativeInfinity;
+				}
+			}
+
+			if (_input.GetButtonUp("Throw"))
+			{
+				if (_rangeChargeTimer > 0)
+					InvokeInputEvent(PlayerInputCommand.RangeAttack);
 			}
 		}
-		// OnButtonUp
-		else if (_throwPressedBefore)
-		{
-			_throwPressedBefore = false;
-			if (_rangeChargeTimer > 0)
-				InvokeInputEvent(PlayerInputCommand.RangeAttack);
-		}
-	}
 
-	private void HandleJumpInput()
-	{
-		if (_input.GetButtonDown("Jump"))
+		private void HandleControllerRangeInput()
 		{
-			InvokeInputEvent(PlayerInputCommand.Jump);
-		}
-	}
+			var throwPressed = false;
 
-	private void HandleDashInput()
-	{
-		if (_input.GetButtonDown("Dash"))
-		{
-			InvokeInputEvent(PlayerInputCommand.Dash);
-		}
-	}
-
-	private void HandleWithdraw()
-	{
-		if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
-		{
-			_withdrawTimer += Time.deltaTime;
-			if (_withdrawTimer >= _withdrawTime)
+			if (GetAimingDirection().sqrMagnitude > 0.025f)
 			{
-				InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+				if (_input.GetAxis("Throw") > 0.3f)
+				{
+					throwPressed = true;
+				}
+			}
+
+			if (throwPressed)
+			{
+				// OnButtonDown
+				if (!_throwPressedBefore)
+				{
+					_throwPressedBefore = true;
+					_rangeChargeTimer = 0;
+					InvokeInputEvent(PlayerInputCommand.RangeBegin);
+				}
+
+				// OnButton
+				_rangeChargeTimer += Time.deltaTime;
+				if (_rangeChargeTimer > _rangeChargeTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
+					_rangeChargeTimer = float.NegativeInfinity;
+				}
+			}
+			// OnButtonUp
+			else if (_throwPressedBefore)
+			{
+				_throwPressedBefore = false;
+				if (_rangeChargeTimer > 0)
+					InvokeInputEvent(PlayerInputCommand.RangeAttack);
 			}
 		}
-		else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
+
+		private void HandleJumpInput()
 		{
-			if (_withdrawTimer < _withdrawTime)
+			if (_input.GetButtonDown("Jump"))
 			{
-				InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+				InvokeInputEvent(PlayerInputCommand.Jump);
 			}
-			_withdrawTimer = 0;
+		}
+
+		private void HandleDashInput()
+		{
+			if (_input.GetButtonDown("Dash"))
+			{
+				InvokeInputEvent(PlayerInputCommand.Dash);
+			}
+		}
+
+		private void HandleWithdraw()
+		{
+			if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
+			{
+				_withdrawTimer += Time.deltaTime;
+				if (_withdrawTimer >= _withdrawTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+				}
+			}
+			else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
+			{
+				if (_withdrawTimer < _withdrawTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+				}
+				_withdrawTimer = 0;
+			}
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
+
 public interface ICharacterInput<T> where T : struct, System.IConvertible
 {
 	bool DelayInput { get; set; }

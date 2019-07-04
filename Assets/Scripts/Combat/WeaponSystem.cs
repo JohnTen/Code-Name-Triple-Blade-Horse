@@ -3,196 +3,204 @@ using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
 
-public class WeaponSystem : MonoBehaviour
+namespace TripleBladeHorse.Combat
 {
-	[SerializeField] float fireRate;
-	[SerializeField] float allLaunchRate;
-	[SerializeField] float autoPickupDistance;
-	[SerializeField] float autoReturnDistance;
-	[Space(30)]
-	[SerializeField] Sword sword;
-	[SerializeField] Sheath sheath;
-	[SerializeField] CharacterState _state;
-	[SerializeField] AttackMove meleeMove;
-	[SerializeField] AttackMove chargedMeleeMove;
-	[SerializeField] GameObject _attackEffectPrefab;
-	[SerializeField] AudioSource _audio;
-	[SerializeField] AudioClip[] _normalMeleeSFX;
-
-	GameObject _currentAttackEffect;
-	[SerializeField] List<ThrowingKnife> knifesInAirList;
-
-	public bool Frozen { get; private set; }
-
-	public event Action<Vector3> OnPull;
-	public event Action<IAttacker, AttackMove> OnRaisingAttack;
-
-	private void Awake()
+	public class WeaponSystem : MonoBehaviour
 	{
-		knifesInAirList = new List<ThrowingKnife>();
-		sheath.OnRecievedKnife += Sheath_OnRecievedKnife;
-	}
+		[SerializeField] float fireRate;
+		[SerializeField] float allLaunchRate;
+		[SerializeField] float autoPickupDistance;
+		[SerializeField] float autoReturnDistance;
+		[Space(30)]
+		[SerializeField] Sword sword;
+		[SerializeField] Sheath sheath;
+		[SerializeField] CharacterState _state;
+		[SerializeField] AttackMove meleeMove;
+		[SerializeField] AttackMove chargedMeleeMove;
+		[SerializeField] GameObject _attackEffectPrefab;
+		[SerializeField] AudioSource _audio;
+		[SerializeField] AudioClip[] _normalMeleeSFX;
 
-	public void MeleeAttack()
-	{
-		var package = AttackPackage.CreateNewPackage();
-		package._faction = Faction.Player;
-		package._attackType = AttackType.Melee;
-		package._hitPointDamage.Base = _state._hitPointDamage;
-		package._enduranceDamage.Base = _state._enduranceDamage;
-		OnRaisingAttack?.Invoke(sword, meleeMove);
+		GameObject _currentAttackEffect;
+		[SerializeField] List<ThrowingKnife> knifesInAirList;
 
-		sword.Activate(package, meleeMove);
+		public bool Frozen { get; private set; }
 
-		if (_currentAttackEffect) return;
-		_currentAttackEffect = Instantiate(_attackEffectPrefab);
-		_currentAttackEffect.transform.SetParent(sword.transform);
-		_currentAttackEffect.transform.localPosition = Vector3.zero;
+		public event Action<Vector3> OnPull;
+		public event Action<IAttacker, AttackMove> OnRaisingAttack;
 
-		_audio.clip = _normalMeleeSFX.PickRandom();
-		_audio.Play();
-	}
-
-	public void ChargedMeleeAttack(float chargedPercent)
-	{
-		var package = AttackPackage.CreateNewPackage();
-		package._faction = Faction.Player;
-		package._attackType = AttackType.ChargedMelee;
-		package._hitPointDamage.Base = _state._hitPointDamage;
-		package._enduranceDamage.Base = _state._enduranceDamage;
-		OnRaisingAttack?.Invoke(sword, chargedMeleeMove);
-
-		sword.Activate(package, chargedMeleeMove);
-
-		if (_currentAttackEffect) return;
-		_currentAttackEffect = Instantiate(_attackEffectPrefab);
-		_currentAttackEffect.transform.SetParent(sword.transform);
-		_currentAttackEffect.transform.localPosition = Vector3.zero;
-	}
-
-	public void MeleeAttackEnd()
-	{
-		sword.Deactivate();
-
-		if (_currentAttackEffect)
+		private void Awake()
 		{
-			Destroy(_currentAttackEffect);
+			knifesInAirList = new List<ThrowingKnife>();
+			sheath.OnRecievedKnife += Sheath_OnRecievedKnife;
 		}
-	}
 
-	public void RangeAttack(Vector2 direction)
-	{
-		var knife = sheath.TakeKnife(false);
-
-		if (knife != null)
+		public void MeleeAttack()
 		{
-			knifesInAirList.Add(knife);
-			knife.Launch(direction, true);
+			var package = AttackPackage.CreateNewPackage();
+			package._faction = Faction.Player;
+			package._attackType = AttackType.Melee;
+			package._hitPointDamage.Base = _state._hitPointDamage;
+			package._enduranceDamage.Base = _state._enduranceDamage;
+			OnRaisingAttack?.Invoke(sword, meleeMove);
+
+			sword.Activate(package, meleeMove);
+
+			if (_currentAttackEffect) return;
+			_currentAttackEffect = Instantiate(_attackEffectPrefab);
+			_currentAttackEffect.transform.SetParent(sword.transform);
+			_currentAttackEffect.transform.localPosition = Vector3.zero;
+
+			_audio.clip = _normalMeleeSFX.PickRandom();
+			_audio.Play();
 		}
-	}
 
-	public void ChargedRangeAttack(Vector2 direction)
-	{
-		StartCoroutine(LaunchAllKnife(direction));
-	}
-
-	public void WithdrawAll()
-	{
-		for (int i = 0; i < knifesInAirList.Count; i++)
+		public void ChargedMeleeAttack(float chargedPercent)
 		{
-			if (knifesInAirList[i].State == KnifeState.Flying)
-				continue;
+			var package = AttackPackage.CreateNewPackage();
+			package._faction = Faction.Player;
+			package._attackType = AttackType.ChargedMelee;
+			package._hitPointDamage.Base = _state._hitPointDamage;
+			package._enduranceDamage.Base = _state._enduranceDamage;
+			OnRaisingAttack?.Invoke(sword, chargedMeleeMove);
 
-			if (knifesInAirList[i].Stuck)
+			sword.Activate(package, chargedMeleeMove);
+
+			if (_currentAttackEffect) return;
+			_currentAttackEffect = Instantiate(_attackEffectPrefab);
+			_currentAttackEffect.transform.SetParent(sword.transform);
+			_currentAttackEffect.transform.localPosition = Vector3.zero;
+		}
+
+		public void MeleeAttackEnd()
+		{
+			sword.Deactivate();
+
+			if (_currentAttackEffect)
 			{
-				OnPull?.Invoke((knifesInAirList[i].transform.position - transform.position).normalized);
-			}
-			knifesInAirList[i].Withdraw();
-		}
-	}
-
-	public void WithdrawOne()
-	{
-		var minDistance = float.PositiveInfinity;
-		var knifeIndex = -1;
-		for (int i = 0; i < knifesInAirList.Count; i++)
-		{
-			var distance = (knifesInAirList[i].transform.position - sheath.transform.position).sqrMagnitude;
-			if (distance > minDistance
-			|| knifesInAirList[i].State == KnifeState.Flying)
-				continue;
-
-			minDistance = distance;
-			knifeIndex = i;
-		}
-
-		if (knifeIndex >= 0)
-		{
-			if (knifesInAirList[knifeIndex].Stuck)
-				OnPull?.Invoke((knifesInAirList[knifeIndex].transform.position - transform.position).normalized);
-			knifesInAirList[knifeIndex].Withdraw();
-		}
-	}
-
-	public void ResetWeapon()
-	{
-		while (knifesInAirList.Count > 0)
-		{
-			knifesInAirList[0].RetractInstantly();
-		}
-	}
-
-	private void Sheath_OnRecievedKnife(ThrowingKnife knife)
-	{
-		knifesInAirList.Remove(knife);
-	}
-
-	private void Player_OnChangeDirection(bool right)
-	{
-		sheath.UpdateFacingDirection(right);
-	}
-
-	private void Update()
-	{
-		sheath.ReloadSpeed = fireRate;
-
-		foreach (var knife in knifesInAirList)
-		{
-			var dir = knife.transform.position - sheath.transform.position;
-			if (dir.sqrMagnitude > autoReturnDistance * autoReturnDistance)
-			{
-				knife.Withdraw();
-			}
-
-			if (knife.State == KnifeState.Stuck && !knife.Stuck && dir.sqrMagnitude < autoPickupDistance * autoPickupDistance)
-			{
-				knife.Withdraw();
+				Destroy(_currentAttackEffect);
 			}
 		}
 
-		if (Input.GetKeyDown(KeyCode.P))
-			ResetWeapon();
-	}
-
-	IEnumerator LaunchAllKnife(Vector3 direction)
-	{
-		var time = 0f;
-
-		//Frozen = true;
-		while (sheath.knifeCount > 0)
+		public void RangeAttack(Vector2 direction)
 		{
-			time += Time.deltaTime * allLaunchRate;
-			if (time < 1)
-			{
-				yield return null;
-				continue;
-			}
-			time--;
+			var knife = sheath.TakeKnife(false);
 
-			var knife = sheath.TakeKnife(true);
-			knifesInAirList.Add(knife);
-			knife.Launch(direction, true);
+			if (knife != null)
+			{
+				knifesInAirList.Add(knife);
+				knife.Launch(direction, true);
+			}
 		}
-		//Frozen = false;
+
+		public void ChargedRangeAttack(Vector2 direction)
+		{
+			StartCoroutine(LaunchAllKnife(direction));
+		}
+
+		public void WithdrawAll()
+		{
+			for (int i = 0; i < knifesInAirList.Count; i++)
+			{
+				if (knifesInAirList[i].State == KnifeState.Flying)
+					continue;
+
+				if (knifesInAirList[i].Stuck)
+				{
+					OnPull?.Invoke((knifesInAirList[i].transform.position - transform.position).normalized);
+				}
+				knifesInAirList[i].Withdraw();
+			}
+		}
+
+		public void WithdrawOne()
+		{
+			var minDistance = float.PositiveInfinity;
+			var knifeIndex = -1;
+			for (int i = 0; i < knifesInAirList.Count; i++)
+			{
+				var distance = (knifesInAirList[i].transform.position - sheath.transform.position).sqrMagnitude;
+				if (distance > minDistance
+				|| knifesInAirList[i].State == KnifeState.Flying)
+					continue;
+
+				minDistance = distance;
+				knifeIndex = i;
+			}
+
+			if (knifeIndex >= 0)
+			{
+				if (knifesInAirList[knifeIndex].Stuck)
+					OnPull?.Invoke((knifesInAirList[knifeIndex].transform.position - transform.position).normalized);
+				knifesInAirList[knifeIndex].Withdraw();
+			}
+		}
+
+		public void ResetWeapon()
+		{
+			while (knifesInAirList.Count > 0)
+			{
+				knifesInAirList[0].RetractInstantly();
+			}
+
+			if (_currentAttackEffect)
+			{
+				Destroy(_currentAttackEffect);
+			}
+		}
+
+		private void Sheath_OnRecievedKnife(ThrowingKnife knife)
+		{
+			knifesInAirList.Remove(knife);
+		}
+
+		private void Player_OnChangeDirection(bool right)
+		{
+			sheath.UpdateFacingDirection(right);
+		}
+
+		private void Update()
+		{
+			sheath.ReloadSpeed = fireRate;
+
+			foreach (var knife in knifesInAirList)
+			{
+				var dir = knife.transform.position - sheath.transform.position;
+				if (dir.sqrMagnitude > autoReturnDistance * autoReturnDistance)
+				{
+					knife.Withdraw();
+				}
+
+				if (knife.State == KnifeState.Stuck && !knife.Stuck && dir.sqrMagnitude < autoPickupDistance * autoPickupDistance)
+				{
+					knife.Withdraw();
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.P))
+				ResetWeapon();
+		}
+
+		IEnumerator LaunchAllKnife(Vector3 direction)
+		{
+			var time = 0f;
+
+			//Frozen = true;
+			while (sheath.knifeCount > 0)
+			{
+				time += Time.deltaTime * allLaunchRate;
+				if (time < 1)
+				{
+					yield return null;
+					continue;
+				}
+				time--;
+
+				var knife = sheath.TakeKnife(true);
+				knifesInAirList.Add(knife);
+				knife.Launch(direction, true);
+			}
+			//Frozen = false;
+		}
 	}
 }

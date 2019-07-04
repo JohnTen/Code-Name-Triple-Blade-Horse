@@ -1,4 +1,5 @@
-﻿using JTUtility;
+﻿using System.Collections.Generic;
+using JTUtility;
 
 namespace TripleBladeHorse.Animation
 {
@@ -28,8 +29,9 @@ namespace TripleBladeHorse.Animation
 			this.rule = rule;
 		}
 
-		public bool Test(FSMState stateData)
+		public bool Test(string currentAnimation, FSMState stateData)
 		{
+			if (currentAnim != currentAnimation && currentAnim != Any) return false;
 			return rule(stateData);
 		}
 	}

@@ -47,7 +47,14 @@ namespace JTUtility
 					}
 
 					if (timers[k].OnTimeOut != null)
+					{
 						timers[k].OnTimeOut.Invoke();
+						if (timers[k].raiseTimeOut != null)
+						{
+							timers[k].raiseTimeOut.Invoke();
+							timers[k].raiseTimeOut = null;
+						}
+					}
 				}
 			}
 		}
@@ -72,6 +79,8 @@ namespace JTUtility
 		private float timeLeft;
 
 		public event Action OnTimeOut;
+
+		Action raiseTimeOut;
 
 		public Timer()
 		{
@@ -107,6 +116,13 @@ namespace JTUtility
 		{
 			startTime = sec;
 			timeLeft = sec;
+		}
+
+		public void Start(float sec, Action timeOutHandler)
+		{
+			startTime = sec;
+			timeLeft = sec;
+			raiseTimeOut = timeOutHandler;
 		}
 
 		public void Abort()

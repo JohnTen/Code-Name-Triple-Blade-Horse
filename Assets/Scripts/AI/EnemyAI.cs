@@ -3,32 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using BTAI;
 
-public class EnemyAI : MonoBehaviour
+namespace TripleBladeHorse.AI
 {
-    Root enemyRoot = BT.Root();
-    public EnemyBehave enemyBehave;
+	public class EnemyAI : MonoBehaviour
+	{
+		[SerializeField] float _attackInterval;
 
-    private void OnEnable()
-    {
-        enemyRoot.OpenBranch(
-            BT.Selector().OpenBranch(
-               BT.If(enemyBehave.AttackAction).OpenBranch(
-                   BT.Call(enemyBehave.Attack),
-                   BT.Wait(2.0f)
-                ),
-               BT.If(enemyBehave.AlertAction).OpenBranch(
-                   BT.Call(enemyBehave.MoveToPlayer)
-                   ),
-               BT.Call(enemyBehave.Patrol)
-               )
-       );
-    }
+		Root enemyRoot = BT.Root();
+		public EnemyBehave enemyBehave;
 
-    // Update is called once per frame
-    void Update()
-    {
-        enemyRoot.Tick();
-    }
-
-
+		private void OnEnable()
+		{
+            enemyRoot.OpenBranch(
+                BT.Selector().OpenBranch(
+					BT.Sequence().OpenBranch(
+						BT.Condition(enemyBehave.needDodge),
+						BT.Call(enemyBehave.Dodge)
+					),
+                    BT.Sequence().OpenBranch(
+                        BT.Condition(enemyBehave.AttackAction),
+						BT.Call(enemyBehave.Attack),
+						BT.Wait(_attackInterval)
+                    ),
+                    BT.Sequence().OpenBranch(
+                        BT.Condition(enemyBehave.AlertAction),
+					    BT.Call(enemyBehave.MoveToPlayer)
+					   ),
+				    BT.Call(enemyBehave.Patrol)
+				   )
+		   );
+		}
+		
+		void Update()
+		{
+			enemyRoot.Tick();
+		}
+	}
 }

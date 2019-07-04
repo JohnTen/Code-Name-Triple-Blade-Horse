@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using UnityUtility;
+using JTUtility;
 
-namespace UnityUtility.Bezier
+namespace JTUtility.Bezier
 {
 	public static class Bezier
 	{
