@@ -23,7 +23,11 @@ namespace TripleBladeHorse.AI
 		[SerializeField] float _error = 1;
 		[SerializeField] bool _pause = false;
 		[SerializeField] bool _partol;
+		[SerializeField] float _chargeSpeed = 8;
 		[SerializeField] CharacterState _state;
+		
+		[SerializeField] Movement.EnemyMover enemyMover;
+		
 
 		Vector2 _move;
 		Vector2 _aim;
@@ -59,6 +63,10 @@ namespace TripleBladeHorse.AI
 		public void Alert(){
 			_move = (_character.position - transform.position).normalized * 0.01f;
 			OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Alert));
+		}
+
+		public void Charge(){
+			enemyMover._baseSpeed = _chargeSpeed;
 		}
 
 		public void Patrol()
