@@ -73,8 +73,16 @@ namespace TripleBladeHorse
 			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection();
 			_mover.Move(moveInput);
 			_animator.SetFloat("XSpeed", moveInput.x);
-			if (moveInput.x != 0)
-				_animator.FlipX = moveInput.x > 0;
+
+			var aimInput = _state._frozen ? Vector2.zero : _input.GetAimingDirection();
+			if (aimInput.x != 0)
+			{
+				_animator.FlipX = aimInput.x > 0;
+				_state._facingRight = aimInput.x > 0;
+			}
+
+			var backward = _state._facingRight != aimInput.x > 0;
+			_animator.SetBool("Backward", backward);
 		}
 
 		private void HandleReceivedInput(InputEventArg<EnemyInput> eventArgs)
@@ -105,7 +113,7 @@ namespace TripleBladeHorse
 		{
 			if (_state._endurance < _state._enduranceSafeThreshlod)
 			{
-				_enduranceRefreshTimer += Time.deltaTime;
+				_enduranceRefreshTimer += TimeManager.DeltaTime;
 			}
 			else
 			{
@@ -119,11 +127,11 @@ namespace TripleBladeHorse
 
 			if (_enduranceRecoverTimer < _state._enduranceRecoverDelay)
 			{
-				_enduranceRecoverTimer += Time.deltaTime;
+				_enduranceRecoverTimer += TimeManager.DeltaTime;
 			}
 			else if (!_state._endurance.IsFull())
 			{
-				_state._endurance += _state._enduranceRecoverRate * Time.deltaTime;
+				_state._endurance += _state._enduranceRecoverRate * TimeManager.DeltaTime;
 			}
 		}
 	}

@@ -10,5 +10,5 @@ public interface ICanStickKnife
 	float PullForceFactor { get; }
 
 	bool TryStick(GameObject obj);
-	bool TryTakeOut(GameObject obj);
+	bool TryPullOut(GameObject obj, ref Vector2 pullingVelocity);
 }

@@ -34,6 +34,11 @@ namespace JTUtility
 			return Base - Current <= float.Epsilon;
 		}
 
+		public void Clamp()
+		{
+			Current = Mathf.Clamp(Current, 0, Base);
+		}
+
 		public static implicit operator float(StateValue value)
 		{
 			return value.current;

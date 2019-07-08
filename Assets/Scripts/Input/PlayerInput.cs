@@ -15,6 +15,8 @@ namespace TripleBladeHorse
 		RangeChargeAttack,
 		MeleeBegin,
 		MeleeAttack,
+		MeleeChargeBegin,
+		MeleeChargeBreak,
 		MeleeChargeAttack,
 		WithdrawAll,
 		WithdrawOne,
@@ -22,20 +24,22 @@ namespace TripleBladeHorse
 
 	public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
 	{
-		[SerializeField] float _meleeChargeTime;
-		[SerializeField] float _meleeMaxChargeTime;
-		[SerializeField] float _rangeChargeTime;
-		[SerializeField] float _withdrawTime;
+		[SerializeField] float _enterMeleeChargeTime = 0.3f;
+		[SerializeField] float _minimumMeleeChargeTime = 0.2f;
+		[SerializeField] float _meleeMaxChargeTime = 2f;
+		[SerializeField] float _rangeChargeTime = 0.3f;
+		[SerializeField] float _withdrawTime = 0.3f;
 		[SerializeField] Transform _aimingPivot;
 		[SerializeField] LineRenderer _aimingLine;
 		[SerializeField] bool _delayingInput;
-		[SerializeField] bool blockInput;
+		[SerializeField] bool _blockInput;
 
-		float _meleeChargeTimer;
+		[SerializeField] float _enterMeleeChargeTimer;
+		[SerializeField] float _meleeChargeTimer;
 		float _rangeChargeTimer;
 		float _withdrawTimer;
 
-		//bool _delayingInput;
+		bool _triggerInput;
 		bool _usingController;
 		bool _throwPressedBefore;
 		IInputModel _input;
@@ -58,14 +62,27 @@ namespace TripleBladeHorse
 				if (_delayingInput)
 				{
 					_delayedInput._command = PlayerInputCommand.Null;
+					_enterMeleeChargeTimer = 0;
+					_meleeChargeTimer = 0;
+					_rangeChargeTimer = 0;
+					_withdrawTimer = 0;
 				}
 			}
 		}
 
 		public bool BlockInput
 		{
-			get => blockInput;
-			set => blockInput = value;
+			get => _blockInput;
+			set
+			{
+				_blockInput = value;
+				if (_blockInput)
+				{
+					_enterMeleeChargeTimer = float.NegativeInfinity;
+					_rangeChargeTimer = 0;
+					_withdrawTimer = 0;
+				}
+			}
 		}
 
 		public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
@@ -132,16 +149,24 @@ namespace TripleBladeHorse
 		private void Update()
 		{
 			if (BlockInput) return;
+			_triggerInput = false;
+
+			HandleDashInput();
+			if (_triggerInput) return;
+
+			HandleJumpInput();
+			if (_triggerInput) return;
 
 			HandleMeleeInput();
+			if (_triggerInput) return;
+
 			HandleRangeInput();
-			HandleJumpInput();
-			HandleDashInput();
 			HandleWithdraw();
 		}
 
 		private void InvokeInputEvent(PlayerInputCommand command)
 		{
+			_triggerInput = true;
 			if (DelayInput)
 			{
 				_delayedInput._command = command;
@@ -153,6 +178,7 @@ namespace TripleBladeHorse
 
 		private void InvokeInputEvent(PlayerInputCommand command, float value)
 		{
+			_triggerInput = true;
 			if (DelayInput)
 			{
 				_delayedInput._command = command;
@@ -167,34 +193,56 @@ namespace TripleBladeHorse
 		{
 			if (_input.GetButtonDown("Melee"))
 			{
+				_enterMeleeChargeTimer = 0;
 				_meleeChargeTimer = 0;
 				InvokeInputEvent(PlayerInputCommand.MeleeBegin);
 			}
 
 			if (_input.GetButton("Melee"))
 			{
-				_meleeChargeTimer += Time.deltaTime;
+				bool charged = _enterMeleeChargeTimer > _enterMeleeChargeTime;
+				_enterMeleeChargeTimer += TimeManager.PlayerDeltaTime;
+				if (_enterMeleeChargeTimer > _enterMeleeChargeTime)
+				{
+					if (!charged)
+						InvokeInputEvent(PlayerInputCommand.MeleeChargeBegin);
+
+					_meleeChargeTimer += TimeManager.PlayerDeltaTime;
+				}
+
 				if (_meleeChargeTimer > _meleeMaxChargeTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, 1);
 					_meleeChargeTimer = float.NegativeInfinity;
+					_enterMeleeChargeTimer = float.NegativeInfinity;
 				}
 			}
 
 			if (_input.GetButtonUp("Melee"))
 			{
-				if (_meleeChargeTimer > _meleeChargeTime)
+				if (_meleeChargeTimer > _minimumMeleeChargeTime)
 				{
-					var chargedPercent =
-						(_meleeChargeTimer - _meleeChargeTime) /
-						(_meleeMaxChargeTime - _meleeChargeTime);
+					var chargedPercent = _meleeChargeTimer / _meleeMaxChargeTime;
 
 					InvokeInputEvent(PlayerInputCommand.MeleeChargeAttack, chargedPercent);
 				}
 				else if (_meleeChargeTimer > 0)
 				{
+					InvokeInputEvent(PlayerInputCommand.MeleeChargeBreak);
+				}
+				else if (_enterMeleeChargeTimer > 0)
+				{
 					InvokeInputEvent(PlayerInputCommand.MeleeAttack);
 				}
+				_meleeChargeTimer = float.NegativeInfinity;
+				_enterMeleeChargeTimer = float.NegativeInfinity;
+			}
+
+			if (!_input.GetButton("Melee") && _enterMeleeChargeTimer > _enterMeleeChargeTime)
+			{
+				InvokeInputEvent(PlayerInputCommand.MeleeChargeBreak);
+				_meleeChargeTimer = float.NegativeInfinity;
+				_enterMeleeChargeTimer = float.NegativeInfinity;
 			}
 		}
 
@@ -214,7 +262,7 @@ namespace TripleBladeHorse
 
 			if (_input.GetButton("Throw"))
 			{
-				_rangeChargeTimer += Time.deltaTime;
+				_rangeChargeTimer += TimeManager.PlayerDeltaTime;
 				if (_rangeChargeTimer > _rangeChargeTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
@@ -252,7 +300,7 @@ namespace TripleBladeHorse
 				}
 
 				// OnButton
-				_rangeChargeTimer += Time.deltaTime;
+				_rangeChargeTimer += TimeManager.PlayerDeltaTime;
 				if (_rangeChargeTimer > _rangeChargeTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
@@ -288,7 +336,7 @@ namespace TripleBladeHorse
 		{
 			if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
 			{
-				_withdrawTimer += Time.deltaTime;
+				_withdrawTimer += TimeManager.PlayerDeltaTime;
 				if (_withdrawTimer >= _withdrawTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.WithdrawAll);

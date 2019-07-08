@@ -7,12 +7,15 @@ using TripleBladeHorse.Movement;
 
 namespace TripleBladeHorse
 {
-	public class PlayerCharacter : MonoBehaviour
+	public class PlayerCharacter : MonoBehaviour, ICanHandlePullingKnife
 	{
 		#region Fields
 		[SerializeField] Transform _hittingPoint;
 		[SerializeField] PlayerState _state;
-		
+		[SerializeField] int _maxAirAttack;
+
+		[SerializeField] bool extraJump;
+		int _currentAirAttack;
 		FSM _animator;
 		ICanDetectGround _groundDetector;
 		IAttackable _hitbox;
@@ -52,23 +55,31 @@ namespace TripleBladeHorse
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 			_input.OnReceivedInput += HandleReceivedInput;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeinEvent);
+			_animator.Subscribe(Animation.AnimationState.FadingOut, HandleAnimationFadeoutEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += HandlePull;
 			_hitbox.OnHit += HandleOnHit;
+
+			// Debug
+			GetComponent<Test>().OnPull += HandlePull;
 		}
 
 		private void Update()
 		{
-			_state._frozen =
+			var frozen =
 				_animator.GetBool("Frozen")
 				|| _mover.CurrentMovingState == MovingState.Dash
 				|| _mover.PullDelaying
 				|| _weaponSystem.Frozen;
 
+			SetFrozen(frozen);
+			
 			_input.DelayInput = _animator.GetBool("DelayInput");
 			_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
 
 			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
+			if (moveInput.x != 0)
+				moveInput = DirectionalHelper.NormalizeHorizonalDirection(moveInput);
 			_mover.Move(moveInput);
 
 			if (_state._frozen)
@@ -90,37 +101,21 @@ namespace TripleBladeHorse
 		#region Event Handlers
 		private void HandleAnimationFadeinEvent(AnimationEventArg eventArgs)
 		{
-			if (eventArgs._animation.name == "ATK_Melee_Ground_1" ||
-				eventArgs._animation.name == "ATK_Melee_Ground_2" ||
-				eventArgs._animation.name == "ATK_Melee_Ground_3")
-			{
-				_animator.SetBool("DelayInput", true);
-				_input.DelayInput = true;
-			}
-			else
-			{
-				_animator.SetBool("DelayInput", false);
-				_input.DelayInput = false;
-			}
+			SetBlockInput(eventArgs._animation.blockInputOnStart);
+			SetDelayInput(eventArgs._animation.delayInputOnStart);
+			SetFrozen(eventArgs._animation.frozenOnStart);
+			if (eventArgs._animation.airAttack)
+				_mover.AirAttacking = true;
+		}
 
-			if (eventArgs._animation.name == "Droping_Buffering" ||
-				eventArgs._animation.name == "Hitten_Ground_Small" ||
-				eventArgs._animation.name == "Hitten_Ground_Normal" ||
-				eventArgs._animation.name == "Hitten_Ground_Big")
-			{
-				_animator.SetBool("BlockInput", true);
-				_input.BlockInput = true;
-			}
-			else
-			{
-				_animator.SetBool("BlockInput", false);
-				_input.BlockInput = false;
-			}
+		private void HandleAnimationFadeoutEvent(AnimationEventArg eventArgs)
+		{
+			if (eventArgs._animation.airAttack)
+				_mover.AirAttacking = false;
 		}
 
 		private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 		{
-			print(eventArgs._name);
 			if (eventArgs._name == "AttackBegin")
 			{
 				_weaponSystem.MeleeAttack();
@@ -128,6 +123,7 @@ namespace TripleBladeHorse
 			else if (eventArgs._name == "AttackEnd")
 			{
 				_weaponSystem.MeleeAttackEnd();
+				_animator.SetBool("Charge", false);
 			}
 			else if (eventArgs._name == "AttackStepDistance")
 			{
@@ -173,20 +169,22 @@ namespace TripleBladeHorse
 
 		private void HandlePull(Vector3 direction)
 		{
+			_currentAirAttack = 0;
 			_animator.SetToggle("Jump", true);
 			_mover.Pull(direction);
-		}
-
-		private void HandleLanding()
-		{
-			_animator.SetBool("BlockInput", true);
+			extraJump = true;
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
 		{
 			if (eventArgs.currentLandingState == LandingState.OnGround)
 			{
+				_currentAirAttack = 0;
 				_animator.SetBool("Airborne", false);
+				_animator.SetBool("Charge", false);
+				SetBlockInput(true);
+				SetFrozen(true);
+				extraJump = false;
 			}
 			else
 			{
@@ -196,14 +194,27 @@ namespace TripleBladeHorse
 
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
-			_hitFlash.Flash();
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
-			_enduranceRecoverTimer = 0;
-			_mover.Knockback(attack._fromDirection * attack._knockback);
-			
+
+			if (result._finalDamage > 0)
+			{
+				_hitFlash.Flash();
+			}
+
+			if (result._finalFatigue > 0)
+			{
+				_enduranceRecoverTimer = 0;
+			}
+
+			if (attack._knockback != 0)
+			{
+				_mover.Knockback(attack._fromDirection * attack._knockback);
+			}
+
 			if (_state._hitPoints <= 0)
 			{
+				CancelAnimation();
 				print("Player Dead");
 				_mover.ResetMovement();
 				_weaponSystem.ResetWeapon();
@@ -212,6 +223,7 @@ namespace TripleBladeHorse
 
 			if (_state._endurance <= 0)
 			{
+				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
 			}
@@ -222,16 +234,16 @@ namespace TripleBladeHorse
 			switch (input._command)
 			{
 				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround) break;
-					Cancel();
+					if (!_groundDetector.IsOnGround && !extraJump) break;
+					CancelAnimation();
 					_mover.Jump();
 					_animator.SetToggle("Jump", true);
-					print("Jump");
+					extraJump = false;
 					break;
 
 				case PlayerInputCommand.Dash:
 
-					Cancel();
+					CancelAnimation();
 					var moveInput = _input.GetMovingDirection();
 					if (moveInput == Vector2.zero)
 						moveInput = _state._facingRight ? Vector2.right : Vector2.left;
@@ -251,24 +263,48 @@ namespace TripleBladeHorse
 					{
 						_mover.ShortDash(moveInput);
 					}
+					else break;
+					
+					extraJump = true;
 					_animator.SetToggle("DashBegin", true);
 					_animator.SetFloat("XSpeed", moveInput.x);
 					_animator.SetFloat("YSpeed", moveInput.y);
+					SetDelayInput(true);
 
 					_animator.UpdateAnimationState();
 					break;
 
 				case PlayerInputCommand.MeleeBegin:
-					Cancel();
+					if (!_groundDetector.IsOnGround && _currentAirAttack >= _maxAirAttack)
+						break;
+					CancelAnimation();
+					break;
+					
+				case PlayerInputCommand.MeleeAttack:
+					if (!_groundDetector.IsOnGround && _currentAirAttack >= _maxAirAttack)
+						break;
+
+					if (!_groundDetector.IsOnGround)
+						_currentAirAttack++;
+					_animator.SetToggle("MeleeAttack", true);
+					_mover.AirAttacking = !_groundDetector.IsOnGround;
+					SetDelayInput(true);
 					break;
 
-				case PlayerInputCommand.MeleeAttack:
-					_animator.SetToggle("MeleeAttack", true);
-					print("Attack");
+				case PlayerInputCommand.MeleeChargeBegin:
+					CancelAnimation();
+					_animator.SetBool("Charge", true);
+					break;
+
+				case PlayerInputCommand.MeleeChargeBreak:
+					CancelAnimation();
+					_animator.SetBool("Charge", false);
 					break;
 
 				case PlayerInputCommand.MeleeChargeAttack:
 					_weaponSystem.ChargedMeleeAttack(input._additionalValue);
+					_animator.SetToggle("MeleeAttack", true);
+					SetDelayInput(true);
 					break;
 
 				case PlayerInputCommand.RangeAttack:
@@ -291,11 +327,23 @@ namespace TripleBladeHorse
 		#endregion
 
 		#region Private Methods
-		private void Cancel()
+		void CallDeathHandlers()
+		{
+			var handlers = new List<ICanHandleDeath>();
+			GetComponentsInChildren(handlers);
+
+			foreach (var handler in handlers)
+			{
+				handler.OnDeath(_state);
+			}
+		}
+
+		private void CancelAnimation()
 		{
 			if (_mover.CurrentMovingState == MovingState.Dash)
 				_mover.CancelDash();
 
+			_animator.SetBool("Charge", false);
 			_animator.SetBool("Frozen", false);
 			_animator.SetBool("DelayInput", false);
 			_animator.SetBool("BlockInput", false);
@@ -305,7 +353,7 @@ namespace TripleBladeHorse
 		{
 			if (_state._endurance < _state._enduranceSafeThreshlod)
 			{
-				_enduranceRefreshTimer += Time.deltaTime;
+				_enduranceRefreshTimer += TimeManager.PlayerDeltaTime;
 			}
 			else
 			{
@@ -319,12 +367,30 @@ namespace TripleBladeHorse
 
 			if (_enduranceRecoverTimer < _state._enduranceRecoverDelay)
 			{
-				_enduranceRecoverTimer += Time.deltaTime;
+				_enduranceRecoverTimer += TimeManager.PlayerDeltaTime;
 			}
 			else if (!_state._endurance.IsFull())
 			{
-				_state._endurance += _state._enduranceRecoverRate * Time.deltaTime;
+				_state._endurance += _state._enduranceRecoverRate * TimeManager.PlayerDeltaTime;
 			}
+		}
+
+		void SetDelayInput(bool value)
+		{
+			_animator.SetBool("DelayInput", value);
+			_input.DelayInput = value;
+		}
+
+		void SetBlockInput(bool value)
+		{
+			_animator.SetBool("BlockInput", value);
+			_input.BlockInput = value;
+		}
+
+		void SetFrozen(bool value)
+		{
+			_animator.SetBool("Frozen", value);
+			_state._frozen = value;
 		}
 		
 		void UpdateFacingDirection(Vector2 movementInput)
@@ -335,6 +401,24 @@ namespace TripleBladeHorse
 				_animator.FlipX = !_state._facingRight;
 			}
 		}
+		#endregion
+
+		#region Public Methods
+		public void ReplenishStamina(int amount)
+		{
+			_state._stamina += amount;
+			_state._stamina.Clamp();
+		}
+		#endregion
+
+		#region Interface Handler
+
+		public void OnPullingKnife(ICanStickKnife canStick, ThrowingKnife knife)
+		{
+			if (!_state._stamina.IsFull())
+				_state._stamina += canStick.RestoredStamina;
+		}
+
 		#endregion
 	}
 }

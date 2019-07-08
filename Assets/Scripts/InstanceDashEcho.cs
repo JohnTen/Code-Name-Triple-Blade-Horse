@@ -17,7 +17,6 @@ namespace TripleBladeHorse.VFX
 		private float destoryTime;
 		private Vector3 startPositionBtwSpawns;
 		private bool isDash = false;
-		private bool isDashOver = true;
 		private PlayerMover playerMover;
 
 		private void Start()
@@ -30,14 +29,12 @@ namespace TripleBladeHorse.VFX
 		private void DashBeginHandler()
 		{
 			isDash = true;
-			isDashOver = false;
 			startPositionBtwSpawns = this.transform.position;
 		}
 
 		private void DashEndHandler()
 		{
 			isDash = false;
-			isDashOver = true;
 		}
 
 		private void Update()

@@ -25,6 +25,8 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] float normalAttackRate = 1;
 		[SerializeField] float floatAttackRate = 0.2f;
 		[SerializeField] LayerMask rayCastMask;
+		[Header("VFX")]
+		[SerializeField] Transform flyingVFX;
 		[Header("Debug")]
 		[SerializeField] float traveledDistance;
 		[SerializeField] float hoverTimer;
@@ -49,6 +51,8 @@ namespace TripleBladeHorse.Combat
 
 		public ICanStickKnife StuckOn => stuckOn;
 		public IAttackable StuckAttack => stuckAttack;
+
+		public float PullingForce { get; set; }
 
 		public bool Stuck { get; private set; }
 
@@ -82,6 +86,20 @@ namespace TripleBladeHorse.Combat
 			_baseAttackRate = normalAttackRate;
 			Activate(AttackPackage.CreateNewPackage(), _attackMove);
 
+			if (flyingVFX)
+			{
+				flyingVFX.SetParent(this.transform);
+				flyingVFX.position = transform.position;
+				flyingVFX.rotation = transform.rotation;
+
+				List<ParticleSystem> particles = new List<ParticleSystem>();
+				flyingVFX.GetComponentsInChildren(particles);
+
+				foreach (var particle in particles)
+				{
+					particle.Play();
+				}
+			}
 
 			return true;
 		}
@@ -97,6 +115,9 @@ namespace TripleBladeHorse.Combat
 			_defaultType = AttackType.Float;
 			_baseAttackRate = floatAttackRate;
 			Activate(AttackPackage.CreateNewPackage(), _attackMove);
+
+			if (flyingVFX)
+				flyingVFX.SetParent(null);
 
 			return true;
 		}
@@ -116,7 +137,9 @@ namespace TripleBladeHorse.Combat
 
 			if (stuckOn != null)
 			{
-				if (stuckOn.TryTakeOut(this.gameObject))
+				Vector2 toStuckOn = (stuckOn as Component).transform.position - this.transform.position;
+				toStuckOn = toStuckOn.normalized * PullingForce;
+				if (stuckOn.TryPullOut(this.gameObject, ref toStuckOn))
 				{
 					var direction = sheath.transform.position - this.transform.position;
 					direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
@@ -128,6 +151,14 @@ namespace TripleBladeHorse.Combat
 
 			Returning();
 
+
+			if (flyingVFX)
+			{
+				flyingVFX.SetParent(this.transform);
+				flyingVFX.position = transform.position;
+				flyingVFX.rotation = transform.rotation;
+			}
+
 			return true;
 		}
 
@@ -137,7 +168,8 @@ namespace TripleBladeHorse.Combat
 			sheath.PutBackKnife(this);
 			if (stuckOn != null)
 			{
-				stuckOn.TryTakeOut(this.gameObject);
+				Vector2 force = Vector2.zero;
+				stuckOn.TryPullOut(this.gameObject, ref force);
 			}
 			stuckOn = null;
 			stuckAttack = null;
@@ -152,10 +184,15 @@ namespace TripleBladeHorse.Combat
 		{
 			Physics2D.queriesHitTriggers = false;
 			Physics2D.queriesStartInColliders = true;
-			var distance = speed * Time.deltaTime + bladeLength;
-			var hits = Physics2D.RaycastAll(transform.position, transform.right, distance, rayCastMask);
-			transform.position += transform.right * speed * Time.deltaTime;
-			traveledDistance += speed * Time.deltaTime;
+			var distance = speed * TimeManager.PlayerDeltaTime;
+			var leftDistance = hoveringDistance - traveledDistance;
+
+			if (distance > leftDistance)
+				distance = leftDistance;
+
+			var hits = Physics2D.RaycastAll(transform.position, transform.right, distance + bladeLength, rayCastMask);
+			transform.position += transform.right * distance;
+			traveledDistance += distance;
 
 			foreach (var hit in hits)
 			{
@@ -169,10 +206,21 @@ namespace TripleBladeHorse.Combat
 		private void Returning()
 		{
 			var dir = sheath.transform.position - transform.position;
-			var distance = speed * Time.deltaTime + bladeLength;
+			var distance = speed * TimeManager.PlayerDeltaTime + bladeLength;
 
 			if (dir.sqrMagnitude <= backDistance * backDistance)
 			{
+				if (flyingVFX)
+				{
+					List<ParticleSystem> particles = new List<ParticleSystem>();
+					flyingVFX.GetComponentsInChildren(particles);
+					flyingVFX.SetParent(null);
+					foreach (var particle in particles)
+					{
+						particle.Stop();
+					}
+				}
+
 				Deactivate();
 				sheath.PutBackKnife(this);
 				state = KnifeState.InSheath;
@@ -180,6 +228,7 @@ namespace TripleBladeHorse.Combat
 				hoverTimer = 0;
 				Stuck = false;
 				traveledDistance = 0;
+
 				return;
 			}
 
@@ -195,13 +244,13 @@ namespace TripleBladeHorse.Combat
 				TryAttack(hit.collider.transform);
 			}
 
-			transform.position += transform.right * speed * Time.deltaTime;
+			transform.position += transform.right * speed * TimeManager.PlayerDeltaTime;
 		}
 
 		private void Hovering()
 		{
-			hoverTimer += Time.deltaTime;
-			transform.Rotate(0, 0, hoveringRotateSpeed * Time.deltaTime);
+			hoverTimer += TimeManager.PlayerDeltaTime;
+			transform.Rotate(0, 0, hoveringRotateSpeed * TimeManager.PlayerDeltaTime);
 
 			if (hoverTimer > hoveringDuration)
 				Withdraw();

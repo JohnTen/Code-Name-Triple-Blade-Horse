@@ -12,7 +12,9 @@ namespace TripleBladeHorse.Animation
 		{
 			public const string Idle_Ground = "Monster1_Idle_Ground";
 			public const string Walk_Ground = "Monster1_Walk_Ground";
+			public const string Walk_Ground_Back = "Monster1_Walk_Ground_Back";
 			public const string ATK_Ground = "Monster1_ATK_Ground";
+			public const string Alert = "Monster1_Alert";
 			public const string Death_Ground = "Monster1_Death_Ground";
 			public const string Stagger_Weak = "Monster1_Hitten_Small";
 			public const string Stagger_Med = "Monster1_Hitten_Normal";
@@ -25,10 +27,12 @@ namespace TripleBladeHorse.Animation
 			public const string WeakStagger = "Stagger_Weak";
 			public const string MedStagger = "Stagger_Mediocre";
 			public const string StrongStagger = "Stagger_Strong";
+			public const string Alert = "Alert";
 			public const string Death = "Death";
 			public const string Frozen = "Frozen";
 			public const string DelayInput = "DelayInput";
 			public const string BlockInput = "BlockInput";
+			public const string Backward = "Backward";
 			public const string XSpeed = "XSpeed";
 		}
 
@@ -46,7 +50,9 @@ namespace TripleBladeHorse.Animation
 			{
 				new Animation(Anim.Idle_Ground, 1, 0, 0),
 				new Animation(Anim.Walk_Ground, 1, 0, 0),
+				new Animation(Anim.Walk_Ground_Back, 1, 0, 0),
 				new Animation(Anim.ATK_Ground, 1, 1, 1),
+				new Animation(Anim.Alert, 1, 1, 1),
 				new Animation(Anim.Death_Ground, 1, 1, 1),
 				new Animation(Anim.Stagger_Weak, 1, 1, 1),
 				new Animation(Anim.Stagger_Med, 1, 1, 1),
@@ -62,6 +68,7 @@ namespace TripleBladeHorse.Animation
 				new StrBoolPair() {Key = Stat.WeakStagger, Value = false},
 				new StrBoolPair() {Key = Stat.MedStagger, Value = false},
 				new StrBoolPair() {Key = Stat.StrongStagger, Value = false},
+				new StrBoolPair() {Key = Stat.Alert, Value = false},
 			};
 
 			_boolState = new List<StrBoolPair>()
@@ -70,6 +77,7 @@ namespace TripleBladeHorse.Animation
 				new StrBoolPair() {Key = Stat.Frozen, Value = false},
 				new StrBoolPair() {Key = Stat.DelayInput, Value = false},
 				new StrBoolPair() {Key = Stat.BlockInput, Value = false},
+				new StrBoolPair() {Key = Stat.Backward, Value = false},
 			};
 
 			_floatState = new List<StrFloatPair>()
@@ -185,6 +193,12 @@ namespace TripleBladeHorse.Animation
 					}),
 
 				new Transition(
+					Anim.Idle_Ground, Anim.Alert, 0.2f,
+					(sd) => {
+						return sd._toggleMap[Stat.Alert];
+					}),
+
+				new Transition(
 					Anim.Idle_Ground, Anim.ATK_Ground, 0.2f,
 					(sd) => {
 						return sd._toggleMap[Stat.Attack];
@@ -193,10 +207,16 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Idle_Ground, Anim.Walk_Ground, 0.1f,
 					(sd) => {
-						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon && !sd._boolMap[Stat.Backward];
 					}),
 
-				//// Run_Ground
+				new Transition(
+					Anim.Idle_Ground, Anim.Walk_Ground_Back, 0.1f,
+					(sd) => {
+						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon && sd._boolMap[Stat.Backward];
+					}),
+
+				//// Walk_Ground
 				new Transition(
 					Anim.Walk_Ground, Anim.Death_Ground, 0.05f,
 					(sd) => {
@@ -231,6 +251,55 @@ namespace TripleBladeHorse.Animation
 					Anim.Walk_Ground, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.Walk_Ground, Anim.Walk_Ground_Back, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Backward];
+					}),
+
+				//// Walk_Ground_Back
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Death_Ground, 0.05f,
+					(sd) => {
+						return sd._boolMap[Stat.Death];
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Stagger_Weak, 0.05f,
+					(sd) => {
+						return sd._toggleMap[Stat.WeakStagger];
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Stagger_Med, 0.05f,
+					(sd) => {
+						return sd._toggleMap[Stat.MedStagger];
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Stagger_Strong, 0.05f,
+					(sd) => {
+						return sd._toggleMap[Stat.StrongStagger];
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.ATK_Ground, 0.2f,
+					(sd) => {
+						return sd._toggleMap[Stat.Attack];
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.Walk_Ground_Back, Anim.Walk_Ground, 0.05f,
+					(sd) => {
+						return !sd._boolMap[Stat.Backward];
 					}),
 
 				//// ATK_Ground

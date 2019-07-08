@@ -14,7 +14,11 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] float _maxXSpeed;
 		[SerializeField] float _maxYSpeed;
 		[SerializeField] float _jumpHeight;
+		[SerializeField] float _gravityScale;
 		[SerializeField] float _knockbackSpeedFactor;
+		[SerializeField] float _airAttackMaxXSpeed;
+		[SerializeField] float _airAttackMaxYSpeed;
+		[SerializeField] float _airAttackgravityScale;
 
 		[Header("Dashing")]
 		[SerializeField] float _dashCancelPercent;
@@ -59,8 +63,8 @@ namespace TripleBladeHorse.Movement
 		Rigidbody2D _rigidbody;
 		ICanDetectGround _groundDetector;
 
+		bool _airAttacking;
 		bool _dashing;
-		float _gravityScale;
 		float _airborneTime;
 		float _deservedDashingDistance;
 		float _leftDashingDistance;
@@ -89,6 +93,15 @@ namespace TripleBladeHorse.Movement
 		public bool PullDelaying => _pullDelayTimer > 0;
 		public bool BlockInput { get; private set; }
 		public bool DelayInput { get; private set; }
+		public bool AirAttacking
+		{
+			get => _airAttacking;
+			set
+			{
+				_airAttacking = value;
+				_rigidbody.gravityScale = _airAttacking ? _airAttackgravityScale : _gravityScale;
+			}
+		}
 		public Vector2 Velocity => _velocity;
 
 		public MovingState CurrentMovingState
@@ -109,6 +122,11 @@ namespace TripleBladeHorse.Movement
 						value,
 						last));
 			}
+		}
+
+		float GravityScale
+		{
+			get => AirAttacking ? _airAttackgravityScale : _gravityScale;
 		}
 
 		#endregion
@@ -150,7 +168,7 @@ namespace TripleBladeHorse.Movement
 				_airborneTime += Time.fixedDeltaTime;
 
 			if (_pullDelayTimer > 0)
-				_pullDelayTimer -= Time.deltaTime;
+				_pullDelayTimer -= TimeManager.PlayerDeltaTime;
 
 			UpdateContacts();
 
@@ -190,7 +208,7 @@ namespace TripleBladeHorse.Movement
 			if (_currentDashingPercent > _dashInvincibleBeginPercent)
 				OnStopDashingInvincible?.Invoke();
 
-			_rigidbody.gravityScale = _gravityScale;
+			_rigidbody.gravityScale = GravityScale;
 			_deservedDashingDistance = 0;
 			_dashingDelayTimer = 0;
 			_dashingDirection = Vector2.zero;
@@ -203,7 +221,6 @@ namespace TripleBladeHorse.Movement
 		{
 			if (!_dashing)
 			{
-				_gravityScale = _rigidbody.gravityScale;
 				_rigidbody.gravityScale = 0;
 			}
 
@@ -231,7 +248,6 @@ namespace TripleBladeHorse.Movement
 		{
 			if (!_dashing)
 			{
-				_gravityScale = _rigidbody.gravityScale;
 				_rigidbody.gravityScale = 0;
 			}
 
@@ -247,10 +263,8 @@ namespace TripleBladeHorse.Movement
 
 		public void Jump()
 		{
-			if (!_groundDetector.IsOnGround) return;
-			
-			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * _rigidbody.gravityScale);
-
+			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale);
+			_airborneTime = 0;
 			CurrentMovingState = MovingState.Airborne;
 		}
 
@@ -329,8 +343,10 @@ namespace TripleBladeHorse.Movement
 
 		private Vector2 ApplySpeedLimit(Vector2 velocity)
 		{
-			velocity.x = Mathf.Clamp(velocity.x, -_maxXSpeed, _maxXSpeed);
-			velocity.y = Mathf.Clamp(velocity.y, -_maxYSpeed, _maxYSpeed);
+			var maxXSpeed = AirAttacking ? _airAttackMaxXSpeed : _maxXSpeed;
+			var maxYSpeed = AirAttacking ? _airAttackMaxYSpeed : _maxYSpeed;
+			velocity.x = Mathf.Clamp(velocity.x, -maxXSpeed, maxXSpeed);
+			velocity.y = Mathf.Clamp(velocity.y, -maxYSpeed, maxYSpeed);
 
 			return velocity;
 		}
@@ -339,7 +355,7 @@ namespace TripleBladeHorse.Movement
 		{
 			if (_attackStepDirection.sqrMagnitude <= 0) return;
 
-			var movingDistance = _attackStepSpeed * Time.deltaTime;
+			var movingDistance = _attackStepSpeed * TimeManager.PlayerDeltaTime;
 			var leftDistance = _attackStepDirection.magnitude;
 
 			if (movingDistance > leftDistance)
@@ -364,7 +380,7 @@ namespace TripleBladeHorse.Movement
 			if (_leftDashingDistance > float.Epsilon)
 			{
 				var previousPercent = _currentDashingPercent;
-				var dashingDistance = _dashingSpeed * Time.deltaTime;
+				var dashingDistance = _dashingSpeed * TimeManager.PlayerDeltaTime;
 				var velocity = ApplyPhysicalContactEffects(_dashingDirection);
 
 				if (dashingDistance > _leftDashingDistance)
@@ -396,11 +412,11 @@ namespace TripleBladeHorse.Movement
 
 			if (_dashingDelayTimer > 0)
 			{
-				_dashingDelayTimer -= Time.deltaTime;
+				_dashingDelayTimer -= TimeManager.PlayerDeltaTime;
 				return;
 			}
 
-			_rigidbody.gravityScale = _gravityScale;
+			_rigidbody.gravityScale = GravityScale;
 			_dashingDirection = Vector2.zero;
 			_dashing = false;
 			_airborneTime = 0;
@@ -411,7 +427,7 @@ namespace TripleBladeHorse.Movement
 		{
 			_velocity = ProcessVelocity(_velocity, direction);
 
-			MoveTo((Vector2)transform.position + _velocity * Time.deltaTime);
+			MoveTo((Vector2)transform.position + _velocity * TimeManager.PlayerDeltaTime);
 
 			HandleAttackStepping();
 			HandleDashing();
@@ -474,7 +490,7 @@ namespace TripleBladeHorse.Movement
 
 		private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)
 		{
-			velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * Time.deltaTime;
+			velocity.y += GravityScale * Physics2D.gravity.y * TimeManager.PlayerDeltaTime;
 			velocity = ApplyPhysicalContactEffects(velocity);
 
 			if (_knockbackVector.sqrMagnitude > 0)

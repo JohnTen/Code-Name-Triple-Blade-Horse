@@ -117,7 +117,7 @@ namespace TripleBladeHorse.Movement
 		{
 			_velocity = ProcessVelocity(_velocity, direction);
 
-			_rigidbody.MovePosition((Vector2)transform.position + _velocity * Time.deltaTime);
+			_rigidbody.MovePosition((Vector2)transform.position + _velocity * TimeManager.DeltaTime);
 
 			ResetPhysicalContacts();
 		}
@@ -129,7 +129,7 @@ namespace TripleBladeHorse.Movement
 
 		private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)
 		{
-			velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * Time.deltaTime;
+			velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * TimeManager.DeltaTime;
 			velocity = ApplyPhysicalContactEffects(velocity);
 
 			velocity.x = movingDirection.x * _baseSpeed;

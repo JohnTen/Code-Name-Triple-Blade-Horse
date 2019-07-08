@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TripleBladeHorse;
 
 public class EnemySpawn : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class EnemySpawn : MonoBehaviour
 	
     void Update()
     {
-		spawnTimer -= Time.deltaTime;
+		spawnTimer -= TimeManager.DeltaTime;
 
 		if (enemyReference == null && spawnTimer < 0)
 		{

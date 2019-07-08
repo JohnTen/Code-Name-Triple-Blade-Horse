@@ -58,7 +58,7 @@ namespace TripleBladeHorse
 
 			while (time > 0)
 			{
-				time -= Time.deltaTime;
+				time -= TimeManager.DeltaTime;
 				if (_flashRed.IsIncluded(_flashDuration - time))
 				{
 					if (!colored)

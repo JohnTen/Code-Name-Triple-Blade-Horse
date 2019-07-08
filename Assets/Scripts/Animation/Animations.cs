@@ -18,6 +18,10 @@ namespace TripleBladeHorse.Animation
 		public bool fadingOut;
 		public bool fadeInComplete;
 		public bool fadeOutComplete;
+		public bool airAttack;
+		public bool frozenOnStart;
+		public bool delayInputOnStart;
+		public bool blockInputOnStart;
 
 		//public bool isFadeOut; //动画是否淡出 Is animation fading out
 		//public bool isFadeIn;
@@ -36,6 +40,19 @@ namespace TripleBladeHorse.Animation
 			this.fadingOut = false;
 			this.fadeInComplete = false;
 			this.fadeOutComplete = false;
+			this.airAttack = false;
+			this.frozenOnStart = false;
+			this.delayInputOnStart = false;
+			this.blockInputOnStart = false;
+		}
+
+		public Animation(string name, float timeScale, int playTimes, float cancelPercent, bool frozenOnStart, bool delayOnStart, bool blockOnStart, bool airAttack) : 
+			this(name, timeScale, playTimes, cancelPercent)
+		{
+			this.delayInputOnStart = delayOnStart;
+			this.blockInputOnStart = blockOnStart;
+			this.frozenOnStart = frozenOnStart;
+			this.airAttack = airAttack;
 		}
 	}
 }
