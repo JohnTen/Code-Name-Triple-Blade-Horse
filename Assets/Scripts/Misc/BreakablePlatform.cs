@@ -6,6 +6,7 @@ namespace TripleBladeHorse
 	{
 		[SerializeField] float breakTime = 2;
 		[SerializeField] float reappearTime = 2;
+        [SerializeField] ParticleSystem rubble;
 
 		public void StartBreaking()
 		{
@@ -16,13 +17,20 @@ namespace TripleBladeHorse
 		private void Break()
 		{
 			this.gameObject.SetActive(false);
-			Invoke("Reappear", reappearTime);
+            RubblePlay();
+            Invoke("Reappear", reappearTime);
 		}
 
 		private void Reappear()
 		{
 			this.gameObject.SetActive(true);
+            rubble.Stop();
 		}
+
+        private void RubblePlay()
+        {
+            rubble.Play();
+        }
 	}
 }
 
