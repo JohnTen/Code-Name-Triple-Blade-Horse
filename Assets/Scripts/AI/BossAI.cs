@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BTAI;
 
-public class BossAI : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
+
+namespace TripleBladeHorse.AI{
+
+    public class BossAI : MonoBehaviour
     {
-        
-    }
+        Root _bossAI = BT.Root();
+        private void OnEnable() {
+            
+            _bossAI.OpenBranch(
+                
+            );
+        }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+        void Update()
+        {
+            _bossAI.Tick();
+        }
     }
 }
