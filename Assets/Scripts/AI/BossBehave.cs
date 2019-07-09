@@ -11,12 +11,12 @@ namespace TripleBladeHorse.AI
         Dodge,
         JumpAttack,
         DashAttack,
-        
+
     }
     public class BossBehave : MonoBehaviour, ICharacterInput<BossInput>
     {
         Transform _target;
-        float _distance;
+        Vector2 _distance;
 
         public bool DelayInput { get; set; }
 		public bool BlockInput { get; set; }
@@ -43,6 +43,25 @@ namespace TripleBladeHorse.AI
             _aim = _move;
         }
 
+        public bool IsLowHealth(){
+            return true;
+        }
+
+        public void Dodge(){
+
+        }
+
+        public void JumpAttack(){
+            _aim = -_distance.normalized;
+            
+        }
+
+        public void DashAttack(){
+
+        }
+
+
+
         /// Awake is called when the script instance is being loaded.
         /// </summary>
         public void Awake()
@@ -53,7 +72,7 @@ namespace TripleBladeHorse.AI
         // Update is called once per frame
         void Update()
         {
-            _distance = this.transform.position.x - _target.position.x;
+            _distance = this.transform.position - _target.position;
         }
     }
 }

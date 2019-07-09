@@ -106,7 +106,7 @@ namespace TripleBladeHorse.AI
 
 		public void Attack()
 		{
-			_move = (_character.position - transform.position).normalized * 0.01f;
+			_aim = (_character.position - transform.position).normalized * 0.01f;
 			OnReceivedInput?.Invoke(new InputEventArg<EnemyInput>(EnemyInput.Attack));
 			//attackTimer.Start(2);
 		}
