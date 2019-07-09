@@ -27,7 +27,7 @@ namespace TripleBladeHorse.Combat
 
 		private void Update()
 		{
-			_timer += Time.deltaTime;
+			_timer += TimeManager.DeltaTime;
 			this.transform.localScale = Vector3.one * (Mathf.Lerp(0, _maxSize, _timer / _attackDuration));
 			_attackShape.color = _color.Evaluate(_timer / _attackDuration);
 

@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2421920320834817505}
   - component: {fileID: 2421920320834817504}
-  - component: {fileID: 2421920320834817519}
   - component: {fileID: 2421920320834817517}
   - component: {fileID: 7933238098468937588}
   - component: {fileID: -3176771937423459479}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,27 +136,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: JTUtility.Collision2DEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
---- !u!50 &2421920320834817519
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2421920320834817516}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &2421920320834817517
 MonoBehaviour:
   m_ObjectHideFlags: 0

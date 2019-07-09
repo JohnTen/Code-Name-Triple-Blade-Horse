@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TripleBladeHorse;
 
 public class Rotate_VFX : MonoBehaviour
 {
@@ -20,8 +21,8 @@ public class Rotate_VFX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up * Time.deltaTime * speed_x);
-        transform.Rotate(Vector3.right * Time.deltaTime * speed_y);
-        transform.Rotate(Vector3.forward * Time.deltaTime * speed_z);
+        transform.Rotate(Vector3.up * TimeManager.DeltaTime * speed_x);
+        transform.Rotate(Vector3.right * TimeManager.DeltaTime * speed_y);
+        transform.Rotate(Vector3.forward * TimeManager.DeltaTime * speed_z);
     }
 }

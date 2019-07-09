@@ -11,6 +11,7 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] float allLaunchRate;
 		[SerializeField] float autoPickupDistance;
 		[SerializeField] float autoReturnDistance;
+		[SerializeField] float pullingForce;
 		[Space(30)]
 		[SerializeField] Sword sword;
 		[SerializeField] Sheath sheath;
@@ -70,6 +71,9 @@ namespace TripleBladeHorse.Combat
 			_currentAttackEffect = Instantiate(_attackEffectPrefab);
 			_currentAttackEffect.transform.SetParent(sword.transform);
 			_currentAttackEffect.transform.localPosition = Vector3.zero;
+
+			_audio.clip = _normalMeleeSFX.PickRandom();
+			_audio.Play();
 		}
 
 		public void MeleeAttackEnd()
@@ -89,6 +93,7 @@ namespace TripleBladeHorse.Combat
 			if (knife != null)
 			{
 				knifesInAirList.Add(knife);
+				knife.PullingForce = pullingForce;
 				knife.Launch(direction, true);
 			}
 		}
@@ -100,6 +105,9 @@ namespace TripleBladeHorse.Combat
 
 		public void WithdrawAll()
 		{
+			List<ICanHandlePullingKnife> handlers = new List<ICanHandlePullingKnife>();
+			GetComponentsInChildren(handlers);
+
 			for (int i = 0; i < knifesInAirList.Count; i++)
 			{
 				if (knifesInAirList[i].State == KnifeState.Flying)
@@ -108,6 +116,14 @@ namespace TripleBladeHorse.Combat
 				if (knifesInAirList[i].Stuck)
 				{
 					OnPull?.Invoke((knifesInAirList[i].transform.position - transform.position).normalized);
+				}
+
+				if (knifesInAirList[i].StuckOn != null)
+				{
+					foreach (var handler in handlers)
+					{
+						handler.OnPullingKnife(knifesInAirList[i].StuckOn, knifesInAirList[i]);
+					}
 				}
 				knifesInAirList[i].Withdraw();
 			}
@@ -130,8 +146,19 @@ namespace TripleBladeHorse.Combat
 
 			if (knifeIndex >= 0)
 			{
+				List<ICanHandlePullingKnife> handlers = new List<ICanHandlePullingKnife>();
+				GetComponentsInChildren(handlers);
+
 				if (knifesInAirList[knifeIndex].Stuck)
 					OnPull?.Invoke((knifesInAirList[knifeIndex].transform.position - transform.position).normalized);
+
+				if (knifesInAirList[knifeIndex].StuckOn != null)
+				{
+					foreach (var handler in handlers)
+					{
+						handler.OnPullingKnife(knifesInAirList[knifeIndex].StuckOn, knifesInAirList[knifeIndex]);
+					}
+				}
 				knifesInAirList[knifeIndex].Withdraw();
 			}
 		}

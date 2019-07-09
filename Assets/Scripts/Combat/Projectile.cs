@@ -8,10 +8,14 @@ namespace TripleBladeHorse.Combat
 	[RequireComponent(typeof(Rigidbody2D))]
 	public class Projectile : BaseWeapon
 	{
+		[Tooltip("-1 for infinite exist time.")]
 		[SerializeField] float _existTime;
+		[Tooltip("-1 for infinite tracking range.")]
+		[SerializeField] float _trackingDistance;
 		[SerializeField] ParticleSystem.MinMaxCurve _speed;
 		[SerializeField] ParticleSystem.MinMaxCurve _torque;
 		[SerializeField] bool _followTarget;
+		[SerializeField] bool _stopWhenLostTarget;
 		[SerializeField] bool _rotateTowardsFlyingDirection;
 		[SerializeField] GameObject _destroyEffectPrefab;
 
@@ -36,11 +40,11 @@ namespace TripleBladeHorse.Combat
 
 		private void FixedUpdate()
 		{
-			_existTimer += Time.deltaTime;
+			_existTimer += TimeManager.DeltaTime;
 
 			Move();
 
-			if (_existTimer >= _existTime)
+			if (_existTimer >= _existTime && _existTime >= 0)
 			{
 				DestroySelf(null);
 			}
@@ -66,17 +70,28 @@ namespace TripleBladeHorse.Combat
 
 		private void Move()
 		{
-			var existPercent = _existTimer / _existTime;
+			var existPercent = Mathf.Clamp01(_existTimer / _existTime);
 			var currentSpeed = _speed.Evaluate(existPercent);
 
 			if (_followTarget && Target != null)
 			{
-				_direction = UpdateDirection(_direction);
+				var distance = (Target.position - this.transform.position).sqrMagnitude;
+				var trackingDistance = _trackingDistance * _trackingDistance;
+				
+				if (distance <= trackingDistance || _trackingDistance < 0)
+				{
+					_direction = UpdateDirection(_direction);
+				}
+				else if (distance > trackingDistance && _stopWhenLostTarget)
+				{
+					currentSpeed = 0;
+				}
 			}
-
+			
 			Vector3 currentVelocity = _direction * currentSpeed;
+			print(currentVelocity);
 
-			_rigidbody.MovePosition(transform.position + currentVelocity * Time.deltaTime);
+			_rigidbody.MovePosition(transform.position + currentVelocity * TimeManager.DeltaTime);
 		}
 
 		private void DestroySelf(Collision2D collision)
@@ -94,12 +109,12 @@ namespace TripleBladeHorse.Combat
 
 		Vector2 UpdateDirection(Vector2 direction)
 		{
-			var existPercent = _existTimer / _existTime;
+			var existPercent = Mathf.Clamp01(_existTimer / _existTime);
 			var toTarget = Target.position - transform.position;
-			var currentTorque = _torque.Evaluate(existPercent) * Time.deltaTime;
+			var currentTorque = _torque.Evaluate(existPercent) * TimeManager.DeltaTime;
 
 			toTarget.z = 0;
-			direction = Vector3.RotateTowards(direction, toTarget, currentTorque * Time.deltaTime, 0);
+			direction = Vector3.RotateTowards(direction, toTarget, currentTorque * TimeManager.DeltaTime, 0);
 
 			return direction;
 		}

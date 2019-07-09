@@ -85,7 +85,7 @@ namespace TripleBladeHorse.Combat
 		{
 			while (attacksFreqTimer[id] > 0)
 			{
-				attacksFreqTimer[id] -= Time.deltaTime;
+				attacksFreqTimer[id] -= TimeManager.DeltaTime;
 				yield return null;
 			}
 

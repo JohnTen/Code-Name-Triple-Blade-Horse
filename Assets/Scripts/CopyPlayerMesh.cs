@@ -51,7 +51,7 @@ namespace TripleBladeHorse.VFX
 				if (childObj.GetComponent<MeshRenderer>() != null)
 				{
 					Color color = childObj.GetComponent<MeshRenderer>().material.color;
-					color.a -= velocityOfTransparent * Time.deltaTime;
+					color.a -= velocityOfTransparent * TimeManager.PlayerDeltaTime;
 					color.a = Mathf.Clamp01(color.a);
 					childObj.GetComponent<MeshRenderer>().material.color = color;
 				}

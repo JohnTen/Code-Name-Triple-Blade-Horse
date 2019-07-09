@@ -55,7 +55,7 @@ namespace TripleBladeHorse.Combat
 		{
 			if (_state._currentComboInterval > 0)
 			{
-				_state._currentComboInterval -= Time.deltaTime;
+				_state._currentComboInterval -= TimeManager.DeltaTime;
 				if (_state._currentComboInterval <= 0)
 				{
 					RaiseComboCancel(_state._currentComboTimes);

@@ -74,7 +74,7 @@ namespace TripleBladeHorse.Combat
 			{
 				yield return null;
 				int index = 0;
-				timer += Time.deltaTime * ReloadSpeed;
+				timer += TimeManager.PlayerDeltaTime * ReloadSpeed;
 				foreach (var item in knifesInSheath)
 				{
 					item.transform.parent = sheathPositions[index];

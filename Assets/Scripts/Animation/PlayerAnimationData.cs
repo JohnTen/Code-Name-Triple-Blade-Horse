@@ -21,9 +21,14 @@ namespace TripleBladeHorse.Animation
 			public const string Jump_Ground = "Jump_Ground";
 			public const string Dropping = "Droping";
 			public const string Dropping_Buffering = "Droping_Buffering";
+			public const string ATK_Melee_Air_1 = "ATK_Melee_Air_1";
+			public const string ATK_Melee_Air_2 = "ATK_Melee_Air_2";
+			public const string ATK_Melee_Air_3 = "ATK_Melee_Air_3";
 			public const string ATK_Melee_Ground_1 = "ATK_Melee_Ground_1";
 			public const string ATK_Melee_Ground_2 = "ATK_Melee_Ground_2";
 			public const string ATK_Melee_Ground_3 = "ATK_Melee_Ground_3";
+			public const string ATK_Charge_Ground_Charging = "ATK_Charge_Ground_Charging";
+			public const string ATK_Charge_Ground_ATK = "ATK_Charge_Ground_ATK";
 			public const string Stagger_Weak = "Hitten_Ground_Small";
 			public const string Stagger_Med = "Hitten_Ground_Normal";
 			public const string Stagger_Strong = "Hitten_Ground_Big";
@@ -38,6 +43,7 @@ namespace TripleBladeHorse.Animation
 			public const string WeakStagger = "Stagger_Weak";
 			public const string MidStagger = "Stagger_Mediocre";
 			public const string StrongStagger = "Stagger_Strong";
+			public const string Charge = "Charge";
 			public const string Airborne = "Airborne";
 			public const string Frozen = "Frozen";
 			public const string DelayInput = "DelayInput";
@@ -54,10 +60,22 @@ namespace TripleBladeHorse.Animation
 					return sd._toggleMap[Stat.Jump];
 				};
 
-			public static Func<bool, FSMState> Start_Attack =
+			public static Func<bool, FSMState> GroundCharging =
 				(sd) =>
 				{
-					return sd._toggleMap[Stat.MeleeAttack];
+					return sd._boolMap[Stat.Charge] && !sd._boolMap[Stat.Airborne];
+				};
+
+			public static Func<bool, FSMState> GroundAttack =
+				(sd) =>
+				{
+					return !sd._boolMap[Stat.Charge] && sd._toggleMap[Stat.MeleeAttack] && !sd._boolMap[Stat.Airborne];
+				};
+
+			public static Func<bool, FSMState> AirAttack =
+				(sd) =>
+				{
+					return sd._toggleMap[Stat.MeleeAttack] && sd._boolMap[Stat.Airborne];
 				};
 
 			public static Func<bool, FSMState> Dash_Horizontal =
@@ -115,21 +133,26 @@ namespace TripleBladeHorse.Animation
 			{
 				new Animation(Anim.Idle_Ground, 0.5f, 0, 0),
 				new Animation(Anim.Run_Ground, 1.5f, 0, 0),
-				new Animation(Anim.Dash_Horizontal, 1, 0, 0),
-				new Animation(Anim.Dash_Up, 1, 0, 0),
-				new Animation(Anim.Dash_Down, 1, 0, 0),
-				new Animation(Anim.Dash_Diagonal_Up, 1, 0, 0),
-				new Animation(Anim.Dash_Diagonal_Down, 1, 0, 0),
+				new Animation(Anim.Dash_Horizontal, 1, 0, 0, true, true, false, false),
+				new Animation(Anim.Dash_Up, 1, 0, 0, true, true, false, false),
+				new Animation(Anim.Dash_Down, 1, 0, 0, true, true, false, false),
+				new Animation(Anim.Dash_Diagonal_Up, 1, 0, 0, true, true, false, false),
+				new Animation(Anim.Dash_Diagonal_Down, 1, 0, 0, true, true, false, false),
 				new Animation(Anim.Jump_Ground, 5, 1, 0.2f),
 				new Animation(Anim.Jump_Air, 2, 1, 0.2f),
 				new Animation(Anim.Dropping, 1, 1, 0f),
-				new Animation(Anim.Dropping_Buffering, 3, 1, 0.3f),
-				new Animation(Anim.ATK_Melee_Ground_1, 1.4f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_2, 1.4f, 1, 0.7f),
-				new Animation(Anim.ATK_Melee_Ground_3, 1.4f, 1, 0.7f),
-				new Animation(Anim.Stagger_Weak, 1f, 1, 0.7f),
-				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f),
-				new Animation(Anim.Stagger_Strong, 1f, 1, 0.7f),
+				new Animation(Anim.Dropping_Buffering, 3, 1, 0.3f, true, false, true, false),
+				new Animation(Anim.ATK_Melee_Air_1, 1.4f, 1, 0.7f, true, true, false, true),
+				new Animation(Anim.ATK_Melee_Air_2, 1.4f, 1, 0.7f, true, true, false, true),
+				new Animation(Anim.ATK_Melee_Air_3, 1.4f, 1, 0.7f, true, true, false, true),
+				new Animation(Anim.ATK_Melee_Ground_1, 1.4f, 1, 0.7f, true, true, false, false),
+				new Animation(Anim.ATK_Melee_Ground_2, 1.4f, 1, 0.7f, true, true, false, false),
+				new Animation(Anim.ATK_Melee_Ground_3, 1.4f, 1, 0.7f, true, true, false, false),
+				new Animation(Anim.ATK_Charge_Ground_Charging, 1f, 1, 0.7f),
+				new Animation(Anim.ATK_Charge_Ground_ATK, 1f, 1, 0.7f, true, true, false, false),
+				new Animation(Anim.Stagger_Weak, 1f, 1, 0.7f, true, false, true, false),
+				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f, true, false, true, false),
+				new Animation(Anim.Stagger_Strong, 1f, 1, 0.7f, true, false, true, false),
 			};
 		}
 
@@ -148,7 +171,8 @@ namespace TripleBladeHorse.Animation
 
 			_boolState = new List<StrBoolPair>()
 			{
-				new StrBoolPair() {Key = Stat.Airborne, Value = false},
+				new StrBoolPair() {Key = Stat.Charge, Value = false},
+				new StrBoolPair() {Key = Stat.Airborne, Value = true},
 				new StrBoolPair() {Key = Stat.Frozen, Value = false},
 				new StrBoolPair() {Key = Stat.DelayInput, Value = false},
 				new StrBoolPair() {Key = Stat.BlockInput, Value = false},
@@ -188,7 +212,10 @@ namespace TripleBladeHorse.Animation
 					GeneralFunction.Jump),
 				new Transition(
 					Anim.Stagger_Strong, Anim.ATK_Melee_Ground_1, 0.05f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
+				new Transition(
+					Anim.Stagger_Strong, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.Stagger_Strong, Anim.Dash_Up, 0.05f,
 					GeneralFunction.Dash_Up),
@@ -218,7 +245,10 @@ namespace TripleBladeHorse.Animation
 					GeneralFunction.Jump),
 				new Transition(
 					Anim.Stagger_Med, Anim.ATK_Melee_Ground_1, 0.05f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
+				new Transition(
+					Anim.Stagger_Med, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.Stagger_Med, Anim.Dash_Up, 0.05f,
 					GeneralFunction.Dash_Up),
@@ -247,7 +277,10 @@ namespace TripleBladeHorse.Animation
 					GeneralFunction.Jump),
 				new Transition(
 					Anim.Stagger_Weak, Anim.ATK_Melee_Ground_1, 0.05f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
+				new Transition(
+					Anim.Stagger_Weak, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.Stagger_Weak, Anim.Dash_Up, 0.05f,
 					GeneralFunction.Dash_Up),
@@ -281,7 +314,7 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Idle_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
-						return sd._floatMap[Stat.YSpeed] < 0.1f && sd._boolMap[Stat.Airborne];
+						return sd._floatMap[Stat.YSpeed] < 0f && sd._boolMap[Stat.Airborne];
 					}),
 
 				new Transition(
@@ -298,7 +331,11 @@ namespace TripleBladeHorse.Animation
 
 				new Transition(
 					Anim.Idle_Ground, Anim.ATK_Melee_Ground_1, 0.1f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
+
+				new Transition(
+					Anim.Idle_Ground, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				
 				//// Run_Ground
 				new Transition(
@@ -344,6 +381,10 @@ namespace TripleBladeHorse.Animation
 						return sd._toggleMap[Stat.MeleeAttack];
 					}),
 
+				new Transition(
+					Anim.Run_Ground, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
+
 				//// Jump_Ground
 				new Transition(
 					Anim.Jump_Ground, Anim.Dash_Up, 0.05f,
@@ -360,6 +401,9 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Jump_Ground, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Jump_Ground, Anim.ATK_Melee_Air_1, 0.1f,
+					GeneralFunction.AirAttack),
 				new Transition(
 					Anim.Jump_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
@@ -388,6 +432,9 @@ namespace TripleBladeHorse.Animation
 					Anim.Jump_Air, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
+					Anim.Jump_Air, Anim.ATK_Melee_Air_1, 0.1f,
+					GeneralFunction.AirAttack),
+				new Transition(
 					Anim.Jump_Air, Anim.Dropping, 0.05f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
@@ -414,6 +461,9 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Dropping, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dropping, Anim.ATK_Melee_Air_1, 0.1f,
+					GeneralFunction.AirAttack),
 				new Transition(
 					Anim.Dropping, Anim.Jump_Air, 0.05f,
 					(sd) => {
@@ -444,7 +494,7 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Dropping_Buffering, Anim.Jump_Ground, 0.1f,
 					(sd) => {
-						return sd._current.completed && sd._toggleMap[Stat.Jump];
+						return sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
 					Anim.Dropping_Buffering, Anim.Idle_Ground, 0.1f,
@@ -458,7 +508,11 @@ namespace TripleBladeHorse.Animation
 					}),
 				new Transition(
 					Anim.Dropping_Buffering, Anim.ATK_Melee_Ground_1, 0.1f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
+
+				new Transition(
+					Anim.Dropping_Buffering, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				
 				//// Dash_Horizontal
 				new Transition(
@@ -476,6 +530,26 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Dash_Horizontal, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.ATK_Melee_Ground_1, 0.1f,
+					GeneralFunction.GroundAttack),
+
+				new Transition(
+					Anim.Dropping_Buffering, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.ATK_Melee_Air_1, 0.1f,
+					GeneralFunction.AirAttack),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
+					}),
+				new Transition(
+					Anim.Dash_Horizontal, Anim.Jump_Air, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump] && sd._boolMap[Stat.Airborne];
+					}),
 				new Transition(
 					Anim.Dash_Horizontal, Anim.Dropping, 0.1f,
 					(sd) => {
@@ -619,24 +693,202 @@ namespace TripleBladeHorse.Animation
 					(sd) => {
 						return sd._toggleMap[Stat.DashEnd] && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
+
+				//// ATK_Charge_Ground_Charging
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Jump_Ground, 0.05f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return 
+						!sd._toggleMap[Stat.MeleeAttack] &&
+						!sd._boolMap[Stat.Charge];
+					}),
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.ATK_Charge_Ground_ATK, 0.05f,
+					(sd) => {
+						return 
+						sd._toggleMap[Stat.MeleeAttack] && 
+						!sd._boolMap[Stat.Airborne] && 
+						sd._boolMap[Stat.Charge];
+					}),
+
+				//// ATK_Charge_Ground_ATK
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Jump_Ground, 0.05f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+
+				//// ATK_Melee_Air_1
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dropping_Buffering, 0.05f,
+					(sd) => {
+						return !sd._boolMap[Stat.Airborne] && !sd._boolMap[Stat.DelayInput];
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.ATK_Melee_Air_2, 0.05f,
+					GeneralFunction.AirAttack),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._current.completed;
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_1, Anim.Jump_Air, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump];
+					}),
+
+				//// ATK_Melee_Air_2
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dropping_Buffering, 0.05f,
+					(sd) => {
+						return !sd._boolMap[Stat.Airborne] && !sd._boolMap[Stat.DelayInput];
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.ATK_Melee_Air_3, 0.05f,
+					GeneralFunction.AirAttack),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._current.completed;
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_2, Anim.Jump_Air, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump];
+					}),
+
+				//// ATK_Melee_Air_3
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dropping_Buffering, 0.05f,
+					(sd) => {
+						return !sd._boolMap[Stat.Airborne] && !sd._boolMap[Stat.DelayInput];
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.ATK_Melee_Air_1, 0.05f,
+					GeneralFunction.AirAttack),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Dropping, 0.1f,
+					(sd) => {
+						return sd._current.completed;
+					}),
+				new Transition(
+					Anim.ATK_Melee_Air_3, Anim.Jump_Air, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump];
+					}),
 				
 				//// ATK_Melee_Ground_1
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.ATK_Melee_Ground_2, 0.05f,
-					(sd) => {
-						return sd._toggleMap[Stat.MeleeAttack] && !sd._boolMap[Stat.DelayInput];
-					}),
-				new Transition(
-					Anim.ATK_Melee_Ground_1, Anim.Jump_Ground, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.DelayInput];
-					}),
+					GeneralFunction.GroundAttack),
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Dash_Up, 0.05f,
 					GeneralFunction.Dash_Up),
 				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Jump_Ground, 0.1f,
+					GeneralFunction.Jump),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.ATK_Melee_Ground_1, Anim.Idle_Ground, 0.1f,
 					(sd) => {
@@ -652,16 +904,28 @@ namespace TripleBladeHorse.Animation
 				
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.ATK_Melee_Ground_3, 0.05f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Jump_Ground, 0.1f,
 					GeneralFunction.Jump),
 				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
-					Anim.ATK_Melee_Ground_2, Anim.Dash_Up, 0.05f,
-					GeneralFunction.Dash_Up),
+					Anim.ATK_Melee_Ground_2, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.ATK_Melee_Ground_2, Anim.Idle_Ground, 0.1f,
 					(sd) => {
@@ -676,16 +940,28 @@ namespace TripleBladeHorse.Animation
 				//// ATK_Melee_Ground_3
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.ATK_Melee_Ground_1, 0.05f,
-					GeneralFunction.Start_Attack),
+					GeneralFunction.GroundAttack),
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Jump_Ground, 0.1f,
 					GeneralFunction.Jump),
 				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Dash_Horizontal, 0.05f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
-					Anim.ATK_Melee_Ground_3, Anim.Dash_Up, 0.05f,
-					GeneralFunction.Dash_Up),
+					Anim.ATK_Melee_Ground_3, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.ATK_Melee_Ground_3, Anim.Idle_Ground, 0.1f,
 					(sd) => {

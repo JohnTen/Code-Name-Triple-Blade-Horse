@@ -8,7 +8,7 @@ namespace TripleBladeHorse
 	{
 		[SerializeField] bool towardEnd = true;
 		[SerializeField, Range(0, 10)] float speed = 2;
-		[SerializeField, Range(0, 1)] float startingPercentage;
+		[SerializeField, Range(0, 1)] float startingPercentage = 0;
 		[SerializeField] Vector3 startPoint = Vector3.left;
 		[SerializeField, Range(0, 360)] float angle = 0;
 		[SerializeField, Range(0, 100)] float distance = 5;
@@ -29,7 +29,7 @@ namespace TripleBladeHorse
 		[SerializeField] Color pointAPreviewColor = new Color(1, 0, 0, 0.5f);
 		[SerializeField] Color pointBPreviewColor = new Color(0, 0, 1, 0.5f);
 
-		[SerializeField, HideInInspector] bool running;
+		[SerializeField, HideInInspector] bool running = false;
 
 		Mesh mesh;
 
@@ -226,7 +226,7 @@ namespace TripleBladeHorse
 
 		private Vector3 GetNextPosition()
 		{
-			var tDist = speed * Time.deltaTime;
+			var tDist = speed * TimeManager.DeltaTime;
 
 			distFromPoint -= tDist;
 			if (distFromPoint < 0)
