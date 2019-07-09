@@ -7,6 +7,10 @@ namespace TripleBladeHorse.AI
 {
     public enum BossInput
     {
+        Slash,
+        Dodge,
+        JumpAttack,
+        DashAttack,
         
     }
     public class BossBehave : MonoBehaviour, ICharacterInput<BossInput>
