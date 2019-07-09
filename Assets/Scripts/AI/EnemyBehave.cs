@@ -35,7 +35,7 @@ namespace TripleBladeHorse.AI
 		float _stopRandomTime;
 		Vector2 _bornPosition;
 		Transform _character;
-        float _distance;
+        Vector2 _distance;
 		//Timer attackTimer = new Timer();
 
 		public bool DelayInput { get; set; }
@@ -113,7 +113,7 @@ namespace TripleBladeHorse.AI
 
 		public bool needDodge()
 		{
-            if(Mathf.Abs(_distance)<_dodgeArea){
+            if(_distance.magnitude < _dodgeArea){
 				return true;
 			}
 
@@ -132,7 +132,7 @@ namespace TripleBladeHorse.AI
 
 		public bool AttackAction()
 		{
-			if (Mathf.Abs(_distance) < _attackArea)
+			if (_distance.magnitude < _attackArea)
 			{
 				return true;
 			}
@@ -144,7 +144,7 @@ namespace TripleBladeHorse.AI
 		{
             float _backAlertArea;
             _backAlertArea = _alertArea * 0.2f;
-			if ((IsFacing() && Mathf.Abs(_distance)<_alertArea) || Mathf.Abs(_distance)<_backAlertArea )
+			if ((IsFacing() && Mathf.Abs(_distance.x)<_alertArea && IsSameLevel()) || Mathf.Abs(_distance.magnitude)<_backAlertArea )
 			{
 				return true;
 			}
@@ -154,11 +154,11 @@ namespace TripleBladeHorse.AI
 
         bool IsFacing()
         {
-            if(_distance > 0 && !_state._facingRight)
+            if(_distance.x > 0 && !_state._facingRight)
             {
                 return true;
             }
-            else if(_distance < 0 && _state._facingRight)
+            else if(_distance.x < 0 && _state._facingRight)
             {
                 return true;
             }
@@ -167,6 +167,10 @@ namespace TripleBladeHorse.AI
                 return false;
             }
         }
+		
+		bool IsSameLevel(){
+			return (Mathf.Abs(_distance.y)<2); 
+		}
 
 		public void Awake()
 		{
@@ -179,7 +183,7 @@ namespace TripleBladeHorse.AI
 
         public void Update()
         {
-            _distance = this.transform.position.x - _character.position.x;
+            _distance = this.transform.position - _character.position;
         }
     }
 }
