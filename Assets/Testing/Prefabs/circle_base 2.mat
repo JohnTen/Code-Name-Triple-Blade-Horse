@@ -8,16 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: circle_base 2
-  m_Shader: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 76a4a37193e3f444c980675d4579a40e, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
-  disabledShaderPasses:
-  - ALWAYS
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -57,12 +55,36 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SourceNewTex_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - DistortionUV_DistanceX_1: 0.129
+    - DistortionUV_DistanceY_1: 0.114
+    - DistortionUV_Speed_1: -2
+    - DistortionUV_WaveX_1: 10.4
+    - DistortionUV_WaveY_1: 10
+    - KaleidoscopeUV_Number_1: 3.911537
+    - KaleidoscopeUV_PosX_1: 0.4974365
+    - KaleidoscopeUV_PosY_1: 0.5358973
+    - ResizeUV_X_1: 0
+    - ResizeUV_Y_1: 0
+    - ResizeUV_ZoomX_1: 1
+    - ResizeUV_ZoomY_1: 1
+    - ZoomUV_PosX_1: 0.551282
+    - ZoomUV_PosY_1: 0.5
+    - ZoomUV_Zoom_1: 1.803114
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
+    - _CircleFade_Dist_2: 0.2647388
+    - _CircleFade_PosX_2: 0.5
+    - _CircleFade_PosY_2: 1.238448
+    - _CircleFade_Size_2: 0.9756321
+    - _ColorMask: 15
     - _ColorMode: 0
     - _Cull: 2
     - _Cutoff: 0.5
@@ -74,25 +96,45 @@ Material:
     - _DstBlend: 10
     - _EmissionEnabled: 0
     - _FlipbookMode: 0
+    - _Generate_Fire_PosX_1: -0.03463451
+    - _Generate_Fire_PosY_1: 0.4076714
+    - _Generate_Fire_Precision_1: 0.05
+    - _Generate_Fire_Smooth_1: 0.3076923
+    - _Generate_Fire_Speed_1: 0.7025381
+    - _Generate_Shape_Dist_1: 1
+    - _Generate_Shape_PosX_1: 0.468
+    - _Generate_Shape_PosY_1: 0.5
+    - _Generate_Shape_Rotation_1: 0
+    - _Generate_Shape_Side_1: 15
+    - _Generate_Shape_Size_1: 0.4
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LightingEnabled: 0
+    - _Mask2uv_Fade_259: 1
     - _Metallic: 0
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RGBA_Add_Fade_1: 2.433287
     - _SmoothnessTextureChannel: 0
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
+    - _SpriteFade: 1
     - _SrcBlend: 5
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
+    - _ColorRGBA_Color_1: {r: 0.9056604, g: 0.1751052, b: 0.06407974, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
