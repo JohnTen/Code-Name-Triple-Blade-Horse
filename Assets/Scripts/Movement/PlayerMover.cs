@@ -145,7 +145,11 @@ namespace TripleBladeHorse.Movement
 		{
 			if (eventArgs.lastLandingState != eventArgs.currentLandingState &&
 				eventArgs.currentLandingState == LandingState.OnGround)
-				_airborneTime = 0;
+            {
+                _airborneTime = 0;
+                print("Im in Land");
+            }
+			
 		}
 
 		#endregion

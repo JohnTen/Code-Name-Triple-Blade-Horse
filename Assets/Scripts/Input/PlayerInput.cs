@@ -326,7 +326,7 @@ namespace TripleBladeHorse
 
 		private void HandleDashInput()
 		{
-			if (_input.GetButtonDown("Dash"))
+			if(_input.GetButtonDown("Dash"))
 			{
 				InvokeInputEvent(PlayerInputCommand.Dash);
 			}
