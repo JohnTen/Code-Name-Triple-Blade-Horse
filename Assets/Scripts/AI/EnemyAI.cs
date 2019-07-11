@@ -27,6 +27,7 @@ namespace TripleBladeHorse.AI
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(enemyBehave.AlertAction),
+						BT.Call(enemyBehave.Alert),
 					    BT.Call(enemyBehave.MoveToPlayer)
 					   ),
 				    BT.Call(enemyBehave.Patrol)
