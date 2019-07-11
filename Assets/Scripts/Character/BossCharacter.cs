@@ -13,6 +13,9 @@ namespace TripleBladeHorse
 		[SerializeField] BaseWeapon _weapon;
 		[SerializeField] HitBox[] _hitboxes;
 
+		[Header("Weakpoint Movemnt")]
+		[SerializeField] WeakpointMovement _weakpointMover;
+
 		[Header("Retreat")]
 		[SerializeField] float _retreatTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _retreatSpeed;
@@ -120,6 +123,10 @@ namespace TripleBladeHorse
 
 			var aimInput = _state._frozen ? Vector2.zero : _input.GetAimingDirection().normalized;
 			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
+
+			UpdateMovingMode(aimInput, moveInput);
+			UpdateFacingDirection(aimInput);
+
 			if (moveInput.x != 0)
 				moveInput = NormalizeHorizonalDirection(moveInput);
 			_mover.Move(moveInput);
@@ -132,8 +139,6 @@ namespace TripleBladeHorse
 			{
 				_animator.SetFloat(BossAnimationData.Stat.XSpeed, moveInput.x);
 			}
-
-			UpdateFacingDirection(aimInput);
 		}
 
 		private void HandleFadeInAnimation(AnimationEventArg eventArgs)
@@ -254,6 +259,22 @@ namespace TripleBladeHorse
 		{
 			_animator.SetBool(BossAnimationData.Stat.Frozen, value);
 			_state._frozen = value;
+		}
+
+		void UpdateMovingMode(Vector2 aimInput, Vector2 moveInput)
+		{
+			_animator.SetBool(BossAnimationData.Stat.Backward,
+				Mathf.Sign(aimInput.x) != Mathf.Sign(moveInput.x));
+
+			_animator.SetBool(BossAnimationData.Stat.QucikMove,
+				moveInput.sqrMagnitude > 1);
+
+			if (_animator.GetBool(BossAnimationData.Stat.Backward))
+				_mover.Movemode = BossMover.MoveMode.Back;
+			else if (_animator.GetBool(BossAnimationData.Stat.QucikMove))
+				_mover.Movemode = BossMover.MoveMode.Quick;
+			else
+				_mover.Movemode = BossMover.MoveMode.Slow;
 		}
 
 		void UpdateFacingDirection(Vector2 aimInput)
