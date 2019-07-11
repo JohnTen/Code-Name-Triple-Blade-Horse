@@ -8,7 +8,7 @@ namespace TripleBladeHorse.Combat
 	public class Sword : BaseWeapon
 	{
 		[SerializeField] Collider2D _triggerBox;
-		[SerializeField] PlayerState _state;
+		[SerializeField] CharacterState _state;
 
 		public override void Activate(AttackPackage attack, AttackMove move)
 		{
