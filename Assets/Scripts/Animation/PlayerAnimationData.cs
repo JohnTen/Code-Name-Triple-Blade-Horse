@@ -8,7 +8,7 @@ namespace TripleBladeHorse.Animation
 	[CreateAssetMenu(menuName = "AnimationFSMData/PlayerFSMData")]
 	public class PlayerAnimationData : FSMData
 	{
-		class Anim
+		public class Anim
 		{
 			public const string Idle_Ground = "Idle_Ground_New";
 			public const string Run_Ground = "Run_Ground_old";
@@ -33,8 +33,8 @@ namespace TripleBladeHorse.Animation
 			public const string Stagger_Med = "Hitten_Ground_Normal";
 			public const string Stagger_Strong = "Hitten_Ground_Big";
 		}
-		
-		class Stat
+
+		public class Stat
 		{
 			public const string Jump = "Jump";
 			public const string MeleeAttack = "MeleeAttack";
@@ -516,19 +516,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Dash_Horizontal
 				new Transition(
-					Anim.Dash_Horizontal, Anim.Dash_Up, 0.05f,
+					Anim.Dash_Horizontal, Anim.Dash_Up, 0f,
 					GeneralFunction.Dash_Up),
 				new Transition(
-					Anim.Dash_Horizontal, Anim.Dash_Down, 0.05f,
+					Anim.Dash_Horizontal, Anim.Dash_Down, 0f,
 					GeneralFunction.Dash_Down),
 				new Transition(
-					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Up, 0.05f,
+					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Up, 0f,
 					GeneralFunction.Dash_Diagonal_Up),
 				new Transition(
-					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Down, 0.05f,
+					Anim.Dash_Horizontal, Anim.Dash_Diagonal_Down, 0f,
 					GeneralFunction.Dash_Diagonal_Down),
 				new Transition(
-					Anim.Dash_Horizontal, Anim.Dash_Horizontal, 0.05f,
+					Anim.Dash_Horizontal, Anim.Dash_Horizontal, 0f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Dash_Horizontal, Anim.ATK_Melee_Ground_1, 0.1f,
@@ -568,19 +568,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Dash_Up
 				new Transition(
-					Anim.Dash_Up, Anim.Dash_Up, 0.05f,
+					Anim.Dash_Up, Anim.Dash_Up, 0f,
 					GeneralFunction.Dash_Up),
 				new Transition(
-					Anim.Dash_Up, Anim.Dash_Down, 0.05f,
+					Anim.Dash_Up, Anim.Dash_Down, 0f,
 					GeneralFunction.Dash_Down),
 				new Transition(
-					Anim.Dash_Up, Anim.Dash_Diagonal_Up, 0.05f,
+					Anim.Dash_Up, Anim.Dash_Diagonal_Up, 0f,
 					GeneralFunction.Dash_Diagonal_Up),
 				new Transition(
-					Anim.Dash_Up, Anim.Dash_Diagonal_Down, 0.05f,
+					Anim.Dash_Up, Anim.Dash_Diagonal_Down, 0f,
 					GeneralFunction.Dash_Diagonal_Down),
 				new Transition(
-					Anim.Dash_Up, Anim.Dash_Horizontal, 0.05f,
+					Anim.Dash_Up, Anim.Dash_Horizontal, 0f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Dash_Up, Anim.Dropping, 0.1f,
@@ -600,19 +600,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Dash_Down
 				new Transition(
-					Anim.Dash_Down, Anim.Dash_Up, 0.05f,
+					Anim.Dash_Down, Anim.Dash_Up, 0f,
 					GeneralFunction.Dash_Up),
 				new Transition(
-					Anim.Dash_Down, Anim.Dash_Down, 0.05f,
+					Anim.Dash_Down, Anim.Dash_Down, 0f,
 					GeneralFunction.Dash_Down),
 				new Transition(
-					Anim.Dash_Down, Anim.Dash_Diagonal_Up, 0.05f,
+					Anim.Dash_Down, Anim.Dash_Diagonal_Up, 0f,
 					GeneralFunction.Dash_Diagonal_Up),
 				new Transition(
-					Anim.Dash_Down, Anim.Dash_Diagonal_Down, 0.05f,
+					Anim.Dash_Down, Anim.Dash_Diagonal_Down, 0f,
 					GeneralFunction.Dash_Diagonal_Down),
 				new Transition(
-					Anim.Dash_Down, Anim.Dash_Horizontal, 0.05f,
+					Anim.Dash_Down, Anim.Dash_Horizontal, 0f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Dash_Down, Anim.Dropping, 0.1f,
@@ -632,19 +632,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Dash_Diagonal_Up
 				new Transition(
-					Anim.Dash_Diagonal_Up, Anim.Dash_Up, 0.05f,
+					Anim.Dash_Diagonal_Up, Anim.Dash_Up, 0f,
 					GeneralFunction.Dash_Up),
 				new Transition(
-					Anim.Dash_Diagonal_Up, Anim.Dash_Down, 0.05f,
+					Anim.Dash_Diagonal_Up, Anim.Dash_Down, 0f,
 					GeneralFunction.Dash_Down),
 				new Transition(
-					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Up, 0.05f,
+					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Up, 0f,
 					GeneralFunction.Dash_Diagonal_Up),
 				new Transition(
-					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Down, 0.05f,
+					Anim.Dash_Diagonal_Up, Anim.Dash_Diagonal_Down, 0f,
 					GeneralFunction.Dash_Diagonal_Down),
 				new Transition(
-					Anim.Dash_Diagonal_Up, Anim.Dash_Horizontal, 0.05f,
+					Anim.Dash_Diagonal_Up, Anim.Dash_Horizontal, 0f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Dash_Diagonal_Up, Anim.Dropping, 0.1f,
@@ -664,19 +664,19 @@ namespace TripleBladeHorse.Animation
 				
 				//// Dash_Diagonal_Down
 				new Transition(
-					Anim.Dash_Diagonal_Down, Anim.Dash_Up, 0.05f,
+					Anim.Dash_Diagonal_Down, Anim.Dash_Up, 0f,
 					GeneralFunction.Dash_Up),
 				new Transition(
-					Anim.Dash_Diagonal_Down, Anim.Dash_Down, 0.05f,
+					Anim.Dash_Diagonal_Down, Anim.Dash_Down, 0f,
 					GeneralFunction.Dash_Down),
 				new Transition(
-					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Up, 0.05f,
+					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Up, 0f,
 					GeneralFunction.Dash_Diagonal_Up),
 				new Transition(
-					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Down, 0.05f,
+					Anim.Dash_Diagonal_Down, Anim.Dash_Diagonal_Down, 0f,
 					GeneralFunction.Dash_Diagonal_Down),
 				new Transition(
-					Anim.Dash_Diagonal_Down, Anim.Dash_Horizontal, 0.05f,
+					Anim.Dash_Diagonal_Down, Anim.Dash_Horizontal, 0f,
 					GeneralFunction.Dash_Horizontal),
 				new Transition(
 					Anim.Dash_Diagonal_Down, Anim.Dropping, 0.1f,

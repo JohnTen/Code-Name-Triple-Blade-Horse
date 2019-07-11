@@ -18,12 +18,12 @@ namespace TripleBladeHorse
 
 		private void Awake()
 		{
-			_projectile.OnDestorying += OnDestroy;
+			_projectile.OnDestorying += OnDestroying;
 			_projectile.Target = GameManager.PlayerInstance.transform;
 			_projectile.InitializeDirection(_projectile.Target.position - _projectile.transform.position);
 		}
 
-		private void OnDestroy(Projectile projectile, Collider2D collider)
+		private void OnDestroying(Projectile projectile, Collider2D collider)
 		{
 			if (collider == null) return;
 

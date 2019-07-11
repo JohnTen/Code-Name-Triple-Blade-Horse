@@ -7,11 +7,11 @@ namespace TripleBladeHorse.AI
 {
     public enum BossInput
     {
+		Null,
         Slash,
         Dodge,
         JumpAttack,
         DashAttack,
-
     }
     public class BossBehave : MonoBehaviour, ICharacterInput<BossInput>
     {
@@ -21,13 +21,42 @@ namespace TripleBladeHorse.AI
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
 
-        int _slashCount=0;
+		int _slashCount=0;
         [SerializeField] int _maxSlashCount=3;
         public int[] weight = new int[]{5,3,3,1};
-        public int[] lowHealthWeight = new int[] {5,3,3,3};   
+        public int[] lowHealthWeight = new int[] {5,3,3,3};
+		
+		bool _delayingInput;
+		bool _blockingInput;
+		InputEventArg<BossInput> _delayedInput;
 
-        public bool DelayInput { get; set; }
-		public bool BlockInput { get; set; }
+		public bool DelayInput
+		{
+			get => _delayingInput;
+			set
+			{
+				if (_delayingInput == value)
+					return;
+
+				_delayingInput = value;
+				if (!value && _delayedInput._command != BossInput.Null)
+				{
+					OnReceivedInput?.Invoke(_delayedInput);
+				}
+
+				if (_delayingInput)
+				{
+					_delayedInput._command = BossInput.Null;
+					_delayedInput._additionalValue = 0;
+				}
+			}
+		}
+
+		public bool BlockInput
+		{
+			get => _blockingInput;
+			set => _blockingInput = value;
+		}
 
 		public event Action<InputEventArg<BossInput>> OnReceivedInput;
         Vector2 _move;
@@ -49,7 +78,7 @@ namespace TripleBladeHorse.AI
         public void Slash(){
             _aim = -_distance;
             _move = _aim;
-            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(BossInput.Slash));
+			InvokeInputEvent(BossInput.Slash);
             weight[0]--;
             _slashCount++;
             if(_slashCount > _maxSlashCount){
@@ -74,28 +103,49 @@ namespace TripleBladeHorse.AI
         public void Dodge(){
             _aim = _target.position - transform.position;
             _move = -_aim;
-            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(BossInput.Dodge));
+			InvokeInputEvent(BossInput.Dodge);
             weight[2] += 3;
         }
 
         public void JumpAttack(){
             _aim = -_distance.normalized;
-            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(BossInput.JumpAttack));
+			InvokeInputEvent(BossInput.JumpAttack);
         }
 
         public void DashAttack(){
             _aim = _target.position - transform.position;
             _move = _aim;
-            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(BossInput.DashAttack));
+			InvokeInputEvent(BossInput.DashAttack);
             if(weight[2] != 3)
                 weight[2] = 3;
         }
 
+		private void InvokeInputEvent(BossInput command)
+		{
+			if (DelayInput)
+			{
+				_delayedInput._command = command;
+				return;
+			}
+			
+			OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command));
+		}
 
+		private void InvokeInputEvent(BossInput command, float value)
+		{
+			if (DelayInput)
+			{
+				_delayedInput._command = command;
+				_delayedInput._additionalValue = value;
+				return;
+			}
 
-        /// Awake is called when the script instance is being loaded.
-        /// </summary>
-        public void Awake()
+			OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command, value));
+		}
+
+		/// Awake is called when the script instance is being loaded.
+		/// </summary>
+		public void Awake()
         {
             _target = FindObjectOfType<PlayerCharacter>().transform;
         }
