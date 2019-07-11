@@ -90,8 +90,20 @@ namespace TripleBladeHorse.AI
         }
         public void MoveToTarget(){
             _move = _target.position - transform.position;
-            _move.Normalize();
+            _move = _move.normalized * 0.1f;
+            _aim = _move.normalized;
+        }
+
+        public void Charge(){
+            _move = _target.position - transform.position;
+            _move = _move.normalized*2f;
             _aim = _move;
+        }
+
+        public void Retreat(){
+            _move = transform.position - _target.position;
+            _move.Normalize();
+            _aim = -_move;
         }
 
         public bool IsLowHealth(){
