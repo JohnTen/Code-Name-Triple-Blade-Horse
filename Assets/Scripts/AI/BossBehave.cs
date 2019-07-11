@@ -24,8 +24,8 @@ namespace TripleBladeHorse.AI
 
 		int _slashCount=0;
         [SerializeField] int _maxSlashCount=3;
-        public int[] weight = new int[]{5,3,3,1};
-        public int[] lowHealthWeight = new int[] {5,3,3,3};
+        public int[] weight = new int[]{5,1,3};
+        public int[] lowHealthWeight = new int[] {3,3,3};
         public float combatTemp = 3;
 		
 		bool _delayingInput;
@@ -78,8 +78,8 @@ namespace TripleBladeHorse.AI
         }
 
         public void Slash(){
-            _aim = -_distance;
-            _move = _aim;
+            _aim = _distance.normalized;
+            _move = Vector2.zero;
 			InvokeInputEvent(BossInput.Slash);
             weight[0]--;
             _slashCount++;
@@ -89,19 +89,19 @@ namespace TripleBladeHorse.AI
             }
         }
         public void MoveToTarget(){
-            _move = _target.position - transform.position;
-            _move = _move.normalized * 0.1f;
+            _move = _distance;
+            _move = _move.normalized * 0.001f;
             _aim = _move.normalized;
         }
 
         public void Charge(){
-            _move = _target.position - transform.position;
+            _move = _distance;
             _move = _move.normalized*2f;
             _aim = _move;
         }
 
         public void Retreat(){
-            _move = transform.position - _target.position;
+            _move = -_distance;
             _move.Normalize();
             _aim = -_move;
         }
@@ -115,20 +115,21 @@ namespace TripleBladeHorse.AI
         }
 
         public void Dodge(){
-            _aim = _target.position - transform.position;
+            _aim = _distance;
             _move = -_aim;
 			InvokeInputEvent(BossInput.Dodge);
-            weight[2] += 3;
+            weight[2] += 5;
         }
 
         public void JumpAttack(){
-            _aim = -_distance.normalized;
-			InvokeInputEvent(BossInput.JumpAttack);
+            _aim = _distance.normalized;
+            _move = Vector2.zero;
+            InvokeInputEvent(BossInput.JumpAttack);
         }
 
         public void DashAttack(){
-            _aim = _target.position - transform.position;
-            _move = _aim;
+            _aim = _distance.normalized;
+            _move = Vector2.zero;
 			InvokeInputEvent(BossInput.DashAttack);
             if(weight[2] != 3)
                 weight[2] = 3;
@@ -168,7 +169,7 @@ namespace TripleBladeHorse.AI
         // Update is called once per frame
         void Update()
         {
-            _distance = this.transform.position - _target.position;
+            _distance = _target.position - this.transform.position;
             if(combatTemp > 1 ){
                 combatTemp=_state._hitPoints*0.001f;
             }

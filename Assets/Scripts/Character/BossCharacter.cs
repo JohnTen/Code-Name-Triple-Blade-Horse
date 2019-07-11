@@ -263,8 +263,9 @@ namespace TripleBladeHorse
 
 		void UpdateMovingMode(Vector2 aimInput, Vector2 moveInput)
 		{
-			_animator.SetBool(BossAnimationData.Stat.Backward,
-				Mathf.Sign(aimInput.x) != Mathf.Sign(moveInput.x));
+			var backward = Mathf.Abs(aimInput.x) > 0 && Mathf.Abs(moveInput.x) > 0
+			&& Mathf.Sign(aimInput.x) != Mathf.Sign(moveInput.x);
+			_animator.SetBool(BossAnimationData.Stat.Backward, backward);
 
 			_animator.SetBool(BossAnimationData.Stat.QucikMove,
 				moveInput.sqrMagnitude > 1);
