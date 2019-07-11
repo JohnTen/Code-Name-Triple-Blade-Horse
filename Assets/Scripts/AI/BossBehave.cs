@@ -17,6 +17,7 @@ namespace TripleBladeHorse.AI
     {
         Transform _target;
         Vector2 _distance;
+        CharacterState _state;
         [SerializeField] float _attackAera;
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
@@ -25,6 +26,7 @@ namespace TripleBladeHorse.AI
         [SerializeField] int _maxSlashCount=3;
         public int[] weight = new int[]{5,3,3,1};
         public int[] lowHealthWeight = new int[] {5,3,3,3};
+        public float combatTemp = 3;
 		
 		bool _delayingInput;
 		bool _blockingInput;
@@ -88,12 +90,24 @@ namespace TripleBladeHorse.AI
         }
         public void MoveToTarget(){
             _move = _target.position - transform.position;
-            _move.Normalize();
+            _move = _move.normalized * 0.1f;
+            _aim = _move.normalized;
+        }
+
+        public void Charge(){
+            _move = _target.position - transform.position;
+            _move = _move.normalized*2f;
             _aim = _move;
         }
 
+        public void Retreat(){
+            _move = transform.position - _target.position;
+            _move.Normalize();
+            _aim = -_move;
+        }
+
         public bool IsLowHealth(){
-            return true;
+            return (_state._hitPoints < 900f);
         }
 
         public bool NeedDodge(){
@@ -148,12 +162,16 @@ namespace TripleBladeHorse.AI
 		public void Awake()
         {
             _target = FindObjectOfType<PlayerCharacter>().transform;
+            _state = GetComponent<CharacterState>();
         }
 
         // Update is called once per frame
         void Update()
         {
             _distance = this.transform.position - _target.position;
+            if(combatTemp > 1 ){
+                combatTemp=_state._hitPoints*0.001f;
+            }
         }
     }
 }
