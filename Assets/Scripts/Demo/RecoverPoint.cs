@@ -6,7 +6,9 @@ using TripleBladeHorse;
 public class RecoverPoint : MonoBehaviour
 {
 	[SerializeField] Vector3 _position;
-	[SerializeField] bool set;
+	[SerializeField] float _stamina;
+	[SerializeField] bool _set;
+	[SerializeField] GameObject[] respawnHandlers;
 
 	PlayerState _player;
 	static RecoverPoint lastMajorRecoverPoint;
@@ -18,10 +20,16 @@ public class RecoverPoint : MonoBehaviour
 		{
 			lastMajorRecoverPoint._player.transform.position = lastMajorRecoverPoint._position;
             lastMajorRecoverPoint._player._hitPoints.ResetCurrentValue();
-        }
+			lastMajorRecoverPoint._player._endurance.ResetCurrentValue();
+			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			lastMajorRecoverPoint.InvokeSpawnHandlers();
+
+		}
 		else
 		{
 			lastMinorRecoverPoint._player.transform.position = lastMinorRecoverPoint._position;
+			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			lastMajorRecoverPoint.InvokeSpawnHandlers();
 		}
 	}
 
@@ -32,19 +40,30 @@ public class RecoverPoint : MonoBehaviour
 
     public void SetAsMajorPoint()
 	{
-		if (set) return;
+		if (_set) return;
 
 		lastMajorRecoverPoint = this;
         lastMinorRecoverPoint = this;
         _position = transform.position;
+		_stamina = _player._stamina;
 	}
 
 	public void SetAsMinorPoint()
 	{
-		if (set) return;
+		if (_set) return;
 
 		lastMinorRecoverPoint = this;
 		_position = transform.position;
+		_stamina = _player._stamina;
+	}
+
+	private void InvokeSpawnHandlers()
+	{
+		foreach (var obj in respawnHandlers)
+		{
+			var handler = obj.GetComponent<ICanHandleRespawn>();
+			if (handler != null) handler.Respawn();
+		}
 	}
 
 	private void Start()

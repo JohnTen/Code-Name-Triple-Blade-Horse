@@ -21,6 +21,14 @@ namespace TripleBladeHorse
 			_renderers = new List<Renderer>();
 			_defaultColor = new List<Color>();
 			GetComponentsInChildren(_renderers);
+			for (int i = 0; i < _renderers.Count; i++)
+			{
+				if (_renderers[i] is ParticleSystemRenderer)
+				{
+					_renderers.RemoveAt(i);
+					i--;
+				}
+			}
 			_defaultColor.Capacity = _renderers.Count;
 		}
 
