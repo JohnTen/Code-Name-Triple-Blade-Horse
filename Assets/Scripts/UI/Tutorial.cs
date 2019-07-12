@@ -4,34 +4,64 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 
-public class Tutorial  : MonoBehaviour
+public class Tutorial  : MonoBehaviour, IInputModelPlugable
 {
 
     [SerializeField] Image Toturailimage;
+    [SerializeField] Image Toturailimage2;
     [SerializeField] float Showspeed;
     bool stay = false;
+    bool controller;
     // Start is called before the first frame update
     void Start()
     {
-        
+        InputManager.Instance.RegisterPluggable(0,this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (stay == true)
+        if(controller == false)
         {
-            Color color = Toturailimage.color;
-            color.a += Time.deltaTime * Showspeed;
-            Toturailimage.color = new Color(255, 255, 255, color.a);
-        }
+            if (stay == true)
+            {
+                print("23211");
+                Color color = Toturailimage.color;
+                color.a += Time.deltaTime * Showspeed;
+                color.a = Mathf.Clamp01(color.a);
+                Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
+               
+            }
 
-        if (stay == false)
-        {
-            Color color = Toturailimage.color;
-            color.a -= Time.deltaTime * Showspeed;
-            Toturailimage.color = new Color(255, 255, 255, color.a);
+            if (stay == false)
+            {
+                Color color = Toturailimage.color;
+                color.a -= Time.deltaTime * Showspeed;
+                color.a = Mathf.Clamp01(color.a);
+                Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
+            }
         }
+        else
+        {
+          
+            if (stay == true)
+            {
+                print("556699");
+                Color color1 = Toturailimage2.color;
+                color1.a += Time.deltaTime * Showspeed;
+                color1.a = Mathf.Clamp01(color1.a);
+                Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
+            }
+
+            if (stay == false)
+            {
+                Color color1 = Toturailimage2.color;
+                color1.a -= Time.deltaTime * Showspeed;
+                color1.a = Mathf.Clamp01(color1.a);
+                Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
+            }
+        }
+       
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,4 +81,18 @@ public class Tutorial  : MonoBehaviour
             stay = false;
         }
     }
+
+    public void SetInputModel(IInputModel model)
+    {
+      if (model is ControllerInputModel)
+        {
+            controller = true;
+        }
+        else
+        {
+            controller = false;
+        }
+
+    }
+
 }

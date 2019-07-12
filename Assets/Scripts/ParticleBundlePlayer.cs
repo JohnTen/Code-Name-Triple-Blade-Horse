@@ -6,8 +6,10 @@ using TripleBladeHorse.Movement;
 
 namespace TripleBladeHorse
 {
-    public class ParticleBundle : MonoBehaviour
+    public class ParticleBundlePlayer : MonoBehaviour
     {
+        [SerializeField]
+        GameObject sheath;
         [SerializeField]
         List<string> particleNames;
         [SerializeField]
@@ -16,6 +18,7 @@ namespace TripleBladeHorse
                 new Dictionary<string,ParticleSystem>();
         private FSM fSM;
         private PlayerMover playerMover;
+        private ICharacterInput<PlayerInputCommand> characterInput;
         private ICanDetectGround groundDetect;
         private int i = 0;
         private void Start()
@@ -23,10 +26,12 @@ namespace TripleBladeHorse
             fSM = this.GetComponent<FSM>();
             playerMover = this.GetComponent<PlayerMover>();
             groundDetect = this.GetComponent<ICanDetectGround>();
+            characterInput = this.GetComponent<ICharacterInput<PlayerInputCommand>>();
             fSM.OnReceiveFrameEvent += FrameEventHandler;
             playerMover.OnMovingStateChanged += MoveStateChangeHandler;
             groundDetect.OnLandingStateChanged += HandleLanding;
-            foreach(var particleName in particleNames)
+            characterInput.OnReceivedInput += HandleChargingATK;
+            foreach (var particleName in particleNames)
             {
                 particles.Add(particleName, particleObjs[i]);
                 i++;
@@ -50,6 +55,7 @@ namespace TripleBladeHorse
                 {
                     particles["ATK_Melee_Ground_1"].Play();
                 }
+               
             }
         }
         private void MoveStateChangeHandler(ICanChangeMoveState moveState, MovingEventArgs eventArgs)
@@ -77,6 +83,19 @@ namespace TripleBladeHorse
                 particles["Land_In_Ground"].Play();
             }
 
+        }
+
+        private void HandleChargingATK(InputEventArg<PlayerInputCommand> eventArg)
+        {
+            if (eventArg._command == PlayerInputCommand.MeleeChargeBegin)
+            {
+                particles["ATK_Charge_Ground_Charging"].Play();
+            }
+            if (eventArg._command == PlayerInputCommand.MeleeChargeAttack)
+            {
+                particles["ATK_Charge_Ground_Charging"].Stop();
+                particles["ATK_Charge_Ground_ATK"].Play();
+            }
         }
     }
 
