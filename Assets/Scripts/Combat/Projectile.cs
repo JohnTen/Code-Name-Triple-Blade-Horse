@@ -89,7 +89,6 @@ namespace TripleBladeHorse.Combat
 			}
 			
 			Vector3 currentVelocity = _direction * currentSpeed;
-			print(currentVelocity);
 
 			_rigidbody.MovePosition(transform.position + currentVelocity * TimeManager.DeltaTime);
 		}

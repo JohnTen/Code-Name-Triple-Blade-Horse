@@ -6,7 +6,7 @@ using JTUtility;
 namespace TripleBladeHorse.Animation
 {
 	[CreateAssetMenu(menuName = "AnimationFSMData/BossFSMData")]
-	public class BossAnimationData : FSMData
+	public class BossFSMData : FSMData
 	{
 		public class Anim
 		{
@@ -65,7 +65,7 @@ namespace TripleBladeHorse.Animation
 				};
 		}
 
-		public BossAnimationData()
+		public BossFSMData()
 		{
 			InitalizeStates();
 			InitalizeAnimations();

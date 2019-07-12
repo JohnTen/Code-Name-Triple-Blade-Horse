@@ -7,11 +7,11 @@ public class Trap : MonoBehaviour
 {
 	[SerializeField] float _damage;
 
-	PlayerState _player;
+	CharacterState _player;
 
-	public void Start()
+	private void Start()
 	{
-		_player = FindObjectOfType<PlayerState>();
+		_player = TripleBladeHorse.GameManager.PlayerInstance.GetComponent<CharacterState>();
 	}
 
 	public void TriggerTrap()

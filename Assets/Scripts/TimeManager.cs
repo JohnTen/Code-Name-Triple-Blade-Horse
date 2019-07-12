@@ -8,9 +8,12 @@ namespace TripleBladeHorse
 	public class TimeManager : GlobalSingleton<TimeManager>
 	{
 		[SerializeField] float _bulletTimeScale = 0.4f;
-		[SerializeField] float _playerBulletTimeScale = 1.5f;
+		[SerializeField] float _playerBulletTimeScale = 0.6f;
+		[SerializeField] float _bulletTimeDuration = 1.5f;
 
-		int bulletTime = 0;
+		float _baseFixedDeltaTime;
+		float _playerBulletTimeScaleRatio;
+		float _bulletTimer;
 		int pause = 0;
 
 		public static float Time
@@ -37,52 +40,78 @@ namespace TripleBladeHorse
 		{
 			get
 			{
-				if (Instance.bulletTime > 0)
+				if (Instance._bulletTimer > 0)
 				{
-					return UnityEngine.Time.deltaTime * Instance._playerBulletTimeScale;
+					return UnityEngine.Time.deltaTime * Instance._playerBulletTimeScaleRatio;
 				}
 				return UnityEngine.Time.deltaTime;
 			}
 		}
 
-		public static void Pause()
+		public event Action OnBulletTimeBegin;
+		public event Action OnBulletTimeEnd;
+
+		protected override void Awake()
 		{
-			Instance.pause++;
+			_baseFixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
+			base.Awake();
+		}
+
+		private void Update()
+		{
+			if (pause > 0 || _bulletTimer <= 0) return;
+			
+			_bulletTimer -= UnscaleDeltaTime;
+			if (_bulletTimer > 0) return;
+			
+			UpdateTimeScale();
+			OnBulletTimeEnd?.Invoke();
+		}
+
+		public void Pause()
+		{
+			pause++;
 			UpdateTimeScale();
 		}
 
-		public static void Unpause()
+		public void Unpause()
 		{
-			Instance.pause--;
+			pause--;
 			UpdateTimeScale();
 		}
 
-		public static void ActivateBulletTime()
+		public void ActivateBulletTime()
 		{
-			Instance.bulletTime++;
+			if (_bulletTimer <= 0)
+				OnBulletTimeBegin?.Invoke();
+
+			_playerBulletTimeScaleRatio = _playerBulletTimeScale / _bulletTimeScale;
+			_bulletTimer = _bulletTimeDuration;
 			UpdateTimeScale();
 		}
 
-		public static void DeactivateBulletTime()
+		public void DeactivateBulletTime()
 		{
-			Instance.bulletTime--;
+			_bulletTimer = 0;
 			UpdateTimeScale();
 		}
 
-		static void UpdateTimeScale()
+		void UpdateTimeScale()
 		{
-			if (Instance.pause > 0)
+			if (pause > 0)
 			{
 				UnityEngine.Time.timeScale = 0;
 				return;
 			}
-			else if (Instance.bulletTime > 0)
+			else if (_bulletTimer > 0)
 			{
-				UnityEngine.Time.timeScale = Instance._bulletTimeScale;
+				UnityEngine.Time.timeScale = _bulletTimeScale;
+				UnityEngine.Time.fixedDeltaTime = _baseFixedDeltaTime * _bulletTimeScale;
 			}
 			else
 			{
 				UnityEngine.Time.timeScale = 1;
+				UnityEngine.Time.fixedDeltaTime = _baseFixedDeltaTime;
 			}
 		}
 	}
