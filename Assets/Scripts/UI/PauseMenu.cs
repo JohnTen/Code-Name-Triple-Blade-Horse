@@ -6,35 +6,34 @@ using TripleBladeHorse;
 
 
 public class PauseMenu : MonoBehaviour
-
 {
-    [SerializeField] GameObject pausemenu;
-    // Start is called before the first frame update
-    void Start()
-    {
-        pausemenu.SetActive(false);
-    }
+	[SerializeField] GameObject pausemenu;
+	// Start is called before the first frame update
+	void Start()
+	{
+		pausemenu.SetActive(false);
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pausemenu.SetActive(true);
-            TimeManager.Pause();
-        }
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			pausemenu.SetActive(true);
+			TimeManager.Instance.Pause();
+		}
+	}
 
-    public void ContinueGame()
-    {
-        pausemenu.SetActive(false);
-        TimeManager.Unpause();
+	public void ContinueGame()
+	{
+		pausemenu.SetActive(false);
+		TimeManager.Instance.Unpause();
 
-    }
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
+	}
+	public void ExitGame()
+	{
+		Application.Quit();
+	}
 }
 
 
