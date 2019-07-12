@@ -46,6 +46,10 @@ namespace TripleBladeHorse
             {
                 particles["HittedByChargedRange"].Play();
             }
+            if (atkPackage._attackType == AttackType.Float)
+            {
+                particles["HittedByFloatRange"].Play();
+            }
         }
     }
 }
