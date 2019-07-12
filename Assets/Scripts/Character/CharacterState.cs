@@ -19,5 +19,7 @@ namespace TripleBladeHorse
 
 		public bool _facingRight = true;
 		public bool _frozen;
+		public bool _airborne;
+		public bool _attacking;
 	}
 }

@@ -13,6 +13,8 @@ namespace TripleBladeHorse
 		[SerializeField] Transform _hittingPoint;
 		[SerializeField] PlayerState _state;
 		[SerializeField] int _maxAirAttack;
+		[SerializeField] float _healingStaminaCost;
+		[SerializeField] float _healingAmount;
 
 		[SerializeField] bool extraJump;
 		int _currentAirAttack;
@@ -67,15 +69,15 @@ namespace TripleBladeHorse
 		private void Update()
 		{
 			var frozen =
-				_animator.GetBool("Frozen")
+				_animator.GetBool(PlayerFSMData.Stat.Frozen)
 				|| _mover.CurrentMovingState == MovingState.Dash
 				|| _mover.PullDelaying
 				|| _weaponSystem.Frozen;
 
 			SetFrozen(frozen);
 			
-			_input.DelayInput = _animator.GetBool("DelayInput");
-			_input.BlockInput = _mover.BlockInput || _animator.GetBool("BlockInput");
+			_input.DelayInput = _animator.GetBool(PlayerFSMData.Stat.DelayInput);
+			_input.BlockInput = _mover.BlockInput || _animator.GetBool(PlayerFSMData.Stat.BlockInput);
 
 			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
 			if (moveInput.x != 0)
@@ -84,13 +86,13 @@ namespace TripleBladeHorse
 
 			if (_state._frozen)
 			{
-				_animator.SetFloat("XSpeed", 0);
-				_animator.SetFloat("YSpeed", _mover.Velocity.y);
+				_animator.SetFloat(PlayerFSMData.Stat.XSpeed, 0);
+				_animator.SetFloat(PlayerFSMData.Stat.YSpeed, _mover.Velocity.y);
 			}
 			else
 			{
-				_animator.SetFloat("XSpeed", moveInput.x);
-				_animator.SetFloat("YSpeed", _mover.Velocity.y);
+				_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
+				_animator.SetFloat(PlayerFSMData.Stat.YSpeed, _mover.Velocity.y);
 				UpdateFacingDirection(moveInput);
 			}
 
@@ -106,32 +108,55 @@ namespace TripleBladeHorse
 			SetFrozen(eventArgs._animation.frozenOnStart);
 			if (eventArgs._animation.airAttack)
 				_mover.AirAttacking = true;
+			else
+				_mover.AirAttacking = false;
+
+			switch (eventArgs._animation.name)
+			{
+				case PlayerFSMData.Anim.ATK_Charge_Ground_ATK:
+				case PlayerFSMData.Anim.ATK_Melee_Air_1:
+				case PlayerFSMData.Anim.ATK_Melee_Air_2:
+				case PlayerFSMData.Anim.ATK_Melee_Air_3:
+				case PlayerFSMData.Anim.ATK_Melee_Ground_1:
+				case PlayerFSMData.Anim.ATK_Melee_Ground_2:
+				case PlayerFSMData.Anim.ATK_Melee_Ground_3:
+					_state._attacking = true;
+					break;
+
+				default:
+					_state._attacking = false;
+					break;
+			}
 		}
 
 		private void HandleAnimationFadeoutEvent(AnimationEventArg eventArgs)
 		{
-			if (eventArgs._animation.airAttack)
-				_mover.AirAttacking = false;
+			_mover.AirAttacking = false;
 		}
 
 		private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 		{
-			if (eventArgs._name == "AttackBegin")
+			if (eventArgs._name == AnimEventNames.AttackBegin)
 			{
 				_weaponSystem.MeleeAttack();
 			}
-			else if (eventArgs._name == "AttackEnd")
+			else if (eventArgs._name == AnimEventNames.AttackEnd)
 			{
 				_weaponSystem.MeleeAttackEnd();
-				_animator.SetBool("Charge", false);
+				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 			}
-			else if (eventArgs._name == "AttackStepDistance")
+			else if (eventArgs._name == AnimEventNames.StepDistance)
 			{
 				_mover.SetStepDistance(eventArgs._floatData);
 			}
-			else if (eventArgs._name == "AttackStepSpeed")
+			else if (eventArgs._name == AnimEventNames.StepSpeed)
 			{
 				_mover.SetStepSpeed(eventArgs._floatData);
+			}
+			else if (eventArgs._name == AnimEventNames.Regenerate)
+			{
+				_state._hitPoints += _healingAmount;
+				_state._hitPoints.Clamp();
 			}
 		}
 
@@ -163,14 +188,14 @@ namespace TripleBladeHorse
 		{
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
-				_animator.SetToggle("DashEnd", true);
+				_animator.SetToggle(PlayerFSMData.Stat.DashEnd, true);
 			}
 		}
 
 		private void HandlePull(Vector3 direction)
 		{
 			_currentAirAttack = 0;
-			_animator.SetToggle("Jump", true);
+			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
 			extraJump = true;
 		}
@@ -180,15 +205,17 @@ namespace TripleBladeHorse
 			if (eventArgs.currentLandingState == LandingState.OnGround)
 			{
 				_currentAirAttack = 0;
-				_animator.SetBool("Airborne", false);
-				_animator.SetBool("Charge", false);
+				_animator.SetBool(PlayerFSMData.Stat.Airborne, false);
+				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 				SetBlockInput(true);
 				SetFrozen(true);
 				extraJump = false;
+				_state._airborne = false;
 			}
 			else
 			{
-				_animator.SetBool("Airborne", true);
+				_animator.SetBool(PlayerFSMData.Stat.Airborne, true);
+				_state._airborne = true;
 			}
 		}
 
@@ -237,7 +264,11 @@ namespace TripleBladeHorse
 					if (!_groundDetector.IsOnGround && !extraJump) break;
 					CancelAnimation();
 					_mover.Jump();
-					_animator.SetToggle("Jump", true);
+					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
+
+					if (extraJump && !_groundDetector.IsOnGround)
+						TimeManager.Instance.ActivateBulletTime();
+
 					extraJump = false;
 					break;
 
@@ -266,10 +297,11 @@ namespace TripleBladeHorse
 					else break;
 					
 					extraJump = true;
-					_animator.SetToggle("DashBegin", true);
-					_animator.SetFloat("XSpeed", moveInput.x);
-					_animator.SetFloat("YSpeed", moveInput.y);
+					_animator.SetToggle(PlayerFSMData.Stat.DashBegin, true);
+					_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
+					_animator.SetFloat(PlayerFSMData.Stat.YSpeed, moveInput.y);
 					SetDelayInput(true);
+					SetFrozen(true);
 
 					_animator.UpdateAnimationState();
 					break;
@@ -286,25 +318,27 @@ namespace TripleBladeHorse
 
 					if (!_groundDetector.IsOnGround)
 						_currentAirAttack++;
-					_animator.SetToggle("MeleeAttack", true);
+					_animator.SetToggle(PlayerFSMData.Stat.MeleeAttack, true);
 					_mover.AirAttacking = !_groundDetector.IsOnGround;
 					SetDelayInput(true);
+					SetFrozen(true);
 					break;
 
 				case PlayerInputCommand.MeleeChargeBegin:
 					CancelAnimation();
-					_animator.SetBool("Charge", true);
+					_animator.SetBool(PlayerFSMData.Stat.Charge, true);
 					break;
 
 				case PlayerInputCommand.MeleeChargeBreak:
 					CancelAnimation();
-					_animator.SetBool("Charge", false);
+					_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 					break;
 
 				case PlayerInputCommand.MeleeChargeAttack:
 					_weaponSystem.ChargedMeleeAttack(input._additionalValue);
-					_animator.SetToggle("MeleeAttack", true);
+					_animator.SetToggle(PlayerFSMData.Stat.MeleeAttack, true);
 					SetDelayInput(true);
+					SetFrozen(true);
 					break;
 
 				case PlayerInputCommand.RangeAttack:
@@ -321,6 +355,14 @@ namespace TripleBladeHorse
 
 				case PlayerInputCommand.WithdrawOne:
 					_weaponSystem.WithdrawOne();
+					break;
+
+				case PlayerInputCommand.Regenerate:
+					if (_state._stamina < _healingStaminaCost) break;
+					_state._stamina -= _healingStaminaCost;
+					_animator.SetToggle(PlayerFSMData.Stat.Healing, true);
+					SetBlockInput(true);
+					SetFrozen(true);
 					break;
 			}
 		}
@@ -343,10 +385,10 @@ namespace TripleBladeHorse
 			if (_mover.CurrentMovingState == MovingState.Dash)
 				_mover.CancelDash();
 
-			_animator.SetBool("Charge", false);
-			_animator.SetBool("Frozen", false);
-			_animator.SetBool("DelayInput", false);
-			_animator.SetBool("BlockInput", false);
+			SetFrozen(false);
+			SetDelayInput(false);
+			SetBlockInput(false);
+			_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 		}
 
 		private void HandleEndurance()
@@ -377,19 +419,19 @@ namespace TripleBladeHorse
 
 		void SetDelayInput(bool value)
 		{
-			_animator.SetBool("DelayInput", value);
+			_animator.SetBool(PlayerFSMData.Stat.DelayInput, value);
 			_input.DelayInput = value;
 		}
 
 		void SetBlockInput(bool value)
 		{
-			_animator.SetBool("BlockInput", value);
+			_animator.SetBool(PlayerFSMData.Stat.BlockInput, value);
 			_input.BlockInput = value;
 		}
 
 		void SetFrozen(bool value)
 		{
-			_animator.SetBool("Frozen", value);
+			_animator.SetBool(PlayerFSMData.Stat.Frozen, value);
 			_state._frozen = value;
 		}
 		

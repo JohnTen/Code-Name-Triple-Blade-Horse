@@ -20,6 +20,7 @@ namespace TripleBladeHorse
 		MeleeChargeAttack,
 		WithdrawAll,
 		WithdrawOne,
+		Regenerate,
 	}
 
 	public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
@@ -53,12 +54,12 @@ namespace TripleBladeHorse
 				if (_delayingInput == value)
 					return;
 
-				if (!value && _delayingInput && _delayedInput._command != PlayerInputCommand.Null)
+				_delayingInput = value;
+				if (!value && _delayedInput._command != PlayerInputCommand.Null)
 				{
 					OnReceivedInput?.Invoke(_delayedInput);
 				}
 
-				_delayingInput = value;
 				if (_delayingInput)
 				{
 					_delayedInput._command = PlayerInputCommand.Null;
@@ -158,6 +159,9 @@ namespace TripleBladeHorse
 			if (_triggerInput) return;
 
 			HandleMeleeInput();
+			if (_triggerInput) return;
+
+			HandleRegeneration();
 			if (_triggerInput) return;
 
 			HandleRangeInput();
@@ -349,6 +353,14 @@ namespace TripleBladeHorse
 					InvokeInputEvent(PlayerInputCommand.WithdrawOne);
 				}
 				_withdrawTimer = 0;
+			}
+		}
+
+		private void HandleRegeneration()
+		{
+			if (_input.GetButtonDown("Regenerate"))
+			{
+				InvokeInputEvent(PlayerInputCommand.Regenerate);
 			}
 		}
 	}
