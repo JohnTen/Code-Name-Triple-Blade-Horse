@@ -37,9 +37,10 @@ public class MoveToLevel : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.name == triggerName)
+        print(collision.name);
+        if (collision.transform.name == triggerName)
         {
             Entry = true;
         }
