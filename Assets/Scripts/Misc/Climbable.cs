@@ -5,18 +5,20 @@ using TripleBladeHorse.Combat;
 
 namespace TripleBladeHorse
 {
-	public class Climbable : MonoBehaviour, ICanStickKnife
+	public class Climbable : MonoBehaviour, ICanStickKnife, ICanHandleRespawn
 	{
 		[SerializeField] bool _canStick;
 		[SerializeField] bool _canPullingJump;
 		[SerializeField] int _restoredStamina;
-		[SerializeField] int _maxStuckedKnife;
+		[SerializeField] int _maxStuckedKnife = 1;
+		[SerializeField] int _numberOfEnergyBall = 1;
 		[SerializeField, Range(0f, 1f)] float _pullForceFactor;
 		[SerializeField] EnergyBall _enegryBallPrefab;
 
 		[Header("Debug")]
 		[SerializeField] List<GameObject> stuckObj;
 		[SerializeField] Rigidbody2D _rigidbody;
+		[SerializeField] int _generatedEnergyBalls;
 
 		public bool CanStick => _canStick;
 		public bool CanPullingJump => _canPullingJump;
@@ -48,7 +50,7 @@ namespace TripleBladeHorse
 				toObj.Normalize();
 			}
 
-			if (_restoredStamina > 0 && _enegryBallPrefab != null)
+			if (_restoredStamina > 0 && _enegryBallPrefab != null && _generatedEnergyBalls < _numberOfEnergyBall)
 			{
 				var energyBall = 
 					Instantiate(
@@ -57,10 +59,16 @@ namespace TripleBladeHorse
 						transform.rotation).GetComponent<EnergyBall>();
 
 				energyBall.ReplenishAmount = _restoredStamina;
+				_generatedEnergyBalls++;
 			}
 
 			stuckObj.Remove(obj);
 			return true;
+		}
+
+		public void Respawn()
+		{
+			_generatedEnergyBalls = 0;
 		}
 	}
 }
