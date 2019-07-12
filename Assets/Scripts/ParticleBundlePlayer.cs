@@ -31,6 +31,7 @@ namespace TripleBladeHorse
             playerMover.OnMovingStateChanged += MoveStateChangeHandler;
             groundDetect.OnLandingStateChanged += HandleLanding;
             characterInput.OnReceivedInput += HandleChargingATK;
+            TimeManager.Instance.OnBulletTimeBegin += TimeManagerHandler;
             foreach (var particleName in particleNames)
             {
                 particles.Add(particleName, particleObjs[i]);
@@ -106,6 +107,10 @@ namespace TripleBladeHorse
             {
                 particles["Regenerate"].Play();
             }
+        }
+        private void TimeManagerHandler()
+        {
+            particles["BulletTime"].Play();
         }
     }
 
