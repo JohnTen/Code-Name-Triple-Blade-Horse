@@ -22,7 +22,8 @@ namespace TripleBladeHorse.AI
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
 
-		int _slashCount=0;
+		int _slashCount = 0;
+        int _attackCount = 0;
         [SerializeField] int _maxSlashCount=3;
         public int[] weight = new int[]{5,1,3};
         public int[] lowHealthWeight = new int[] {3,3,3};
@@ -81,9 +82,10 @@ namespace TripleBladeHorse.AI
             _aim = _distance.normalized;
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.Slash);
-            weight[0]--;
-            _slashCount++;
-            if(_slashCount > _maxSlashCount){
+            weight[0] --;
+            _slashCount ++;
+            _attackCount ++;
+            if(_slashCount >= _maxSlashCount){
                 weight[0] = 5;
                 _slashCount=0;
             }
@@ -111,6 +113,7 @@ namespace TripleBladeHorse.AI
         }
 
         public bool NeedDodge(){
+            
             return (_distance.magnitude <= _dodgeAera);
         }
 
@@ -119,18 +122,21 @@ namespace TripleBladeHorse.AI
             _move = -_aim;
 			InvokeInputEvent(BossInput.Dodge);
             weight[2] += 5;
+            _attackCount = 0;
         }
 
         public void JumpAttack(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
             InvokeInputEvent(BossInput.JumpAttack);
+            _attackCount ++;
         }
 
         public void DashAttack(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.DashAttack);
+            _attackCount ++;
             if(weight[2] != 3)
                 weight[2] = 3;
         }
