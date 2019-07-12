@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5600635881779508}
   - component: {fileID: 3012764371751284580}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 1958877729510121609}
   - component: {fileID: 1958877729510121608}
   - component: {fileID: 1958877729510121611}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Noise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4854,7 +4854,7 @@ GameObject:
   - component: {fileID: 1958877729769317742}
   - component: {fileID: 1958877729769317740}
   - component: {fileID: 1958877729769317743}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: OutSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9664,7 +9664,7 @@ GameObject:
   - component: {fileID: 1958877729931358885}
   - component: {fileID: 1958877729931358883}
   - component: {fileID: 1958877729931358882}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14474,7 +14474,7 @@ GameObject:
   - component: {fileID: 1958877730826411227}
   - component: {fileID: 1958877730826411226}
   - component: {fileID: 1958877730826411229}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BossLightBall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19288,7 +19288,7 @@ GameObject:
   - component: {fileID: 1958877731066350217}
   - component: {fileID: 1958877731066350231}
   - component: {fileID: 1958877731066350230}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Halo (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24096,7 +24096,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3921079620829719376}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24130,7 +24130,7 @@ GameObject:
   - component: {fileID: 796670188119136137}
   - component: {fileID: 1744835952114981478}
   - component: {fileID: 73290975481347549}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28882,7 +28882,7 @@ GameObject:
   - component: {fileID: 1818727866837770559}
   - component: {fileID: 2474351671473725531}
   - component: {fileID: 931678069654492884}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33661,7 +33661,8 @@ GameObject:
   - component: {fileID: 5816102152070699998}
   - component: {fileID: 3534390368235476757}
   - component: {fileID: 2911551783770967092}
-  m_Layer: 0
+  - component: {fileID: 612279319386932539}
+  m_Layer: 11
   m_Name: Weakpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33675,7 +33676,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6911979801519382204}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.18, y: 2.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -33721,6 +33722,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!210 &612279319386932539
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6911979801519382204}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
 --- !u!1 &7945224526185612237
 GameObject:
   m_ObjectHideFlags: 0
@@ -33732,7 +33744,7 @@ GameObject:
   - component: {fileID: 6855038296619650637}
   - component: {fileID: 2031739542194509394}
   - component: {fileID: 4425552082493398726}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WeakPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

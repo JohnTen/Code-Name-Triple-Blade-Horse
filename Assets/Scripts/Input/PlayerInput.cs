@@ -43,6 +43,7 @@ namespace TripleBladeHorse
 		bool _triggerInput;
 		bool _usingController;
 		bool _throwPressedBefore;
+		bool _withdrawPressedBefore;
 		IInputModel _input;
 		InputEventArg<PlayerInputCommand> _delayedInput;
 
@@ -338,7 +339,29 @@ namespace TripleBladeHorse
 
 		private void HandleWithdraw()
 		{
-			if (_input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck"))
+			var onButton = false; 
+			var onButtonUp = false; 
+
+			if (_usingController)
+			{
+				onButton = _input.GetAxis("WithdrawOnAir") > 0.4f || _input.GetButton("WithdrawStuck");
+
+				if (onButton)
+					_withdrawPressedBefore = true;
+
+				if ((_input.GetAxis("WithdrawOnAir") <= 0.4f && _withdrawPressedBefore) || _input.GetButtonUp("WithdrawStuck"))
+				{
+					_withdrawPressedBefore = false;
+					onButtonUp = true;
+				}
+			}
+			else
+			{
+				onButton = _input.GetButton("WithdrawOnAir") || _input.GetButton("WithdrawStuck");
+				onButtonUp = _input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck");
+			}
+
+			if (onButton)
 			{
 				_withdrawTimer += TimeManager.PlayerDeltaTime;
 				if (_withdrawTimer >= _withdrawTime)
@@ -346,7 +369,7 @@ namespace TripleBladeHorse
 					InvokeInputEvent(PlayerInputCommand.WithdrawAll);
 				}
 			}
-			else if (_input.GetButtonUp("WithdrawOnAir") || _input.GetButtonUp("WithdrawStuck"))
+			else if (onButtonUp)
 			{
 				if (_withdrawTimer < _withdrawTime)
 				{

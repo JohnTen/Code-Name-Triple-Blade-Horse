@@ -138,7 +138,8 @@ namespace TripleBladeHorse
 		{
 			if (eventArgs._name == AnimEventNames.AttackBegin)
 			{
-				_weaponSystem.MeleeAttack();
+				if (eventArgs._animation.name != PlayerFSMData.Anim.ATK_Charge_Ground_ATK)
+					_weaponSystem.MeleeAttack();
 			}
 			else if (eventArgs._name == AnimEventNames.AttackEnd)
 			{

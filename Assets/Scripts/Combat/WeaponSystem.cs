@@ -68,11 +68,6 @@ namespace TripleBladeHorse.Combat
 
 			sword.Activate(package, chargedMeleeMove);
 
-			if (_currentAttackEffect) return;
-			_currentAttackEffect = Instantiate(_attackEffectPrefab);
-			_currentAttackEffect.transform.SetParent(sword.transform);
-			_currentAttackEffect.transform.localPosition = Vector3.zero;
-
 			_audio.clip = _normalMeleeSFX.PickRandom();
 			_audio.Play();
 		}

@@ -14,6 +14,7 @@ namespace TripleBladeHorse
 		[SerializeField] HitBox[] _hitboxes;
 
 		[Header("Weakpoint Movemnt")]
+		[SerializeField] Transform[] _weakpoints;
 		[SerializeField] WeakpointMovement _weakpointMover;
 
 		[Header("Retreat")]
@@ -24,6 +25,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _slashTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _slashSpeed;
 		[SerializeField] AttackMove _slashMove;
+		[SerializeField] List<Collider2D> _slashAttackBoxes;
 
 		[Header("Combo2")]
 		[SerializeField] float _combo2RaiseTime;
@@ -35,11 +37,13 @@ namespace TripleBladeHorse
 		[SerializeField] float _combo2SpeedScaler;
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
+		[SerializeField] List<Collider2D> _combo2AttackBoxes;
 
 		[Header("Combo3/thrust")]
 		[SerializeField] float _thrustTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _thrustSpeed;
 		[SerializeField] AttackMove _thrustMove;
+		[SerializeField] List<Collider2D> _thrustAttackBoxes;
 
 		FSM _animator;
 		CharacterState _state;
@@ -65,6 +69,11 @@ namespace TripleBladeHorse
 			foreach (var hitbox in _hitboxes)
 			{
 				hitbox.OnHit += HandleOnHit;
+			}
+
+			foreach (var weakpoint in _weakpoints)
+			{
+				weakpoint.SetParent(null);
 			}
 		}
 
@@ -94,10 +103,60 @@ namespace TripleBladeHorse
 				attack._enduranceDamage.Base = _state._enduranceDamage;
 
 				_weapon.Activate(attack, _currentMove);
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Slash1
+				 || eventArgs._animation.name == BossFSMData.Anim.Slash2)
+				{
+					foreach (var collider in _slashAttackBoxes)
+					{
+						collider.enabled = true;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
+				{
+					foreach (var collider in _combo2AttackBoxes)
+					{
+						collider.enabled = true;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
+				{
+					foreach (var collider in _thrustAttackBoxes)
+					{
+						collider.enabled = true;
+					}
+				}
 			}
 			else if (eventArgs._name == AnimEventNames.AttackEnd)
 			{
 				_weapon.Deactivate();
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Slash1
+				 || eventArgs._animation.name == BossFSMData.Anim.Slash2)
+				{
+					foreach (var collider in _slashAttackBoxes)
+					{
+						collider.enabled = false;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
+				{
+					foreach (var collider in _combo2AttackBoxes)
+					{
+						collider.enabled = false;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
+				{
+					foreach (var collider in _thrustAttackBoxes)
+					{
+						collider.enabled = false;
+					}
+				}
 			}
 		}
 

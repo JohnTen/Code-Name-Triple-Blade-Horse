@@ -143,6 +143,7 @@ namespace TripleBladeHorse.Combat
 				{
 					var direction = sheath.transform.position - this.transform.position;
 					direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
+					_defaultType = AttackType.StuckNDraw;
 					TryAttack(stuckAttack, direction);
 				}
 

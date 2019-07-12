@@ -147,7 +147,6 @@ namespace TripleBladeHorse.Movement
 				eventArgs.currentLandingState == LandingState.OnGround)
             {
                 _airborneTime = 0;
-                print("Im in Land");
             }
 			
 		}
