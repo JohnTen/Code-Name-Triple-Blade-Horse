@@ -6,7 +6,7 @@ using JTUtility;
 namespace TripleBladeHorse.Animation
 {
 	[CreateAssetMenu(menuName = "AnimationFSMData/PlayerFSMData")]
-	public class PlayerAnimationData : FSMData
+	public class PlayerFSMData : FSMData
 	{
 		public class Anim
 		{
@@ -32,11 +32,13 @@ namespace TripleBladeHorse.Animation
 			public const string Stagger_Weak = "Hitten_Ground_Small";
 			public const string Stagger_Med = "Hitten_Ground_Normal";
 			public const string Stagger_Strong = "Hitten_Ground_Big";
+			public const string Healing = "Healing";
 		}
 
 		public class Stat
 		{
 			public const string Jump = "Jump";
+			public const string Healing = "Healing";
 			public const string MeleeAttack = "MeleeAttack";
 			public const string DashBegin = "DashBegin";
 			public const string DashEnd = "DashEnd";
@@ -119,7 +121,7 @@ namespace TripleBladeHorse.Animation
 				};
 		}
 
-		public PlayerAnimationData()
+		public PlayerFSMData()
 		{
 			InitalizeStates();
 			InitalizeAnimations();
@@ -153,6 +155,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.Stagger_Weak, 1f, 1, 0.7f, true, false, true, false),
 				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f, true, false, true, false),
 				new Animation(Anim.Stagger_Strong, 1f, 1, 0.7f, true, false, true, false),
+				new Animation(Anim.Healing, 1f, 1, 0.7f, true, false, true, false),
 			};
 		}
 
@@ -161,6 +164,7 @@ namespace TripleBladeHorse.Animation
 			_toggleState = new List<StrBoolPair>()
 			{
 				new StrBoolPair() {Key = Stat.Jump, Value = false},
+				new StrBoolPair() {Key = Stat.Healing, Value = false},
 				new StrBoolPair() {Key = Stat.DashBegin, Value = false},
 				new StrBoolPair() {Key = Stat.DashEnd, Value = false},
 				new StrBoolPair() {Key = Stat.MeleeAttack, Value = false},
@@ -336,6 +340,12 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Idle_Ground, Anim.ATK_Charge_Ground_Charging, 0.05f,
 					GeneralFunction.GroundCharging),
+
+				new Transition(
+					Anim.Idle_Ground, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
 				
 				//// Run_Ground
 				new Transition(
@@ -365,11 +375,6 @@ namespace TripleBladeHorse.Animation
 						return sd._floatMap[Stat.YSpeed] < 0.1f && sd._boolMap[Stat.Airborne];
 					}),
 				new Transition(
-					Anim.Run_Ground, Anim.Idle_Ground, 0.1f,
-					(sd) => {
-						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
-					}),
-				new Transition(
 					Anim.Run_Ground, Anim.Jump_Ground, 0.1f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
@@ -384,6 +389,17 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Run_Ground, Anim.ATK_Charge_Ground_Charging, 0.05f,
 					GeneralFunction.GroundCharging),
+
+				new Transition(
+					Anim.Run_Ground, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
+				new Transition(
+					Anim.Run_Ground, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
 
 				//// Jump_Ground
 				new Transition(
@@ -513,6 +529,12 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Dropping_Buffering, Anim.ATK_Charge_Ground_Charging, 0.05f,
 					GeneralFunction.GroundCharging),
+
+				new Transition(
+					Anim.Dropping_Buffering, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
 				
 				//// Dash_Horizontal
 				new Transition(
@@ -729,6 +751,12 @@ namespace TripleBladeHorse.Animation
 						sd._boolMap[Stat.Charge];
 					}),
 
+				new Transition(
+					Anim.ATK_Charge_Ground_Charging, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
+
 				//// ATK_Charge_Ground_ATK
 				new Transition(
 					Anim.ATK_Charge_Ground_ATK, Anim.Dash_Up, 0.05f,
@@ -757,6 +785,12 @@ namespace TripleBladeHorse.Animation
 					Anim.ATK_Charge_Ground_ATK, Anim.Run_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
 					}),
 
 				//// ATK_Melee_Air_1
@@ -899,6 +933,11 @@ namespace TripleBladeHorse.Animation
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
+				new Transition(
+					Anim.ATK_Melee_Ground_1, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
 				
 				//// ATK_Melee_Ground_2
 				
@@ -936,6 +975,11 @@ namespace TripleBladeHorse.Animation
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
+				new Transition(
+					Anim.ATK_Melee_Ground_2, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
 				
 				//// ATK_Melee_Ground_3
 				new Transition(
@@ -972,6 +1016,61 @@ namespace TripleBladeHorse.Animation
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
+				new Transition(
+					Anim.ATK_Melee_Ground_3, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
+
+				//// Healing
+				
+				new Transition(
+					Anim.Healing, Anim.Dash_Up, 0.05f,
+					GeneralFunction.Dash_Up),
+				new Transition(
+					Anim.Healing, Anim.Dash_Down, 0.05f,
+					GeneralFunction.Dash_Down),
+				new Transition(
+					Anim.Healing, Anim.Dash_Diagonal_Up, 0.05f,
+					GeneralFunction.Dash_Diagonal_Up),
+				new Transition(
+					Anim.Healing, Anim.Dash_Diagonal_Down, 0.05f,
+					GeneralFunction.Dash_Diagonal_Down),
+				new Transition(
+					Anim.Healing, Anim.Dash_Horizontal, 0.05f,
+					GeneralFunction.Dash_Horizontal),
+
+				new Transition(
+					Anim.Healing, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump] && !sd._boolMap[Stat.Airborne];
+					}),
+
+				new Transition(
+					Anim.Healing, Anim.Idle_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.Healing, Anim.Run_Ground, 0.1f,
+					(sd) => {
+						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.Healing, Anim.Jump_Ground, 0.1f,
+					(sd) => {
+						return sd._floatMap[Stat.YSpeed] > float.Epsilon;
+					}),
+
+				new Transition(
+					Anim.Healing, Anim.ATK_Melee_Ground_1, 0.1f,
+					GeneralFunction.GroundAttack),
+
+				new Transition(
+					Anim.Healing, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					GeneralFunction.GroundCharging),
 			};
 		}
 	}

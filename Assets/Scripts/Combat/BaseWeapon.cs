@@ -51,14 +51,12 @@ namespace TripleBladeHorse.Combat
 			target._attackRate = _baseAttackRate;
 			target._attackType = _defaultType;
 			target._faction = Faction;
-
-			print(target._hitPointDamage);
+			
 			if (_attackMove != null)
 			{
 				target = _attackMove.Process(target);
 			}
-
-			print(target._hitPointDamage);
+			
 			return target;
 		}
 

@@ -63,6 +63,7 @@ namespace TripleBladeHorse.Combat
 			package._attackType = AttackType.ChargedMelee;
 			package._hitPointDamage.Base = _state._hitPointDamage;
 			package._enduranceDamage.Base = _state._enduranceDamage;
+			package._chargedPercent.Base = chargedPercent;
 			OnRaisingAttack?.Invoke(sword, chargedMeleeMove);
 
 			sword.Activate(package, chargedMeleeMove);
