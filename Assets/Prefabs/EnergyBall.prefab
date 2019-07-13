@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 1485801041880988041}
   - component: {fileID: 9178579808752623741}
   - component: {fileID: 5961545422884746966}
-  m_Layer: 0
+  - component: {fileID: 1954044664788261979}
+  m_Layer: 15
   m_Name: EnergyBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,6 +148,17 @@ MonoBehaviour:
   _target: {fileID: 0}
   _existTimer: 0
   _direction: {x: 0, y: 0}
+--- !u!210 &1954044664788261979
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898704100490708209}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 15
 --- !u!1001 &4250070311895018660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -158,6 +170,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StaminaBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532391, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2880317261681492421, guid: 599dc8eb541917a438f17194c7202f11,
         type: 3}
@@ -213,6 +230,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532389, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532385, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532397, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532393, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532395, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 599dc8eb541917a438f17194c7202f11, type: 3}

@@ -50,7 +50,10 @@ namespace TripleBladeHorse
 				toObj.Normalize();
 			}
 
-			if (_restoredStamina > 0 && _enegryBallPrefab != null && _generatedEnergyBalls < _numberOfEnergyBall)
+			if (_restoredStamina > 0 
+                && _enegryBallPrefab != null 
+                && (_generatedEnergyBalls < _numberOfEnergyBall
+                || _numberOfEnergyBall <= 0))
 			{
 				var energyBall = 
 					Instantiate(
