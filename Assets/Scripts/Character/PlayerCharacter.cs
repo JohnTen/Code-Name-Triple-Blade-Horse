@@ -254,6 +254,8 @@ namespace TripleBladeHorse
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
+				SetBlockInput(true);
+				SetFrozen(true);
 			}
 		}
 
