@@ -458,8 +458,8 @@ namespace TripleBladeHorse
 
 		public void OnPullingKnife(ICanStickKnife canStick, ThrowingKnife knife)
 		{
-			if (!_state._stamina.IsFull())
-				_state._stamina += canStick.RestoredStamina;
+			//if (!_state._stamina.IsFull())
+			//	_state._stamina += canStick.RestoredStamina;
 		}
 
 		#endregion

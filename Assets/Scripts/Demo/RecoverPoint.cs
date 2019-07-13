@@ -14,6 +14,21 @@ public class RecoverPoint : MonoBehaviour
 	static RecoverPoint lastMajorRecoverPoint;
 	static RecoverPoint lastMinorRecoverPoint;
 
+	private void OnDrawGizmosSelected()
+	{
+		foreach (var obj in respawnHandlers)
+		{
+			var handler = obj.GetComponent<ICanHandleRespawn>();
+
+			if (handler != null)
+				Gizmos.color = Color.green;
+			else
+				Gizmos.color = Color.red;
+
+			Gizmos.DrawLine(this.transform.position, obj.transform.position);
+		}
+	}
+
 	public static void MainRespawn(bool recover = false)
 	{
 		if (recover)
