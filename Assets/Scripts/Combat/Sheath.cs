@@ -9,26 +9,30 @@ namespace TripleBladeHorse.Combat
 	{
 		[SerializeField] int numberOfKnife;
 		[SerializeField] Transform launchPosition;
-		[SerializeField] Transform[] sheathPositions;
-		[SerializeField] Queue<ThrowingKnife> knifesInSheath;
+		[SerializeField] Transform[] sheaths;
+		[SerializeField] List<ThrowingKnife> knifesInSheath;
 		[SerializeField] List<ThrowingKnife> allKnifes;
+		[SerializeField] SheathMover mover;
 
-		public float ReloadSpeed { get; set; } = 3;
+		public float ReloadSpeed { get; set; }
+
 		public Transform LaunchPosition => launchPosition;
 		public int knifeCount => knifesInSheath.Count;
 
 		public event Action<ThrowingKnife> OnRecievedKnife;
 
+		int _currentSheathIndex;
 		bool reloading;
 
 		private void Awake()
 		{
-			knifesInSheath = new Queue<ThrowingKnife>();
+			knifesInSheath = new List<ThrowingKnife>();
 
 			for (int i = 0; i < allKnifes.Count; i++)
 			{
 				allKnifes[i].SetSheath(this);
-				knifesInSheath.Enqueue(allKnifes[i]);
+				knifesInSheath.Add(allKnifes[i]);
+				mover.ActiveSheath(sheaths[i], 0.1f);
 			}
 		}
 
@@ -49,43 +53,47 @@ namespace TripleBladeHorse.Combat
 			if ((!force && reloading) || knifesInSheath.Count <= 0)
 				return null;
 
-			StartCoroutine(ReloadKnife());
-			knifesInSheath.Peek().transform.parent = null;
-			return knifesInSheath.Dequeue();
+			for (int i = 0; i < knifesInSheath.Count; i++)
+			{
+				var knife = knifesInSheath[i];
+				var sheath = knife.transform.parent;
+				if (sheath == null)
+				{
+					Debug.Log(knife.name);
+					Debug.Break();
+				}
+				if (!mover.IsReady(sheath))
+					continue;
+
+				mover.DeactiveSheath(sheath);
+				knife.transform.SetParent(null);
+				knifesInSheath.RemoveAt(i);
+				return knife;
+			}
+
+			return null;
 		}
 
 		public void PutBackKnife(ThrowingKnife knife)
 		{
-			knife.transform.parent = sheathPositions[knifesInSheath.Count];
-			knife.transform.position = sheathPositions[knifesInSheath.Count].position;
-			knife.transform.rotation = sheathPositions[knifesInSheath.Count].rotation;
-			knifesInSheath.Enqueue(knife);
-			if (OnRecievedKnife != null)
-				OnRecievedKnife.Invoke(knife);
-		}
 
-		IEnumerator ReloadKnife()
-		{
-			reloading = true;
-
-			float timer = 0;
-
-			while (timer < 1)
+			for (int i = 0; i < sheaths.Length; i++)
 			{
-				yield return null;
-				int index = 0;
-				timer += TimeManager.PlayerDeltaTime * ReloadSpeed;
-				foreach (var item in knifesInSheath)
-				{
-					item.transform.parent = sheathPositions[index];
-					item.transform.position = Vector3.Lerp(sheathPositions[index + 1].position, sheathPositions[index].position, timer);
-					item.transform.rotation = Quaternion.Lerp(sheathPositions[index + 1].rotation, sheathPositions[index].rotation, timer);
-					index++;
-					if (index >= 2) break;
-				}
+				var index = (i + _currentSheathIndex) % sheaths.Length;
+				if (sheaths[index].childCount != 0) continue;
+				
+				sheaths[index].position = knife.transform.position;
+				sheaths[index].rotation = knife.transform.rotation;
+				knife.transform.parent = sheaths[index];
+				mover.ActiveSheath(sheaths[index], knife.Cooldown);
+				break;
 			}
 
-			reloading = false;
+			_currentSheathIndex++;
+			_currentSheathIndex %= sheaths.Length;
+			knifesInSheath.Add(knife);
+			if (OnRecievedKnife != null)
+				OnRecievedKnife.Invoke(knife);
 		}
 	}
 }

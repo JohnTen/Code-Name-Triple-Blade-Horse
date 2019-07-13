@@ -71,7 +71,7 @@ namespace TripleBladeHorse.UI
 
 			if (_disappearDelay > 0 && _disappearTimer <= 0 && !_decaying && _decayTimer <= 0)
 			{
-				print("Start disappear");
+				//print("Start disappear");
 			}
 		}
 

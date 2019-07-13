@@ -37,13 +37,24 @@ namespace JTUtility
 
 					if (timers[k].RealTime)
 						timers[k].timeLeft -= Time.unscaledDeltaTime;
+					else if (timers[k].CustomDeltaTimeSource != null)
+					{
+						timers[k].timeLeft -= timers[k].CustomDeltaTimeSource();
+					}
 					else
+					{
 						timers[k].timeLeft -= Time.deltaTime;
+					}
+
 					if (timers[k].timeLeft > 0) continue;
 					
 					if (timers[k].Repeat)
 					{
 						timers[k].timeLeft += timers[k].startTime;
+					}
+					else
+					{
+						timers[k].timeLeft = 0;
 					}
 
 					if (timers[k].OnTimeOut != null)
@@ -82,15 +93,16 @@ namespace JTUtility
 
 		Action raiseTimeOut;
 
+		public bool Repeat { get; set; }
+		public bool RealTime { get; set; }
+		public Func<float> CustomDeltaTimeSource { get; set; }
+
 		public Timer()
 		{
 			timerID = GetHashCode();
 			InnerTimer.keys.Add(timerID);
 			InnerTimer.timers.Add(timerID, this);
 		}
-
-		public bool Repeat { get; set; }
-		public bool RealTime { get; set; }
 
 		public bool IsReachedTime()
 		{

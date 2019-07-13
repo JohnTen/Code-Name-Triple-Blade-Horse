@@ -24,6 +24,7 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] float hoveringRotateSpeed;
 		[SerializeField] float normalAttackRate = 1;
 		[SerializeField] float floatAttackRate = 0.2f;
+		[SerializeField] float cooldown = 1f;
 		[SerializeField] LayerMask rayCastMask;
 		[Header("VFX")]
 		[SerializeField] Transform flyingVFX;
@@ -55,6 +56,8 @@ namespace TripleBladeHorse.Combat
 		public float PullingForce { get; set; }
 
 		public bool Stuck { get; private set; }
+
+		public float Cooldown => cooldown;
 
 		private void Update()
 		{
@@ -166,6 +169,7 @@ namespace TripleBladeHorse.Combat
 		public void RetractInstantly()
 		{
 			Deactivate();
+			transform.position = sheath.transform.position;
 			sheath.PutBackKnife(this);
 			if (stuckOn != null)
 			{
@@ -284,7 +288,7 @@ namespace TripleBladeHorse.Combat
 			var stickable = hit.collider.GetComponent<ICanStickKnife>();
 			var attackable = hit.collider.GetComponentInParent<IAttackable>();
 
-			if (!Stuck && stickable != null && stickable.TryStick(this.gameObject))
+			if (!piercing && !Stuck && stickable != null && stickable.TryStick(this.gameObject))
 			{
 				Stuck = true;
 				state = KnifeState.Stuck;
