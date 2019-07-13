@@ -36,6 +36,7 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] Vector2 _dashingDirection;
 
 		[Header("Airborne Movement")]
+		[SerializeField] float _extraJumpHeightScale;
 		[SerializeField] float _airborneSpeedFactor;
 		[SerializeField] float _pullingForce;
 		[SerializeField] float _pullingMoveDelay;
@@ -267,6 +268,13 @@ namespace TripleBladeHorse.Movement
 		public void Jump()
 		{
 			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale);
+			_airborneTime = 0;
+			CurrentMovingState = MovingState.Airborne;
+		}
+
+		public void ExtraJump()
+		{
+			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale * _extraJumpHeightScale);
 			_airborneTime = 0;
 			CurrentMovingState = MovingState.Airborne;
 		}

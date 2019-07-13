@@ -1993,6 +1993,7 @@ MonoBehaviour:
   _shortGroundDashingDuration: 0.3
   _shortGroundDashingDelay: 0
   _dashingDirection: {x: 0, y: 0}
+  _extraJumpHeightScale: 0.5
   _airborneSpeedFactor: 0.15
   _pullingForce: 18
   _pullingMoveDelay: 0
@@ -2168,8 +2169,8 @@ MonoBehaviour:
   _airborne: 0
   _attacking: 0
   _stamina:
-    base: 50000
-    current: 50000
+    base: 10
+    current: 10
   _staminaRecoverRate: 0
   _withdrawStaminaRecoverFactor: 0
 --- !u!114 &1382750242
@@ -2621,6 +2622,11 @@ MonoBehaviour:
   _knifeStabDamageMultiplier: 1
   _staminaRecover: 0
   _isWeakSpot: 0
+  _onHit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!50 &6807999107380335081
 Rigidbody2D:
   serializedVersion: 4
@@ -4517,7 +4523,7 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3219208580553150195, guid: e31961661ac2779439dfdb5ae6ee0a3f,
+    - target: {fileID: 3219208580553150203, guid: e31961661ac2779439dfdb5ae6ee0a3f,
         type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -4527,12 +4533,12 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3219208580553150197, guid: e31961661ac2779439dfdb5ae6ee0a3f,
+    - target: {fileID: 3219208580553150195, guid: e31961661ac2779439dfdb5ae6ee0a3f,
         type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3219208580553150203, guid: e31961661ac2779439dfdb5ae6ee0a3f,
+    - target: {fileID: 3219208580553150197, guid: e31961661ac2779439dfdb5ae6ee0a3f,
         type: 3}
       propertyPath: playOnAwake
       value: 0

@@ -254,6 +254,8 @@ namespace TripleBladeHorse
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
+				SetBlockInput(true);
+				SetFrozen(true);
 			}
 		}
 
@@ -264,7 +266,12 @@ namespace TripleBladeHorse
 				case PlayerInputCommand.Jump:
 					if (!_groundDetector.IsOnGround && !extraJump) break;
 					CancelAnimation();
-					_mover.Jump();
+
+					if (extraJump)
+						_mover.ExtraJump();
+					else
+						_mover.Jump();
+
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 
 					if (extraJump && !_groundDetector.IsOnGround)
@@ -286,14 +293,14 @@ namespace TripleBladeHorse
 					
 					UpdateFacingDirection(moveInput);
 
-					if (_state._stamina > 0)
+					if (airDash && _state._stamina > 0)
 					{
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
 					}
 					else if (!airDash)
 					{
-						_mover.ShortDash(moveInput);
+						_mover.Dash(moveInput);
 					}
 					else break;
 					
