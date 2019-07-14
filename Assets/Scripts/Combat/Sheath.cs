@@ -14,6 +14,8 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] List<ThrowingKnife> allKnifes;
 		[SerializeField] SheathMover mover;
 
+		Func<float> chargeTimer;
+
 		public float ReloadSpeed { get; set; }
 
 		public Transform LaunchPosition => launchPosition;
@@ -36,6 +38,16 @@ namespace TripleBladeHorse.Combat
 			}
 		}
 
+		private void Update()
+		{
+			if (chargeTimer != null)
+			{
+				mover.FloatScale = 1 - chargeTimer();
+				mover.RadiusScale = 1 - chargeTimer();
+				mover.RotationScale = 1 - chargeTimer();
+			}
+		}
+
 		public void UpdateFacingDirection(bool right)
 		{
 			if (right && this.transform.eulerAngles.y != 0)
@@ -46,6 +58,19 @@ namespace TripleBladeHorse.Combat
 			{
 				this.transform.rotation = Quaternion.Euler(0, 180, 0);
 			}
+		}
+
+		public void StartCharge(Func<float> timer)
+		{
+			chargeTimer = timer;
+		}
+
+		public void StopCharge()
+		{
+			chargeTimer = null;
+			mover.FloatScale = 1;
+			mover.RadiusScale = 1;
+			mover.RotationScale = 1;
 		}
 
 		public ThrowingKnife TakeKnife(bool force)

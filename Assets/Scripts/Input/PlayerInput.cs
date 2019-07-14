@@ -25,20 +25,30 @@ namespace TripleBladeHorse
 
 	public class PlayerInput : MonoBehaviour, IInputModelPlugable, ICharacterInput<PlayerInputCommand>
 	{
+		[Header("Melee")]
 		[SerializeField] float _enterMeleeChargeTime = 0.3f;
 		[SerializeField] float _minimumMeleeChargeTime = 0.2f;
 		[SerializeField] float _meleeMaxChargeTime = 2f;
+
+		[Header("Range")]
 		[SerializeField] float _rangeChargeTime = 0.3f;
 		[SerializeField] float _withdrawTime = 0.3f;
+
+		[Header("Action")]
+		[SerializeField] float _jumpTime = 0.2f;
+
+		[Header("Reference")]
 		[SerializeField] Transform _aimingPivot;
 		[SerializeField] LineRenderer _aimingLine;
 		[SerializeField] bool _delayingInput;
 		[SerializeField] bool _blockInput;
 
+		[Header("Debug")]
 		[SerializeField] float _enterMeleeChargeTimer;
 		[SerializeField] float _meleeChargeTimer;
-		float _rangeChargeTimer;
-		float _withdrawTimer;
+		[SerializeField] float _jumpTimer;
+		[SerializeField] float _rangeChargeTimer;
+		[SerializeField] float _withdrawTimer;
 
 		bool _triggerInput;
 		bool _usingController;
@@ -181,6 +191,18 @@ namespace TripleBladeHorse
 			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
 		}
 
+		private void InvokeInputEvent(PlayerInputCommand command, Func<float> timer)
+		{
+			_triggerInput = true;
+			if (DelayInput)
+			{
+				_delayedInput._command = command;
+				return;
+			}
+
+			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, timer));
+		}
+
 		private void InvokeInputEvent(PlayerInputCommand command, float value)
 		{
 			_triggerInput = true;
@@ -262,7 +284,14 @@ namespace TripleBladeHorse
 			if (_input.GetButtonDown("Throw"))
 			{
 				_rangeChargeTimer = 0;
-				InvokeInputEvent(PlayerInputCommand.RangeBegin);
+				InvokeInputEvent(PlayerInputCommand.RangeBegin, 
+					() => 
+					{
+						var percent = _rangeChargeTimer / _rangeChargeTime;
+						percent = float.IsNaN(percent) ? 0 : percent;
+						percent = float.IsInfinity(percent) ? 1 : percent;
+						return percent;
+					});
 			}
 
 			if (_input.GetButton("Throw"))
@@ -325,7 +354,23 @@ namespace TripleBladeHorse
 		{
 			if (_input.GetButtonDown("Jump"))
 			{
-				InvokeInputEvent(PlayerInputCommand.Jump);
+				_jumpTimer = 0;
+			}
+
+			if (_input.GetButton("Jump"))
+			{
+				_jumpTimer += TimeManager.PlayerDeltaTime;
+				if (_jumpTime <= _jumpTimer)
+				{
+					InvokeInputEvent(PlayerInputCommand.Jump, 1);
+					_jumpTimer = float.NegativeInfinity;
+				}
+			}
+
+			if (_input.GetButtonUp("Jump"))
+			{
+				InvokeInputEvent(PlayerInputCommand.Jump, _jumpTimer / _jumpTime);
+				_jumpTimer = float.NegativeInfinity;
 			}
 		}
 

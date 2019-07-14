@@ -268,7 +268,7 @@ namespace TripleBladeHorse
 					CancelAnimation();
 
 					if (_extraJump)
-						_mover.ExtraJump();
+						_mover.ExtraJump(input._additionalValue);
 					else
 						_mover.Jump();
 
@@ -348,6 +348,10 @@ namespace TripleBladeHorse
 					_animator.SetToggle(PlayerFSMData.Stat.MeleeAttack, true);
 					SetDelayInput(true);
 					SetFrozen(true);
+					break;
+
+				case PlayerInputCommand.RangeBegin:
+					_weaponSystem.StartRangeCharge(input._actionChargedPercent);
 					break;
 
 				case PlayerInputCommand.RangeAttack:

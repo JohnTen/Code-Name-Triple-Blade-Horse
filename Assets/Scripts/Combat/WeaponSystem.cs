@@ -82,6 +82,11 @@ namespace TripleBladeHorse.Combat
 			}
 		}
 
+		public void StartRangeCharge(Func<float> chargeTimer)
+		{
+			sheath.StartCharge(chargeTimer);
+		}
+
 		public void RangeAttack(Vector2 direction)
 		{
 			var knife = sheath.TakeKnife(false);
@@ -92,6 +97,7 @@ namespace TripleBladeHorse.Combat
 				knife.PullingForce = pullingForce;
 				knife.Launch(direction, false);
 			}
+			sheath.StopCharge();
 		}
 
 		public void ChargedRangeAttack(Vector2 direction)
@@ -170,6 +176,8 @@ namespace TripleBladeHorse.Combat
 			{
 				Destroy(_currentAttackEffect);
 			}
+
+			sheath.StopCharge();
 		}
 
 		private void Sheath_OnRecievedKnife(ThrowingKnife knife)
@@ -226,6 +234,7 @@ namespace TripleBladeHorse.Combat
 				knifesInAirList.Add(knife);
 				knife.Launch(direction, true);
 			}
+			sheath.StopCharge();
 		}
 	}
 }

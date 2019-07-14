@@ -25,9 +25,11 @@ namespace TripleBladeHorse
 		[SerializeField] float _radiusDynamicSpeed = 0.3f;
 		[SerializeField] float _knifeRotateSpeed = 8f;
 		[SerializeField] float _knifeRandomRotateSpeed = 2f;
+		[SerializeField] AnimationCurve _knifeRotateAcceleration;
 		[Header("Debug")]
 		[SerializeField] List<Transform> _activeSheaths;
-		
+
+		public float FloatScale { get; set; } = 1;
 		public float RadiusScale { get; set; } = 1;
 		public float RotationScale { get; set; } = 1;
 
@@ -76,9 +78,11 @@ namespace TripleBladeHorse
 			{
 				if (_knifeRotatePairs[i].Value == null) continue;
 
-				var rotateSpeed = 
-					_knifeRotateSpeed * (1 - _knifeRotatePairs[i].Key.PassedPercentage)
-					+ Random.Range(-_knifeRandomRotateSpeed, _knifeRandomRotateSpeed);
+				var percentage = 1 - _knifeRotatePairs[i].Key.PassedPercentage;
+				var rotateSpeed 
+					= (_knifeRotateSpeed * percentage
+					+ Random.Range(-_knifeRandomRotateSpeed, _knifeRandomRotateSpeed))
+					* _knifeRotateAcceleration.Evaluate(percentage);
 
 				_knifeRotatePairs[i].Value.Rotate(0, 0, rotateSpeed, Space.Self);
 			}
@@ -99,7 +103,7 @@ namespace TripleBladeHorse
 			{
 				var targetPosition = basePoint.Rotate(0, targetAngle * i, 0);
 				var bobbleTime = _floatFreq * TimeManager.Time + floatOffset * i;
-				var bobble = Mathf.Sin(bobbleTime) * _floatDist * Vector3.up;
+				var bobble = Mathf.Sin(bobbleTime) * _floatDist * FloatScale * Vector3.up;
 
 				bobble = transform.InverseTransformDirection(bobble);
 				targetPosition += bobble;

@@ -1996,7 +1996,8 @@ MonoBehaviour:
   _shortGroundDashingDuration: 0.3
   _shortGroundDashingDelay: 0
   _dashingDirection: {x: 0, y: 0}
-  _extraJumpHeightScale: 0.5
+  _minExtraJumpHeightScale: 0.2
+  _maxExtraJumpHeightScale: 0.8
   _airborneSpeedFactor: 0.15
   _pullingForce: 18
   _pullingMoveDelay: 0
@@ -2085,7 +2086,7 @@ MonoBehaviour:
   _maxAirAttack: 3
   _healingStaminaCost: 1
   _healingAmount: 50
-  extraJump: 0
+  _extraJump: 0
 --- !u!114 &4717973156838373271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2103,6 +2104,7 @@ MonoBehaviour:
   _meleeMaxChargeTime: 2
   _rangeChargeTime: 0.2
   _withdrawTime: 0.2
+  _jumpTime: 0.2
   _aimingPivot: {fileID: 4717973155528724282}
   _aimingLine: {fileID: 230381919}
   _delayingInput: 0
@@ -2852,15 +2854,15 @@ MonoBehaviour:
   - {fileID: 4717973155925890579}
   - {fileID: 4717973155923025359}
   - {fileID: 4717973156132607527}
-  _rotation: {x: 0, y: 1, z: 0}
-  _followUpSpeed: 3
-  _floatDist: 0.2
-  _floatFreq: 1.3
+  _rotation: {x: 0, y: 1.2, z: 0.6}
+  _followUpSpeed: 2
+  _floatDist: 0.4
+  _floatFreq: 2
   _radius: 1.2
   _radiusDynamic: 0.3
   _radiusDynamicSpeed: 1
-  _knifeRotateSpeed: -8
-  _knifeRandomRotateSpeed: 2
+  _knifeRotateSpeed: -10
+  _knifeRandomRotateSpeed: 5
   _activeSheaths: []
   _knifeRotatePairs: []
 --- !u!210 &7721446145051049958

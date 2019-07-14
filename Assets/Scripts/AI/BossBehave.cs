@@ -24,13 +24,16 @@ namespace TripleBladeHorse.AI
 
 		int _slashCount = 0;
         int _attackCount = 0;
-        [SerializeField] int _maxSlashCount=3;
-        public int[] weight = new int[]{5,1,3};
-        public int[] lowHealthWeight = new int[] {3,3,3};
-        public float combatTemp = 3;
+		public int _maxSlashCount=3;
+		public int[] weight = new int[]{5,1,3};
+		public int[] lowHealthWeight = new int[] {3,3,3};
+		public float combatTemp = 3;
 		
 		bool _delayingInput;
 		bool _blockingInput;
+		Vector2 _move;
+		Vector2 _aim;
+
 		InputEventArg<BossInput> _delayedInput;
 
 		public bool DelayInput
@@ -62,8 +65,7 @@ namespace TripleBladeHorse.AI
 		}
 
 		public event Action<InputEventArg<BossInput>> OnReceivedInput;
-        Vector2 _move;
-		Vector2 _aim;
+
         public Vector2 GetAimingDirection()
 		{
 			return _aim;
@@ -119,7 +121,7 @@ namespace TripleBladeHorse.AI
 
         public void Dodge(){
             _aim = _distance;
-            _move = -_aim;
+            _move = _aim;
 			InvokeInputEvent(BossInput.Dodge);
             weight[2] += 5;
             _attackCount = 0;
