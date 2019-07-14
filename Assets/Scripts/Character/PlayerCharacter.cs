@@ -16,7 +16,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
 
-		[SerializeField] bool extraJump;
+		[SerializeField] bool _extraJump;
 		int _currentAirAttack;
 		FSM _animator;
 		ICanDetectGround _groundDetector;
@@ -198,7 +198,7 @@ namespace TripleBladeHorse
 			_currentAirAttack = 0;
 			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
-			extraJump = true;
+			_extraJump = true;
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -210,7 +210,7 @@ namespace TripleBladeHorse
 				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 				SetBlockInput(true);
 				SetFrozen(true);
-				extraJump = false;
+				_extraJump = false;
 				_state._airborne = false;
 			}
 			else
@@ -264,20 +264,20 @@ namespace TripleBladeHorse
 			switch (input._command)
 			{
 				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround && !extraJump) break;
+					if (!_groundDetector.IsOnGround && !_extraJump) break;
 					CancelAnimation();
 
-					if (extraJump)
+					if (_extraJump)
 						_mover.ExtraJump();
 					else
 						_mover.Jump();
 
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 
-					if (extraJump && !_groundDetector.IsOnGround)
+					if (_extraJump && !_groundDetector.IsOnGround)
 						TimeManager.Instance.ActivateBulletTime();
 
-					extraJump = false;
+					_extraJump = false;
 					break;
 
 				case PlayerInputCommand.Dash:
@@ -297,6 +297,8 @@ namespace TripleBladeHorse
 					{
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
+						_currentAirAttack = 0;
+						_extraJump = true;
 					}
 					else if (!airDash)
 					{
@@ -304,7 +306,6 @@ namespace TripleBladeHorse
 					}
 					else break;
 					
-					extraJump = true;
 					_animator.SetToggle(PlayerFSMData.Stat.DashBegin, true);
 					_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
 					_animator.SetFloat(PlayerFSMData.Stat.YSpeed, moveInput.y);
