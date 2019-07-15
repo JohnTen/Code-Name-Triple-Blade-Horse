@@ -45,7 +45,6 @@ namespace TripleBladeHorse
 
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
-			print("Hit");
 			_flash.Flash();
 			_mover.Knockback(attack._fromDirection * attack._knockback);
 			_state._hitPoints -= result._finalDamage;

@@ -299,7 +299,6 @@ namespace TripleBladeHorse.Combat
 
 			if (IsAttackable(attackable))
 			{
-				print(hit.collider.name);
 				var direction = hit.collider.transform.position - transform.position;
 				direction = DirectionalHelper.NormalizeHorizonalDirection(direction);
 

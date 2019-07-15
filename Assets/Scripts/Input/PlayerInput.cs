@@ -419,6 +419,7 @@ namespace TripleBladeHorse
 				if (_withdrawTimer >= _withdrawTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+					_withdrawTimer = float.NegativeInfinity;
 				}
 			}
 			else if (onButtonUp)
@@ -426,6 +427,7 @@ namespace TripleBladeHorse
 				if (_withdrawTimer < _withdrawTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+					_withdrawTimer = float.NegativeInfinity;
 				}
 				_withdrawTimer = 0;
 			}
