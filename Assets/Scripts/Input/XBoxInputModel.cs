@@ -89,7 +89,7 @@ public class XboxInputModel
 
 	private void BuildButtonCodes()
 	{
-		string prefix = k_basePrefix + joyStickNumber + "Button";
+		string prefix = k_basePrefix + "Button";
 		StringBuilder nameBuilder = new StringBuilder();
 		buttonCodes = new KeyCode[k_buttonCount];
 

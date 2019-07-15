@@ -27,7 +27,8 @@ namespace JTUtility
 			Application.Quit();
 		}
 
-		public float Timescale
+       
+        public float Timescale
 		{
 			get { return Time.timeScale; }
 			set

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JTUtility;
 
 namespace TripleBladeHorse.Combat
 {
@@ -47,7 +48,13 @@ namespace TripleBladeHorse.Combat
 		public KnifeState State
 		{
 			get { return state; }
-			set { state = value; }
+			set
+            {
+                if (state == value) return;
+                var lastState = state;
+                state = value;
+                OnStateChanged?.Invoke(this, lastState, state);
+            }
 		}
 
 		public ICanStickKnife StuckOn => stuckOn;
@@ -59,9 +66,11 @@ namespace TripleBladeHorse.Combat
 
 		public float Cooldown => cooldown;
 
+        public event Action<ThrowingKnife, KnifeState, KnifeState> OnStateChanged;
+
 		private void Update()
 		{
-			switch (state)
+			switch (State)
 			{
 				case KnifeState.Flying: Flying(); break;
 				case KnifeState.Returning: Returning(); break;
@@ -76,10 +85,10 @@ namespace TripleBladeHorse.Combat
 
 		public bool Launch(Vector3 direction, bool isPiercing = false)
 		{
-			if (state != KnifeState.InSheath) return false;
+			if (State != KnifeState.InSheath) return false;
 
 			piercing = isPiercing;
-			state = KnifeState.Flying;
+            State = KnifeState.Flying;
 
 			transform.position = sheath.LaunchPosition.position;
 			transform.right = direction;
@@ -109,10 +118,10 @@ namespace TripleBladeHorse.Combat
 
 		public bool Hover()
 		{
-			if (state != KnifeState.Flying) return false;
+			if (State != KnifeState.Flying) return false;
 
 			piercing = false;
-			state = KnifeState.Hover;
+            State = KnifeState.Hover;
 			
 			_attackMove = floatAttack;
 			_defaultType = AttackType.Float;
@@ -127,11 +136,11 @@ namespace TripleBladeHorse.Combat
 
 		public bool Withdraw()
 		{
-			if (state == KnifeState.InSheath || state == KnifeState.Returning)
+			if (State == KnifeState.InSheath || State == KnifeState.Returning)
 				return false;
 
 			transform.parent = null;
-			state = KnifeState.Returning;
+            State = KnifeState.Returning;
 			
 			_attackMove = piercing ? chargedAttack : normalAttack;
 			_defaultType = piercing ? AttackType.ChargedRange : AttackType.Range;
@@ -182,7 +191,7 @@ namespace TripleBladeHorse.Combat
 			Stuck = false;
 			hoverTimer = 0;
 			traveledDistance = 0;
-			state = KnifeState.InSheath;
+            State = KnifeState.InSheath;
 		}
 
 		private void Flying()
@@ -228,7 +237,7 @@ namespace TripleBladeHorse.Combat
 
 				Deactivate();
 				sheath.PutBackKnife(this);
-				state = KnifeState.InSheath;
+                State = KnifeState.InSheath;
 
 				hoverTimer = 0;
 				Stuck = false;
@@ -291,7 +300,7 @@ namespace TripleBladeHorse.Combat
 			if (!piercing && !Stuck && stickable != null && stickable.TryStick(this.gameObject))
 			{
 				Stuck = true;
-				state = KnifeState.Stuck;
+				State = KnifeState.Stuck;
 				transform.position = (Vector3)hit.point + transform.right * sinkingLength;
 				transform.SetParent(hit.collider.transform);
 				stuckOn = stickable;
