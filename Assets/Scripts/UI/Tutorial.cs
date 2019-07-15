@@ -25,7 +25,6 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
         {
             if (stay == true)
             {
-                print("23211");
                 Color color = Toturailimage.color;
                 color.a += Time.deltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
@@ -48,7 +47,6 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
           
             if (stay == true)
             {
-                print("556699");
                 Color color1 = Toturailimage2.color;
                 color1.a += Time.deltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);

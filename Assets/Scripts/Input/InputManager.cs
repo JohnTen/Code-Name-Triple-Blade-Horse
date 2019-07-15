@@ -53,12 +53,13 @@ public class InputManager : MonoSingleton<InputManager>
 
 	IEnumerator DetectGameController()
 	{
-		WaitForSeconds wait = new WaitForSeconds(2);
+		WaitForSeconds wait = new WaitForSeconds(0.3f);
 		List<string> controllerNames = new List<string>();
 		string[] names;
 
 		while (true)
 		{
+			controllerNames.Clear();
 			names = Input.GetJoystickNames();
 
 			foreach (var name in names)
