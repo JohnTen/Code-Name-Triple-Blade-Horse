@@ -19,7 +19,7 @@ namespace TripleBladeHorse.AI
         Transform _target;
         Vector2 _distance;
         CharacterState _state;
-        BaseWeapon _weapon;
+        [SerializeField] BaseWeapon _weapon;
         [SerializeField] float _attackAera;
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
@@ -88,12 +88,9 @@ namespace TripleBladeHorse.AI
 			InvokeInputEvent(BossInput.Slash);
             weight[0] -= 2;
             _slashCount ++;
-            _attackCount ++;
-            if(_slashCount >= _maxSlashCount){
-                weight[0] = 5;
-                _slashCount=0;
-            }
+            _attackCount ++;            
         }
+        
         public void MoveToTarget(){
             _move = _distance;
             _move = _move.normalized * 0.001f;
@@ -121,7 +118,7 @@ namespace TripleBladeHorse.AI
             if (_attackCount !=0 && _distance.magnitude <= _dodgeAera)
             {
                 dodgePercent = Random.Range(0,_state._hitPoints);
-                return(dodgePercent < 900f);
+                return(dodgePercent < 400f);
             }
             else return false;
         }
@@ -148,6 +145,28 @@ namespace TripleBladeHorse.AI
             _attackCount ++;
             if(weight[2] != 3)
                 weight[2] = 3;
+        }
+
+        public void CombatTempGen(){
+            if(combatTemp > 1 ){
+                combatTemp = Random.Range( 0.9f, _state._hitPoints*0.001f);
+            }
+        }
+
+        public void WeightCalc(){
+            
+            if(IsLowHealth()){
+                weight[1] = 3;
+            };
+
+            if(_slashCount>0 && _slashCount < _maxSlashCount && !IsLowHealth()){
+                weight[0] = 1000;
+            };
+
+            if(_slashCount > _maxSlashCount){
+                weight[0] = 5;
+                _slashCount=0;
+            };
         }
 
 		private void InvokeInputEvent(BossInput command)
@@ -182,18 +201,21 @@ namespace TripleBladeHorse.AI
             _weapon.OnHit += HandleOnHit;
         }
 
-        private void HandleOnHit(IAttackable attackable, AttackResult result, AttackPackage package){}
+        private void HandleOnHit(IAttackable attackable, AttackResult result, AttackPackage package)
+        {
+            if(_slashCount>0)
+            {
+                if(!result._attackSuccess){
+                    _slashCount --;
+                }
+            }
+        }
         // Update is called once per frame
         void Update()
         {
             _distance = _target.position - this.transform.position;
-            if(combatTemp > 1 ){
-                combatTemp = Random.Range( 0.9f, _state._hitPoints*0.001f);
-            }
 
-            if(IsLowHealth()){
-                weight[1] = 3;
-            }
+            
         }
     }
 }

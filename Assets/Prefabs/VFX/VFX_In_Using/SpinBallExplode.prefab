@@ -4821,10 +4821,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4909369315728882231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 760e21c6793f79a4ea96b659e2823eb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fd2e8874f60266498a388d7229a1bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 1
+  OnlyDeactivate: 0
 --- !u!1001 &6407471442938666387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4891,6 +4891,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3297398683413649894, guid: 256fdebc5a51663438a8eefbe455d8e0,
         type: 3}
@@ -5046,11 +5051,6 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.radiusThickness
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297398683413749830, guid: 256fdebc5a51663438a8eefbe455d8e0,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 256fdebc5a51663438a8eefbe455d8e0, type: 3}
