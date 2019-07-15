@@ -59,6 +59,11 @@ namespace TripleBladeHorse
             playerAudioSource = this.GetComponent<AudioSource>();
         }
 
+        private void OnDestroy()
+        {
+            TimeManager.Instance.OnBulletTimeBegin -= TimeManagerHandler;
+        }
+
         private void FrameEventHandler(FrameEventEventArg eventArgs)
         {
             if (eventArgs._name == AnimEventNames.AttackBegin)
