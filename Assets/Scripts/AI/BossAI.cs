@@ -18,6 +18,11 @@ namespace TripleBladeHorse.AI{
             _bossAI.OpenBranch(
                 BT.Selector().OpenBranch(
                     BT.Sequence().OpenBranch(
+                        BT.Condition(_behave.Opening),
+                        BT.Call(_behave.AfterOpening),
+                        BT.Wait(2f)
+                    ),
+                    BT.Sequence().OpenBranch(
                         BT.Condition(_behave.NeedDodge),
                         BT.Call(_behave.Dodge),
                         BT.Wait(0.5f)
@@ -44,6 +49,7 @@ namespace TripleBladeHorse.AI{
                         ),
                         BT.Call(_behave.CombatTempGen),
                         BT.Wait(_behave.combatTemp)
+                        
                     ),
                     BT.RandomSequence(new int[] {3,1}).OpenBranch(
                         BT.Call(_behave.MoveToTarget),
