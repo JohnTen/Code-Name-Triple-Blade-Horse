@@ -93,7 +93,10 @@ namespace TripleBladeHorse
 			if (_state._hitPoints <= 0)
 			{
 				_animator.SetBool(BossFSMData.Stat.Death, true);
-				print("Boss Dead");
+				foreach (var handler in GetComponents<ICanHandleDeath>())
+				{
+					handler.OnDeath(_state);
+				}
 			}
 		}
 

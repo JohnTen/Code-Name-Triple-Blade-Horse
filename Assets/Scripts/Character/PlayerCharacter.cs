@@ -58,6 +58,7 @@ namespace TripleBladeHorse
 			_input.OnReceivedInput += HandleReceivedInput;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeinEvent);
 			_animator.Subscribe(Animation.AnimationState.FadingOut, HandleAnimationFadeoutEvent);
+			_animator.Subscribe(Animation.AnimationState.Completed, HandleAnimationCompletedEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += HandlePull;
 			_hitbox.OnHit += HandleOnHit;
@@ -106,10 +107,7 @@ namespace TripleBladeHorse
 			SetBlockInput(eventArgs._animation.blockInputOnStart);
 			SetDelayInput(eventArgs._animation.delayInputOnStart);
 			SetFrozen(eventArgs._animation.frozenOnStart);
-			if (eventArgs._animation.airAttack)
-				_mover.AirAttacking = true;
-			else
-				_mover.AirAttacking = false;
+			_mover.AirAttacking = eventArgs._animation.airAttack;
 
 			switch (eventArgs._animation.name)
 			{
@@ -132,6 +130,19 @@ namespace TripleBladeHorse
 		private void HandleAnimationFadeoutEvent(AnimationEventArg eventArgs)
 		{
 			_mover.AirAttacking = false;
+		}
+
+		private void HandleAnimationCompletedEvent(AnimationEventArg eventArgs)
+		{
+			if (eventArgs._animation.name == PlayerFSMData.Anim.Death)
+			{
+				CancelAnimation();
+				_animator.PlayAnimation(PlayerFSMData.Anim.Idle_Ground, 0.05f);
+				foreach (var handler in GetComponents<ICanHandleDeath>())
+				{
+					handler.OnDeath(_state);
+				}
+			}
 		}
 
 		private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
@@ -243,10 +254,10 @@ namespace TripleBladeHorse
 			if (_state._hitPoints <= 0)
 			{
 				CancelAnimation();
+				_animator.SetToggle(PlayerFSMData.Stat.Death, true);
 				print("Player Dead");
 				_mover.ResetMovement();
 				_weaponSystem.ResetWeapon();
-				RecoverPoint.MainRespawn(true);
 			}
 
 			if (_state._endurance <= 0)
