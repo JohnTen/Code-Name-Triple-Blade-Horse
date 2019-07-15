@@ -330,7 +330,14 @@ namespace TripleBladeHorse
 				{
 					_throwPressedBefore = true;
 					_rangeChargeTimer = 0;
-					InvokeInputEvent(PlayerInputCommand.RangeBegin);
+					InvokeInputEvent(PlayerInputCommand.RangeBegin,
+						() =>
+						{
+							var percent = _rangeChargeTimer / _rangeChargeTime;
+							percent = float.IsNaN(percent) ? 0 : percent;
+							percent = float.IsInfinity(percent) ? 1 : percent;
+							return percent;
+						});
 				}
 
 				// OnButton
@@ -412,6 +419,7 @@ namespace TripleBladeHorse
 				if (_withdrawTimer >= _withdrawTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.WithdrawAll);
+					_withdrawTimer = float.NegativeInfinity;
 				}
 			}
 			else if (onButtonUp)
@@ -419,6 +427,7 @@ namespace TripleBladeHorse
 				if (_withdrawTimer < _withdrawTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.WithdrawOne);
+					_withdrawTimer = float.NegativeInfinity;
 				}
 				_withdrawTimer = 0;
 			}
