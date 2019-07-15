@@ -88,12 +88,9 @@ namespace TripleBladeHorse.AI
 			InvokeInputEvent(BossInput.Slash);
             weight[0] -= 2;
             _slashCount ++;
-            _attackCount ++;
-            if(_slashCount >= _maxSlashCount){
-                weight[0] = 5;
-                _slashCount=0;
-            }
+            _attackCount ++;            
         }
+        
         public void MoveToTarget(){
             _move = _distance;
             _move = _move.normalized * 0.001f;
@@ -164,6 +161,11 @@ namespace TripleBladeHorse.AI
 
             if(_slashCount>0 && _slashCount < _maxSlashCount && !IsLowHealth()){
                 weight[0] = 1000;
+            };
+
+            if(_slashCount > _maxSlashCount){
+                weight[0] = 5;
+                _slashCount=0;
             };
         }
 

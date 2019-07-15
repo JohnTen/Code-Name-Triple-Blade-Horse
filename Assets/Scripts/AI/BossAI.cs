@@ -25,6 +25,7 @@ namespace TripleBladeHorse.AI{
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.IsLowHealth),
                         BT.Condition(_behave.InAttackRange),
+                        BT.Call(_behave.WeightCalc),
                         BT.RandomSequence(_behave.weight).OpenBranch(
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
@@ -35,6 +36,7 @@ namespace TripleBladeHorse.AI{
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.InAttackRange),
+                        BT.Call(_behave.WeightCalc),
                         BT.RandomSequence(_behave.weight).OpenBranch(
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),

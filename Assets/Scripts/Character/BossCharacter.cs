@@ -117,6 +117,7 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = true;
 					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
@@ -148,6 +149,7 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = false;
 					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
