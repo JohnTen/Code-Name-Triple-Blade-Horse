@@ -68,11 +68,6 @@ namespace TripleBladeHorse.Combat
 
 			sword.Activate(package, chargedMeleeMove);
 
-			if (_currentAttackEffect) return;
-			_currentAttackEffect = Instantiate(_attackEffectPrefab);
-			_currentAttackEffect.transform.SetParent(sword.transform);
-			_currentAttackEffect.transform.localPosition = Vector3.zero;
-
 			_audio.clip = _normalMeleeSFX.PickRandom();
 			_audio.Play();
 		}
@@ -87,6 +82,11 @@ namespace TripleBladeHorse.Combat
 			}
 		}
 
+		public void StartRangeCharge(Func<float> chargeTimer)
+		{
+			sheath.StartCharge(chargeTimer);
+		}
+
 		public void RangeAttack(Vector2 direction)
 		{
 			var knife = sheath.TakeKnife(false);
@@ -95,8 +95,9 @@ namespace TripleBladeHorse.Combat
 			{
 				knifesInAirList.Add(knife);
 				knife.PullingForce = pullingForce;
-				knife.Launch(direction, true);
+				knife.Launch(direction, false);
 			}
+			sheath.StopCharge();
 		}
 
 		public void ChargedRangeAttack(Vector2 direction)
@@ -175,6 +176,8 @@ namespace TripleBladeHorse.Combat
 			{
 				Destroy(_currentAttackEffect);
 			}
+
+			sheath.StopCharge();
 		}
 
 		private void Sheath_OnRecievedKnife(ThrowingKnife knife)
@@ -212,9 +215,9 @@ namespace TripleBladeHorse.Combat
 		IEnumerator LaunchAllKnife(Vector3 direction)
 		{
 			var time = 0f;
-
-			//Frozen = true;
-			while (sheath.knifeCount > 0)
+			var launchTimes = 0;
+			
+			while (launchTimes < 3)
 			{
 				time += Time.deltaTime * allLaunchRate;
 				if (time < 1)
@@ -223,12 +226,15 @@ namespace TripleBladeHorse.Combat
 					continue;
 				}
 				time--;
+				launchTimes++;
 
 				var knife = sheath.TakeKnife(true);
+				if (knife == null) continue;
+
 				knifesInAirList.Add(knife);
 				knife.Launch(direction, true);
 			}
-			//Frozen = false;
+			sheath.StopCharge();
 		}
 	}
 }

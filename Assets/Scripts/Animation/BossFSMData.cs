@@ -88,7 +88,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.Combo2_2, 1f, 1, 0f, true, true, false, false),
 				new Animation(Anim.Combo2_3, 1f, 1, 0f, true, true, false, false),
 				new Animation(Anim.Combo3_1, 1f, 1, 0f, true, true, false, false),
-				new Animation(Anim.Combo3_2, 1f, 1, 0f, true, true, false, false),
+				new Animation(Anim.Combo3_2, 2f, 1, 0f, true, true, false, false),
 				new Animation(Anim.Combo3_3, 1f, 1, 0f, true, true, false, false),
 				new Animation(Anim.Death, 1f, 1, 0f, true, true, true, false),
 			};
