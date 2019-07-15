@@ -90,10 +90,10 @@ namespace TripleBladeHorse.AI
             _slashCount ++;
             _attackCount ++;            
         }
-        
+
         public void MoveToTarget(){
             _move = _distance;
-            _move = _move.normalized * 0.001f;
+            _move = _move.normalized * 0.01f;
             _aim = _move.normalized;
         }
 
@@ -148,9 +148,9 @@ namespace TripleBladeHorse.AI
         }
 
         public void CombatTempGen(){
-            if(combatTemp > 1 ){
-                combatTemp = Random.Range( 0.9f, _state._hitPoints*0.001f);
-            }
+            if(combatTemp > 0 ){
+                combatTemp = Mathf.Sqrt(Random.Range( 0f, _state._hitPoints*0.001f)) -1f;
+            };
         }
 
         public void WeightCalc(){
