@@ -33,6 +33,7 @@ namespace TripleBladeHorse.Animation
 			public const string Stagger_Med = "Hitten_Ground_Normal";
 			public const string Stagger_Strong = "Hitten_Ground_Big";
 			public const string Healing = "Healing";
+			public const string Death = "Death_Ground";
 		}
 
 		public class Stat
@@ -42,6 +43,7 @@ namespace TripleBladeHorse.Animation
 			public const string MeleeAttack = "MeleeAttack";
 			public const string DashBegin = "DashBegin";
 			public const string DashEnd = "DashEnd";
+			public const string Death = "Death";
 			public const string WeakStagger = "Stagger_Weak";
 			public const string MidStagger = "Stagger_Mediocre";
 			public const string StrongStagger = "Stagger_Strong";
@@ -156,6 +158,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f, true, false, true, false),
 				new Animation(Anim.Stagger_Strong, 1f, 1, 0.7f, true, false, true, false),
 				new Animation(Anim.Healing, 1f, 1, 0.7f, true, false, true, false),
+				new Animation(Anim.Death, 1f, 1, 0.7f, true, false, true, false),
 			};
 		}
 
@@ -168,6 +171,7 @@ namespace TripleBladeHorse.Animation
 				new StrBoolPair() {Key = Stat.DashBegin, Value = false},
 				new StrBoolPair() {Key = Stat.DashEnd, Value = false},
 				new StrBoolPair() {Key = Stat.MeleeAttack, Value = false},
+				new StrBoolPair() {Key = Stat.Death, Value = false},
 				new StrBoolPair() {Key = Stat.StrongStagger, Value = false},
 				new StrBoolPair() {Key = Stat.MidStagger, Value = false},
 				new StrBoolPair() {Key = Stat.WeakStagger, Value = false},
@@ -195,6 +199,14 @@ namespace TripleBladeHorse.Animation
 		{
 			_transitions = new List<Transition>()
 			{
+				//// Death
+				new Transition(
+					Transition.Any, Anim.Death, 0.1f,
+					(sd) =>
+					{
+						return sd._toggleMap[Stat.Death];
+					}),
+
 				//// Stagger_Strong
 				new Transition(
 					Transition.Any, Anim.Stagger_Strong, 0.05f,

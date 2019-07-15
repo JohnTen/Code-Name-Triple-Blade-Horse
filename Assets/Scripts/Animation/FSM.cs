@@ -61,6 +61,35 @@ namespace TripleBladeHorse.Animation
 			return stateData._current;
 		}
 
+		public void PlayAnimation(string name, float transitionTime)
+		{
+			var animation = GetAnimation(name);
+
+			if (animation.name != name) return;
+
+			// Update previous animation
+			stateData._previous = stateData._current;
+			stateData._previous.fadingOut = true;
+			stateData._previous.fadeOutComplete = false;
+			stateData._previous.playing = false;
+			stateData._previous.fadingIn = false;
+
+			// Update current animation
+			stateData._current = GetAnimation(name);
+			stateData._current.fadingIn = true;
+			stateData._current.fadeInComplete = false;
+			stateData._current.playing = false;
+			stateData._current.completed = false;
+
+			var anim = _armature.animation.FadeIn(
+				name,
+				transitionTime,
+				animation.playTimes);
+
+			anim.timeScale = animation.timeScale;
+			anim.resetToPose = false;
+		}
+
 		public bool GetBool(string stateName)
 		{
 			return stateData._boolMap[stateName];
@@ -205,29 +234,7 @@ namespace TripleBladeHorse.Animation
 			var transition = GetTransition(stateData._current.name);
 			if (transition != null)
 			{
-				var animation = GetAnimation(transition.nextAnim);
-				
-				// Update previous animation
-				stateData._previous = stateData._current;
-				stateData._previous.fadingOut = true;
-				stateData._previous.fadeOutComplete = false;
-				stateData._previous.playing = false;
-				stateData._previous.fadingIn = false;
-
-				// Update current animation
-				stateData._current = GetAnimation(transition.nextAnim);
-				stateData._current.fadingIn = true;
-				stateData._current.fadeInComplete = false;
-				stateData._current.playing = false;
-				stateData._current.completed = false;
-
-				var anim = _armature.animation.FadeIn(
-					transition.nextAnim,
-					transition.transitionTime,
-					animation.playTimes);
-
-				anim.timeScale = animation.timeScale;
-				anim.resetToPose = false;
+				PlayAnimation(transition.nextAnim, transition.transitionTime);
 			}
 
 			ResetToggleState();
