@@ -16,13 +16,27 @@ namespace TripleBladeHorse
         private Dictionary<string, ParticleSystem> particles =
                 new Dictionary<string, ParticleSystem>();
 
+        [SerializeField]
+        List<string> audioNames;
+        [SerializeField]
+        List<AudioClip> audioClips;
+        private Dictionary<string, AudioClip> audios =
+                new Dictionary<string, AudioClip>();
+        private AudioSource enemyAudioSource;
         private int i = 0;
+        private int j = 0;
         private void Awake()
         {
+            enemyAudioSource = GetComponent<AudioSource>();
             foreach (var particleName in particleNames)
             {
                 particles.Add(particleName, particleObjs[i]);
                 i++;
+            }
+            foreach(var audioName in audioNames)
+            {
+                audios.Add(audioName, audioClips[j]);
+                j++;
             }
             hitBox.OnHit += OnHitEventHandler;
         }
@@ -30,6 +44,8 @@ namespace TripleBladeHorse
 
         private void OnHitEventHandler(AttackPackage atkPackage, AttackResult atkResult)
         {
+            enemyAudioSource.clip = audios["Hitted"];
+            enemyAudioSource.Play();
             if(atkPackage._attackType == AttackType.Melee)
             {
                 particles["HittedByMelee"].Play();
