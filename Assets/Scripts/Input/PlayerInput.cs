@@ -330,7 +330,14 @@ namespace TripleBladeHorse
 				{
 					_throwPressedBefore = true;
 					_rangeChargeTimer = 0;
-					InvokeInputEvent(PlayerInputCommand.RangeBegin);
+					InvokeInputEvent(PlayerInputCommand.RangeBegin,
+						() =>
+						{
+							var percent = _rangeChargeTimer / _rangeChargeTime;
+							percent = float.IsNaN(percent) ? 0 : percent;
+							percent = float.IsInfinity(percent) ? 1 : percent;
+							return percent;
+						});
 				}
 
 				// OnButton
