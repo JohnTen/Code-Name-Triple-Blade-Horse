@@ -30,6 +30,7 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
+                        BT.Call(_behave.CombatTempGen),
                         BT.Wait(_behave.combatTemp)
                     ),
                     BT.Sequence().OpenBranch(
@@ -39,6 +40,7 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
+                        BT.Call(_behave.CombatTempGen),
                         BT.Wait(_behave.combatTemp)
                     ),
                     BT.RandomSequence(new int[] {3,1}).OpenBranch(
