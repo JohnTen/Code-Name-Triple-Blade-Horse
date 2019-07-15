@@ -14,6 +14,21 @@ public class RecoverPoint : MonoBehaviour
 	static RecoverPoint lastMajorRecoverPoint;
 	static RecoverPoint lastMinorRecoverPoint;
 
+	private void OnDrawGizmosSelected()
+	{
+		foreach (var obj in respawnHandlers)
+		{
+			var handler = obj.GetComponent<ICanHandleRespawn>();
+
+			if (handler != null)
+				Gizmos.color = Color.green;
+			else
+				Gizmos.color = Color.red;
+
+			Gizmos.DrawLine(this.transform.position, obj.transform.position);
+		}
+	}
+
 	public static void MainRespawn(bool recover = false)
 	{
 		if (recover)
@@ -22,6 +37,7 @@ public class RecoverPoint : MonoBehaviour
             lastMajorRecoverPoint._player._hitPoints.ResetCurrentValue();
 			lastMajorRecoverPoint._player._endurance.ResetCurrentValue();
 			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			GameManager.PlayerInstance.ResetState();
 			lastMajorRecoverPoint.InvokeSpawnHandlers();
 
 		}
@@ -29,6 +45,7 @@ public class RecoverPoint : MonoBehaviour
 		{
 			lastMinorRecoverPoint._player.transform.position = lastMinorRecoverPoint._position;
 			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			GameManager.PlayerInstance.ResetState();
 			lastMajorRecoverPoint.InvokeSpawnHandlers();
 		}
 	}
@@ -68,6 +85,6 @@ public class RecoverPoint : MonoBehaviour
 
 	private void Start()
 	{
-		_player = FindObjectOfType<PlayerState>();
+		_player = TripleBladeHorse.GameManager.PlayerInstance.GetComponent<PlayerState>();
 	}
 }

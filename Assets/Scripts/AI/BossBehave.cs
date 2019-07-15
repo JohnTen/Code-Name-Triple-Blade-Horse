@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
+using TripleBladeHorse.Combat;
 
 namespace TripleBladeHorse.AI
 {
@@ -18,19 +19,23 @@ namespace TripleBladeHorse.AI
         Transform _target;
         Vector2 _distance;
         CharacterState _state;
+        [SerializeField] BaseWeapon _weapon;
         [SerializeField] float _attackAera;
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
 
 		int _slashCount = 0;
         int _attackCount = 0;
-        [SerializeField] int _maxSlashCount=3;
-        public int[] weight = new int[]{5,1,3};
-        public int[] lowHealthWeight = new int[] {3,3,3};
-        public float combatTemp = 3;
+        float dodgePercent = 3000;
+		public int _maxSlashCount=3;
+		public int[] weight = new int[]{5,1,3};
+		public float combatTemp = 3;
 		
 		bool _delayingInput;
 		bool _blockingInput;
+		Vector2 _move;
+		Vector2 _aim;
+
 		InputEventArg<BossInput> _delayedInput;
 
 		public bool DelayInput
@@ -62,8 +67,7 @@ namespace TripleBladeHorse.AI
 		}
 
 		public event Action<InputEventArg<BossInput>> OnReceivedInput;
-        Vector2 _move;
-		Vector2 _aim;
+
         public Vector2 GetAimingDirection()
 		{
 			return _aim;
@@ -82,7 +86,7 @@ namespace TripleBladeHorse.AI
             _aim = _distance.normalized;
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.Slash);
-            weight[0] --;
+            weight[0] -= 2;
             _slashCount ++;
             _attackCount ++;
             if(_slashCount >= _maxSlashCount){
@@ -114,12 +118,17 @@ namespace TripleBladeHorse.AI
 
         public bool NeedDodge(){
             
-            return (_distance.magnitude <= _dodgeAera);
+            if (_attackCount !=0 && _distance.magnitude <= _dodgeAera)
+            {
+                dodgePercent = Random.Range(0,_state._hitPoints);
+                return(dodgePercent < 400f);
+            }
+            else return false;
         }
 
         public void Dodge(){
             _aim = _distance;
-            _move = -_aim;
+            _move = _aim;
 			InvokeInputEvent(BossInput.Dodge);
             weight[2] += 5;
             _attackCount = 0;
@@ -139,6 +148,23 @@ namespace TripleBladeHorse.AI
             _attackCount ++;
             if(weight[2] != 3)
                 weight[2] = 3;
+        }
+
+        public void CombatTempGen(){
+            if(combatTemp > 1 ){
+                combatTemp = Random.Range( 0.9f, _state._hitPoints*0.001f);
+            }
+        }
+
+        public void WeightCalc(){
+            
+            if(IsLowHealth()){
+                weight[1] = 3;
+            };
+
+            if(_slashCount>0 && _slashCount < _maxSlashCount && !IsLowHealth()){
+                weight[0] = 1000;
+            };
         }
 
 		private void InvokeInputEvent(BossInput command)
@@ -170,15 +196,24 @@ namespace TripleBladeHorse.AI
         {
             _target = FindObjectOfType<PlayerCharacter>().transform;
             _state = GetComponent<CharacterState>();
+            _weapon.OnHit += HandleOnHit;
         }
 
+        private void HandleOnHit(IAttackable attackable, AttackResult result, AttackPackage package)
+        {
+            if(_slashCount>0)
+            {
+                if(!result._attackSuccess){
+                    _slashCount --;
+                }
+            }
+        }
         // Update is called once per frame
         void Update()
         {
             _distance = _target.position - this.transform.position;
-            if(combatTemp > 1 ){
-                combatTemp=_state._hitPoints*0.001f;
-            }
+
+            
         }
     }
 }

@@ -24,6 +24,18 @@ namespace JTUtility
 			get { return value; }
 			set { this.value = value; }
 		}
+
+		public PairedValue()
+		{
+			key = default;
+			value = default;
+		}
+
+		public PairedValue(K key, V value)
+		{
+			this.key = key;
+			this.value = value;
+		}
 	}
 
 	[Serializable] public class StrIntPair : PairedValue<string, int> { }

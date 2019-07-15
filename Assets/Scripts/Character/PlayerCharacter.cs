@@ -16,7 +16,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
 
-		[SerializeField] bool extraJump;
+		[SerializeField] bool _extraJump;
 		int _currentAirAttack;
 		FSM _animator;
 		ICanDetectGround _groundDetector;
@@ -58,6 +58,7 @@ namespace TripleBladeHorse
 			_input.OnReceivedInput += HandleReceivedInput;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeinEvent);
 			_animator.Subscribe(Animation.AnimationState.FadingOut, HandleAnimationFadeoutEvent);
+			_animator.Subscribe(Animation.AnimationState.Completed, HandleAnimationCompletedEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += HandlePull;
 			_hitbox.OnHit += HandleOnHit;
@@ -106,10 +107,7 @@ namespace TripleBladeHorse
 			SetBlockInput(eventArgs._animation.blockInputOnStart);
 			SetDelayInput(eventArgs._animation.delayInputOnStart);
 			SetFrozen(eventArgs._animation.frozenOnStart);
-			if (eventArgs._animation.airAttack)
-				_mover.AirAttacking = true;
-			else
-				_mover.AirAttacking = false;
+			_mover.AirAttacking = eventArgs._animation.airAttack;
 
 			switch (eventArgs._animation.name)
 			{
@@ -134,11 +132,25 @@ namespace TripleBladeHorse
 			_mover.AirAttacking = false;
 		}
 
+		private void HandleAnimationCompletedEvent(AnimationEventArg eventArgs)
+		{
+			if (eventArgs._animation.name == PlayerFSMData.Anim.Death)
+			{
+				CancelAnimation();
+				_animator.PlayAnimation(PlayerFSMData.Anim.Idle_Ground, 0.05f);
+				foreach (var handler in GetComponents<ICanHandleDeath>())
+				{
+					handler.OnDeath(_state);
+				}
+			}
+		}
+
 		private void HandleAnimationFrameEvent(FrameEventEventArg eventArgs)
 		{
 			if (eventArgs._name == AnimEventNames.AttackBegin)
 			{
-				_weaponSystem.MeleeAttack();
+				if (eventArgs._animation.name != PlayerFSMData.Anim.ATK_Charge_Ground_ATK)
+					_weaponSystem.MeleeAttack();
 			}
 			else if (eventArgs._name == AnimEventNames.AttackEnd)
 			{
@@ -197,7 +209,7 @@ namespace TripleBladeHorse
 			_currentAirAttack = 0;
 			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
-			extraJump = true;
+			_extraJump = true;
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -209,7 +221,7 @@ namespace TripleBladeHorse
 				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
 				SetBlockInput(true);
 				SetFrozen(true);
-				extraJump = false;
+				_extraJump = false;
 				_state._airborne = false;
 			}
 			else
@@ -242,10 +254,10 @@ namespace TripleBladeHorse
 			if (_state._hitPoints <= 0)
 			{
 				CancelAnimation();
+				_animator.SetToggle(PlayerFSMData.Stat.Death, true);
 				print("Player Dead");
 				_mover.ResetMovement();
 				_weaponSystem.ResetWeapon();
-				RecoverPoint.MainRespawn(true);
 			}
 
 			if (_state._endurance <= 0)
@@ -253,6 +265,8 @@ namespace TripleBladeHorse
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
+				SetBlockInput(true);
+				SetFrozen(true);
 			}
 		}
 
@@ -261,15 +275,20 @@ namespace TripleBladeHorse
 			switch (input._command)
 			{
 				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround && !extraJump) break;
+					if (!_groundDetector.IsOnGround && !_extraJump) break;
 					CancelAnimation();
-					_mover.Jump();
+
+					if (_extraJump)
+						_mover.ExtraJump(input._additionalValue);
+					else
+						_mover.Jump();
+
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 
-					if (extraJump && !_groundDetector.IsOnGround)
+					if (_extraJump && !_groundDetector.IsOnGround)
 						TimeManager.Instance.ActivateBulletTime();
 
-					extraJump = false;
+					_extraJump = false;
 					break;
 
 				case PlayerInputCommand.Dash:
@@ -285,18 +304,19 @@ namespace TripleBladeHorse
 					
 					UpdateFacingDirection(moveInput);
 
-					if (_state._stamina > 0)
+					if (airDash && _state._stamina > 0)
 					{
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
+						_currentAirAttack = 0;
+						_extraJump = true;
 					}
 					else if (!airDash)
 					{
-						_mover.ShortDash(moveInput);
+						_mover.Dash(moveInput);
 					}
 					else break;
 					
-					extraJump = true;
 					_animator.SetToggle(PlayerFSMData.Stat.DashBegin, true);
 					_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
 					_animator.SetFloat(PlayerFSMData.Stat.YSpeed, moveInput.y);
@@ -339,6 +359,10 @@ namespace TripleBladeHorse
 					_animator.SetToggle(PlayerFSMData.Stat.MeleeAttack, true);
 					SetDelayInput(true);
 					SetFrozen(true);
+					break;
+
+				case PlayerInputCommand.RangeBegin:
+					_weaponSystem.StartRangeCharge(input._actionChargedPercent);
 					break;
 
 				case PlayerInputCommand.RangeAttack:
@@ -451,14 +475,20 @@ namespace TripleBladeHorse
 			_state._stamina += amount;
 			_state._stamina.Clamp();
 		}
+
+		public void ResetState()
+		{
+			_weaponSystem.ResetWeapon();
+			CancelAnimation();
+		}
 		#endregion
 
 		#region Interface Handler
 
 		public void OnPullingKnife(ICanStickKnife canStick, ThrowingKnife knife)
 		{
-			if (!_state._stamina.IsFull())
-				_state._stamina += canStick.RestoredStamina;
+			//if (!_state._stamina.IsFull())
+			//	_state._stamina += canStick.RestoredStamina;
 		}
 
 		#endregion

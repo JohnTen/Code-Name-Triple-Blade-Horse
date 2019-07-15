@@ -36,6 +36,8 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] Vector2 _dashingDirection;
 
 		[Header("Airborne Movement")]
+		[SerializeField] float _minExtraJumpHeightScale;
+		[SerializeField] float _maxExtraJumpHeightScale;
 		[SerializeField] float _airborneSpeedFactor;
 		[SerializeField] float _pullingForce;
 		[SerializeField] float _pullingMoveDelay;
@@ -147,7 +149,6 @@ namespace TripleBladeHorse.Movement
 				eventArgs.currentLandingState == LandingState.OnGround)
             {
                 _airborneTime = 0;
-                print("Im in Land");
             }
 			
 		}
@@ -268,6 +269,15 @@ namespace TripleBladeHorse.Movement
 		public void Jump()
 		{
 			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale);
+			_airborneTime = 0;
+			CurrentMovingState = MovingState.Airborne;
+		}
+
+		public void ExtraJump(float percent)
+		{
+			var scale = Mathf.Lerp(_minExtraJumpHeightScale, _maxExtraJumpHeightScale, percent);
+			print(scale);
+			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale * scale);
 			_airborneTime = 0;
 			CurrentMovingState = MovingState.Airborne;
 		}
