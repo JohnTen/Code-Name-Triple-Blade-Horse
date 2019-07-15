@@ -13,13 +13,13 @@ namespace TripleBladeHorse
         private HitBox hitBox;
         [SerializeField]
         GameObject sheath;
+        [SerializeField] AudioSource playerAudioSource;
         [SerializeField]
         List<string> particleNames;
         [SerializeField]
         List<ParticleSystem> particleObjs;
         private Dictionary<string, ParticleSystem> particles = 
                 new Dictionary<string,ParticleSystem>();
-        private AudioSource playerAudioSource;
         [SerializeField]
         List<string> audioNames;
         [SerializeField]
@@ -56,7 +56,7 @@ namespace TripleBladeHorse
                 audios.Add(audioName, audioClips[j]);
                 j++;
             }
-            playerAudioSource = this.GetComponent<AudioSource>();
+
         }
 
         private void OnDestroy()
@@ -138,6 +138,8 @@ namespace TripleBladeHorse
             if(eventArg._command == PlayerInputCommand.Regenerate)
             {
                 particles["Regenerate"].Play();
+                playerAudioSource.clip = audios["Regenerate"];
+                playerAudioSource.Play();
             }
         }
         private void TimeManagerHandler()
