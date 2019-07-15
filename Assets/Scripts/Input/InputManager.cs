@@ -11,7 +11,7 @@ public class InputManager : MonoSingleton<InputManager>
 
 	const int k_playerCount = 1;
 
-	bool[] modelType = new bool[k_playerCount];
+	[SerializeField] bool[] modelType = new bool[k_playerCount];
 
 	XboxInputModel[] joystickInput = new XboxInputModel[k_playerCount];
 	ControllerInputModel[] controllers = new ControllerInputModel[k_playerCount];
@@ -54,13 +54,26 @@ public class InputManager : MonoSingleton<InputManager>
 	IEnumerator DetectGameController()
 	{
 		WaitForSeconds wait = new WaitForSeconds(2);
-		string[] controllerNames;
+		List<string> controllerNames = new List<string>();
+		string[] names;
 
 		while (true)
 		{
-			controllerNames = Input.GetJoystickNames();
+			names = Input.GetJoystickNames();
 
-			for (int i = 0; i < k_playerCount && i < controllerNames.Length; i++)
+			foreach (var name in names)
+			{
+				if (string.IsNullOrEmpty(name)) continue;
+				controllerNames.Add(name);
+				print(name);
+			}
+
+			while(controllerNames.Count < k_playerCount)
+			{
+				controllerNames.Add("");
+			}
+
+			for (int i = 0; i < k_playerCount && i < controllerNames.Count; i++)
 			{
 				if (InputModelChanged[i] == null)
 					continue;
