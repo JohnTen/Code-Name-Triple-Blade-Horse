@@ -475,6 +475,12 @@ namespace TripleBladeHorse
 			_state._stamina += amount;
 			_state._stamina.Clamp();
 		}
+
+		public void ResetState()
+		{
+			_weaponSystem.ResetWeapon();
+			CancelAnimation();
+		}
 		#endregion
 
 		#region Interface Handler

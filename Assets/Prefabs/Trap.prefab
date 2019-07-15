@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2421920320834817517}
   - component: {fileID: 7933238098468937588}
   - component: {fileID: -3176771937423459479}
-  m_Layer: 16
+  m_Layer: 0
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0, z: 0}
-  set: 0
+  _stamina: 0
+  _set: 0
+  respawnHandlers: []
 --- !u!61 &-3176771937423459479
 BoxCollider2D:
   m_ObjectHideFlags: 0

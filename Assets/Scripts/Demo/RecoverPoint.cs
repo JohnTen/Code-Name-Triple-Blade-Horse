@@ -37,6 +37,7 @@ public class RecoverPoint : MonoBehaviour
             lastMajorRecoverPoint._player._hitPoints.ResetCurrentValue();
 			lastMajorRecoverPoint._player._endurance.ResetCurrentValue();
 			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			GameManager.PlayerInstance.ResetState();
 			lastMajorRecoverPoint.InvokeSpawnHandlers();
 
 		}
@@ -44,6 +45,7 @@ public class RecoverPoint : MonoBehaviour
 		{
 			lastMinorRecoverPoint._player.transform.position = lastMinorRecoverPoint._position;
 			lastMajorRecoverPoint._player._stamina.Current = lastMajorRecoverPoint._stamina;
+			GameManager.PlayerInstance.ResetState();
 			lastMajorRecoverPoint.InvokeSpawnHandlers();
 		}
 	}
@@ -83,6 +85,6 @@ public class RecoverPoint : MonoBehaviour
 
 	private void Start()
 	{
-		_player = FindObjectOfType<PlayerState>();
+		_player = TripleBladeHorse.GameManager.PlayerInstance.GetComponent<PlayerState>();
 	}
 }
