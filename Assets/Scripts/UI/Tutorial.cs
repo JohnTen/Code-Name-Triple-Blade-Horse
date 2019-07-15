@@ -30,7 +30,8 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 color.a += Time.deltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
                 Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
-               
+                Toturailimage2.color = new Color(0, 0, 0, 0);
+
             }
 
             if (stay == false)
@@ -39,6 +40,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 color.a -= Time.deltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
                 Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
+                Toturailimage2.color = new Color(0, 0, 0, 0);
             }
         }
         else
@@ -51,6 +53,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 color1.a += Time.deltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
                 Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
+                Toturailimage.color = new Color(0, 0, 0, 0);
             }
 
             if (stay == false)
@@ -59,6 +62,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 color1.a -= Time.deltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
                 Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
+                Toturailimage.color = new Color(0, 0, 0, 0);
             }
         }
        
