@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TripleBladeHorse;
 
-public class EnemySpawn : MonoBehaviour
+public class EnemySpawn : MonoBehaviour, ICanHandleRespawn
 {
 	[SerializeField] GameObject _enemyPrefab;
 	[SerializeField] float _range;
@@ -41,5 +41,13 @@ public class EnemySpawn : MonoBehaviour
 	{
 		enemyReference = Instantiate(_enemyPrefab.gameObject, transform.position, transform.rotation);
 		enemyReference.transform.position = this.transform.position + Random.Range(-_range, _range) * Vector3.right;
+	}
+
+	public void Respawn()
+	{
+		if (enemyReference)
+			Destroy(enemyReference);
+
+		spawnTimer = 0;
 	}
 }

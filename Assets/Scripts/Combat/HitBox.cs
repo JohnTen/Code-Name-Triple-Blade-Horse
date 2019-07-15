@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JTUtility;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TripleBladeHorse.Combat
 {
@@ -16,6 +17,7 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] protected float _knifeStabDamageMultiplier;
 		[SerializeField] protected float _staminaRecover;
 		[SerializeField] protected bool _isWeakSpot;
+        [SerializeField] UnityEvent _onHit;
 
 		[Header("Debug")]
 		[SerializeField] protected Dictionary<int, float> attacksFreqTimer;
@@ -57,7 +59,8 @@ namespace TripleBladeHorse.Combat
 		protected void RaiseOnHit(AttackPackage attack, AttackResult result)
 		{
 			OnHit?.Invoke(attack, result);
-		}
+            _onHit.Invoke();
+        }
 
 		protected virtual void ApplyDamageMultiplier(ref AttackResult result, AttackPackage attack)
 		{

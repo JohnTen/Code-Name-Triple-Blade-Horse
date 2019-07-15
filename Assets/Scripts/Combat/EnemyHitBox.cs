@@ -5,50 +5,81 @@ using JTUtility;
 
 namespace TripleBladeHorse.Combat
 {
+	public class ComboEventArgs : System.EventArgs
+	{
+		public int comboTimes;
+		public float baseDamage;
+		public float comboDamage;
+	}
+
 	public class EnemyHitBox : HitBox
 	{
 		[SerializeField] EnemyState _state;
 
-		public event Action<int> OnComboCancel;
-		public event Action<int> OnComboRaise;
-		public event Action OnComboExceeded;
+		public event Action<HitBox, int> OnComboCancel;
+		public event Action<HitBox, ComboEventArgs> OnComboRaise;
+		public event Action<HitBox, ComboEventArgs> OnComboExceeded;
 
 		protected override void ApplyDamageMultiplier(ref AttackResult result, AttackPackage attack)
 		{
 			base.ApplyDamageMultiplier(ref result, attack);
 
-			if (_isWeakSpot)
+			if (_isWeakSpot
+				&& attack._attackType != AttackType.StuckNDraw
+				&& attack._attackType != AttackType.Float)
 				ApplyComboDamage(ref result, attack);
 		}
 
 		protected virtual void ApplyComboDamage(ref AttackResult result, AttackPackage attack)
 		{
-			result._finalDamage += _state._currentComboTimes * _state._comboAdditiveDamage;
 			_state._currentComboTimes++;
-			RaiseComboRaise(_state._currentComboTimes);
 			_state._currentComboInterval = _state._comboMaxInterval;
-
 			if (_state._currentComboTimes > _state._comboMaxTimes)
 			{
-				RaiseComboExceeded();
+				RaiseComboExceeded(
+					_state._currentComboTimes, 
+					result._finalDamage, 
+					_state._currentComboTimes * _state._comboAdditiveDamage);
+
 				_state._currentComboTimes = 0;
 				_state._currentComboInterval = 0;
 			}
+			else
+			{
+				RaiseComboRaise(
+					_state._currentComboTimes,
+					result._finalDamage,
+					_state._currentComboTimes * _state._comboAdditiveDamage);
+			}
+
+			result._finalDamage += _state._currentComboTimes * _state._comboAdditiveDamage;
 		}
 
 		protected virtual void RaiseComboCancel(int comboTimes)
 		{
-			OnComboCancel?.Invoke(comboTimes);
+			OnComboCancel?.Invoke(this, comboTimes);
 		}
 
-		protected virtual void RaiseComboExceeded()
+		protected virtual void RaiseComboExceeded(int comboTimes, float extraDamage, float baseDamage)
 		{
-			OnComboExceeded?.Invoke();
+			ComboEventArgs eventArgs = new ComboEventArgs
+			{
+				comboTimes = comboTimes,
+				baseDamage = baseDamage,
+				comboDamage = extraDamage
+			};
+			OnComboExceeded?.Invoke(this, eventArgs);
 		}
 
-		protected virtual void RaiseComboRaise(int comboTimes)
+		protected virtual void RaiseComboRaise(int comboTimes, float extraDamage, float baseDamage)
 		{
-			OnComboRaise?.Invoke(comboTimes);
+			ComboEventArgs eventArgs = new ComboEventArgs
+			{
+				comboTimes = comboTimes,
+				baseDamage = baseDamage,
+				comboDamage = extraDamage
+			};
+			OnComboRaise?.Invoke(this, eventArgs);
 		}
 
 		protected virtual void Update()

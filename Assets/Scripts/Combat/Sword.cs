@@ -13,13 +13,17 @@ namespace TripleBladeHorse.Combat
 		public override void Activate(AttackPackage attack, AttackMove move)
 		{
 			base.Activate(attack, move);
-			_triggerBox.enabled = true;
+
+			if (_triggerBox)
+				_triggerBox.enabled = true;
 		}
 
 		public override void Deactivate()
 		{
 			base.Deactivate();
-			_triggerBox.enabled = false;
+
+			if (_triggerBox)
+				_triggerBox.enabled = false;
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)

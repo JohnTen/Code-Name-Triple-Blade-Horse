@@ -190,7 +190,6 @@ namespace TripleBladeHorse.Movement
 
 				if (_usingCurveForConstantMoving)
 				{
-					print(_constantMovingSpeedCurve.Evaluate(percentage));
 					_velocity *= _constantMovingSpeedCurve.Evaluate(percentage);
 				}
 

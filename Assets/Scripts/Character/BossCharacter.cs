@@ -14,6 +14,7 @@ namespace TripleBladeHorse
 		[SerializeField] HitBox[] _hitboxes;
 
 		[Header("Weakpoint Movemnt")]
+		[SerializeField] Transform[] _weakpoints;
 		[SerializeField] WeakpointMovement _weakpointMover;
 
 		[Header("Retreat")]
@@ -24,6 +25,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _slashTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _slashSpeed;
 		[SerializeField] AttackMove _slashMove;
+		[SerializeField] List<Collider2D> _slashAttackBoxes;
 
 		[Header("Combo2")]
 		[SerializeField] float _combo2RaiseTime;
@@ -35,11 +37,13 @@ namespace TripleBladeHorse
 		[SerializeField] float _combo2SpeedScaler;
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
+		[SerializeField] List<Collider2D> _combo2AttackBoxes;
 
 		[Header("Combo3/thrust")]
 		[SerializeField] float _thrustTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _thrustSpeed;
 		[SerializeField] AttackMove _thrustMove;
+		[SerializeField] List<Collider2D> _thrustAttackBoxes;
 
 		FSM _animator;
 		CharacterState _state;
@@ -48,6 +52,7 @@ namespace TripleBladeHorse
 		HitFlash _hitFlash;
 		BossMover _mover;
 		AttackMove _currentMove;
+		Collider2D _collider;
 
 		private void Awake()
 		{
@@ -57,7 +62,9 @@ namespace TripleBladeHorse
 			_hitFlash = GetComponent<HitFlash>();
 			_mover = GetComponent<BossMover>();
 			_groundDetector = GetComponent<ICanDetectGround>();
-			
+			_collider = GetComponent<Collider2D>();
+
+
 			_input.OnReceivedInput += HandleReceivedInput;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChange;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleFadeInAnimation);
@@ -65,6 +72,11 @@ namespace TripleBladeHorse
 			foreach (var hitbox in _hitboxes)
 			{
 				hitbox.OnHit += HandleOnHit;
+			}
+
+			foreach (var weakpoint in _weakpoints)
+			{
+				weakpoint.SetParent(null);
 			}
 		}
 
@@ -94,10 +106,64 @@ namespace TripleBladeHorse
 				attack._enduranceDamage.Base = _state._enduranceDamage;
 
 				_weapon.Activate(attack, _currentMove);
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Slash1
+				 || eventArgs._animation.name == BossFSMData.Anim.Slash2)
+				{
+					foreach (var collider in _slashAttackBoxes)
+					{
+						collider.enabled = true;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
+				{
+					foreach (var collider in _combo2AttackBoxes)
+					{
+						collider.enabled = true;
+					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
+				{
+					foreach (var collider in _thrustAttackBoxes)
+					{
+						collider.enabled = true;
+					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+				}
 			}
 			else if (eventArgs._name == AnimEventNames.AttackEnd)
 			{
 				_weapon.Deactivate();
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Slash1
+				 || eventArgs._animation.name == BossFSMData.Anim.Slash2)
+				{
+					foreach (var collider in _slashAttackBoxes)
+					{
+						collider.enabled = false;
+					}
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
+				{
+					foreach (var collider in _combo2AttackBoxes)
+					{
+						collider.enabled = false;
+					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+				}
+
+				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
+				{
+					foreach (var collider in _thrustAttackBoxes)
+					{
+						collider.enabled = false;
+					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+				}
 			}
 		}
 
@@ -206,6 +272,7 @@ namespace TripleBladeHorse
 					break;
 
 				case BossInput.DashAttack:
+					UpdateFacingDirection(_input.GetAimingDirection());
 					_animator.SetToggle(BossFSMData.Stat.Thrust, true);
 					_currentMove = _thrustMove;
 					SetBlockInput(true);
@@ -263,8 +330,12 @@ namespace TripleBladeHorse
 
 		void UpdateMovingMode(Vector2 aimInput, Vector2 moveInput)
 		{
-			var backward = Mathf.Abs(aimInput.x) > 0 && Mathf.Abs(moveInput.x) > 0
-			&& Mathf.Sign(aimInput.x) != Mathf.Sign(moveInput.x);
+			var backward = false;
+			if (Mathf.Abs(aimInput.x) > 0 && Mathf.Abs(moveInput.x) > 0)
+			{
+				backward = Mathf.Sign(aimInput.x) != Mathf.Sign(moveInput.x);
+			}
+
 			_animator.SetBool(BossFSMData.Stat.Backward, backward);
 
 			_animator.SetBool(BossFSMData.Stat.QucikMove,

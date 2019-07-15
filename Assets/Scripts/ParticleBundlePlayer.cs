@@ -31,6 +31,7 @@ namespace TripleBladeHorse
             playerMover.OnMovingStateChanged += MoveStateChangeHandler;
             groundDetect.OnLandingStateChanged += HandleLanding;
             characterInput.OnReceivedInput += HandleChargingATK;
+            TimeManager.Instance.OnBulletTimeBegin += TimeManagerHandler;
             foreach (var particleName in particleNames)
             {
                 particles.Add(particleName, particleObjs[i]);
@@ -40,22 +41,28 @@ namespace TripleBladeHorse
 
         private void FrameEventHandler(FrameEventEventArg eventArgs)
         {
-            if (eventArgs._name == "AttackBegin")
+            if (eventArgs._name == AnimEventNames.AttackBegin)
             {
-                if (fSM.GetCurrentAnimation().name == "ATK_Melee_Ground_1")
+                if (fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.ATK_Melee_Ground_1)
                 {
                     //particleObjs[0].Play();
                     particles["ATK_Melee_Ground_1"].Play();
                 }
-                if (fSM.GetCurrentAnimation().name == "ATK_Melee_Ground_2")
+                if (fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.ATK_Melee_Ground_2)
                 {
                     particles["ATK_Melee_Ground_2"].Play();
                 }
-                if (fSM.GetCurrentAnimation().name == "ATK_Melee_Ground_3")
+                if (fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.ATK_Melee_Ground_3)
                 {
                     particles["ATK_Melee_Ground_1"].Play();
                 }
                
+            }
+            if(eventArgs._name == AnimEventNames.Regenerate)
+            {
+                particles["RegenerateCompleted"].Play();
+                particles["Regenerate"].Stop();
+
             }
         }
         private void MoveStateChangeHandler(ICanChangeMoveState moveState, MovingEventArgs eventArgs)
@@ -96,6 +103,14 @@ namespace TripleBladeHorse
                 particles["ATK_Charge_Ground_Charging"].Stop();
                 particles["ATK_Charge_Ground_ATK"].Play();
             }
+            if(eventArg._command == PlayerInputCommand.Regenerate)
+            {
+                particles["Regenerate"].Play();
+            }
+        }
+        private void TimeManagerHandler()
+        {
+            particles["BulletTime"].Play();
         }
     }
 
