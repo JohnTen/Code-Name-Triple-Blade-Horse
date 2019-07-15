@@ -2111,6 +2111,9 @@ MonoBehaviour:
   _blockInput: 0
   _enterMeleeChargeTimer: 0
   _meleeChargeTimer: 0
+  _jumpTimer: 0
+  _rangeChargeTimer: 0
+  _withdrawTimer: 0
 --- !u!114 &4717973156838373273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2863,6 +2866,39 @@ MonoBehaviour:
   _radiusDynamicSpeed: 1
   _knifeRotateSpeed: -10
   _knifeRandomRotateSpeed: 5
+  _knifeRotateAcceleration:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.0035564078
+      outSlope: 0.0035564078
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.6874072
+      value: 0.19439866
+      inSlope: 0.69862676
+      outSlope: 0.69862676
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.42509824
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 5.1759324
+      outSlope: 5.1759324
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.037681222
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _activeSheaths: []
   _knifeRotatePairs: []
 --- !u!210 &7721446145051049958
