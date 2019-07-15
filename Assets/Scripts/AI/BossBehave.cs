@@ -24,6 +24,7 @@ namespace TripleBladeHorse.AI
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
 
+        bool _opening = true;
 		int _slashCount = 0;
         int _attackCount = 0;
         float dodgePercent = 3000;
@@ -78,6 +79,12 @@ namespace TripleBladeHorse.AI
 			return _move;
 		}
 
+        public bool Opening(){
+            return _opening;
+        }
+        public void AfterOpening(){
+            _opening = false;
+        }
         public bool InAttackRange(){
             return (_distance.magnitude <= _attackAera);
         }
@@ -149,7 +156,7 @@ namespace TripleBladeHorse.AI
 
         public void CombatTempGen(){
             if(combatTemp > 0 ){
-                combatTemp = Mathf.Sqrt(Random.Range( 0f, _state._hitPoints*0.001f)) -1f;
+                combatTemp = Mathf.Sqrt(Random.Range( 0f, _state._hitPoints*0.001f));
             };
         }
 
