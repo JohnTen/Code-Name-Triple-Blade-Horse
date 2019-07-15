@@ -413,6 +413,7 @@ namespace TripleBladeHorse
 			SetDelayInput(false);
 			SetBlockInput(false);
 			_animator.SetBool(PlayerFSMData.Stat.Charge, false);
+			_weaponSystem.MeleeAttackEnd();
 		}
 
 		private void HandleEndurance()

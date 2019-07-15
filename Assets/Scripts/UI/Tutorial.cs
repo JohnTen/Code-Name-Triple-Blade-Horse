@@ -12,6 +12,13 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
     [SerializeField] float Showspeed;
     bool stay = false;
     bool controller;
+
+	public bool Stay
+	{
+		get => stay;
+		set => stay = value;
+	}
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +35,8 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 Color color = Toturailimage.color;
                 color.a += Time.deltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
-                Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
-                Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
+				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
+				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
 
             }
 
@@ -38,8 +45,8 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 Color color = Toturailimage.color;
                 color.a -= Time.deltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
-                Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
-                Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
+				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
+				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
             }
         }
         else
@@ -50,8 +57,8 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 Color color1 = Toturailimage2.color;
                 color1.a += Time.deltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
-                Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
-                Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
+				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
+				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
             }
 
             if (stay == false)
@@ -59,8 +66,8 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
                 Color color1 = Toturailimage2.color;
                 color1.a -= Time.deltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
-                Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
-                Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
+				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
+				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
             }
         }
        
