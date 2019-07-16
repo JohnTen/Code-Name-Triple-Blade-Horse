@@ -235,10 +235,13 @@ namespace TripleBladeHorse
 				_currentAirAttack = 0;
 				_animator.SetBool(PlayerFSMData.Stat.Airborne, false);
 				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
-				SetBlockInput(true);
-				SetFrozen(true);
 				_extraJump = false;
 				_state._airborne = false;
+				if (_animator.GetCurrentAnimation().name == PlayerFSMData.Anim.Dropping)
+				{
+					SetBlockInput(true);
+					SetFrozen(true);
+				}
 			}
 			else
 			{
