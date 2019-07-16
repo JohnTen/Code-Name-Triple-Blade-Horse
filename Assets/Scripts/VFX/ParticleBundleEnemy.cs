@@ -23,12 +23,17 @@ namespace TripleBladeHorse
         [SerializeField]
         List<string> audioNames;
         [SerializeField]
+        List<float> volumes;
+        [SerializeField]
         List<AudioClip> audioClips;
         private Dictionary<string, AudioClip> audios =
                 new Dictionary<string, AudioClip>();
+        private Dictionary<string, float> audiosVolume =
+                new Dictionary<string, float>();
         private AudioSource enemyAudioSource;
         private int i = 0;
         private int j = 0;
+        private int k = 0;
         ICharacterInput<EnemyInput> _input;
         private void Awake()
         {
@@ -45,6 +50,11 @@ namespace TripleBladeHorse
             {
                 audios.Add(audioName, audioClips[j]);
                 j++;
+            }
+            foreach (var audioName in audioNames)
+            {
+                audiosVolume.Add(audioName, volumes[k]);
+                k++;
             }
             hitBox.OnHit += OnHitEventHandler;
         }
@@ -76,11 +86,13 @@ namespace TripleBladeHorse
             if(_state._hitPoints<0)
             {
                 enemyAudioSource.clip = audios["Death"];
+                enemyAudioSource.volume = audiosVolume["Death"];
                 enemyAudioSource.Play();
             }
             else
             {
                 enemyAudioSource.clip = audios["Hitted"];
+                enemyAudioSource.volume = audiosVolume["Hitted"];
                 enemyAudioSource.Play();
             }
         }
@@ -89,11 +101,13 @@ namespace TripleBladeHorse
             if(eventArgs._command == EnemyInput.Attack)
             {
                 enemyAudioSource.clip = audios["Attack"];
+                enemyAudioSource.volume = audiosVolume["Attack"];
                 enemyAudioSource.Play();
             }
             if (eventArgs._command == EnemyInput.Alert)
             {
                 enemyAudioSource.clip = audios["Alert"];
+                enemyAudioSource.volume = audiosVolume["Alert"];
                 enemyAudioSource.Play();
             }
         }

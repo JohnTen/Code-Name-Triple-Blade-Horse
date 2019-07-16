@@ -23,9 +23,13 @@ namespace TripleBladeHorse
         [SerializeField]
         List<string> audioNames;
         [SerializeField]
+        List<float> volumes;
+        [SerializeField]
         List<AudioClip> audioClips;
         private Dictionary<string, AudioClip> audios =
                         new Dictionary<string, AudioClip>();
+        private Dictionary<string, float> audiosVolume =
+                new Dictionary<string, float>();
         private FSM fSM;
         private PlayerMover playerMover;
         private ICharacterInput<PlayerInputCommand> characterInput;
@@ -33,6 +37,8 @@ namespace TripleBladeHorse
         private IAttackable _hitBox;
         private int i = 0;
         private int j = 0;
+        private int k = 0;
+        private bool onGround = false;
         private void Start()
         {
             fSM = this.GetComponent<FSM>();
@@ -55,6 +61,11 @@ namespace TripleBladeHorse
             {
                 audios.Add(audioName, audioClips[j]);
                 j++;
+            }
+            foreach (var audioName in audioNames)
+            {
+                audiosVolume.Add(audioName, volumes[k]);
+                k++;
             }
 
         }
@@ -106,11 +117,13 @@ namespace TripleBladeHorse
             {
                 particles["Jump_In_Air"].Play();
                 playerAudioSource.clip = audios["Jump"];
+                playerAudioSource.volume = audiosVolume["Jump"];
                 playerAudioSource.Play();
             }
             if(eventArgs.currentMovingState == MovingState.Dash)
             {
                 playerAudioSource.clip = audios["Dash"];
+                playerAudioSource.volume = audiosVolume["Dash"];
                 playerAudioSource.Play();
             }
         }
@@ -120,6 +133,15 @@ namespace TripleBladeHorse
                 eventArgs.currentLandingState == LandingState.OnGround)
             {
                 particles["Land_In_Ground"].Play();
+            }
+
+            if(eventArgs.currentLandingState == LandingState.OnGround)
+            {
+                onGround = true;
+            }
+            else
+            {
+                onGround = false;
             }
 
         }
@@ -135,10 +157,11 @@ namespace TripleBladeHorse
                 particles["ATK_Charge_Ground_Charging"].Stop();
                 particles["ATK_Charge_Ground_ATK"].Play();
             }
-            if(eventArg._command == PlayerInputCommand.Regenerate)
+            if(eventArg._command == PlayerInputCommand.Regenerate && onGround)
             {
                 particles["Regenerate"].Play();
                 playerAudioSource.clip = audios["Regenerate"];
+                playerAudioSource.volume = audiosVolume["Regenerate"];
                 playerAudioSource.Play();
             }
         }
@@ -150,12 +173,14 @@ namespace TripleBladeHorse
         public void HandleDeath(CharacterState state)
         {
             playerAudioSource.clip = audios["Death"];
+            playerAudioSource.volume = audiosVolume["Death"];
             playerAudioSource.Play();
         }
 
         private void OnHittedHandler(AttackPackage attack, AttackResult result)
         {
             playerAudioSource.clip = audios["Pain"];
+            playerAudioSource.volume = audiosVolume["Pain"];
             playerAudioSource.Play();
         }
     }
