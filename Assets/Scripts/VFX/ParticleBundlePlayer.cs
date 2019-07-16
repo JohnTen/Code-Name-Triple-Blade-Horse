@@ -38,7 +38,7 @@ namespace TripleBladeHorse
         private int i = 0;
         private int j = 0;
         private int k = 0;
-        private bool onGround = false;
+
         private void Start()
         {
             fSM = this.GetComponent<FSM>();
@@ -52,6 +52,7 @@ namespace TripleBladeHorse
             characterInput.OnReceivedInput += HandleChargingATK;
             TimeManager.Instance.OnBulletTimeBegin += TimeManagerHandler;
             _hitBox.OnHit += OnHittedHandler;
+            fSM.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeInEvent);
             foreach (var particleName in particleNames)
             {
                 particles.Add(particleName, particleObjs[i]);
@@ -98,10 +99,20 @@ namespace TripleBladeHorse
             {
                 particles["RegenerateCompleted"].Play();
                 particles["Regenerate"].Stop();
-
             }
-         
         }
+
+        private void HandleAnimationFadeInEvent(AnimationEventArg eventArgs)
+        {
+            if(eventArgs._animation.name == PlayerFSMData.Anim.Healing)
+            {
+                particles["Regenerate"].Play();
+                playerAudioSource.clip = audios["Regenerate"];
+                playerAudioSource.volume = audiosVolume["Regenerate"];
+                playerAudioSource.Play();
+            }
+        }
+
         private void MoveStateChangeHandler(ICanChangeMoveState moveState, MovingEventArgs eventArgs)
         {
             if(eventArgs.currentMovingState == MovingState.Move
@@ -127,6 +138,7 @@ namespace TripleBladeHorse
                 playerAudioSource.Play();
             }
         }
+
         private void HandleLanding(ICanDetectGround detector, LandingEventArgs eventArgs)
         {
             if (eventArgs.lastLandingState != eventArgs.currentLandingState &&
@@ -134,16 +146,6 @@ namespace TripleBladeHorse
             {
                 particles["Land_In_Ground"].Play();
             }
-
-            if(eventArgs.currentLandingState == LandingState.OnGround)
-            {
-                onGround = true;
-            }
-            else
-            {
-                onGround = false;
-            }
-
         }
 
         private void HandleChargingATK(InputEventArg<PlayerInputCommand> eventArg)
@@ -157,14 +159,8 @@ namespace TripleBladeHorse
                 particles["ATK_Charge_Ground_Charging"].Stop();
                 particles["ATK_Charge_Ground_ATK"].Play();
             }
-            if(eventArg._command == PlayerInputCommand.Regenerate && onGround)
-            {
-                particles["Regenerate"].Play();
-                playerAudioSource.clip = audios["Regenerate"];
-                playerAudioSource.volume = audiosVolume["Regenerate"];
-                playerAudioSource.Play();
-            }
         }
+
         private void TimeManagerHandler()
         {
             particles["BulletTime"].Play();
