@@ -2,11 +2,21 @@
 
 namespace TripleBladeHorse
 {
-	public class BreakablePlatform : MonoBehaviour
+	public class BreakablePlatform : MonoBehaviour, ICanHandleRespawn
 	{
 		[SerializeField] float breakTime = 2;
 		[SerializeField] float reappearTime = 2;
         [SerializeField] ParticleSystem rubble;
+
+		public void Respawn()
+		{
+			if (IsInvoking())
+			{
+				CancelInvoke();
+			}
+
+			Reappear();
+		}
 
 		public void StartBreaking()
 		{

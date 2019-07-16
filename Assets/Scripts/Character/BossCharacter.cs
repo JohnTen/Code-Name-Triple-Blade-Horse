@@ -202,10 +202,11 @@ namespace TripleBladeHorse
 			_input.DelayInput = _animator.GetBool(BossFSMData.Stat.DelayInput);
 			_input.BlockInput = _animator.GetBool(BossFSMData.Stat.BlockInput);
 
+			var rawMoveInput = _input.GetMovingDirection();
 			var aimInput = _state._frozen ? Vector2.zero : _input.GetAimingDirection().normalized;
 			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
 
-			UpdateMovingMode(aimInput, moveInput);
+			UpdateMovingMode(aimInput, rawMoveInput);
 			UpdateFacingDirection(aimInput);
 
 			if (moveInput.x != 0)
