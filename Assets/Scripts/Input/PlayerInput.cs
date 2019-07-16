@@ -9,6 +9,7 @@ namespace TripleBladeHorse
 	{
 		Null,
 		Dash,
+		JumpBegin,
 		Jump,
 		RangeBegin,
 		RangeAttack,
@@ -362,6 +363,7 @@ namespace TripleBladeHorse
 			if (_input.GetButtonDown("Jump"))
 			{
 				_jumpTimer = 0;
+				InvokeInputEvent(PlayerInputCommand.JumpBegin);
 			}
 
 			if (_input.GetButton("Jump"))

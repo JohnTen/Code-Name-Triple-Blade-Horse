@@ -300,20 +300,18 @@ namespace TripleBladeHorse
 		{
 			switch (input._command)
 			{
-				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround && !_extraJump) break;
+				case PlayerInputCommand.JumpBegin:
+					if (!_groundDetector.IsOnGround) break;
 					CancelAnimation();
+					_mover.Jump();
+					break;
 
-					if (_extraJump)
-						_mover.ExtraJump(input._additionalValue);
-					else
-						_mover.Jump();
-
+				case PlayerInputCommand.Jump:
+					if (!_extraJump) break;
+					CancelAnimation();
+					_mover.ExtraJump(input._additionalValue);
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
-
-					if (_extraJump && !_groundDetector.IsOnGround)
-						TimeManager.Instance.ActivateBulletTime();
-
+					TimeManager.Instance.ActivateBulletTime();
 					_extraJump = false;
 					break;
 

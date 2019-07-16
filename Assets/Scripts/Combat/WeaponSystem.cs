@@ -115,11 +115,6 @@ namespace TripleBladeHorse.Combat
 				if (knifesInAirList[i].State == KnifeState.Flying)
 					continue;
 
-				if (knifesInAirList[i].Stuck)
-				{
-					OnPull?.Invoke((knifesInAirList[i].transform.position - transform.position).normalized);
-				}
-
 				if (knifesInAirList[i].StuckOn != null)
 				{
 					foreach (var handler in handlers)
@@ -139,13 +134,14 @@ namespace TripleBladeHorse.Combat
 			{
 				var distance = (knifesInAirList[i].transform.position - sheath.transform.position).sqrMagnitude;
 				if (distance > minDistance
-				|| knifesInAirList[i].State == KnifeState.Flying)
+				|| knifesInAirList[i].State == KnifeState.Flying
+				|| knifesInAirList[i].State == KnifeState.Returning)
 					continue;
 
 				minDistance = distance;
 				knifeIndex = i;
 			}
-
+			
 			if (knifeIndex >= 0)
 			{
 				List<ICanHandlePullingKnife> handlers = new List<ICanHandlePullingKnife>();
