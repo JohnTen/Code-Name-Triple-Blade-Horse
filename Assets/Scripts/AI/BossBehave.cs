@@ -138,6 +138,9 @@ namespace TripleBladeHorse.AI
             _attackCount = 0;
         }
 
+        public bool TooFar(){
+            return (_distance.magnitude > 14f);
+        }
         public void JumpAttack(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
@@ -155,9 +158,11 @@ namespace TripleBladeHorse.AI
         }
 
         public void CombatTempGen(){
-            if(combatTemp > 0 ){
-                combatTemp = Mathf.Sqrt(Random.Range( 0f, _state._hitPoints*0.001f));
-            };
+            combatTemp = Mathf.Sqrt(Random.Range( 0.25f, _state._hitPoints*0.001f));
+            
+            if(IsLowHealth()){
+                combatTemp = 0.4f;
+            }
         }
 
         public void WeightCalc(){

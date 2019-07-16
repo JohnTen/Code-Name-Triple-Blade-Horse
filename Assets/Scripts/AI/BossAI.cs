@@ -23,6 +23,14 @@ namespace TripleBladeHorse.AI{
                         BT.Wait(2f)
                     ),
                     BT.Sequence().OpenBranch(
+                        BT.Condition(_behave.TooFar),
+                        BT.Call(_behave.Slash),
+                        BT.Wait(0.2f),
+                        BT.Call(_behave.Slash),
+                        BT.Wait(0.2f),
+                        BT.Call(_behave.DashAttack)
+                    ),
+                    BT.Sequence().OpenBranch(
                         BT.Condition(_behave.NeedDodge),
                         BT.Call(_behave.Dodge),
                         BT.Wait(0.5f)
