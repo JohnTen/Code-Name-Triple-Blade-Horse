@@ -2014,6 +2014,7 @@ MonoBehaviour:
       frozenOnStart: 0
       delayInputOnStart: 0
       blockInputOnStart: 0
+  _timeScale: 1
 --- !u!114 &8723671934287098055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2045,6 +2046,11 @@ MonoBehaviour:
   - Death
   - Alert
   - Hitted
+  volumes:
+  - 1
+  - 1
+  - 1
+  - 1
   audioClips:
   - {fileID: 8300000, guid: 083d840bbb5852a43a72769748fa6c1d, type: 3}
   - {fileID: 8300000, guid: 9dbb599851ca63346ade6ea2c4d374fa, type: 3}

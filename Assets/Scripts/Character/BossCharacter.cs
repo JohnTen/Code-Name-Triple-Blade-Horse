@@ -121,6 +121,8 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = true;
 					}
+					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+					OnBeginDashingInvincible?.Invoke();
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
@@ -235,8 +237,6 @@ namespace TripleBladeHorse
 				case BossFSMData.Anim.Slash2:
 					UpdateFacingDirection(aim);
 					_mover.InvokeConstantMovement(moveDirection, _slashSpeed, _slashTime);
-					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
-					OnBeginDashingInvincible?.Invoke();
 					break;
 
 				case BossFSMData.Anim.Combo2_1:

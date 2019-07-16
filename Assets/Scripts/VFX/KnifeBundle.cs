@@ -7,15 +7,21 @@ namespace TripleBladeHorse
 {
     public class KnifeBundle : MonoBehaviour
     {
+
         [SerializeField] AudioSource knifeAudioSource;
         [SerializeField] ThrowingKnife[] knives;
         [SerializeField]
         List<string> audioNames;
         [SerializeField]
+        List<float> volumes;
+        [SerializeField]
         List<AudioClip> audioClips;
         private Dictionary<string, AudioClip> audios =
                 new Dictionary<string, AudioClip>();
+        private Dictionary<string, float> audiosVolume =
+                new Dictionary<string, float>();
         private int i = 0;
+        private int j = 0;
         private void Awake()
         {
 
@@ -29,6 +35,11 @@ namespace TripleBladeHorse
                 audios.Add(audioName, audioClips[i]);
                 i++;
             }
+            foreach (var audioName in audioNames)
+            {
+                audiosVolume.Add(audioName, volumes[j]);
+                j++;
+            }
         }
 
         private void Update()
@@ -41,11 +52,13 @@ namespace TripleBladeHorse
             if(currentState == KnifeState.InSheath && previousState == KnifeState.Returning)
             {
                 knifeAudioSource.clip = audios["Equip"];
+                knifeAudioSource.volume = audiosVolume["Equip"];
                 knifeAudioSource.Play();
             }
             if(currentState == KnifeState.Flying)
             {
                 knifeAudioSource.clip = audios["Throw"];
+                knifeAudioSource.volume = audiosVolume["Throw"];
                 knifeAudioSource.Play();
             }
         }
@@ -60,16 +73,19 @@ namespace TripleBladeHorse
             if(climbable!=null && hitbox!= null)
             {
                 knifeAudioSource.clip = audios["HitMagicalElement"];
+                knifeAudioSource.volume = audiosVolume["HitMagicalElement"];
                 knifeAudioSource.Play();
             }
             if (climbable != null && hitbox == null)
             {
                 knifeAudioSource.clip = audios["HitWood"];
+                knifeAudioSource.volume = audiosVolume["HitWood"];
                 knifeAudioSource.Play();
             }
             if (climbable == null && hitbox != null)
             {
                 knifeAudioSource.clip = audios["HitEnemy"];
+                knifeAudioSource.volume = audiosVolume["HitEnemy"];
                 knifeAudioSource.Play();
             }
 

@@ -12,15 +12,20 @@ namespace TripleBladeHorse
         [SerializeField]
         List<string> audioNames;
         [SerializeField]
+        List<float> volumes;
+        [SerializeField]
         List<AudioClip> audioClips;
         private Dictionary<string, AudioClip> audios =
                 new Dictionary<string, AudioClip>();
+        private Dictionary<string, float> audiosVolume =
+                new Dictionary<string,float>();
         [SerializeField]
         HitBox[] _hitboxes;
         CharacterState _state;
 
         private AudioSource bossAudioSource;
         private int j = 0;
+        private int k = 0;
         FSM _animator;
 
         private void Awake()
@@ -37,6 +42,11 @@ namespace TripleBladeHorse
                 audios.Add(audioName, audioClips[j]);
                 j++;
             }
+            foreach (var audioName in audioNames)
+            {
+                audiosVolume.Add(audioName, volumes[k]);
+                k++;
+            }
             _animator.OnReceiveFrameEvent += HandleFrameEvent;
             _animator.Subscribe(Animation.AnimationState.FadingIn, HandleFadeInAnimation);
         }
@@ -48,6 +58,7 @@ namespace TripleBladeHorse
                 if (eventArg._animation.name == BossFSMData.Anim.Slash1)
                 {
                     bossAudioSource.clip = audios["Combo1"];
+                    bossAudioSource.volume = audiosVolume["Combo1"];
                     bossAudioSource.Play();
                 }
             }
@@ -58,6 +69,8 @@ namespace TripleBladeHorse
             if (_state._hitPoints<=0)
             {
                 bossAudioSource.clip = audios["Death"];
+                bossAudioSource.volume = audiosVolume["Death"];
+
                 bossAudioSource.Play();
             }
         }
@@ -66,11 +79,13 @@ namespace TripleBladeHorse
             if(eventArgs._animation.name == BossFSMData.Anim.Combo2_1)
             {
                 bossAudioSource.clip = audios["Combo2"];
+                bossAudioSource.volume = audiosVolume["Combo2"];
                 bossAudioSource.Play();
             }
             if (eventArgs._animation.name == BossFSMData.Anim.Combo3_1)
             {
                 bossAudioSource.clip = audios["Combo3"];
+                bossAudioSource.volume = audiosVolume["Combo3"];
                 bossAudioSource.Play();
             }
         }

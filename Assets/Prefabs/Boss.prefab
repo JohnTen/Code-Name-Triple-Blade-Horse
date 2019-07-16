@@ -1621,6 +1621,8 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 12
+  _minCrushSpeed: 0
+  _maxCrushSpeed: 0
   _combo2SpeedScaler: 2
   _combo2CrushOffset: {x: -2.5, y: 0}
   _crushMove: {fileID: 11400000, guid: 911ae8143584afa498b2e24a50a464df, type: 2}
@@ -1895,6 +1897,12 @@ MonoBehaviour:
   - Combo3
   - Death
   - Move
+  volumes:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
   audioClips:
   - {fileID: 8300000, guid: b715818f2c01e41759ffdf55b3dde186, type: 3}
   - {fileID: 8300000, guid: e88b282abefc743ba923c8d6c9eb7081, type: 3}
@@ -3905,6 +3913,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcb2762136a1bc6469713a861a938a56, type: 3}
+--- !u!4 &5816102151550688767 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
+    type: 3}
+  m_PrefabInstance: {fileID: 522143265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3534390367814390068 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
@@ -3917,12 +3931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a96b773ddf4f6d4e9ee64f97ef712a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5816102151550688767 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
-    type: 3}
-  m_PrefabInstance: {fileID: 522143265}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1612445653
 PrefabInstance:
   m_ObjectHideFlags: 0
