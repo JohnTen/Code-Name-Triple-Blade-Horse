@@ -141,6 +141,13 @@ namespace TripleBladeHorse
 					_state._attacking = false;
 					break;
 			}
+
+			switch (eventArgs._animation.name)
+			{
+				case PlayerFSMData.Anim.Healing:
+					_state._stamina -= _healingStaminaCost;
+					break;
+			}
 		}
 
 		private void HandleAnimationFadeoutEvent(AnimationEventArg eventArgs)
@@ -402,7 +409,6 @@ namespace TripleBladeHorse
 
 				case PlayerInputCommand.Regenerate:
 					if (_state._stamina < _healingStaminaCost) break;
-					_state._stamina -= _healingStaminaCost;
 					_animator.SetToggle(PlayerFSMData.Stat.Healing, true);
 					SetBlockInput(true);
 					SetFrozen(true);
