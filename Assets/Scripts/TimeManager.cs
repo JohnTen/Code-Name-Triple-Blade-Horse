@@ -82,12 +82,13 @@ namespace TripleBladeHorse
 
 		public void ActivateBulletTime()
 		{
-			if (_bulletTimer <= 0)
-				OnBulletTimeBegin?.Invoke();
-
+			var start = _bulletTimer <= 0;
 			_playerBulletTimeScaleRatio = _playerBulletTimeScale / _bulletTimeScale;
 			_bulletTimer = _bulletTimeDuration;
 			UpdateTimeScale();
+
+			if (start)
+				OnBulletTimeBegin?.Invoke();
 		}
 
 		public void DeactivateBulletTime()

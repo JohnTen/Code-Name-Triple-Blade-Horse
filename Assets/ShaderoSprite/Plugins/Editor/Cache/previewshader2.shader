@@ -10,7 +10,12 @@ Shader "Shadero Previews/PreviewXATXQ2"
 Properties
 {
 [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-_NewTex_1("NewTex_1(RGB)", 2D) = "white" { }
+_GenerateLightning_PosX_1("_GenerateLightning_PosX_1", Range(-2, 2)) = 0.5
+_GenerateLightning_PosY_1("_GenerateLightning_PosY_1", Range(-2, 2)) = 0.5
+_GenerateLightning_Size_1("_GenerateLightning_Size_1", Range( 1, 8)) = 4
+_GenerateLightning_Number_1("_GenerateLightning_Number_1", Range(2, 16)) = 4
+_GenerateLightning_Speed_1("_GenerateLightning_Speed_1", Range( 0, 8)) = 4
+_Brightness_Fade_1("_Brightness_Fade_1", Range(0, 1)) = 1
 _SpriteFade("SpriteFade", Range(0, 1)) = 1.0
 
 // required for UI.Mask
@@ -28,8 +33,6 @@ SubShader
 
 Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
 ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off 
-
-GrabPass { "_GrabTexture"  } 
 
 // required for UI.Mask
 Stencil
@@ -60,49 +63,91 @@ struct v2f
 {
 float2 texcoord  : TEXCOORD0;
 float4 vertex   : SV_POSITION;
-float2 screenuv : TEXCOORD1;
+float3 worldPos : TEXCOORD2;
 float4 color    : COLOR;
 };
 
-sampler2D _GrabTexture;
 sampler2D _MainTex;
 float _SpriteFade;
-sampler2D _NewTex_1;
+float _GenerateLightning_PosX_1;
+float _GenerateLightning_PosY_1;
+float _GenerateLightning_Size_1;
+float _GenerateLightning_Number_1;
+float _GenerateLightning_Speed_1;
+float _Brightness_Fade_1;
 
 v2f vert(appdata_t IN)
 {
 v2f OUT;
 OUT.vertex = UnityObjectToClipPos(IN.vertex);
-float4 screenpos = ComputeGrabScreenPos(OUT.vertex);
-OUT.screenuv = screenpos.xy / screenpos.w;
+OUT.worldPos = mul (unity_ObjectToWorld, IN.vertex);
 OUT.texcoord = IN.texcoord;
 OUT.color = IN.color;
 return OUT;
 }
 
 
-float4 DisplacementUV(float2 uv,sampler2D source,float x, float y, float value)
+float4 Brightness(float4 txt, float value)
 {
-return tex2D(source,lerp(uv,uv+float2(x,y),value));
+txt.rgb += value;
+return txt;
 }
-float4 OperationBlendMask(float4 origin, float4 overlay, float4 mask, float blend)
+float Lightning_Hash(float2 p)
 {
-float4 o = origin; 
-origin.rgb = overlay.a * overlay.rgb + origin.a * (1 - overlay.a) * origin.rgb;
-origin.a = overlay.a + origin.a * (1 - overlay.a);
-origin.a *= mask;
-origin = lerp(o, origin,blend);
-return origin;
-}
-float4 FadeToAlpha(float4 txt,float fade)
-{
-return float4(txt.rgb, txt.a*fade);
+float3 p2 = float3(p.xy, 1.0);
+return frac(sin(dot(p2, float3(37.1, 61.7, 12.4)))*3758.5453123);
 }
 
+float Lightning_noise(in float2 p)
+{
+float2 i = floor(p);
+float2 f = frac(p);
+f *= f * (1.5 - .5*f);
+return lerp(lerp(Lightning_Hash(i + float2(0., 0.)), Lightning_Hash(i + float2(1., 0.)), f.x),
+lerp(Lightning_Hash(i + float2(0., 1.)), Lightning_Hash(i + float2(1., 1.)), f.x),
+f.y);
+}
+
+float Lightning_fbm(float2 p)
+{
+float v = 0.0;
+v += Lightning_noise(p*1.0)*.5;
+v += Lightning_noise(p*2.)*.25;
+v += Lightning_noise(p*4.)*.125;
+v += Lightning_noise(p*8.)*.0625;
+return v;
+}
+
+float4 Generate_Lightning(float2 uv, float2 uvx, float posx, float posy, float size, float number, float speed, float black)
+{
+uv -= float2(posx, posy);
+uv *= size;
+uv -= float2(posx, posy);
+float rot = (uv.x*uvx.x + uv.y*uvx.y);
+float time = _Time * 20 * speed;
+float4 r = float4(0, 0, 0, 0);
+for (int i = 1; i < number; ++i)
+{
+float t = abs(.750 / ((rot + Lightning_fbm(uv + (time*5.75) / float(i)))*65.));
+r += t *0.5;
+}
+r = saturate(r);
+r.a = saturate(r.r + black);
+return r;
+
+}
+float4 HdrCreate(float4 txt,float value)
+{
+if (txt.r>0.98) txt.r=2;
+if (txt.g>0.98) txt.g=2;
+if (txt.b>0.98) txt.b=2;
+return lerp(saturate(txt),txt, value);
+}
 float4 frag (v2f i) : COLOR
 {
-float4 NewTex_1 = tex2D(_NewTex_1, i.texcoord);
-float4 FinalResult = NewTex_1;
+float4 _GenerateLightning_1 = Generate_Lightning(i.texcoord,float2(0,1),_GenerateLightning_PosX_1,_GenerateLightning_PosY_1,_GenerateLightning_Size_1,_GenerateLightning_Number_1,_GenerateLightning_Speed_1,0);
+float4 Brightness_1 = Brightness(_GenerateLightning_1,_Brightness_Fade_1);
+float4 FinalResult = Brightness_1;
 FinalResult.rgb *= i.color.rgb;
 FinalResult.a = FinalResult.a * _SpriteFade * i.color.a;
 return FinalResult;

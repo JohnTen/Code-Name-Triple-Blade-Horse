@@ -7,21 +7,18 @@ namespace TripleBladeHorse.VFX
 {
 	public class InstanceDashEcho : MonoBehaviour
 	{
-		[SerializeField]
-		private GameObject DashEchoPrefab;
-		[SerializeField]
-		private GameObject armature;
-		[SerializeField]
-		private float DistanceBtwSpawns;
-		[SerializeField]
-		private float destoryTime;
+		[SerializeField] private GameObject DashEchoPrefab;
+		[SerializeField] private GameObject armature;
+		[SerializeField] private float DistanceBtwSpawns;
+		[SerializeField] private float destoryTime;
+		[SerializeField] private Color color;
 		private Vector3 startPositionBtwSpawns;
 		private bool isDash = false;
-		private PlayerMover playerMover;
+		private ICanDash playerMover;
 
 		private void Start()
 		{
-			playerMover = this.GetComponent<PlayerMover>();
+			playerMover = this.GetComponent<ICanDash>();
 			playerMover.OnBeginDashingInvincible += DashBeginHandler;
 			playerMover.OnStopDashingInvincible += DashEndHandler;
 		}
@@ -51,7 +48,7 @@ namespace TripleBladeHorse.VFX
 							DashEchoPrefab,
 							startPositionBtwSpawns,
 							Quaternion.identity);
-					instance.GetComponent<CopyPlayerMesh>().SetEchoMesh(armature);
+					instance.GetComponent<CopyPlayerMesh>().SetEchoMesh(armature, color);
 					Destroy(instance, destoryTime);
 				}
 			}

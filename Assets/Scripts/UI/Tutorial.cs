@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using TripleBladeHorse;
 
 public class Tutorial  : MonoBehaviour, IInputModelPlugable
 {
@@ -33,7 +34,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
             if (stay == true)
             {
                 Color color = Toturailimage.color;
-                color.a += Time.deltaTime * Showspeed;
+                color.a += TimeManager.DeltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
 				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
 				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
@@ -43,7 +44,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
             if (stay == false)
             {
                 Color color = Toturailimage.color;
-                color.a -= Time.deltaTime * Showspeed;
+                color.a -= TimeManager.DeltaTime * Showspeed;
                 color.a = Mathf.Clamp01(color.a);
 				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
 				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
@@ -55,7 +56,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
             if (stay == true)
             {
                 Color color1 = Toturailimage2.color;
-                color1.a += Time.deltaTime * Showspeed;
+                color1.a += TimeManager.DeltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
 				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
 				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
@@ -64,7 +65,7 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
             if (stay == false)
             {
                 Color color1 = Toturailimage2.color;
-                color1.a -= Time.deltaTime * Showspeed;
+                color1.a -= TimeManager.DeltaTime * Showspeed;
                 color1.a = Mathf.Clamp01(color1.a);
 				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
 				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
@@ -77,7 +78,6 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
     {
         if (collision.tag == "Player")
         {
-            print("yingyingying");
             stay = true;
         }
     }
@@ -86,7 +86,6 @@ public class Tutorial  : MonoBehaviour, IInputModelPlugable
     {
         if (collision.tag == "Player")
         {
-            print("hahahaha");
             stay = false;
         }
     }

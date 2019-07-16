@@ -5,10 +5,11 @@ using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
 using TripleBladeHorse.Movement;
 using TripleBladeHorse.AI;
+using JTUtility;
 
 namespace TripleBladeHorse
 {
-	public class BossCharacter : MonoBehaviour
+	public class BossCharacter : MonoBehaviour, ICanDash
 	{
 		[SerializeField] BaseWeapon _weapon;
 		[SerializeField] HitBox[] _hitboxes;
@@ -34,6 +35,8 @@ namespace TripleBladeHorse
 		[SerializeField] ParticleSystem.MinMaxCurve _combo2PauseSpeed;
 		[SerializeField] float _combo2CrushTime;
 		[SerializeField] ParticleSystem.MinMaxCurve _combo2CrushSpeed;
+		[SerializeField] float _minCrushSpeed;
+		[SerializeField] float _maxCrushSpeed;
 		[SerializeField] float _combo2SpeedScaler;
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
@@ -54,6 +57,10 @@ namespace TripleBladeHorse
 		AttackMove _currentMove;
 		Collider2D _collider;
 
+		public event Action OnBeginDashingInvincible;
+		public event Action OnStopDashingInvincible;
+		public event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
+
 		private void Awake()
 		{
 			_animator = GetComponent<FSM>();
@@ -68,6 +75,7 @@ namespace TripleBladeHorse
 			_input.OnReceivedInput += HandleReceivedInput;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChange;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleFadeInAnimation);
+			_animator.Subscribe(Animation.AnimationState.Completed, HandleCompletedAnimation);
 			_animator.OnReceiveFrameEvent += HandleFrameEvent;
 			foreach (var hitbox in _hitboxes)
 			{
@@ -93,10 +101,6 @@ namespace TripleBladeHorse
 			if (_state._hitPoints <= 0)
 			{
 				_animator.SetBool(BossFSMData.Stat.Death, true);
-				foreach (var handler in GetComponents<ICanHandleDeath>())
-				{
-					handler.OnDeath(_state);
-				}
 			}
 		}
 
@@ -117,7 +121,6 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = true;
 					}
-					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
@@ -127,6 +130,7 @@ namespace TripleBladeHorse
 						collider.enabled = true;
 					}
 					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+					OnBeginDashingInvincible?.Invoke();
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
@@ -136,6 +140,7 @@ namespace TripleBladeHorse
 						collider.enabled = true;
 					}
 					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+					OnBeginDashingInvincible?.Invoke();
 				}
 			}
 			else if (eventArgs._name == AnimEventNames.AttackEnd)
@@ -150,6 +155,7 @@ namespace TripleBladeHorse
 						collider.enabled = false;
 					}
 					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					OnStopDashingInvincible?.Invoke();
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo2_3)
@@ -159,6 +165,7 @@ namespace TripleBladeHorse
 						collider.enabled = false;
 					}
 					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					OnStopDashingInvincible?.Invoke();
 				}
 
 				if (eventArgs._animation.name == BossFSMData.Anim.Combo3_2)
@@ -168,6 +175,7 @@ namespace TripleBladeHorse
 						collider.enabled = false;
 					}
 					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					OnStopDashingInvincible?.Invoke();
 				}
 			}
 		}
@@ -227,6 +235,8 @@ namespace TripleBladeHorse
 				case BossFSMData.Anim.Slash2:
 					UpdateFacingDirection(aim);
 					_mover.InvokeConstantMovement(moveDirection, _slashSpeed, _slashTime);
+					_collider.gameObject.layer = LayerMask.NameToLayer("EnemyDash");
+					OnBeginDashingInvincible?.Invoke();
 					break;
 
 				case BossFSMData.Anim.Combo2_1:
@@ -247,6 +257,8 @@ namespace TripleBladeHorse
 					toPlayer += _state._facingRight ? _combo2CrushOffset : -_combo2CrushOffset;
 					var speed = (toPlayer.magnitude / _combo2CrushTime) * _combo2SpeedScaler;
 
+					speed = Mathf.Clamp(speed, _minCrushSpeed, _maxCrushSpeed);
+
 					_combo2CrushSpeed.constant = speed;
 					_combo2CrushSpeed.curveMultiplier = speed;
 					_mover.InvokeConstantMovement(toPlayer, _combo2CrushSpeed, _combo2CrushTime);
@@ -262,6 +274,15 @@ namespace TripleBladeHorse
 					_mover.InvokeConstantMovement(-moveDirection, _retreatSpeed, _retreatTime);
 
 					break;
+			}
+		}
+
+		private void HandleCompletedAnimation(AnimationEventArg eventArgs)
+		{
+			if (eventArgs._animation.name != BossFSMData.Anim.Death) return;
+			foreach (var handler in GetComponents<ICanHandleDeath>())
+			{
+				handler.OnDeath(_state);
 			}
 		}
 
@@ -366,6 +387,11 @@ namespace TripleBladeHorse
 
 				_animator.FlipX = _state._facingRight;
 			}
+		}
+
+		public void Dash(Vector2 direction)
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }

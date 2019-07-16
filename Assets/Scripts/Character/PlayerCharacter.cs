@@ -63,8 +63,24 @@ namespace TripleBladeHorse
 			_weaponSystem.OnPull += HandlePull;
 			_hitbox.OnHit += HandleOnHit;
 
+			TimeManager.Instance.OnBulletTimeBegin += OnBulletTimeBegin;
+			TimeManager.Instance.OnBulletTimeEnd += OnBulletTimeEnd;
+
 			// Debug
-			GetComponent<Test>().OnPull += HandlePull;
+			if (GetComponent<Test>())
+				GetComponent<Test>().OnPull += HandlePull;
+		}
+
+		private void OnBulletTimeEnd()
+		{
+			_animator.TimeScale = 1;
+		}
+
+		private void OnBulletTimeBegin()
+		{
+			var scale = TimeManager.PlayerDeltaTime / TimeManager.DeltaTime;
+			_animator.TimeScale = scale;
+			print(scale);
 		}
 
 		private void Update()

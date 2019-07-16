@@ -38,9 +38,9 @@ namespace TripleBladeHorse
 			for (int i = 0; i < weakpoints.Count; i++)
 			{
 				var handle = GetHandlePoint(weakpoints[i].position, currentAlignment[i].position, direction[i], handlePercentage);
-				var nextPoint = Bezier.GetPoint((Vector2)weakpoints[i].position, handle, (Vector2)currentAlignment[i].position, bezierPercentage * Time.deltaTime * speed);
+				var nextPoint = Bezier.GetPoint((Vector2)weakpoints[i].position, handle, (Vector2)currentAlignment[i].position, bezierPercentage * TimeManager.DeltaTime * speed);
 				var toNextPoint = nextPoint - (Vector2)weakpoints[i].position;
-				var distance = speed * Time.deltaTime;
+				var distance = speed * TimeManager.DeltaTime;
 				if (toNextPoint.sqrMagnitude < distance * distance)
 					distance = toNextPoint.magnitude;
 				weakpoints[i].position += (Vector3)(toNextPoint.normalized * distance);

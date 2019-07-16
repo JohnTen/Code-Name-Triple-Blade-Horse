@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PreviewMaterial
-  m_Shader: {fileID: 4800000, guid: 08c51a16ca6820346894d1af28edea98, type: 3}
+  m_Shader: {fileID: 4800000, guid: ed4891debc9859a448579f28b2c04fa7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - AuraDisplacementPack_1:
-        m_Texture: {fileID: 2800000, guid: 22fdba6504e95a44184821f30e0bab7a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - DisplacementPack_1:
@@ -203,7 +203,7 @@ Material:
     - DistortionUV_WaveX_2: 10
     - DistortionUV_WaveY_1: 64
     - DistortionUV_WaveY_2: 10
-    - FishEyeUV_Size_1: 0.373
+    - FishEyeUV_Size_1: 0.438
     - KaleidoscopeUV_Number_1: 1.779
     - KaleidoscopeUV_PosX_1: 0.507
     - KaleidoscopeUV_PosY_1: 0.536
@@ -249,17 +249,18 @@ Material:
     - _Add_Fade_1: 1
     - _AlphaAsAura_Fade_1: 1
     - _AlphaIntensity_Fade_1: 1
-    - _AuraDisplacementPack_Size_1: 1.398
+    - _AuraDisplacementPack_Size_1: 1
     - _AuraDisplacementPack_ValueX_1: 0
-    - _AuraDisplacementPack_ValueY_1: -0.106
+    - _AuraDisplacementPack_ValueY_1: 0
     - _AutomaticLerp_Speed_1: 1
     - _Blend_Fade_1: 0
     - _BlurHQ_Intensity_1: 1
     - _Blur_Intensity_1: 1
     - _Blur_Intensity_2: 1
+    - _Brightness_Fade_1: 1
     - _BumpScale: 1
-    - _Burn_Speed_1: -3.395
-    - _Burn_Value_1: 0
+    - _Burn_Speed_1: 0.5
+    - _Burn_Value_1: 0.5
     - _CircleFade_Dist_1: 0.2
     - _CircleFade_Dist_2: 0.2
     - _CircleFade_PosX_1: 0.5
@@ -313,6 +314,11 @@ Material:
     - _Emboss_original_1: 1
     - _EnableExternalAlpha: 0
     - _FadeToAlpha_Fade_1: 1
+    - _GenerateLightning_Number_1: 4
+    - _GenerateLightning_PosX_1: 0.5
+    - _GenerateLightning_PosY_1: 0.5
+    - _GenerateLightning_Size_1: 4
+    - _GenerateLightning_Speed_1: 4
     - _Generate_Checker_PosX_1: 0.5
     - _Generate_Checker_PosY_1: 0.5
     - _Generate_Checker_Size_1: 5
@@ -878,11 +884,11 @@ Material:
     - _Generate_Xray_Speed_7: 0
     - _Generate_Xray_Speed_8: 0
     - _Generate_Xray_Speed_9: 0
-    - _GhostFX_ClipDown_1: 0.7
-    - _GhostFX_ClipLeft_1: 0.7
-    - _GhostFX_ClipRight_1: 0.7
-    - _GhostFX_ClipUp_1: 0.7
-    - _GhostFX_Smooth_1: 1
+    - _GhostFX_ClipDown_1: 1
+    - _GhostFX_ClipLeft_1: 0
+    - _GhostFX_ClipRight_1: 0
+    - _GhostFX_ClipUp_1: 1
+    - _GhostFX_Smooth_1: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -896,7 +902,7 @@ Material:
     - _GrayScale_Fade_5: 1
     - _GrayScale_Fade_6: 1
     - _GrayScale_Fadesss: 1
-    - _HdrCreate_Value_1: 1.857
+    - _HdrCreate_Value_1: 4
     - _Hologram_Speed_1: 1
     - _Hologram_Value_1: 1
     - _HolographicParalax_Size_1: 1
@@ -944,11 +950,11 @@ Material:
     - _OperationBlend_Fade_2: 1
     - _Outline_Size_1: 1
     - _Parallax: 0.02
-    - _PatternMovement_PosX_1: 0.077
+    - _PatternMovement_PosX_1: 1
     - _PatternMovement_PosX_2: 0
-    - _PatternMovement_PosY_1: -0.4
+    - _PatternMovement_PosY_1: 1
     - _PatternMovement_PosY_2: -0.092
-    - _PatternMovement_Speed_1: 0.974
+    - _PatternMovement_Speed_1: 1
     - _PatternMovement_Speed_2: 0.979
     - _PlasmaFX_Fade_1: 0.688
     - _PlasmaFX_Offset_1: 0.5
@@ -971,15 +977,15 @@ Material:
     - _ShadowLight_PosY_1: 0
     - _ShadowLight_Precision_1: 8
     - _ShadowLight_Size_1: 1.2
-    - _ShinyFX_Intensity_1: 1.218
+    - _ShinyFX_Intensity_1: 1
     - _ShinyFX_Intensity_2: 0.614633
-    - _ShinyFX_Pos_1: -0.07
+    - _ShinyFX_Pos_1: 0
     - _ShinyFX_Pos_2: 0.09756041
-    - _ShinyFX_Size_1: -0.092
+    - _ShinyFX_Size_1: -0.1
     - _ShinyFX_Size_2: -0.06341464
     - _ShinyFX_Smooth_1: 0.25
     - _ShinyFX_Smooth_2: 0.257317
-    - _ShinyFX_Speed_1: 1.407
+    - _ShinyFX_Speed_1: 1
     - _ShinyFX_Speed_2: 1.141461
     - _Simple_Displacement_Rotative_Rotation_1: 0.05
     - _Simple_Displacement_Rotative_Value_1: 0.05

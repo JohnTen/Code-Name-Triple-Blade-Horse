@@ -102,6 +102,16 @@ namespace TripleBladeHorse.UI
 				var extraDamage = _state._comboAdditiveDamage * _lastComboTime;
 				var baseDamage = result._finalDamage - extraDamage;
 
+				if (baseDamage > _state._hitPoints)
+				{
+					baseDamage = _state._hitPoints;
+				}
+
+				if (_currentExtraDamage > _state._hitPoints)
+				{
+					_currentExtraDamage = _state._hitPoints;
+				}
+
 				_currentBaseDamage += baseDamage;
 				_currentExtraDamage += extraDamage;
 			}

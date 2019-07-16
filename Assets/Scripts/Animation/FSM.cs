@@ -16,6 +16,8 @@ namespace TripleBladeHorse.Animation
 		private FSMState stateData;
 		private List<Transition> transitions;
 		private List<Animation> animationDatas;
+
+		[SerializeField] private float _timeScale = 1;
 		#endregion
 
 		#region Properties
@@ -23,6 +25,16 @@ namespace TripleBladeHorse.Animation
 		{
 			get => _armature.armature.flipX;
 			set => _armature.armature.flipX = value;
+		}
+
+		public float TimeScale
+		{
+			get => _timeScale;
+			set
+			{
+				stateData._current.timeScale *= value / _timeScale;
+				_timeScale = value;
+			}
 		}
 		#endregion
 
@@ -86,7 +98,7 @@ namespace TripleBladeHorse.Animation
 				transitionTime,
 				animation.playTimes);
 
-			anim.timeScale = animation.timeScale;
+			anim.timeScale = animation.timeScale * TimeScale;
 			anim.resetToPose = false;
 		}
 

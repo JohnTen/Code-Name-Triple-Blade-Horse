@@ -219,7 +219,7 @@ namespace TripleBladeHorse.Combat
 			
 			while (launchTimes < 3)
 			{
-				time += Time.deltaTime * allLaunchRate;
+				time += TimeManager.PlayerDeltaTime * allLaunchRate;
 				if (time < 1)
 				{
 					yield return null;

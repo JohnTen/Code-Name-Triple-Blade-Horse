@@ -54,7 +54,7 @@ namespace TripleBladeHorse
 
 		private void Update()
 		{
-			transform.Rotate(_rotation * RotationScale, Space.Self);
+			transform.Rotate(_rotation * RotationScale * TimeManager.PlayerDeltaTime, Space.Self);
 			UpdateSheathsPosition();
 			RotateKnives();
 		}
@@ -80,9 +80,11 @@ namespace TripleBladeHorse
 
 				var percentage = 1 - _knifeRotatePairs[i].Key.PassedPercentage;
 				var rotateSpeed 
-					= (_knifeRotateSpeed * percentage
+					= (_knifeRotateSpeed
 					+ Random.Range(-_knifeRandomRotateSpeed, _knifeRandomRotateSpeed))
-					* _knifeRotateAcceleration.Evaluate(percentage);
+					* percentage
+					* _knifeRotateAcceleration.Evaluate(percentage)
+					* TimeManager.DeltaTime;
 
 				_knifeRotatePairs[i].Value.Rotate(0, 0, rotateSpeed, Space.Self);
 			}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TripleBladeHorse;
 
 public class Rotate_Self_VFX : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Rotate_Self_VFX : MonoBehaviour
 	
     void Update()
     {
-        transform.Rotate(speed_x, speed_y, speed_z, Space.Self);
+		var speed = new Vector3(speed_x, speed_y, speed_z) * TimeManager.DeltaTime;
+		transform.Rotate(speed, Space.Self);
+		//transform.Rotate(speed_x, speed_y, speed_z, Space.Self);
     }
 }

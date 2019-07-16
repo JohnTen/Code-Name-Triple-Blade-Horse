@@ -68,6 +68,11 @@ namespace TripleBladeHorse.Combat
 
         public event Action<ThrowingKnife, KnifeState, KnifeState> OnStateChanged;
 
+		private void Awake()
+		{
+			flyingVFX.SetParent(null);
+		}
+
 		private void Update()
 		{
 			switch (State)

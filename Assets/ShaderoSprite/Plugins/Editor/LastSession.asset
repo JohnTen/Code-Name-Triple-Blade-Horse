@@ -1,96 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5322512898568106532
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
-  m_Name: RGBA
-  m_EditorClassIdentifier: 
-  body: {fileID: 3373486248993920885}
-  side: 2
-  sidePosition: 132
-  sideOffset: 0
-  connections: []
-  typeID: SuperFloat4
-  calculationBlockade: 0
---- !u!114 &-4829164256884875773
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
-  m_Name: RGBA
-  m_EditorClassIdentifier: 
-  body: {fileID: -1211792191277072081}
-  side: 2
-  sidePosition: 52
-  sideOffset: 0
-  connections:
-  - {fileID: -853203166647839562}
-  typeID: SuperFloat4
-  calculationBlockade: 0
---- !u!114 &-4614505858500067420
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
-  m_Name: RGBA
-  m_EditorClassIdentifier: 
-  body: {fileID: 7629919140747224502}
-  side: 2
-  sidePosition: 52
-  sideOffset: 0
-  connections:
-  - {fileID: -2418078342351700390}
-  typeID: SuperFloat4
-  calculationBlockade: 0
---- !u!114 &-3674204422325846207
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a77cd82446dcde44fa35044dff56e8cb, type: 3}
-  m_Name: Mask with RGBA
-  m_EditorClassIdentifier: 
-  rect:
-    serializedVersion: 2
-    x: -255.6
-    y: -157.59987
-    width: 172
-    height: 220
-  nodeKnobs:
-  - {fileID: -853203166647839562}
-  - {fileID: -2418078342351700390}
-  - {fileID: 9163448360726288437}
-  Inputs:
-  - {fileID: -853203166647839562}
-  - {fileID: -2418078342351700390}
-  Outputs:
-  - {fileID: 9163448360726288437}
-  Variable: 0
-  parametersOK: 1
-  Include_RGBA_Alpha: 1
-  MemoCount: 1
---- !u!114 &-2418078342351700390
+--- !u!114 &-7660936525735178742
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,56 +12,122 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
   m_Name: RGBA
   m_EditorClassIdentifier: 
-  body: {fileID: -3674204422325846207}
-  side: 4
-  sidePosition: 122
-  sideOffset: 0
-  connection: {fileID: -4614505858500067420}
-  typeID: SuperFloat4
---- !u!114 &-1211792191277072081
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c27b9a5c05a327b429e00e673cb560ea, type: 3}
-  m_Name: New Texture
-  m_EditorClassIdentifier: 
-  rect:
-    serializedVersion: 2
-    x: -667.5999
-    y: -410.19995
-    width: 150
-    height: 210
-  nodeKnobs:
-  - {fileID: 8831922807404601442}
-  - {fileID: -4829164256884875773}
-  Inputs:
-  - {fileID: 8831922807404601442}
-  Outputs:
-  - {fileID: -4829164256884875773}
-  tex: {fileID: 0}
-  MemoCount: 1
---- !u!114 &-853203166647839562
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
-  m_Name: RGBA
-  m_EditorClassIdentifier: 
-  body: {fileID: -3674204422325846207}
+  body: {fileID: 4901777952896061480}
   side: 4
   sidePosition: 102
   sideOffset: 0
-  connection: {fileID: -4829164256884875773}
+  connection: {fileID: 4331352988716043835}
+  typeID: SuperFloat4
+--- !u!114 &-7270690124836396278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 245ba0f541aeffa4abb5938641b07509, type: 3}
+  m_Name: Preview Texture
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -36.79989
+    y: -163.79985
+    width: 168
+    height: 253
+  nodeKnobs:
+  - {fileID: -7032504356169051195}
+  - {fileID: 1467594684848109215}
+  Inputs:
+  - {fileID: -7032504356169051195}
+  Outputs:
+  - {fileID: 1467594684848109215}
+  result: "//////////////////////////////////////////////////////////////\n/// Shadero
+    Sprite: Sprite Shader Editor - by VETASOFT 2018 //\n/// Shader generate with Shadero
+    1.9.6                      //\n/// http://u3d.as/V7t #AssetStore                           //\n///
+    http://www.shadero.com #Docs                            //\n//////////////////////////////////////////////////////////////\n\nShader
+    \"Shadero Previews/PreviewXATXQ1\"\n{\nProperties\n{\n[PerRendererData] _MainTex(\"Sprite
+    Texture\", 2D) = \"white\" {}\n_GenerateLightning_PosX_1(\"_GenerateLightning_PosX_1\",
+    Range(-2, 2)) = 0.5\n_GenerateLightning_PosY_1(\"_GenerateLightning_PosY_1\",
+    Range(-2, 2)) = 0.5\n_GenerateLightning_Size_1(\"_GenerateLightning_Size_1\",
+    Range( 1, 8)) = 4\n_GenerateLightning_Number_1(\"_GenerateLightning_Number_1\",
+    Range(2, 16)) = 4\n_GenerateLightning_Speed_1(\"_GenerateLightning_Speed_1\",
+    Range( 0, 8)) = 4\n_Brightness_Fade_1(\"_Brightness_Fade_1\", Range(0, 1)) = 1\n_SpriteFade(\"SpriteFade\",
+    Range(0, 1)) = 1.0\n\n// required for UI.Mask\n[HideInInspector]_StencilComp(\"Stencil
+    Comparison\", Float) = 8\n[HideInInspector]_Stencil(\"Stencil ID\", Float) = 0\n[HideInInspector]_StencilOp(\"Stencil
+    Operation\", Float) = 0\n[HideInInspector]_StencilWriteMask(\"Stencil Write Mask\",
+    Float) = 255\n[HideInInspector]_StencilReadMask(\"Stencil Read Mask\", Float)
+    = 255\n[HideInInspector]_ColorMask(\"Color Mask\", Float) = 15\n\n}\n\nSubShader\n{\n\nTags
+    {\"Queue\" = \"Transparent\" \"IgnoreProjector\" = \"true\" \"RenderType\" = \"Transparent\"
+    \"PreviewType\"=\"Plane\" \"CanUseSpriteAtlas\"=\"True\" }\nZWrite Off Blend SrcAlpha
+    OneMinusSrcAlpha Cull Off \n\n// required for UI.Mask\nStencil\n{\nRef [_Stencil]\nComp
+    [_StencilComp]\nPass [_StencilOp]\nReadMask [_StencilReadMask]\nWriteMask [_StencilWriteMask]\n}\n\nPass\n{\n\nCGPROGRAM\n#pragma
+    vertex vert\n#pragma fragment frag\n#pragma fragmentoption ARB_precision_hint_fastest\n#include
+    \"UnityCG.cginc\"\n\nstruct appdata_t{\nfloat4 vertex   : POSITION;\nfloat4 color
+    \   : COLOR;\nfloat2 texcoord : TEXCOORD0;\n};\n\nstruct v2f\n{\nfloat2 texcoord
+    \ : TEXCOORD0;\nfloat4 vertex   : SV_POSITION;\nfloat3 worldPos : TEXCOORD2;\nfloat4
+    color    : COLOR;\n};\n\nsampler2D _MainTex;\nfloat _SpriteFade;\nfloat _GenerateLightning_PosX_1;\nfloat
+    _GenerateLightning_PosY_1;\nfloat _GenerateLightning_Size_1;\nfloat _GenerateLightning_Number_1;\nfloat
+    _GenerateLightning_Speed_1;\nfloat _Brightness_Fade_1;\n\nv2f vert(appdata_t IN)\n{\nv2f
+    OUT;\nOUT.vertex = UnityObjectToClipPos(IN.vertex);\nOUT.worldPos = mul (unity_ObjectToWorld,
+    IN.vertex);\nOUT.texcoord = IN.texcoord;\nOUT.color = IN.color;\nreturn OUT;\n}\n\n\nfloat4
+    Brightness(float4 txt, float value)\n{\ntxt.rgb += value;\nreturn txt;\n}\nfloat
+    Lightning_Hash(float2 p)\n{\nfloat3 p2 = float3(p.xy, 1.0);\nreturn frac(sin(dot(p2,
+    float3(37.1, 61.7, 12.4)))*3758.5453123);\n}\n\nfloat Lightning_noise(in float2
+    p)\n{\nfloat2 i = floor(p);\nfloat2 f = frac(p);\nf *= f * (1.5 - .5*f);\nreturn
+    lerp(lerp(Lightning_Hash(i + float2(0., 0.)), Lightning_Hash(i + float2(1., 0.)),
+    f.x),\nlerp(Lightning_Hash(i + float2(0., 1.)), Lightning_Hash(i + float2(1.,
+    1.)), f.x),\nf.y);\n}\n\nfloat Lightning_fbm(float2 p)\n{\nfloat v = 0.0;\nv +=
+    Lightning_noise(p*1.0)*.5;\nv += Lightning_noise(p*2.)*.25;\nv += Lightning_noise(p*4.)*.125;\nv
+    += Lightning_noise(p*8.)*.0625;\nreturn v;\n}\n\nfloat4 Generate_Lightning(float2
+    uv, float2 uvx, float posx, float posy, float size, float number, float speed,
+    float black)\n{\nuv -= float2(posx, posy);\nuv *= size;\nuv -= float2(posx, posy);\nfloat
+    rot = (uv.x*uvx.x + uv.y*uvx.y);\nfloat time = _Time * 20 * speed;\nfloat4 r =
+    float4(0, 0, 0, 0);\nfor (int i = 1; i < number; ++i)\n{\nfloat t = abs(.750 /
+    ((rot + Lightning_fbm(uv + (time*5.75) / float(i)))*65.));\nr += t *0.5;\n}\nr
+    = saturate(r);\nr.a = saturate(r.r + black);\nreturn r;\n\n}\nfloat4 frag (v2f
+    i) : COLOR\n{\nfloat4 _GenerateLightning_1 = Generate_Lightning(i.texcoord,float2(0,1),_GenerateLightning_PosX_1,_GenerateLightning_PosY_1,_GenerateLightning_Size_1,_GenerateLightning_Number_1,_GenerateLightning_Speed_1,0);\nfloat4
+    Brightness_1 = Brightness(_GenerateLightning_1,_Brightness_Fade_1);\nfloat4 FinalResult
+    = Brightness_1;\nFinalResult.rgb *= i.color.rgb;\nFinalResult.a = FinalResult.a
+    * _SpriteFade * i.color.a;\nreturn FinalResult;\n}\n\nENDCG\n}\n}\nFallback \"Sprites/Default\"\n}\n"
+  backpreview: 0
+  ShaderString: Shadero Previews/PreviewXATXQ1
+--- !u!114 &-7107146913599233180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: UV
+  m_EditorClassIdentifier: 
+  body: {fileID: 4816754285019468894}
+  side: 4
+  sidePosition: 102
+  sideOffset: 0
+  connection: {fileID: 0}
+  typeID: SuperFloat2
+--- !u!114 &-7032504356169051195
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: RGBA
+  m_EditorClassIdentifier: 
+  body: {fileID: -7270690124836396278}
+  side: 4
+  sidePosition: 52
+  sideOffset: 0
+  connection: {fileID: 3107299905205801581}
   typeID: SuperFloat4
 --- !u!114 &11400000
 MonoBehaviour:
@@ -167,14 +143,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 3095021443827479255}
-  - {fileID: -1211792191277072081}
-  - {fileID: 7629919140747224502}
-  - {fileID: -3674204422325846207}
-  - {fileID: 3373486248993920885}
+  - {fileID: -7270690124836396278}
+  - {fileID: 4901777952896061480}
+  - {fileID: 4816754285019468894}
   editorStates:
   - {fileID: 3870383487038650282}
   livesInScene: 0
---- !u!114 &891667429627886303
+--- !u!114 &1467594684848109215
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,15 +158,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
   m_Name: RGBA
   m_EditorClassIdentifier: 
-  body: {fileID: 3373486248993920885}
-  side: 4
-  sidePosition: 132
+  body: {fileID: -7270690124836396278}
+  side: 2
+  sidePosition: 52
   sideOffset: 0
-  connection: {fileID: 0}
+  connections:
+  - {fileID: 5354313722753453720}
   typeID: SuperFloat4
+  calculationBlockade: 0
 --- !u!114 &3095021443827479255
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -217,7 +194,7 @@ MonoBehaviour:
   Outputs: []
   BuildErrorFlag: 0
   BuildLightningSupport: 0
---- !u!114 &3373486248993920885
+--- !u!114 &3107299905205801581
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,29 +203,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 105b16cb664d9bc498d7ba8b78dbeba8, type: 3}
-  m_Name: Lighting Support
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: RGBA
   m_EditorClassIdentifier: 
-  rect:
-    serializedVersion: 2
-    x: -350.8
-    y: -462.99985
-    width: 200
-    height: 300
-  nodeKnobs:
-  - {fileID: 891667429627886303}
-  - {fileID: 3983497659853947156}
-  - {fileID: -5322512898568106532}
-  Inputs:
-  - {fileID: 891667429627886303}
-  - {fileID: 3983497659853947156}
-  Outputs:
-  - {fileID: -5322512898568106532}
-  parametersOK: 1
-  Variable: 1
-  Light: 0
-  InternalCount: -1
-  MemoCount: 2
+  body: {fileID: 4901777952896061480}
+  side: 2
+  sidePosition: 102
+  sideOffset: 0
+  connections:
+  - {fileID: -7032504356169051195}
+  typeID: SuperFloat4
+  calculationBlockade: 0
 --- !u!114 &3870383487038650282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -265,12 +230,12 @@ MonoBehaviour:
   parentEditor: {fileID: 0}
   drawing: 1
   selectedNode: {fileID: 0}
-  LivePreviewShaderPath: 
-  ShaderName: 
-  ShaderInMemory: {fileID: 0}
-  panOffset: {x: 592, y: 194.79987}
-  zoom: 1.8
---- !u!114 &3983497659853947156
+  LivePreviewShaderPath: Assets/New Shadero Sprite Shader.shader
+  ShaderName: New Shadero Sprite Shader
+  ShaderInMemory: {fileID: 4800000, guid: ed4891debc9859a448579f28b2c04fa7, type: 3}
+  panOffset: {x: 90.19989, y: 193.19986}
+  zoom: 1.2
+--- !u!114 &4331352988716043835
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,15 +244,80 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
   m_Name: RGBA
   m_EditorClassIdentifier: 
-  body: {fileID: 3373486248993920885}
-  side: 4
-  sidePosition: 152
+  body: {fileID: 4816754285019468894}
+  side: 2
+  sidePosition: 102
   sideOffset: 0
-  connection: {fileID: 0}
+  connections:
+  - {fileID: -7660936525735178742}
   typeID: SuperFloat4
+  calculationBlockade: 0
+--- !u!114 &4816754285019468894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 380b9dccba99b7d43b448d1a15ac7d92, type: 3}
+  m_Name: Generate_Lightning FX
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -720.4999
+    y: -423.49985
+    width: 172
+    height: 450
+  nodeKnobs:
+  - {fileID: -7107146913599233180}
+  - {fileID: 4331352988716043835}
+  Inputs:
+  - {fileID: -7107146913599233180}
+  Outputs:
+  - {fileID: 4331352988716043835}
+  Variable: 0.5
+  Variable2: 0.5
+  Variable3: 4
+  Variable4: 4
+  Variable5: 4
+  result: 
+  Black: 0
+  LeftRight: 0
+  parametersOK: 1
+  MemoCount: 1
+--- !u!114 &4901777952896061480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c3b76e065295041b194bcb001d3647, type: 3}
+  m_Name: Brightness
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -330.79993
+    y: -142.19984
+    width: 172
+    height: 180
+  nodeKnobs:
+  - {fileID: -7660936525735178742}
+  - {fileID: 3107299905205801581}
+  Inputs:
+  - {fileID: -7660936525735178742}
+  Outputs:
+  - {fileID: 3107299905205801581}
+  parametersOK: 1
+  Variable: 1
+  MemoCount: 1
 --- !u!114 &5354313722753453720
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,88 +334,5 @@ MonoBehaviour:
   side: 4
   sidePosition: 52
   sideOffset: 0
-  connection: {fileID: 9163448360726288437}
+  connection: {fileID: 1467594684848109215}
   typeID: SuperFloat4
---- !u!114 &7629919140747224502
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90ec3a51e031a9f42a8eeb9d470525f6, type: 3}
-  m_Name: Main Texture
-  m_EditorClassIdentifier: 
-  rect:
-    serializedVersion: 2
-    x: -671.8
-    y: -37.799877
-    width: 148
-    height: 215
-  nodeKnobs:
-  - {fileID: 8243431364352991027}
-  - {fileID: -4614505858500067420}
-  Inputs:
-  - {fileID: 8243431364352991027}
-  Outputs:
-  - {fileID: -4614505858500067420}
-  Variable: _MainTex_
-  MemoCount: 1
---- !u!114 &8243431364352991027
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
-  m_Name: UV
-  m_EditorClassIdentifier: 
-  body: {fileID: 7629919140747224502}
-  side: 4
-  sidePosition: 52
-  sideOffset: 0
-  connection: {fileID: 0}
-  typeID: SuperFloat2
---- !u!114 &8831922807404601442
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
-  m_Name: UV
-  m_EditorClassIdentifier: 
-  body: {fileID: -1211792191277072081}
-  side: 4
-  sidePosition: 52
-  sideOffset: 0
-  connection: {fileID: 0}
-  typeID: SuperFloat2
---- !u!114 &9163448360726288437
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
-  m_Name: RGBA
-  m_EditorClassIdentifier: 
-  body: {fileID: -3674204422325846207}
-  side: 2
-  sidePosition: 102
-  sideOffset: 0
-  connections:
-  - {fileID: 5354313722753453720}
-  typeID: SuperFloat4
-  calculationBlockade: 0
