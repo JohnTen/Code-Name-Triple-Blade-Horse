@@ -4,6 +4,7 @@ using UnityEngine;
 using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
 using TripleBladeHorse.Movement;
+using JTUtility;
 
 namespace TripleBladeHorse
 {
@@ -15,7 +16,9 @@ namespace TripleBladeHorse
 		[SerializeField] int _maxAirAttack;
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
+		[SerializeField] float _dashCooldown;
 
+		[Header("Debug")]
 		[SerializeField] bool _extraJump;
 		int _currentAirAttack;
 		FSM _animator;
@@ -25,6 +28,7 @@ namespace TripleBladeHorse
 		ICharacterInput<PlayerInputCommand> _input;
 		PlayerMover _mover;
 		WeaponSystem _weaponSystem;
+		Timer _dashCooldownTimer;
 
 		List<int> colliderLayers;
 		List<Collider2D> colliders;
@@ -50,6 +54,7 @@ namespace TripleBladeHorse
 
 			colliders = new List<Collider2D>();
 			colliderLayers = new List<int>();
+			_dashCooldownTimer = new Timer();
 
 			_mover.OnMovingStateChanged += HandleMovingStateChanged;
 			_mover.OnBeginDashingInvincible += HandleDashingInvincibleBegin;
@@ -69,18 +74,6 @@ namespace TripleBladeHorse
 			// Debug
 			if (GetComponent<Test>())
 				GetComponent<Test>().OnPull += HandlePull;
-		}
-
-		private void OnBulletTimeEnd()
-		{
-			_animator.TimeScale = 1;
-		}
-
-		private void OnBulletTimeBegin()
-		{
-			var scale = TimeManager.PlayerDeltaTime / TimeManager.DeltaTime;
-			_animator.TimeScale = scale;
-			print(scale);
 		}
 
 		private void Update()
@@ -114,6 +107,11 @@ namespace TripleBladeHorse
 			}
 
 			HandleEndurance();
+		}
+
+		private void OnDestroy()
+		{
+			_dashCooldownTimer.Dispose();
 		}
 		#endregion
 
@@ -219,11 +217,24 @@ namespace TripleBladeHorse
 			colliders.Clear();
 		}
 
+		private void OnBulletTimeEnd()
+		{
+			_animator.TimeScale = 1;
+		}
+
+		private void OnBulletTimeBegin()
+		{
+			var scale = TimeManager.PlayerDeltaTime / TimeManager.DeltaTime;
+			_animator.TimeScale = scale;
+			print(scale);
+		}
+
 		private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
 		{
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
 				_animator.SetToggle(PlayerFSMData.Stat.DashEnd, true);
+				_dashCooldownTimer.Start(_dashCooldown);
 			}
 		}
 
@@ -316,8 +327,8 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.Dash:
+					if (!_dashCooldownTimer.IsReachedTime()) return;
 
-					CancelAnimation();
 					var moveInput = _input.GetMovingDirection();
 					if (moveInput == Vector2.zero)
 						moveInput = _state._facingRight ? Vector2.right : Vector2.left;
@@ -330,6 +341,7 @@ namespace TripleBladeHorse
 
 					if (airDash && _state._stamina > 0)
 					{
+						CancelAnimation();
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
 						_currentAirAttack = 0;
@@ -337,10 +349,11 @@ namespace TripleBladeHorse
 					}
 					else if (!airDash)
 					{
+						CancelAnimation();
 						_mover.Dash(moveInput);
 					}
 					else break;
-					
+
 					_animator.SetToggle(PlayerFSMData.Stat.DashBegin, true);
 					_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
 					_animator.SetFloat(PlayerFSMData.Stat.YSpeed, moveInput.y);
