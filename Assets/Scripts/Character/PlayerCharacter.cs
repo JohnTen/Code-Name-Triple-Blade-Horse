@@ -234,7 +234,8 @@ namespace TripleBladeHorse
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
 				_animator.SetToggle(PlayerFSMData.Stat.DashEnd, true);
-				_dashCooldownTimer.Start(_dashCooldown);
+				if (_groundDetector.IsOnGround)
+					_dashCooldownTimer.Start(_dashCooldown);
 			}
 		}
 
