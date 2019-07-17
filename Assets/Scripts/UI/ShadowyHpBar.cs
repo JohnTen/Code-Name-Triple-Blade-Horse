@@ -16,6 +16,7 @@ namespace TripleBladeHorse.UI
 		[SerializeField] Slider _baseHealth;
 		[SerializeField] Slider _baseDamage;
 		[SerializeField] Slider _extraDamage;
+		[SerializeField] Text _damageNumber;
 		[SerializeField] EnemyState _state;
 		[SerializeField] List<EnemyHitBox> _hitsboxes;
 		[Header("Debug")]
@@ -80,6 +81,8 @@ namespace TripleBladeHorse.UI
 			_baseHealth.value = _state._hitPoints;
 			_baseDamage.value = _baseHealth.value + _currentBaseDamage;
 			_extraDamage.value = _baseDamage.value + _currentExtraDamage;
+			if (_damageNumber != null)
+				_damageNumber.text = ((int)(_currentBaseDamage + _currentExtraDamage)).ToString();
 		}
 
 		private void HandleHittingEvent(AttackPackage attack, AttackResult result)
