@@ -32,7 +32,7 @@ namespace TripleBladeHorse.Animation
 			get => _timeScale;
 			set
 			{
-				stateData._current.timeScale *= value / _timeScale;
+				_armature.animation.timeScale = value;
 				_timeScale = value;
 			}
 		}
@@ -98,7 +98,7 @@ namespace TripleBladeHorse.Animation
 				transitionTime,
 				animation.playTimes);
 
-			anim.timeScale = animation.timeScale * TimeScale;
+			anim.timeScale = animation.timeScale;
 			anim.resetToPose = false;
 		}
 

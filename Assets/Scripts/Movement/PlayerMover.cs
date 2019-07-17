@@ -276,7 +276,6 @@ namespace TripleBladeHorse.Movement
 		public void ExtraJump(float percent)
 		{
 			var scale = Mathf.Lerp(_minExtraJumpHeightScale, _maxExtraJumpHeightScale, percent);
-			print(scale);
 			_velocity.y = Mathf.Sqrt(19.62f * _jumpHeight * GravityScale * scale);
 			_airborneTime = 0;
 			CurrentMovingState = MovingState.Airborne;

@@ -226,7 +226,6 @@ namespace TripleBladeHorse
 		{
 			var scale = TimeManager.PlayerDeltaTime / TimeManager.DeltaTime;
 			_animator.TimeScale = scale;
-			print(scale);
 		}
 
 		private void HandleMovingStateChanged(ICanChangeMoveState sender, MovingEventArgs eventArgs)
