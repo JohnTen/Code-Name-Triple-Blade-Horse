@@ -50,6 +50,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _jumpTimer;
 		[SerializeField] float _rangeChargeTimer;
 		[SerializeField] float _withdrawTimer;
+		[SerializeField] PlayerInputCommand _delayedCommand;
 
 		bool _triggerInput;
 		bool _usingController;
@@ -75,6 +76,7 @@ namespace TripleBladeHorse
 				if (_delayingInput)
 				{
 					_delayedInput._command = PlayerInputCommand.Null;
+					_delayedCommand = _delayedInput._command;
 					_enterMeleeChargeTimer = 0;
 					_meleeChargeTimer = 0;
 					_rangeChargeTimer = 0;
@@ -92,6 +94,7 @@ namespace TripleBladeHorse
 				if (_blockInput)
 				{
 					_delayedInput._command = PlayerInputCommand.Null;
+					_delayedCommand = _delayedInput._command;
 					_enterMeleeChargeTimer = float.NegativeInfinity;
 					_rangeChargeTimer = 0;
 					_withdrawTimer = 0;
@@ -152,6 +155,7 @@ namespace TripleBladeHorse
 		public void ResetDelayInput()
 		{
 			_delayedInput._command = PlayerInputCommand.Null;
+			_delayedCommand = _delayedInput._command;
 		}
 
 		public void SetInputModel(IInputModel model)
@@ -192,6 +196,7 @@ namespace TripleBladeHorse
 			if (DelayInput)
 			{
 				_delayedInput._command = command;
+				_delayedCommand = _delayedInput._command;
 				return;
 			}
 
@@ -204,6 +209,7 @@ namespace TripleBladeHorse
 			if (DelayInput)
 			{
 				_delayedInput._command = command;
+				_delayedCommand = _delayedInput._command;
 				return;
 			}
 
@@ -216,6 +222,7 @@ namespace TripleBladeHorse
 			if (DelayInput)
 			{
 				_delayedInput._command = command;
+				_delayedCommand = _delayedInput._command;
 				_delayedInput._additionalValue = value;
 				return;
 			}
@@ -404,12 +411,12 @@ namespace TripleBladeHorse
 
 			if (_usingController)
 			{
-				onButton = _input.GetAxis("WithdrawOnAir") > 0.4f || _input.GetButton("WithdrawStuck");
+				onButton = _input.GetAxis("WithdrawOnAir") > 0.4f;
 
 				if (onButton)
 					_withdrawPressedBefore = true;
 
-				if ((_input.GetAxis("WithdrawOnAir") <= 0.4f && _withdrawPressedBefore) || _input.GetButtonUp("WithdrawStuck"))
+				if (_input.GetAxis("WithdrawOnAir") <= 0.4f && _withdrawPressedBefore)
 				{
 					_withdrawPressedBefore = false;
 					onButtonUp = true;
