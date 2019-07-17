@@ -112,6 +112,9 @@ namespace TripleBladeHorse
 		private void OnDestroy()
 		{
 			_dashCooldownTimer.Dispose();
+
+			TimeManager.Instance.OnBulletTimeBegin -= OnBulletTimeBegin;
+			TimeManager.Instance.OnBulletTimeEnd -= OnBulletTimeEnd;
 		}
 		#endregion
 
