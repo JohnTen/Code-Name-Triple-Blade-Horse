@@ -300,6 +300,7 @@ namespace TripleBladeHorse
 
 			if (_state._endurance <= 0)
 			{
+				(_input as PlayerInput).ResetDelayInput();
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
