@@ -48,8 +48,6 @@ namespace TripleBladeHorse
 				timer.CustomDeltaTimeSource = DeltaTimeRelater;
 				_knifeRotatePairs.Add(new TimerPair(timer, null));
 			}
-
-			print("Activate");
 		}
 
 		private void Update()
