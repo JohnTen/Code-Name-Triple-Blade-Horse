@@ -17,14 +17,16 @@ namespace TripleBladeHorse.AI
     public class BossBehave : MonoBehaviour, ICharacterInput<BossInput>
     {
         Transform _target;
-        Vector2 _distance;
+        [SerializeField] Vector2 _distance;
         CharacterState _state;
         [SerializeField] BaseWeapon _weapon;
         [SerializeField] float _attackAera;
+        [SerializeField] float _movementAera;
         [SerializeField] float _dodgeAera;
         [SerializeField] float _chargeSpeed;
 
         bool _opening = true;
+        public bool _isCharging;
 		int _slashCount = 0;
         int _attackCount = 0;
         float dodgePercent = 3000;
@@ -86,7 +88,14 @@ namespace TripleBladeHorse.AI
             _opening = false;
         }
         public bool InAttackRange(){
-            return (_distance.magnitude <= _attackAera);
+            if(_distance.magnitude <= _attackAera){
+                _isCharging = false;
+                return true;
+            }else
+            {
+                return false;
+            }
+            
         }
 
         public void Slash(){
@@ -108,6 +117,11 @@ namespace TripleBladeHorse.AI
             _move = _distance;
             _move = _move.normalized*2f;
             _aim = _move;
+            _isCharging = true;
+        }
+
+        public bool IsNotCharging(){
+            return ! _isCharging;
         }
 
         public void Retreat(){
@@ -125,7 +139,7 @@ namespace TripleBladeHorse.AI
             if (_attackCount !=0 && _distance.magnitude <= _dodgeAera)
             {
                 dodgePercent = Random.Range(0,_state._hitPoints);
-                return(dodgePercent < 400f);
+                return(dodgePercent < 600f);
             }
             else return false;
         }
@@ -153,8 +167,8 @@ namespace TripleBladeHorse.AI
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.DashAttack);
             _attackCount ++;
-            if(weight[2] != 3)
-                weight[2] = 3;
+            if(weight[2] != 1)
+                weight[2] = 1;
         }
 
         public void CombatTempGen(){
@@ -167,17 +181,24 @@ namespace TripleBladeHorse.AI
 
         public void WeightCalc(){
             
-            if(IsLowHealth()){
+
+            if(IsLowHealth() && weight[1]!=3){
                 weight[1] = 3;
             };
 
-            if(_slashCount>0 && _slashCount < _maxSlashCount && !IsLowHealth()){
+            if(_slashCount > 0 && _slashCount < _maxSlashCount && !IsLowHealth()){
                 weight[0] = 1000;
             };
 
             if(_slashCount > _maxSlashCount){
                 weight[0] = 5;
-                _slashCount=0;
+                _slashCount = 0;
+            };
+
+            if(_distance.magnitude <= _dodgeAera){
+                weight[2] = -1;
+            }else{
+                weight[2] = 3;
             };
         }
 

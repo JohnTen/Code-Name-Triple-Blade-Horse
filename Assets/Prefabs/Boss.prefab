@@ -1410,8 +1410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slowSpeed: 8
-  _quickSpeed: 8
-  _backSpeed: 8
+  _quickSpeed: 24
+  _backSpeed: 12
   _baseSpeed: 8
   _constantMoving: 0
   _velocity: {x: 0, y: 0}
@@ -1504,7 +1504,7 @@ MonoBehaviour:
   _slashTime: 1
   _slashSpeed:
     m_Mode: 1
-    m_CurveMultiplier: 16
+    m_CurveMultiplier: 12
     m_CurveMin:
       serializedVersion: 2
       m_Curve: []
@@ -1524,8 +1524,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.50000304
-        value: -0.004699707
+        time: 0.37500304
+        value: 0.004760742
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1533,8 +1533,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.50417024
-        value: 1
+        time: 0.38750154
+        value: 0.9976349
         inSlope: -0.006376447
         outSlope: -0.006376447
         tangentMode: 0
@@ -1542,7 +1542,7 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.99524176
       - serializedVersion: 3
-        time: 0.8
+        time: 0.8874939
         value: 1
         inSlope: 0.0020093578
         outSlope: 0.0020093578
@@ -1621,8 +1621,8 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 12
-  _minCrushSpeed: 0
-  _maxCrushSpeed: 0
+  _minCrushSpeed: 10
+  _maxCrushSpeed: 999
   _combo2SpeedScaler: 2
   _combo2CrushOffset: {x: -2.5, y: 0}
   _crushMove: {fileID: 11400000, guid: 911ae8143584afa498b2e24a50a464df, type: 2}
@@ -1645,7 +1645,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 24
+    m_ConstantMax: 36
   _thrustMove: {fileID: 11400000, guid: 61d67e40d75ecad4b8f133149e437345, type: 2}
   _thrustAttackBoxes:
   - {fileID: 575888026}
@@ -1764,10 +1764,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc6b73c195d21047bc5f7c1e20bee4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _distance: {x: 0, y: 0}
   _weapon: {fileID: 8063622147670381424}
   _attackAera: 12
-  _dodgeAera: 4
+  _movementAera: 0
+  _dodgeAera: 6
   _chargeSpeed: 5
+  _isCharging: 0
   _maxSlashCount: 3
   weight: 050000000100000003000000
   combatTemp: 3
@@ -3831,6 +3834,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weakpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3886,11 +3894,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877731066350231, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -3906,19 +3914,8 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcb2762136a1bc6469713a861a938a56, type: 3}
---- !u!4 &5816102151550688767 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
-    type: 3}
-  m_PrefabInstance: {fileID: 522143265}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3534390367814390068 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
@@ -3931,6 +3928,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a96b773ddf4f6d4e9ee64f97ef712a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &5816102151550688767 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
+    type: 3}
+  m_PrefabInstance: {fileID: 522143265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1612445653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3943,6 +3946,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weakpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3998,11 +4006,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877731066350231, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -4014,11 +4022,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1958877729769317740, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
       value: 1
@@ -4055,6 +4058,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weakpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4110,11 +4118,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877731066350231, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -4126,11 +4134,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1958877729769317740, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
       value: 1

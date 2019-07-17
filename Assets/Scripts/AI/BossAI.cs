@@ -24,11 +24,8 @@ namespace TripleBladeHorse.AI{
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.TooFar),
-                        BT.Call(_behave.Slash),
-                        BT.Wait(0.2f),
-                        BT.Call(_behave.Slash),
-                        BT.Wait(0.2f),
-                        BT.Call(_behave.DashAttack)
+                        BT.Call(_behave.Charge)
+                        //BT.Call(_behave.Charge)
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.NeedDodge),
@@ -44,8 +41,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.CombatTempGen),
-                        BT.Wait(_behave.combatTemp)
+                        //BT.Call(_behave.CombatTempGen),
+                        BT.Wait(0.5f)
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.InAttackRange),
@@ -55,14 +52,20 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.CombatTempGen),
-                        BT.Wait(_behave.combatTemp)
+                        //BT.Call(_behave.CombatTempGen),
+                        BT.Wait(Random.Range(0.5f,1f))
                         
                     ),
-                    BT.RandomSequence(new int[] {3,1}).OpenBranch(
-                        BT.Call(_behave.MoveToTarget),
-                        BT.Call(_behave.Charge)
+
+                    BT.Sequence().OpenBranch(
+                        BT.Condition(_behave.IsNotCharging),
+                        BT.RandomSequence().OpenBranch(
+                            BT.Call(_behave.MoveToTarget),
+                            BT.Call(_behave.DashAttack)
+                        )
+                        
                     )
+                    
                     
                 )
             );
