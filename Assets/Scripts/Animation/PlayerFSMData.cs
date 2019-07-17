@@ -569,7 +569,7 @@ namespace TripleBladeHorse.Animation
 					GeneralFunction.GroundAttack),
 
 				new Transition(
-					Anim.Dropping_Buffering, Anim.ATK_Charge_Ground_Charging, 0.05f,
+					Anim.Dash_Horizontal, Anim.ATK_Charge_Ground_Charging, 0.05f,
 					GeneralFunction.GroundCharging),
 				new Transition(
 					Anim.Dash_Horizontal, Anim.ATK_Melee_Air_1, 0.1f,

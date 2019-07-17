@@ -300,6 +300,7 @@ namespace TripleBladeHorse
 
 			if (_state._endurance <= 0)
 			{
+				(_input as PlayerInput).ResetDelayInput();
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
@@ -316,14 +317,28 @@ namespace TripleBladeHorse
 					if (!_groundDetector.IsOnGround) break;
 					CancelAnimation();
 					_mover.Jump();
+					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 					break;
 
 				case PlayerInputCommand.Jump:
-					if (!_extraJump) break;
+					if (!_groundDetector.IsOnGround && !_extraJump) break;
+
 					CancelAnimation();
-					_mover.ExtraJump(input._additionalValue);
+					if (_extraJump)
+					{
+						_mover.ExtraJump(input._additionalValue);
+					}
+					else
+					{
+						_mover.Jump();
+					}
+
+					if (_extraJump)
+					{
+						TimeManager.Instance.ActivateBulletTime();
+					}
+
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
-					TimeManager.Instance.ActivateBulletTime();
 					_extraJump = false;
 					break;
 
