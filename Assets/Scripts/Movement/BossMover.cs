@@ -181,7 +181,6 @@ namespace TripleBladeHorse.Movement
 			var timer = 0f;
 			var wait = new WaitForFixedUpdate();
 			_constantMoving = true;
-			print("Invoked constant moving");
 
 			while (timer < time)
 			{

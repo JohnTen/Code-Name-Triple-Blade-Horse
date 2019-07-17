@@ -91,6 +91,7 @@ namespace TripleBladeHorse
 				_blockInput = value;
 				if (_blockInput)
 				{
+					_delayedInput._command = PlayerInputCommand.Null;
 					_enterMeleeChargeTimer = float.NegativeInfinity;
 					_rangeChargeTimer = 0;
 					_withdrawTimer = 0;
@@ -146,6 +147,11 @@ namespace TripleBladeHorse
 			}
 
 			return aim;
+		}
+
+		public void ResetDelayInput()
+		{
+			_delayedInput._command = PlayerInputCommand.Null;
 		}
 
 		public void SetInputModel(IInputModel model)

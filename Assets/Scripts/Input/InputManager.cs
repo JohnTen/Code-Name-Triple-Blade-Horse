@@ -66,7 +66,6 @@ public class InputManager : MonoSingleton<InputManager>
 			{
 				if (string.IsNullOrEmpty(name)) continue;
 				controllerNames.Add(name);
-				print(name);
 			}
 
 			while(controllerNames.Count < k_playerCount)
