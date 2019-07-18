@@ -81,8 +81,12 @@ namespace TripleBladeHorse.UI
 			_baseHealth.value = _state._hitPoints;
 			_baseDamage.value = _baseHealth.value + _currentBaseDamage;
 			_extraDamage.value = _baseDamage.value + _currentExtraDamage;
+
 			if (_damageNumber != null)
+			{
 				_damageNumber.text = ((int)(_currentBaseDamage + _currentExtraDamage)).ToString();
+				_damageNumber.enabled = _currentBaseDamage + _currentExtraDamage > 0;
+			}
 		}
 
 		private void HandleHittingEvent(AttackPackage attack, AttackResult result)
