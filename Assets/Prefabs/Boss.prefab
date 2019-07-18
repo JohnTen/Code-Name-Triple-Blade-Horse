@@ -551,6 +551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4150620463270865269}
   - component: {fileID: 3880827056567679403}
+  - component: {fileID: 460307099}
   m_Layer: 10
   m_Name: WeakpointFormat
   m_TagString: Untagged
@@ -608,6 +609,20 @@ MonoBehaviour:
   handlePercentage: 0.5
   bezierPercentage: 0.2
   direction: []
+--- !u!114 &460307099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958280471416663102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7a1e3f788148c4a9d363516a9985c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weakpoints: []
+  _formationList: []
 --- !u!1 &4312076138849845721
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed_x: 0
   speed_y: 0
-  speed_z: 5
+  speed_z: 1
 --- !u!1 &6946616376932486909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1723,7 +1738,7 @@ MonoBehaviour:
   _enduranceRefreshDelay: 0
   _enduranceRecoverDelay: 0
   _enduranceSafeThreshlod: 0
-  _hitPointDamage: 0
+  _hitPointDamage: 20
   _enduranceDamage: 100
   _facingRight: 1
   _frozen: 0
@@ -2365,9 +2380,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8638668826164713262}
-  m_LocalRotation: {x: 0, y: 0, z: -0.02215778, w: 0.9997545}
-  m_LocalPosition: {x: -0.44072872, y: 6.4708166, z: -0.009000001}
-  m_LocalScale: {x: 1.0000001, y: 0.9999999, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.06862537, w: 0.9976425}
+  m_LocalPosition: {x: -0.49151415, y: 6.4772987, z: -0.009000001}
+  m_LocalScale: {x: 1.0000001, y: 0.99999994, z: 1}
   m_Children: []
   m_Father: {fileID: 8638668826643040065}
   m_RootOrder: 9
@@ -2519,9 +2534,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8638668826298932392}
-  m_LocalRotation: {x: 0, y: 0, z: 0.0002542177, w: 1}
-  m_LocalPosition: {x: -1.0171734, y: 5.046979, z: -0.010000001}
-  m_LocalScale: {x: 1.0000004, y: 0.9999997, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.09959166, w: 0.9950284}
+  m_LocalPosition: {x: -1.25468, y: 5.1621437, z: -0.010000001}
+  m_LocalScale: {x: 1.0000002, y: 0.9999997, z: 1}
   m_Children: []
   m_Father: {fileID: 8638668826643040065}
   m_RootOrder: 10
@@ -3109,7 +3124,7 @@ MonoBehaviour:
   armatureName: armatureName
   isUGUI: 0
   debugDraw: 0
-  animationName: Boss1_ATK_Comb2_1
+  animationName: Boss1_Idle
   _playTimes: 0
   _timeScale: 1
   _sortingMode: 1
@@ -3232,9 +3247,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8638668826945820256}
-  m_LocalRotation: {x: 0, y: 0, z: 0.05556094, w: 0.9984553}
-  m_LocalPosition: {x: -0.2264093, y: 2.8662612, z: -0.004}
-  m_LocalScale: {x: 0.9999998, y: 1.0000001, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.055561442, w: 0.9984553}
+  m_LocalPosition: {x: -0.22640942, y: 2.8662612, z: -0.004}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children: []
   m_Father: {fileID: 8638668826643040065}
   m_RootOrder: 4
@@ -3540,8 +3555,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8638668827301220511}
-  m_LocalRotation: {x: 0, y: 0, z: 0.06648397, w: 0.99778754}
-  m_LocalPosition: {x: -0.48500517, y: 4.704108, z: -0.002}
+  m_LocalRotation: {x: 0, y: 0, z: 0.066484, w: 0.99778754}
+  m_LocalPosition: {x: -0.48500556, y: 4.704108, z: -0.002}
   m_LocalScale: {x: 0.99999994, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8638668826643040065}
