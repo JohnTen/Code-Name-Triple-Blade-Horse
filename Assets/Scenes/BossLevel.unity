@@ -1339,7 +1339,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403729323}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -153.89958, y: -24.224611, z: -4}
+  m_LocalPosition: {x: -153.8995, y: -24.224611, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1428934356}
@@ -1420,30 +1420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weakpoints: []
   _formationList: []
-  _pivot: {fileID: 0}
-  _trackPoints: []
-  _currentFormation:
-    _type: 0
-    _rotateSpeed: {x: 0, y: 0, z: 0}
-    _distance: 0
-    _followSpeed: 0
-    _transistionSpeed: 0
-    _angularTransistionSpeed: 0
-    _keyTime: 0
-    _animationName: 
-    _pivot: {fileID: 0}
-    _customTrackPoint: []
-  _targetFormation:
-    _type: 0
-    _rotateSpeed: {x: 0, y: 0, z: 0}
-    _distance: 0
-    _followSpeed: 0
-    _transistionSpeed: 0
-    _angularTransistionSpeed: 0
-    _keyTime: 0
-    _animationName: 
-    _pivot: {fileID: 0}
-    _customTrackPoint: []
 --- !u!224 &496622165 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1793733162548047220, guid: 74ff89dbc71f33d49aa974480dfed7ef,
@@ -10256,106 +10232,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].time
-      value: 0.8874939
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMultiplier
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[1].time
-      value: 0.37500304
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[1].value
-      value: 0.004760742
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[1].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[1].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[1].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[2].time
-      value: 0.38750154
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[2].inSlope
-      value: -0.006376447
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[2].outSlope
-      value: -0.006376447
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[2].outWeight
-      value: 0.99524176
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].inSlope
-      value: 0.0020093578
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].outSlope
-      value: 0.0020093578
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[3].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _slashSpeed.m_CurveMax.m_Curve.Array.data[2].value
-      value: 0.9976349
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _minCrushSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8638668825963291464, guid: ba6c4070bad2d954d9952b6e7cb9f207,
-        type: 3}
-      propertyPath: _maxCrushSpeed
-      value: 999
-      objectReference: {fileID: 0}
     - target: {fileID: 8638668826643040071, guid: ba6c4070bad2d954d9952b6e7cb9f207,
         type: 3}
       propertyPath: animationName
@@ -12632,7 +12508,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113538958}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -153.89958, y: -23.924433, z: -4}
+  m_LocalPosition: {x: -153.8995, y: -23.924433, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 626847260}
@@ -12709,7 +12585,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 38.5458
+  field of view: 38.543716
   orthographic: 0
   orthographic size: 6.5
   m_Depth: -1
