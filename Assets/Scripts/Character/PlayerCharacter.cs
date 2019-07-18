@@ -375,7 +375,7 @@ namespace TripleBladeHorse
 					_animator.SetToggle(PlayerFSMData.Stat.DashBegin, true);
 					_animator.SetFloat(PlayerFSMData.Stat.XSpeed, moveInput.x);
 					_animator.SetFloat(PlayerFSMData.Stat.YSpeed, moveInput.y);
-					SetDelayInput(true);
+					SetBlockInput(true);
 					SetFrozen(true);
 
 					_animator.UpdateAnimationState();

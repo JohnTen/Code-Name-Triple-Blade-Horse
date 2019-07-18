@@ -58,6 +58,7 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] Vector2 _knockbackVector;
 		[SerializeField] MovingState _currentMovingState;
 		[SerializeField] bool onPlatform;
+		[SerializeField] bool _blockInput;
 		[SerializeField] List<Collider2D> _ignoredColliders;
 
 
@@ -93,7 +94,7 @@ namespace TripleBladeHorse.Movement
 		public bool IsOnGround => _groundDetector.IsOnGround;
 		public bool IsDashing => _dashing;
 		public bool PullDelaying => _pullDelayTimer > 0;
-		public bool BlockInput { get; private set; }
+		public bool BlockInput => _blockInput;
 		public bool DelayInput { get; private set; }
 		public bool AirAttacking
 		{
@@ -219,7 +220,7 @@ namespace TripleBladeHorse.Movement
 			_dashingDirection = Vector2.zero;
 			_dashing = false;
 			_airborneTime = 0;
-			BlockInput = false;
+			_blockInput = false;
 		}
 
 		public void Dash(Vector2 direction)
@@ -406,7 +407,8 @@ namespace TripleBladeHorse.Movement
 
 				_currentDashingPercent = 1 - _leftDashingDistance / _deservedDashingDistance;
 
-				BlockInput = _currentDashingPercent >= _dashCancelPercent;
+				print(_currentDashingPercent);
+				_blockInput = _currentDashingPercent < _dashCancelPercent;
 
 				if (previousPercent < _dashInvincibleBeginPercent &&
 					_currentDashingPercent > _dashInvincibleBeginPercent)
@@ -433,7 +435,7 @@ namespace TripleBladeHorse.Movement
 			_dashingDirection = Vector2.zero;
 			_dashing = false;
 			_airborneTime = 0;
-			BlockInput = false;
+			_blockInput = false;
 		}
 
 		private void Moving(Vector3 direction)
