@@ -187,7 +187,7 @@ namespace TripleBladeHorse.AI
             };
 
             if(_slashCount > 0 && _slashCount < _maxSlashCount && !IsLowHealth()){
-                weight[0] = 1000;
+                weight[0] = 10;
             };
 
             if(_slashCount > _maxSlashCount){
