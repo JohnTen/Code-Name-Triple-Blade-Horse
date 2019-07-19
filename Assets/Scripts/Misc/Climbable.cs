@@ -30,6 +30,16 @@ namespace TripleBladeHorse
 			_rigidbody = GetComponent<Rigidbody2D>();
 		}
 
+		private void OnDisable()
+		{
+			for (int i = 0; i < stuckObj.Count; i++)
+			{
+				var knife = stuckObj[i].GetComponent<ThrowingKnife>();
+				if (!knife) continue;
+				knife.Withdraw();
+			}
+		}
+
 		public bool TryStick(GameObject obj)
 		{
 			if (stuckObj.Count >= _maxStuckedKnife)
@@ -48,6 +58,7 @@ namespace TripleBladeHorse
 			{
 				var toObj = obj.transform.position - this.transform.position;
 				toObj.Normalize();
+				// pulling obj
 			}
 
 			if (_restoredStamina > 0 
