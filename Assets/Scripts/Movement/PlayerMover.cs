@@ -407,7 +407,6 @@ namespace TripleBladeHorse.Movement
 
 				_currentDashingPercent = 1 - _leftDashingDistance / _deservedDashingDistance;
 
-				print(_currentDashingPercent);
 				_blockInput = _currentDashingPercent < _dashCancelPercent;
 
 				if (previousPercent < _dashInvincibleBeginPercent &&
