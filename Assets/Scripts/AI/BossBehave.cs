@@ -26,7 +26,7 @@ namespace TripleBladeHorse.AI
         [SerializeField] float _chargeSpeed;
 
         bool _opening = true;
-        public bool _isCharging;
+        bool _isCharging;
 		int _slashCount = 0;
         int _attackCount = 0;
         float dodgePercent = 3000;
@@ -102,7 +102,6 @@ namespace TripleBladeHorse.AI
             _aim = _distance.normalized;
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.Slash);
-            weight[0] -= 2;
             _slashCount ++;
             _attackCount ++;            
         }
@@ -186,12 +185,12 @@ namespace TripleBladeHorse.AI
                 weight[1] = 3;
             };
 
-            if(_slashCount > 0 && _slashCount < _maxSlashCount && !IsLowHealth()){
-                weight[0] = 10;
+            if(_slashCount > 0 && _slashCount <= _maxSlashCount && !IsLowHealth()){
+                weight[0] = 3 + _maxSlashCount - _slashCount;
             };
 
             if(_slashCount > _maxSlashCount){
-                weight[0] = 5;
+                weight[0] = 3;
                 _slashCount = 0;
             };
 
