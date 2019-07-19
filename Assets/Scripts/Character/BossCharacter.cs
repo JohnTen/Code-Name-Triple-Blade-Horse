@@ -16,7 +16,7 @@ namespace TripleBladeHorse
 
 		[Header("Weakpoint Movemnt")]
 		[SerializeField] Transform[] _weakpoints;
-		[SerializeField] WeakpointMovement _weakpointMover;
+		[SerializeField] Transform[] _pivots;
 
 		[Header("Retreat")]
 		[SerializeField] float _retreatTime;
@@ -387,6 +387,11 @@ namespace TripleBladeHorse
 				}
 
 				_animator.FlipX = _state._facingRight;
+
+				foreach (var pivot in _pivots)
+				{
+					pivot.transform.localEulerAngles = _state._facingRight ? Vector3.zero : Vector3.up * 180;
+				}
 			}
 		}
 

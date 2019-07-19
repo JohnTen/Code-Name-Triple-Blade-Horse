@@ -59,10 +59,10 @@ namespace JTUtility
 
 					if (timers[k].OnTimeOut != null)
 					{
-						timers[k].OnTimeOut.Invoke();
+						timers[k].OnTimeOut.Invoke(timers[k]);
 						if (timers[k].raiseTimeOut != null)
 						{
-							timers[k].raiseTimeOut.Invoke();
+							timers[k].raiseTimeOut.Invoke(timers[k]);
 							timers[k].raiseTimeOut = null;
 						}
 					}
@@ -89,9 +89,9 @@ namespace JTUtility
 		private float startTime;
 		private float timeLeft;
 
-		public event Action OnTimeOut;
+		public event Action<Timer> OnTimeOut;
 
-		Action raiseTimeOut;
+		Action<Timer> raiseTimeOut;
 
 		public bool Repeat { get; set; }
 		public bool RealTime { get; set; }
@@ -130,7 +130,7 @@ namespace JTUtility
 			timeLeft = sec;
 		}
 
-		public void Start(float sec, Action timeOutHandler)
+		public void Start(float sec, Action<Timer> timeOutHandler)
 		{
 			startTime = sec;
 			timeLeft = sec;
