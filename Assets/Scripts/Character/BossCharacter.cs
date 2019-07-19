@@ -246,7 +246,7 @@ namespace TripleBladeHorse
 					break;
 
 				case BossFSMData.Anim.Combo2_2:
-					UpdateFacingDirection(aim);
+					//UpdateFacingDirection(aim);
 					_mover.InvokeConstantMovement(Vector2.up, _combo2PauseSpeed, _combo2PauseTime);
 					break;
 

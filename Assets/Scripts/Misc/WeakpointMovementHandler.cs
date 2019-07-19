@@ -39,8 +39,9 @@ namespace TripleBladeHorse
 		private void Awake()
 		{
 			CreateBasePivot();
-			_currentFormation = new WeakpointFormation(_formationList[0].Value);
+			_currentFormation.Set((_formationList[0].Value));
 			_pivot.position = _currentFormation._pivot.position;
+			_pivot.rotation = _currentFormation._pivot.rotation;
 			UpdateFormation();
 
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationStateEvent);
@@ -82,6 +83,14 @@ namespace TripleBladeHorse
 				HandleTransition();
 
 			FollowTrackPoints();
+		}
+
+		private void OnDestroy()
+		{
+			foreach (var pair in _timerPairList)
+			{
+				pair.Value.Dispose();
+			}
 		}
 
 		#region Event Handler
