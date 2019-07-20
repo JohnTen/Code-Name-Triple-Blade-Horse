@@ -38,6 +38,8 @@ namespace TripleBladeHorse
 		[SerializeField] float _minCrushSpeed;
 		[SerializeField] float _maxCrushSpeed;
 		[SerializeField] float _combo2SpeedScaler;
+		[SerializeField] float _stalkingSpeed = 4;
+		[SerializeField] float _stalkingSpeed2 = 0.2f;
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
 		[SerializeField] List<Collider2D> _combo2AttackBoxes;
@@ -56,6 +58,8 @@ namespace TripleBladeHorse
 		BossMover _mover;
 		AttackMove _currentMove;
 		Collider2D _collider;
+		BezierTracker _stalkTracker;
+		bool _stalking;
 
 		public event Action OnBeginDashingInvincible;
 		public event Action OnStopDashingInvincible;
@@ -70,7 +74,7 @@ namespace TripleBladeHorse
 			_mover = GetComponent<BossMover>();
 			_groundDetector = GetComponent<ICanDetectGround>();
 			_collider = GetComponent<Collider2D>();
-
+			_stalkTracker = new BezierTracker();
 
 			_input.OnReceivedInput += HandleReceivedInput;
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChange;
@@ -88,6 +92,46 @@ namespace TripleBladeHorse
 			}
 		}
 
+		private void Update()
+		{
+			if (!_mover.IsConstantMoving && _animator.GetBool(BossFSMData.Stat.Retreat))
+			{
+				_animator.SetBool(BossFSMData.Stat.Retreat, false);
+			}
+
+			_state._frozen = _animator.GetBool(BossFSMData.Stat.Frozen);
+			_input.DelayInput = _animator.GetBool(BossFSMData.Stat.DelayInput);
+			_input.BlockInput = _animator.GetBool(BossFSMData.Stat.BlockInput);
+
+			var rawMoveInput = _input.GetMovingDirection();
+			var aimInput = _state._frozen ? Vector2.zero : _input.GetAimingDirection().normalized;
+			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
+
+			UpdateMovingMode(aimInput, rawMoveInput);
+			UpdateFacingDirection(aimInput);
+
+			if (moveInput.x != 0)
+				moveInput = NormalizeHorizonalDirection(moveInput);
+			_mover.Move(moveInput);
+			
+			if (_state._frozen)
+			{
+				_animator.SetFloat(BossFSMData.Stat.XSpeed, 0);
+			}
+			else
+			{
+				_animator.SetFloat(BossFSMData.Stat.XSpeed, moveInput.x);
+			}
+		}
+
+		private void FixedUpdate()
+		{
+			if (_stalking)
+			{
+				Stalking();
+			}
+		}
+
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
 			_state._hitPoints -= result._finalDamage;
@@ -101,6 +145,15 @@ namespace TripleBladeHorse
 			if (_state._hitPoints <= 0)
 			{
 				_animator.SetBool(BossFSMData.Stat.Death, true);
+			}
+		}
+
+		private void HandleLandingStateChange(ICanDetectGround detector, LandingEventArgs eventArgs)
+		{
+			if (eventArgs.currentLandingState == LandingState.OnGround
+			 && _animator.GetCurrentAnimation().name == BossFSMData.Anim.Combo2_3)
+			{
+				_mover.InterruptContantMove();
 			}
 		}
 
@@ -182,47 +235,6 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleLandingStateChange(ICanDetectGround detector, LandingEventArgs eventArgs)
-		{
-			if (eventArgs.currentLandingState == LandingState.OnGround 
-			 && _animator.GetCurrentAnimation().name == BossFSMData.Anim.Combo2_3)
-			{
-				_mover.InterruptContantMove();
-			}
-		}
-
-		private void Update()
-		{
-			if (!_mover.IsConstantMoving && _animator.GetBool(BossFSMData.Stat.Retreat))
-			{
-				_animator.SetBool(BossFSMData.Stat.Retreat, false);
-			}
-
-			_state._frozen = _animator.GetBool(BossFSMData.Stat.Frozen);
-			_input.DelayInput = _animator.GetBool(BossFSMData.Stat.DelayInput);
-			_input.BlockInput = _animator.GetBool(BossFSMData.Stat.BlockInput);
-
-			var rawMoveInput = _input.GetMovingDirection();
-			var aimInput = _state._frozen ? Vector2.zero : _input.GetAimingDirection().normalized;
-			var moveInput = _state._frozen ? Vector2.zero : _input.GetMovingDirection().normalized;
-
-			UpdateMovingMode(aimInput, rawMoveInput);
-			UpdateFacingDirection(aimInput);
-
-			if (moveInput.x != 0)
-				moveInput = NormalizeHorizonalDirection(moveInput);
-			_mover.Move(moveInput);
-
-			if (_state._frozen)
-			{
-				_animator.SetFloat(BossFSMData.Stat.XSpeed, 0);
-			}
-			else
-			{
-				_animator.SetFloat(BossFSMData.Stat.XSpeed, moveInput.x);
-			}
-		}
-
 		private void HandleFadeInAnimation(AnimationEventArg eventArgs)
 		{
 			SetFrozen(eventArgs._animation.frozenOnStart);
@@ -243,10 +255,12 @@ namespace TripleBladeHorse
 				case BossFSMData.Anim.Combo2_1:
 					UpdateFacingDirection(aim);
 					_mover.InvokeConstantMovement(Vector2.up, _combo2RaiseSpeed, _combo2RaiseTime);
+					_stalkTracker.Initialize(transform.position);
+					_stalking = true;
 					break;
 
 				case BossFSMData.Anim.Combo2_2:
-					//UpdateFacingDirection(aim);
+					UpdateFacingDirection(aim);
 					_mover.InvokeConstantMovement(Vector2.up, _combo2PauseSpeed, _combo2PauseTime);
 					break;
 
@@ -263,10 +277,13 @@ namespace TripleBladeHorse
 					_combo2CrushSpeed.constant = speed;
 					_combo2CrushSpeed.curveMultiplier = speed;
 					_mover.InvokeConstantMovement(toPlayer, _combo2CrushSpeed, _combo2CrushTime);
+
+					_stalking = false;
 					break;
 
 				case BossFSMData.Anim.Combo3_2:
 					UpdateFacingDirection(aim);
+					print(aim);
 					_mover.InvokeConstantMovement(moveDirection, _thrustSpeed, _thrustTime);
 					break;
 
@@ -337,6 +354,29 @@ namespace TripleBladeHorse
 			return DirectionalHelper.NormalizeHorizonalDirection(direction);
 		}
 
+		void Stalking()
+		{
+			var player = GameManager.PlayerInstance;
+			Vector2 fromPlayer = transform.position - player.transform.position;
+			var facingDirection = fromPlayer.x < 0;
+			var idealPlayerPosition = (Vector2)player.transform.position +
+				(facingDirection ? _combo2CrushOffset : -_combo2CrushOffset);
+			var idealPosition = idealPlayerPosition;
+			idealPosition.y += fromPlayer.y;
+			idealPosition.x += facingDirection ? -fromPlayer.y : fromPlayer.y;
+			UpdateFacingDirection(-fromPlayer);
+
+			Debug.DrawLine(idealPosition, idealPlayerPosition);
+
+			idealPosition.y = transform.position.y;
+			var movement = _stalkTracker.Berp((Vector2)transform.position, idealPosition, _stalkingSpeed2);
+			movement.y = transform.position.y;
+			movement = Vector2.MoveTowards(transform.position, idealPosition, _stalkingSpeed * TimeManager.DeltaTime);
+			movement -= (Vector2)transform.position;
+
+			_mover.ManualMove(movement);
+		}
+
 		void SetDelayInput(bool value)
 		{
 			_animator.SetBool(BossFSMData.Stat.DelayInput, value);
@@ -392,12 +432,10 @@ namespace TripleBladeHorse
 				{
 					pivot.transform.localEulerAngles = _state._facingRight ? Vector3.zero : Vector3.up * 180;
 				}
+				print("Updated direction");
 			}
 		}
 
-		public void Dash(Vector2 direction)
-		{
-			throw new System.NotImplementedException();
-		}
+		public void Dash(Vector2 direction) { }
 	}
 }

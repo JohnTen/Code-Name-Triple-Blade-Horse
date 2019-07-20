@@ -11,7 +11,7 @@ public class SoundClips
 	public AudioClip[] sounds;
 	public AudioMixerGroup output;
 	public bool mute;
-	public bool playOnAwake;
+	public bool playOnAwake = true;
 	public bool loop;
 
 	[Range(0f, 1f)] public float volume = 1;
@@ -62,6 +62,7 @@ public class SoundClips
 public class SoundManager : MonoSingleton<SoundManager>
 {
 	[SerializeField] SoundClips[] clips;
+
 	[Header("Debug")]
 	[SerializeField] GameObject soundObject;
 	[SerializeField] List<AudioSource> sources;
