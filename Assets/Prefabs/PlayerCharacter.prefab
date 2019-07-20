@@ -2177,7 +2177,7 @@ MonoBehaviour:
   _enduranceRefreshDelay: 10
   _enduranceRecoverDelay: 1
   _enduranceSafeThreshlod: 40
-  _hitPointDamage: 5
+  _hitPointDamage: 15
   _enduranceDamage: 5
   _facingRight: 1
   _frozen: 0
@@ -4233,16 +4233,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4717973156132607527}
     m_Modifications:
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: color.r
-      value: 0.9219512
-      objectReference: {fileID: 0}
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: color.g
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1422545191621314, guid: e81cac334375e254e98f7dc5960d6465, type: 3}
       propertyPath: m_Name
       value: Knife
@@ -4344,6 +4334,16 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 7.23
       objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: color.r
+      value: 0.9219512
+      objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: color.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2440802656053766355, guid: e81cac334375e254e98f7dc5960d6465,
         type: 3}
       propertyPath: m_RootOrder
@@ -4391,12 +4391,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4717973155925890579}
     m_Modifications:
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: _ghostPrefab
-      value: 
-      objectReference: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
-        type: 3}
     - target: {fileID: 1422545191621314, guid: e81cac334375e254e98f7dc5960d6465, type: 3}
       propertyPath: m_Name
       value: Knife
@@ -4445,6 +4439,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: _ghostPrefab
+      value: 
+      objectReference: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e81cac334375e254e98f7dc5960d6465, type: 3}
 --- !u!114 &2326407945464803126 stripped
@@ -5027,27 +5027,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4717973155923025359}
     m_Modifications:
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: color.g
-      value: 0.71731216
-      objectReference: {fileID: 0}
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: color.b
-      value: 0.8490566
-      objectReference: {fileID: 0}
-    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
-        type: 3}
-      propertyPath: _ghostPrefab
-      value: 
-      objectReference: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
-        type: 3}
     - target: {fileID: 1422545191621314, guid: e81cac334375e254e98f7dc5960d6465, type: 3}
       propertyPath: m_Name
       value: Knife
@@ -5149,6 +5128,27 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 7.31
       objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: color.g
+      value: 0.71731216
+      objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: color.b
+      value: 0.8490566
+      objectReference: {fileID: 0}
+    - target: {fileID: 974760221936440285, guid: e81cac334375e254e98f7dc5960d6465,
+        type: 3}
+      propertyPath: _ghostPrefab
+      value: 
+      objectReference: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
+        type: 3}
     - target: {fileID: 2440802656053766355, guid: e81cac334375e254e98f7dc5960d6465,
         type: 3}
       propertyPath: m_RootOrder
