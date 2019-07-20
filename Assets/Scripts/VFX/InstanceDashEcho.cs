@@ -12,15 +12,22 @@ namespace TripleBladeHorse.VFX
 		[SerializeField] private float DistanceBtwSpawns;
 		[SerializeField] private float destoryTime;
 		[SerializeField] private Color color;
+
 		private Vector3 startPositionBtwSpawns;
 		private bool isDash = false;
-		private ICanDash playerMover;
+		private ICanDash mover;
+
+		public Color Color
+		{
+			get => color;
+			set => color = value;
+		}
 
 		private void Start()
 		{
-			playerMover = this.GetComponent<ICanDash>();
-			playerMover.OnBeginDashingInvincible += DashBeginHandler;
-			playerMover.OnStopDashingInvincible += DashEndHandler;
+			mover = this.GetComponent<ICanDash>();
+			mover.OnBeginDashingInvincible += DashBeginHandler;
+			mover.OnStopDashingInvincible += DashEndHandler;
 		}
 
 		private void DashBeginHandler()

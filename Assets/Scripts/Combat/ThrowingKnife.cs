@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
+using TripleBladeHorse.VFX;
 
 namespace TripleBladeHorse.Combat
 {
@@ -29,6 +30,7 @@ namespace TripleBladeHorse.Combat
 		[SerializeField] LayerMask rayCastMask;
 		[Header("VFX")]
 		[SerializeField] Transform flyingVFX;
+		[SerializeField] SpriteGhostEffect chargeFlyingEffect;
 		[Header("Debug")]
 		[SerializeField] float traveledDistance;
 		[SerializeField] float hoverTimer;
@@ -118,6 +120,11 @@ namespace TripleBladeHorse.Combat
 				}
 			}
 
+			if (chargeFlyingEffect && piercing)
+			{
+				chargeFlyingEffect.StartDraw();
+			}
+
 			return true;
 		}
 
@@ -135,6 +142,11 @@ namespace TripleBladeHorse.Combat
 
 			if (flyingVFX)
 				flyingVFX.SetParent(null);
+
+			if (chargeFlyingEffect)
+			{
+				chargeFlyingEffect.StopDraw();
+			}
 
 			return true;
 		}
@@ -177,6 +189,11 @@ namespace TripleBladeHorse.Combat
 				flyingVFX.rotation = transform.rotation;
 			}
 
+			if (chargeFlyingEffect && piercing)
+			{
+				chargeFlyingEffect.StartDraw();
+			}
+
 			return true;
 		}
 
@@ -197,6 +214,22 @@ namespace TripleBladeHorse.Combat
 			hoverTimer = 0;
 			traveledDistance = 0;
             State = KnifeState.InSheath;
+
+			if (flyingVFX)
+			{
+				List<ParticleSystem> particles = new List<ParticleSystem>();
+				flyingVFX.GetComponentsInChildren(particles);
+				flyingVFX.SetParent(null);
+				foreach (var particle in particles)
+				{
+					particle.Stop();
+				}
+			}
+
+			if (chargeFlyingEffect)
+			{
+				chargeFlyingEffect.StopDraw();
+			}
 		}
 
 		private void Flying()
@@ -238,6 +271,11 @@ namespace TripleBladeHorse.Combat
 					{
 						particle.Stop();
 					}
+				}
+				
+				if (chargeFlyingEffect)
+				{
+					chargeFlyingEffect.StopDraw();
 				}
 
 				Deactivate();

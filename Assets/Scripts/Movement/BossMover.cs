@@ -29,10 +29,11 @@ namespace TripleBladeHorse.Movement
 		Rigidbody2D _rigidbody;
 
 		ParticleSystem.MinMaxCurve _constantMovingSpeedCurve;
-		Vector3 _constantMoveVelocity;
+		Vector2 _constantMoveVelocity;
 		bool _usingCurveForConstantMoving;
 		float _originalGravityScale;
 		MoveMode _moveMode;
+		Vector2 _extraMovement;
 
 		CharacterState _state;
 		List<ContactPoint2D> _contacts;
@@ -100,6 +101,11 @@ namespace TripleBladeHorse.Movement
 		{
 			if (!IsConstantMoving)
 			_movementVector = direction;
+		}
+
+		public void ManualMove(Vector2 toward)
+		{
+			_extraMovement += toward;
 		}
 
 		public void InvokeConstantMovement(Vector3 velocity, float time)
@@ -193,10 +199,14 @@ namespace TripleBladeHorse.Movement
 				}
 
 				_velocity = ApplyPhysicalContactEffects(_velocity);
-				_rigidbody.MovePosition((Vector2)transform.position + _velocity * TimeManager.DeltaTime);
+				_extraMovement = ApplyPhysicalContactEffects(_extraMovement);
+				var movement = (Vector2)transform.position + _velocity * TimeManager.DeltaTime;
+				movement += _extraMovement;
+				_rigidbody.MovePosition(movement);
 				ResetPhysicalContacts();
 
 				timer += TimeManager.DeltaTime;
+				_extraMovement = Vector2.zero;
 				yield return wait;
 			}
 
