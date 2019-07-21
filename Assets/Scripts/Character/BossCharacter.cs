@@ -52,7 +52,7 @@ namespace TripleBladeHorse
 		[SerializeField] List<Collider2D> _thrustAttackBoxes;
 
 		FSM _animator;
-		CharacterState _state;
+		EnemyState _state;
 		ICharacterInput<BossInput> _input;
 		ICanDetectGround _groundDetector;
 		HitFlash _hitFlash;
@@ -69,7 +69,7 @@ namespace TripleBladeHorse
 		private void Awake()
 		{
 			_animator = GetComponent<FSM>();
-			_state = GetComponent<CharacterState>();
+			_state = GetComponent<EnemyState>();
 			_input = GetComponent<ICharacterInput<BossInput>>();
 			_hitFlash = GetComponent<HitFlash>();
 			_mover = GetComponent<BossMover>();
@@ -110,11 +110,12 @@ namespace TripleBladeHorse
 
 			UpdateMovingMode(aimInput, rawMoveInput);
 			UpdateFacingDirection(aimInput);
+			UpdateStates();
 
 			if (moveInput.x != 0)
 				moveInput = NormalizeHorizonalDirection(moveInput);
 			_mover.Move(moveInput);
-			
+
 			if (_state._frozen)
 			{
 				_animator.SetFloat(BossFSMData.Stat.XSpeed, 0);
@@ -399,6 +400,18 @@ namespace TripleBladeHorse
 		{
 			_animator.SetBool(BossFSMData.Stat.Frozen, value);
 			_state._frozen = value;
+		}
+
+		void UpdateStates()
+		{
+			if (_state._currentComboInterval > 0)
+			{
+				_state._currentComboInterval -= TimeManager.DeltaTime;
+				if (_state._currentComboInterval <= 0)
+				{
+					_state._currentComboTimes = 0;
+				}
+			}
 		}
 
 		void UpdateMovingMode(Vector2 aimInput, Vector2 moveInput)
