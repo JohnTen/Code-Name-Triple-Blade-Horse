@@ -40,6 +40,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _combo2SpeedScaler;
 		[SerializeField] float _stalkingSpeed = 4;
 		[SerializeField] float _stalkingSpeed2 = 0.2f;
+		[SerializeField] float _stalkingBackwardSpeedOffset = 0.3f;
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
 		[SerializeField] List<Collider2D> _combo2AttackBoxes;
@@ -373,6 +374,11 @@ namespace TripleBladeHorse
 			movement.y = transform.position.y;
 			movement = Vector2.MoveTowards(transform.position, idealPosition, _stalkingSpeed * TimeManager.DeltaTime);
 			movement -= (Vector2)transform.position;
+
+			if (movement.x > 0 != facingDirection)
+			{
+				movement *= _stalkingBackwardSpeedOffset;
+			}
 
 			_mover.ManualMove(movement);
 		}
