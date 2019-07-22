@@ -246,9 +246,9 @@ namespace TripleBladeHorse.AI
         // Update is called once per frame
         void Update()
         {
+            
             _distance = _target.position - this.transform.position;
 
-            
         }
     }
 }
