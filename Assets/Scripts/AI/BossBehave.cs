@@ -73,11 +73,17 @@ namespace TripleBladeHorse.AI
 
         public Vector2 GetAimingDirection()
 		{
+            if(DelayInput || BlockInput){
+                return Vector2.zero;
+            }
 			return _aim;
 		}
 
 		public Vector2 GetMovingDirection()
 		{
+            if(DelayInput || BlockInput){
+                return Vector2.zero;
+            }
 			return _move;
 		}
 
@@ -240,9 +246,9 @@ namespace TripleBladeHorse.AI
         // Update is called once per frame
         void Update()
         {
+            
             _distance = _target.position - this.transform.position;
 
-            
         }
     }
 }
