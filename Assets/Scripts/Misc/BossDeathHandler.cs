@@ -22,6 +22,7 @@ namespace TripleBladeHorse
 			playing = true;
 			foreach (var points in _weakpoints)
 			{
+				points.GetComponent<Climbable>().enabled = false;
 				points.gameObject.SetActive(false);
 			}
 

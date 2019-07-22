@@ -335,13 +335,8 @@ namespace TripleBladeHorse
 						_mover.Jump();
 					}
 
-					if (_extraJump)
-					{
-						TimeManager.Instance.ActivateBulletTime();
-					}
-
+					TriggerBulletTimeIfPossible();
 					_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
-					_extraJump = false;
 					break;
 
 				case PlayerInputCommand.Dash:
@@ -363,6 +358,7 @@ namespace TripleBladeHorse
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
 						_currentAirAttack = 0;
+						TriggerBulletTimeIfPossible();
 						_extraJump = true;
 					}
 					else if (!airDash)
@@ -397,11 +393,15 @@ namespace TripleBladeHorse
 					_mover.AirAttacking = !_groundDetector.IsOnGround;
 					SetDelayInput(true);
 					SetFrozen(true);
+
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.MeleeChargeBegin:
 					CancelAnimation();
 					_animator.SetBool(PlayerFSMData.Stat.Charge, true);
+
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.MeleeChargeBreak:
@@ -512,6 +512,15 @@ namespace TripleBladeHorse
 		{
 			_animator.SetBool(PlayerFSMData.Stat.Frozen, value);
 			_state._frozen = value;
+		}
+
+		void TriggerBulletTimeIfPossible()
+		{
+			if (_extraJump)
+			{
+				TimeManager.Instance.ActivateBulletTime();
+				_extraJump = false;
+			}
 		}
 		
 		void UpdateFacingDirection(Vector2 movementInput)

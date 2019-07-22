@@ -49,7 +49,7 @@ namespace JTUtility.Interactables
 			timer.Dispose();
 		}
 
-		protected void Timer_OnTimeOut()
+		protected void Timer_OnTimeOut(Timer timer)
 		{
 			InvokeDeactivated();
 
