@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4750746678030700}
   - component: {fileID: 114409296157640428}
-  - component: {fileID: 96102941535840232}
+  - component: {fileID: 974760221936440285}
   m_Layer: 12
   m_Name: Knife
   m_TagString: Untagged
@@ -30,6 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8818100173993470380}
+  - {fileID: 2440802656053766355}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54,137 +55,44 @@ MonoBehaviour:
   speed: 40
   bladeLength: 0.25
   backDistance: 0.8
-  sinkingLength: 0
+  sinkingLength: 0.1
   hoveringDistance: 12
   hoveringDuration: 5
-  hoveringRotateSpeed: -720
+  hoveringRotateSpeed: -900
   normalAttackRate: 1
   floatAttackRate: 0.2
+  cooldown: 1
   rayCastMask:
     serializedVersion: 2
-    m_Bits: 11521
-  flyingVFX: {fileID: 0}
+    m_Bits: 10241
+  flyingVFX: {fileID: 2440802656053766355}
+  chargeFlyingEffect: {fileID: 974760221936440285}
   traveledDistance: 0
   hoverTimer: 0
   state: 0
   piercing: 0
   normalAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
   chargedAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
-  floatAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
-  drawStuckAttack: {fileID: 0}
---- !u!96 &96102941535840232
-TrailRenderer:
-  serializedVersion: 2
+  floatAttack: {fileID: 11400000, guid: 0ee0f14d677ccfb45b6700d0e6abca62, type: 2}
+  drawStuckAttack: {fileID: 11400000, guid: 0ee0f14d677ccfb45b6700d0e6abca62, type: 2}
+--- !u!114 &974760221936440285
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422545191621314}
   m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Time: 1
-  m_Parameters:
-    serializedVersion: 3
-    widthMultiplier: 0.2
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2
-        value: 1
-        inSlope: 0.10874883
-        outSlope: 0.10874883
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.96794873
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 13107
-      atime2: 65535
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 3
-    numCornerVertices: 0
-    numCapVertices: 0
-    alignment: 0
-    textureMode: 0
-    shadowBias: 0
-    generateLightingData: 0
-  m_MinVertexDistance: 0.1
-  m_Autodestruct: 0
-  m_Emitting: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fa6915254bdb944090c883c5b3121f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _root: {fileID: 8818100173993470380}
+  distanceBtwSpawns: 0.2
+  _existTime: 2
+  color: {r: 0.8301887, g: 0, b: 0, a: 1}
+  _ghostPrefab: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
+    type: 3}
 --- !u!1 &3672448917957651048
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,3 +203,98 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &7136242160270347212
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4750746678030700}
+    m_Modifications:
+    - target: {fileID: 4816177013532304156, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_Name
+      value: FlyingVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+        type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ae73efeb3ab1c264e96ca4948e1efc78, type: 3}
+--- !u!4 &2440802656053766355 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4816177013532304159, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+    type: 3}
+  m_PrefabInstance: {fileID: 7136242160270347212}
+  m_PrefabAsset: {fileID: 0}

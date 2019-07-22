@@ -41,9 +41,10 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.WeightCalc),
+                        BT.Wait(0.5f),
+                        BT.Call(_behave.WeightCalc)
                         //BT.Call(_behave.CombatTempGen),
-                        BT.Wait(0.5f)
+                        
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.InAttackRange),
@@ -52,9 +53,10 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.WeightCalc),
+                        BT.Wait(Random.Range(0.5f,1f)),
+                        BT.Call(_behave.WeightCalc)
                         //BT.Call(_behave.CombatTempGen),
-                        BT.Wait(Random.Range(0.5f,1f))
+                        
                         
                     ),
 

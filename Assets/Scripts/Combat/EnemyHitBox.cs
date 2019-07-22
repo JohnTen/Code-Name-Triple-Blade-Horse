@@ -15,8 +15,7 @@ namespace TripleBladeHorse.Combat
 	public class EnemyHitBox : HitBox
 	{
 		[SerializeField] EnemyState _state;
-
-		public event Action<HitBox, int> OnComboCancel;
+		
 		public event Action<HitBox, ComboEventArgs> OnComboRaise;
 		public event Action<HitBox, ComboEventArgs> OnComboExceeded;
 
@@ -55,11 +54,6 @@ namespace TripleBladeHorse.Combat
 			result._finalDamage += _state._currentComboTimes * _state._comboAdditiveDamage;
 		}
 
-		protected virtual void RaiseComboCancel(int comboTimes)
-		{
-			OnComboCancel?.Invoke(this, comboTimes);
-		}
-
 		protected virtual void RaiseComboExceeded(int comboTimes, float extraDamage, float baseDamage)
 		{
 			ComboEventArgs eventArgs = new ComboEventArgs
@@ -80,19 +74,6 @@ namespace TripleBladeHorse.Combat
 				comboDamage = extraDamage
 			};
 			OnComboRaise?.Invoke(this, eventArgs);
-		}
-
-		protected virtual void Update()
-		{
-			if (_state._currentComboInterval > 0)
-			{
-				_state._currentComboInterval -= TimeManager.DeltaTime;
-				if (_state._currentComboInterval <= 0)
-				{
-					RaiseComboCancel(_state._currentComboTimes);
-					_state._currentComboTimes = 0;
-				}
-			}
 		}
 	}
 }

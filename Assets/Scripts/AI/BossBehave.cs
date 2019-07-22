@@ -27,10 +27,10 @@ namespace TripleBladeHorse.AI
 
         bool _opening = true;
         bool _isCharging;
-		int _slashCount = 0;
-        int _attackCount = 0;
+		[SerializeField] int _slashCount = 0;
+        [SerializeField] int _attackCount = 0;
         float dodgePercent = 3000;
-		public int _maxSlashCount=3;
+		[SerializeField] int _maxSlashCount=3;
 		public int[] weight = new int[]{5,1,3};
 		public float combatTemp = 3;
 		
@@ -185,8 +185,8 @@ namespace TripleBladeHorse.AI
                 weight[1] = 3;
             };
 
-            if(_slashCount > 0 && _slashCount <= _maxSlashCount && !IsLowHealth()){
-                weight[0] = 3 + _maxSlashCount - _slashCount;
+            if(_slashCount > 0 && _slashCount <= _maxSlashCount){
+                weight[0] -= 2;
             };
 
             if(_slashCount > _maxSlashCount){
@@ -235,12 +235,7 @@ namespace TripleBladeHorse.AI
 
         private void HandleOnHit(IAttackable attackable, AttackResult result, AttackPackage package)
         {
-            if(_slashCount>0)
-            {
-                if(!result._attackSuccess){
-                    _slashCount --;
-                }
-            }
+
         }
         // Update is called once per frame
         void Update()
