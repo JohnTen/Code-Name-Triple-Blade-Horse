@@ -7,13 +7,13 @@ using TripleBladeHorse;
 
 public class PauseMenu : MonoBehaviour, IInputModelPlugable
 {
-	[SerializeField] GameObject pausemenu;
+	[SerializeField] Canvas pausemenu;
     bool controller;
     IInputModel input;
 	// Start is called before the first frame update
 	void Start()
 	{
-		pausemenu.SetActive(false);
+		pausemenu.enabled = false;
         InputManager.Instance.RegisterPluggable(0, this);
     }
 
@@ -22,15 +22,16 @@ public class PauseMenu : MonoBehaviour, IInputModelPlugable
 	{
 		if (input.GetButtonDown("Menu"))
 		{
-			pausemenu.SetActive(true);
-			TimeManager.Instance.Pause();
+            print("pause menu");
+            pausemenu.enabled = true;
+            TimeManager.Instance.Pause();
 		}
 	}
 
 	public void ContinueGame()
 	{
-		pausemenu.SetActive(false);
-		TimeManager.Instance.Unpause();
+        pausemenu.enabled = false;
+        TimeManager.Instance.Unpause();
 
 	}
 	public void ExitGame()
