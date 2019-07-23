@@ -93,8 +93,12 @@ namespace TripleBladeHorse.UI
 		{
 			_decayTimer = _decayDelay;
 			_disappearTimer = _disappearDelay;
+			var totalComboTimes = _state._currentMeleeComboTimes + _state._currentRangeComboTimes;
+			var comboDamage =
+				_state._currentMeleeComboTimes * _state._meleeComboAdditiveDamage +
+				_state._currentRangeComboTimes * _state._rangeComboAdditiveDamage;
 
-			if (_state._currentComboTimes == _lastComboTime)
+			if (totalComboTimes == _lastComboTime)
 			{
 				_currentBaseDamage += result._finalDamage;
 			}
@@ -105,9 +109,8 @@ namespace TripleBladeHorse.UI
 					_decaying = true;
 				}
 
-				_lastComboTime = _state._currentComboTimes;
-				var extraDamage = _state._comboAdditiveDamage * _lastComboTime;
-				var baseDamage = result._finalDamage - extraDamage;
+				_lastComboTime = totalComboTimes;
+				var baseDamage = result._finalDamage - comboDamage;
 
 				if (baseDamage > _state._hitPoints)
 				{
@@ -120,7 +123,7 @@ namespace TripleBladeHorse.UI
 				}
 
 				_currentBaseDamage += baseDamage;
-				_currentExtraDamage += extraDamage;
+				_currentExtraDamage += comboDamage;
 			}
 
 			UpdateSlider();

@@ -1634,10 +1634,12 @@ MonoBehaviour:
   _frozen: 0
   _airborne: 0
   _attacking: 0
-  _comboAdditiveDamage: 20
+  _meleeComboAdditiveDamage: 16
+  _rangeComboAdditiveDamage: 8
   _comboMaxTimes: 10
   _comboMaxInterval: 4
-  _currentComboTimes: 0
+  _currentMeleeComboTimes: 0
+  _currentRangeComboTimes: 0
   _currentComboInterval: 0
 --- !u!114 &390506253
 MonoBehaviour:

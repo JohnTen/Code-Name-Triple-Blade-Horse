@@ -409,7 +409,8 @@ namespace TripleBladeHorse
 				_state._currentComboInterval -= TimeManager.DeltaTime;
 				if (_state._currentComboInterval <= 0)
 				{
-					_state._currentComboTimes = 0;
+					_state._currentMeleeComboTimes = 0;
+					_state._currentRangeComboTimes = 0;
 				}
 			}
 		}
