@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3141621328622397447}
   m_Layer: 0
   m_Name: BreakablePlatform
-  m_TagString: Climbable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -121,15 +121,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5312732379377115247}
   - component: {fileID: 8098522268483158819}
-  - component: {fileID: 2439879060423676490}
-  - component: {fileID: 9088633791717132859}
   - component: {fileID: 7529344180245999652}
   - component: {fileID: 3702068766767206184}
   - component: {fileID: 3581652661202826259}
   - component: {fileID: 7770998350640955873}
   m_Layer: 0
   m_Name: BreakablePlatform
-  m_TagString: Climbable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -175,54 +173,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2723303, y: 0.048473537}
   m_EdgeRadius: 0
---- !u!68 &2439879060423676490
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9148558333651761796}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.44994593, y: -0.28310138}
-  - {x: -0.65, y: 0.34}
-  - {x: 0.65, y: 0.34}
-  - {x: 0.55800676, y: -0.02555847}
-  - {x: 0.42370558, y: -0.29249823}
-  - {x: 0.27667046, y: -0.45280454}
-  - {x: 0.13178587, y: -0.49994147}
-  - {x: -0.1836133, y: -0.4997126}
-  - {x: -0.30981302, y: -0.44925687}
-  - {x: -0.45088172, y: -0.28210956}
---- !u!114 &9088633791717132859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9148558333651761796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c96e77a66a2f345a40941ae2b87146, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canStick: 0
-  _canPullingJump: 0
-  _restoredStamina: 0
-  _maxStuckedKnife: 0
-  _numberOfEnergyBall: 1
-  _pullForceFactor: 1
-  _enegryBallPrefab: {fileID: 0}
-  stuckObj: []
-  _rigidbody: {fileID: 0}
-  _generatedEnergyBalls: 0
 --- !u!114 &7529344180245999652
 MonoBehaviour:
   m_ObjectHideFlags: 0
