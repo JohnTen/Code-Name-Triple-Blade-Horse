@@ -52,14 +52,14 @@ namespace TripleBladeHorse
 		[SerializeField] float _withdrawTimer;
 		[SerializeField] PlayerInputCommand _delayedCommand;
 
-		bool _triggerInput;
-		bool _usingController;
-		bool _throwPressedBefore;
-		bool _withdrawPressedBefore;
-		IInputModel _input;
-		InputEventArg<PlayerInputCommand> _delayedInput;
+		protected bool _triggerInput;
+		protected bool _usingController;
+		protected bool _throwPressedBefore;
+		protected bool _withdrawPressedBefore;
+		protected IInputModel _input;
+		protected InputEventArg<PlayerInputCommand> _delayedInput;
 
-		public bool DelayInput
+		public virtual bool DelayInput
 		{
 			get => _delayingInput;
 			set
@@ -85,7 +85,7 @@ namespace TripleBladeHorse
 			}
 		}
 
-		public bool BlockInput
+		public virtual bool BlockInput
 		{
 			get => _blockInput;
 			set
@@ -102,16 +102,18 @@ namespace TripleBladeHorse
 			}
 		}
 
+		public virtual bool IsUsingController => _usingController;
+
 		public event Action<InputEventArg<PlayerInputCommand>> OnReceivedInput;
 
-		public Vector2 GetMovingDirection()
+		public virtual Vector2 GetMovingDirection()
 		{
 			if (BlockInput)
 				return Vector2.zero;
 			return new Vector2(_input.GetAxis("MoveX"), _input.GetAxis("MoveY")).normalized;
 		}
 
-		public Vector2 GetAimingDirection()
+		public virtual Vector2 GetAimingDirection()
 		{
 			if (BlockInput)
 			{
@@ -164,12 +166,12 @@ namespace TripleBladeHorse
 			_usingController = model is ControllerInputModel;
 		}
 
-		private void Start()
+		protected virtual void Start()
 		{
 			InputManager.Instance.RegisterPluggable(0, this);
 		}
 
-		private void Update()
+		protected virtual void Update()
 		{
 			if (BlockInput) return;
 			_triggerInput = false;
@@ -186,11 +188,12 @@ namespace TripleBladeHorse
 			HandleRegeneration();
 			if (_triggerInput) return;
 
+			GetAimingDirection();
 			HandleRangeInput();
 			HandleWithdraw();
 		}
 
-		private void InvokeInputEvent(PlayerInputCommand command)
+		protected virtual void InvokeInputEvent(PlayerInputCommand command)
 		{
 			_triggerInput = true;
 			if (DelayInput)
@@ -203,7 +206,7 @@ namespace TripleBladeHorse
 			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command));
 		}
 
-		private void InvokeInputEvent(PlayerInputCommand command, Func<float> timer)
+		protected virtual void InvokeInputEvent(PlayerInputCommand command, Func<float> timer)
 		{
 			_triggerInput = true;
 			if (DelayInput)
@@ -216,7 +219,7 @@ namespace TripleBladeHorse
 			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, timer));
 		}
 
-		private void InvokeInputEvent(PlayerInputCommand command, float value)
+		protected virtual void InvokeInputEvent(PlayerInputCommand command, float value)
 		{
 			_triggerInput = true;
 			if (DelayInput)
@@ -230,7 +233,7 @@ namespace TripleBladeHorse
 			OnReceivedInput?.Invoke(new InputEventArg<PlayerInputCommand>(command, value));
 		}
 
-		private void HandleMeleeInput()
+		protected virtual void HandleMeleeInput()
 		{
 			if (_input.GetButtonDown("Melee"))
 			{
@@ -287,7 +290,7 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleRangeInput()
+		protected virtual void HandleRangeInput()
 		{
 			if (_usingController)
 			{
@@ -325,16 +328,13 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleControllerRangeInput()
+		protected virtual void HandleControllerRangeInput()
 		{
 			var throwPressed = false;
 
-			if (GetAimingDirection().sqrMagnitude > 0.025f)
+			if (_input.GetAxis("Throw") > 0.3f)
 			{
-				if (_input.GetAxis("Throw") > 0.3f)
-				{
-					throwPressed = true;
-				}
+				throwPressed = true;
 			}
 
 			if (throwPressed)
@@ -371,7 +371,7 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleJumpInput()
+		protected virtual void HandleJumpInput()
 		{
 			if (_input.GetButtonDown("Jump"))
 			{
@@ -396,7 +396,7 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleDashInput()
+		protected virtual void HandleDashInput()
 		{
 			if(_input.GetButtonDown("Dash"))
 			{
@@ -404,7 +404,7 @@ namespace TripleBladeHorse
 			}
 		}
 
-		private void HandleWithdraw()
+		protected virtual void HandleWithdraw()
 		{
 			var onButton = false; 
 			var onButtonUp = false; 
