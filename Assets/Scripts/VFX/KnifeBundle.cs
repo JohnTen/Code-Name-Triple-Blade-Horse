@@ -24,7 +24,8 @@ namespace TripleBladeHorse
 
         private void Awake()
         {
-            _audios = new Dictionary<string, AudioClip>();
+			_pitch = new Dictionary<string, float>();
+			_audios = new Dictionary<string, AudioClip>();
             _audiosVolume = new Dictionary<string, float>();
 
             foreach (var pair in _audioPairs)

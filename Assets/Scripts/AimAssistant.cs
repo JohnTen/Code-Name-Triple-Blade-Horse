@@ -12,6 +12,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _projectileSpeed = 15f;
 		[SerializeField] Transform _launchPoint;
 		[SerializeField] List<string> _aimingTags;
+		[SerializeField] LayerMask _obstacleLayer;
 
 		[Header("Debug")]
 		[SerializeField] bool _trackingObjects;
@@ -60,11 +61,15 @@ namespace TripleBladeHorse
 
 			for (int i = 0; i < _objects.Count; i++)
 			{
-				var predictPoint = PredictHittingPoint(_objects[i].position, _velocities[i], currentPosition, _projectileSpeed);
-				if (float.IsInfinity(predictPoint.x)) continue;
+				//var predictPoint = PredictHittingPoint(_objects[i].position, _velocities[i], currentPosition, _projectileSpeed);
+				//if (float.IsInfinity(predictPoint.x)) continue;
 
-				var toPoint = predictPoint - currentPosition;
+
+				var toPoint = (Vector2)_objects[i].position - currentPosition;
 				if (Mathf.Sign(toPoint.x) != Mathf.Sign(aimDirection.x)) continue;
+
+				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
+				if (hit.collider != null) continue;
 
 				if (toPoint.sqrMagnitude > minDistance || toPoint.sqrMagnitude > maxDistance) continue;
 
@@ -89,7 +94,9 @@ namespace TripleBladeHorse
 
 				var toPoint = predictPoint - currentPosition;
 				var angle = Vector2.Angle(aimingDirection, predictPoint);
-				print(angle);
+
+				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
+				if (hit.collider != null) continue;
 
 				if (angle > minAngle) continue;
 				minAngle = angle;
@@ -169,7 +176,7 @@ namespace TripleBladeHorse
 				_velocities[i] = posDiff * _lastFrameDeltaTime;
 			}
 
-			_lastFrameDeltaTime = TimeManager.DeltaTime;
+			_lastFrameDeltaTime = TimeManager.PlayerDeltaTime;
 		}
 	}
 }
