@@ -10,19 +10,15 @@ namespace TripleBladeHorse
 {
     public class ParticleBundleBoss : MonoBehaviour
     {
-        [System.Serializable]
-        class StrParticlePair : PairedValue<string, ParticleSystem> { }
-
+     
         [System.Serializable]
         class StrAudioPair : PairedValue<string, AudioClip> { }
 
         [SerializeField] private AudioSource bossAudioSource;
-        [SerializeField] List<StrParticlePair> _particlePairs;
         [SerializeField] List<StrAudioPair> _audioPairs;
         [SerializeField] List<StrFloatPair> _volumePairs;
         [SerializeField] List<StrFloatPair> _pitchPairs;
 
-        private Dictionary<string, ParticleSystem> _particles;
         private Dictionary<string, AudioClip> _audios;
         private Dictionary<string, float> _audiosVolume;
         private Dictionary<string, float> _pitch;
@@ -42,12 +38,6 @@ namespace TripleBladeHorse
             _audiosVolume =new Dictionary<string, float>();
             _audios = new Dictionary<string, AudioClip>();
 			_pitch = new Dictionary<string, float>();
-
-
-			foreach (var pair in _particlePairs)
-            {
-                _particles.Add(pair.Key, pair.Value);
-            }
 
             foreach (var pair in _audioPairs)
             {
