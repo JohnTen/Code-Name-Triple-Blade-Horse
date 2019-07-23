@@ -43,7 +43,8 @@ public class PauseMenu : MonoBehaviour, IInputModelPlugable
 
 	public void ExitGame()
 	{
-		Application.Quit();
+		panel.gameObject.SetActive(canvas.enabled);
+		TimeManager.Instance.Unpause();
 	}
 
     public void SetInputModel(IInputModel model)
