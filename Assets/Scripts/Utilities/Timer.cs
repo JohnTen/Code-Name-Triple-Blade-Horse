@@ -60,11 +60,12 @@ namespace JTUtility
 					if (timers[k].OnTimeOut != null)
 					{
 						timers[k].OnTimeOut.Invoke(timers[k]);
-						if (timers[k].raiseTimeOut != null)
-						{
-							timers[k].raiseTimeOut.Invoke(timers[k]);
-							timers[k].raiseTimeOut = null;
-						}
+					}
+
+					if (timers[k].raiseTimeOut != null)
+					{
+						timers[k].raiseTimeOut.Invoke(timers[k]);
+						timers[k].raiseTimeOut = null;
 					}
 				}
 			}

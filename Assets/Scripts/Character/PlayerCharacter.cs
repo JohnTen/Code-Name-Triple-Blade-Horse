@@ -13,6 +13,8 @@ namespace TripleBladeHorse
 		#region Fields
 		[SerializeField] Transform _hittingPoint;
 		[SerializeField] PlayerState _state;
+		[SerializeField] BulletTimeManager _btManager;
+		[SerializeField] AimAssistant _aimAssistant;
 		[SerializeField] int _maxAirAttack;
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
@@ -20,6 +22,7 @@ namespace TripleBladeHorse
 
 		[Header("Debug")]
 		[SerializeField] bool _extraJump;
+
 		int _currentAirAttack;
 		FSM _animator;
 		ICanDetectGround _groundDetector;
@@ -51,7 +54,7 @@ namespace TripleBladeHorse
 			_groundDetector = GetComponent<ICanDetectGround>();
 			_hitbox = GetComponentInChildren<IAttackable>();
 			_hitFlash = GetComponent<HitFlash>();
-
+			
 			colliders = new List<Collider2D>();
 			colliderLayers = new List<int>();
 			_dashCooldownTimer = new Timer();
@@ -247,6 +250,7 @@ namespace TripleBladeHorse
 			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
 			_extraJump = true;
+			_btManager.StartWithdrawBTWindow();
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -302,7 +306,14 @@ namespace TripleBladeHorse
 
 			if (_state._endurance <= 0)
 			{
-				(_input as PlayerInput).ResetDelayInput();
+				var input = _input as PlayerInput;
+				var mInput = _input as MPlayerInput;
+
+				if (input)
+					input.ResetDelayInput();
+				else
+					mInput.ResetDelayInput();
+
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
@@ -313,6 +324,9 @@ namespace TripleBladeHorse
 
 		private void HandleReceivedInput(InputEventArg<PlayerInputCommand> input)
 		{
+			var pInput = _input as PlayerInput;
+			Vector2 aimingDirection = pInput.GetAimingDirection();
+
 			switch (input._command)
 			{
 				case PlayerInputCommand.JumpBegin:
@@ -323,7 +337,9 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround && !_extraJump) break;
+					if (!_groundDetector.IsOnGround 
+					 && !_extraJump)
+						break;
 
 					CancelAnimation();
 					if (_extraJump)
@@ -360,6 +376,7 @@ namespace TripleBladeHorse
 						_currentAirAttack = 0;
 						TriggerBulletTimeIfPossible();
 						_extraJump = true;
+						_btManager.StartDashBTWindow();
 					}
 					else if (!airDash)
 					{
@@ -418,21 +435,52 @@ namespace TripleBladeHorse
 
 				case PlayerInputCommand.RangeBegin:
 					_weaponSystem.StartRangeCharge(input._actionChargedPercent);
+					_aimAssistant.StartAimingAssistant();
 					break;
 
 				case PlayerInputCommand.RangeAttack:
-					_weaponSystem.RangeAttack(_input.GetAimingDirection());
+					if (!pInput.IsUsingController)
+					{
+						_weaponSystem.RangeAttack(aimingDirection);
+						break;
+					}
+
+					if (aimingDirection.sqrMagnitude <= 0.025f)
+					{
+						aimingDirection = _aimAssistant.ToNearestTarget(_state._facingRight);
+					}
+					else
+					{
+						aimingDirection = _aimAssistant.ExcuteAimingAssistantance(aimingDirection);
+					}
+					_weaponSystem.RangeAttack(aimingDirection);
 					break;
 
 				case PlayerInputCommand.RangeChargeAttack:
-					_weaponSystem.ChargedRangeAttack(_input.GetAimingDirection());
+					if (!pInput.IsUsingController)
+					{
+						_weaponSystem.ChargedRangeAttack(aimingDirection);
+						break;
+					}
+					
+					if (aimingDirection.sqrMagnitude <= 0.025f)
+					{
+						aimingDirection = _aimAssistant.ToNearestTarget(_state._facingRight);
+					}
+					else
+					{
+						aimingDirection = _aimAssistant.ExcuteAimingAssistantance(aimingDirection);
+					}
+					_weaponSystem.ChargedRangeAttack(aimingDirection);
 					break;
 
 				case PlayerInputCommand.WithdrawAll:
+					TriggerBulletTimeIfPossible();
 					_weaponSystem.WithdrawAll();
 					break;
 
 				case PlayerInputCommand.WithdrawOne:
+					TriggerBulletTimeIfPossible();
 					_weaponSystem.WithdrawOne();
 					break;
 
@@ -517,10 +565,7 @@ namespace TripleBladeHorse
 		void TriggerBulletTimeIfPossible()
 		{
 			if (_extraJump)
-			{
-				TimeManager.Instance.ActivateBulletTime();
-				_extraJump = false;
-			}
+				_btManager.TriggerBulletTime();
 		}
 		
 		void UpdateFacingDirection(Vector2 movementInput)
