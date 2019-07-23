@@ -5,50 +5,62 @@ using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
 using TripleBladeHorse.Movement;
 using TripleBladeHorse.AI;
+using JTUtility;
 namespace TripleBladeHorse
 {
     public class ParticleBundleBoss : MonoBehaviour
     {
-        [SerializeField]
-        List<string> audioNames;
-        [SerializeField]
-        List<float> volumes;
-        [SerializeField]
-        List<AudioClip> audioClips;
-        private Dictionary<string, AudioClip> audios =
-                new Dictionary<string, AudioClip>();
-        private Dictionary<string, float> audiosVolume =
-                new Dictionary<string,float>();
-        [SerializeField]
-        HitBox[] _hitboxes;
-        CharacterState _state;
+        [System.Serializable]
+        class StrParticlePair : PairedValue<string, ParticleSystem> { }
 
-        private AudioSource bossAudioSource;
-        private int j = 0;
-        private int k = 0;
+        [System.Serializable]
+        class StrAudioPair : PairedValue<string, AudioClip> { }
+
+        [SerializeField] private AudioSource bossAudioSource;
+        [SerializeField] List<StrParticlePair> _particlePairs;
+        [SerializeField] List<StrAudioPair> _audioPairs;
+        [SerializeField] List<StrFloatPair> _volumePairs;
+        [SerializeField] List<StrFloatPair> _pitchPairs;
+
+        private Dictionary<string, ParticleSystem> _particles;
+        private Dictionary<string, AudioClip> _audios;
+        private Dictionary<string, float> _audiosVolume;
+        private Dictionary<string, float> _pitch;
+
         FSM _animator;
+        [SerializeField] HitBox[] _hitboxes;
+        CharacterState _state;
 
         private void Awake()
         {
             _animator = GetComponent<FSM>();
-            bossAudioSource = GetComponent<AudioSource>();
             _state = GetComponent<CharacterState>();
-            foreach (var hitbox in _hitboxes)
-            {
-                hitbox.OnHit += HandleOnHit;
-            }
-            foreach (var audioName in audioNames)
-            {
-                audios.Add(audioName, audioClips[j]);
-                j++;
-            }
-            foreach (var audioName in audioNames)
-            {
-                audiosVolume.Add(audioName, volumes[k]);
-                k++;
-            }
             _animator.OnReceiveFrameEvent += HandleFrameEvent;
             _animator.Subscribe(Animation.AnimationState.FadingIn, HandleFadeInAnimation);
+
+            bossAudioSource = GetComponent<AudioSource>();
+            _audiosVolume =new Dictionary<string, float>();
+            _audios = new Dictionary<string, AudioClip>();
+
+            foreach (var pair in _particlePairs)
+            {
+                _particles.Add(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in _audioPairs)
+            {
+                _audios.Add(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in _volumePairs)
+            {
+                _audiosVolume.Add(pair.Key, pair.Value);
+            }
+
+            foreach (var pitch in _pitchPairs)
+            {
+                _pitch.Add(pitch.Key, pitch.Value);
+            }
         }
 
         private void HandleFrameEvent(FrameEventEventArg eventArg)
@@ -57,8 +69,9 @@ namespace TripleBladeHorse
             {
                 if (eventArg._animation.name == BossFSMData.Anim.Slash1)
                 {
-                    bossAudioSource.clip = audios["Combo1"];
-                    bossAudioSource.volume = audiosVolume["Combo1"];
+                    bossAudioSource.clip = _audios["Combo1"];
+                    bossAudioSource.volume = _audiosVolume["Combo1"];
+                    bossAudioSource.pitch = _pitch["Combo1"];
                     bossAudioSource.Play();
                 }
             }
@@ -68,9 +81,9 @@ namespace TripleBladeHorse
 
             if (_state._hitPoints<=0)
             {
-                bossAudioSource.clip = audios["Death"];
-                bossAudioSource.volume = audiosVolume["Death"];
-
+                bossAudioSource.clip = _audios["Death"];
+                bossAudioSource.volume = _audiosVolume["Death"];
+                bossAudioSource.pitch = _pitch["Death"];
                 bossAudioSource.Play();
             }
         }
@@ -78,14 +91,16 @@ namespace TripleBladeHorse
         {
             if(eventArgs._animation.name == BossFSMData.Anim.Combo2_1)
             {
-                bossAudioSource.clip = audios["Combo2"];
-                bossAudioSource.volume = audiosVolume["Combo2"];
+                bossAudioSource.clip = _audios["Combo2"];
+                bossAudioSource.volume = _audiosVolume["Combo2"];
+                bossAudioSource.pitch = _pitch["Combo2"];
                 bossAudioSource.Play();
             }
             if (eventArgs._animation.name == BossFSMData.Anim.Combo3_1)
             {
-                bossAudioSource.clip = audios["Combo3"];
-                bossAudioSource.volume = audiosVolume["Combo3"];
+                bossAudioSource.clip = _audios["Combo3"];
+                bossAudioSource.volume = _audiosVolume["Combo3"];
+                bossAudioSource.pitch = _pitch["Combo3"];
                 bossAudioSource.Play();
             }
         }

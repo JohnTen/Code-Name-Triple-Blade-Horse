@@ -1248,8 +1248,8 @@ GameObject:
   - component: {fileID: 390506253}
   - component: {fileID: 1185275020}
   - component: {fileID: 1185275028}
-  - component: {fileID: 3786504185608398051}
   - component: {fileID: 8061021970201993437}
+  - component: {fileID: 3786504185608398051}
   - component: {fileID: 304125778219322820}
   - component: {fileID: 4241577307128589324}
   m_Layer: 10
@@ -1692,6 +1692,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9c9eb9b20d31d41a7103b83d7ab764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8061021970201993437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638668825963291463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5d53b8ce1c34446b48e0817dbdc39a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossAudioSource: {fileID: 3786504185608398051}
+  _particlePairs: []
+  _audioPairs:
+  - key: Combo1
+    value: {fileID: 8300000, guid: b715818f2c01e41759ffdf55b3dde186, type: 3}
+  - key: Combo2
+    value: {fileID: 8300000, guid: e88b282abefc743ba923c8d6c9eb7081, type: 3}
+  - key: Combo3
+    value: {fileID: 8300000, guid: ef74b8a46b8204a0a8ad22c0239d310a, type: 3}
+  - key: Death
+    value: {fileID: 8300000, guid: eb6e467319e3b4a4c83ed6b433fd72d8, type: 3}
+  _volumePairs:
+  - key: Combo1
+    value: 1
+  - key: Combo2
+    value: 1
+  - key: Combo3
+    value: 1
+  - key: Death
+    value: 1
+  _pitchPairs:
+  - key: Combo1
+    value: 1
+  - key: Combo2
+    value: 1
+  - key: Combo3
+    value: 1
+  - key: Death
+    value: 1
+  _hitboxes: []
 --- !u!82 &3786504185608398051
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1788,37 +1830,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8061021970201993437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8638668825963291463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd5d53b8ce1c34446b48e0817dbdc39a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioNames:
-  - Combo1
-  - Combo2
-  - Combo3
-  - Death
-  - Move
-  volumes:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  audioClips:
-  - {fileID: 8300000, guid: b715818f2c01e41759ffdf55b3dde186, type: 3}
-  - {fileID: 8300000, guid: e88b282abefc743ba923c8d6c9eb7081, type: 3}
-  - {fileID: 8300000, guid: ef74b8a46b8204a0a8ad22c0239d310a, type: 3}
-  - {fileID: 8300000, guid: eb6e467319e3b4a4c83ed6b433fd72d8, type: 3}
-  - {fileID: 8300000, guid: 123b382e7cf7d44fda131465dc6d6255, type: 3}
-  _hitboxes: []
 --- !u!114 &304125778219322820
 MonoBehaviour:
   m_ObjectHideFlags: 0
