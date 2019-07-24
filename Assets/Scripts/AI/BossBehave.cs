@@ -87,6 +87,9 @@ namespace TripleBladeHorse.AI
 			return _move;
 		}
 
+        public bool Moving(){
+            return (DelayInput || BlockInput);
+        }
         public bool Opening(){
             return _opening;
         }
@@ -107,11 +110,10 @@ namespace TripleBladeHorse.AI
         public void Slash(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
-            if(BlockInput || DelayInput){
-                _slashCount --;
+            if(!BlockInput && !DelayInput){
+                _slashCount ++;
             };            
 			InvokeInputEvent(BossInput.Slash);
-            _slashCount ++;
             _dodged = false;            
         }
 
@@ -167,7 +169,7 @@ namespace TripleBladeHorse.AI
         }
 
         public bool TooFar(){
-            return (_distance.magnitude > 14f);
+            return (_distance.magnitude > 16f);
         }
         public void JumpAttack(){
             _aim = _distance.normalized;

@@ -587,11 +587,11 @@ MonoBehaviour:
       _customTrackPoint: []
   - key: Thrust
     value:
-      _type: 1
-      _rotateSpeed: 0
+      _type: 0
+      _rotateSpeed: 500
       _distance: 2.5
       _followSpeed: 40
-      _transistionTime: 0.3
+      _transistionTime: 1
       _delay: 0
       _state: 0
       _animationName: Boss1_ATK_Comb3_1_2
@@ -600,8 +600,8 @@ MonoBehaviour:
   - key: Crush
     value:
       _type: 0
-      _rotateSpeed: 100
-      _distance: 1.5
+      _rotateSpeed: 0
+      _distance: 3
       _followSpeed: 12
       _transistionTime: 0.3
       _delay: 0
@@ -612,8 +612,8 @@ MonoBehaviour:
   - key: AfterCrush
     value:
       _type: 0
-      _rotateSpeed: 60
-      _distance: 4
+      _rotateSpeed: 100.13
+      _distance: 1
       _followSpeed: 16
       _transistionTime: 0.5
       _delay: 0
@@ -625,9 +625,9 @@ MonoBehaviour:
     value:
       _type: 1
       _rotateSpeed: 0
-      _distance: 3
-      _followSpeed: 60
-      _transistionTime: 0.5
+      _distance: 2
+      _followSpeed: 25.81
+      _transistionTime: 0.53
       _delay: 0
       _state: 0
       _animationName: Boss1_ATK_Comb3_2
@@ -1678,7 +1678,7 @@ MonoBehaviour:
   _dodgeAera: 6
   _chargeSpeed: 5
   _slashCount: 0
-  _attackCount: 0
+  _dodged: 0
   _maxSlashCount: 3
   weight: 050000000100000003000000
   combatTemp: 3
@@ -1707,7 +1707,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossAudioSource: {fileID: 3786504185608398051}
-  _particlePairs: []
   _audioPairs:
   - key: Combo1
     value: {fileID: 8300000, guid: b715818f2c01e41759ffdf55b3dde186, type: 3}
