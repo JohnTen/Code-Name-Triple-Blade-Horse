@@ -87,6 +87,7 @@ namespace TripleBladeHorse
 
 		public Vector2 ExcuteAimingAssistantance(Vector2 aimingDirection)
 		{
+			var maxDistance = _maxAimingRange * _maxAimingRange;
 			var currentPosition = (Vector2)_launchPoint.position;
 			var minAngle = float.PositiveInfinity;
 
@@ -108,7 +109,7 @@ namespace TripleBladeHorse
 				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
 				if (hit.collider != null) continue;
 
-				if (angle > minAngle) continue;
+				if (angle > minAngle || toPoint.sqrMagnitude > maxDistance) continue;
 				minAngle = angle;
 				aimingDirection = toPoint;
 			}
