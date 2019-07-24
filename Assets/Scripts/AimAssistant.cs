@@ -103,13 +103,14 @@ namespace TripleBladeHorse
 					if (float.IsInfinity(point.x) || !IsWithinRange(aimingDirection, point)) continue;
 				}
 
+				if (!IsWithinRange(aimingDirection, point)) continue;
 				var toPoint = point - currentPosition;
 				var angle = Vector2.Angle(aimingDirection, point);
 
 				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
 				if (hit.collider != null) continue;
 
-				if (angle > minAngle || toPoint.sqrMagnitude > maxDistance) continue;
+				if (angle > minAngle) continue;
 				minAngle = angle;
 				aimingDirection = toPoint;
 			}
