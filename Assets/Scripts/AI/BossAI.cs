@@ -17,6 +17,10 @@ namespace TripleBladeHorse.AI{
             
             _bossAI.OpenBranch(
                 BT.Selector().OpenBranch(
+                    BT.If(_behave.Moving).OpenBranch(
+                        BT.Wait(Time.deltaTime)
+                    ),
+
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.Opening),
                         BT.Call(_behave.AfterOpening),
@@ -25,39 +29,34 @@ namespace TripleBladeHorse.AI{
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.TooFar),
                         BT.Call(_behave.Charge)
-                        //BT.Call(_behave.Charge)
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.NeedDodge),
-                        BT.Call(_behave.Dodge),
-                        BT.Wait(0.5f)
+                        BT.Call(_behave.Dodge)
+                        //BT.Wait(0.5f)
                     ),
+
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.IsLowHealth),
                         BT.Condition(_behave.InAttackRange),
-                        
+                        BT.Call(_behave.WeightCalc),
                         BT.RandomSequence(_behave.weight).OpenBranch(
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        ),
-                        //BT.Wait(0.5f),
-                        BT.Call(_behave.WeightCalc)
-                        //BT.Call(_behave.CombatTempGen),
-                        
+                        )
+                        //BT.Wait(1f)                        
                     ),
+
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.InAttackRange),
+                        BT.Call(_behave.WeightCalc),
                         BT.RandomSequence(_behave.weight).OpenBranch(
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        ),
-                        //BT.Wait(Random.Range(0.5f,1f)),
-                        BT.Call(_behave.WeightCalc)
-                        //BT.Call(_behave.CombatTempGen),
-                        
-                        
+                        )
+                        //BT.Wait(1f)                                               
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -66,10 +65,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.MoveToTarget),
                             BT.Call(_behave.DashAttack)
                         )
-                        
-                    )
-                    
-                    
+                        //BT.Wait(1f)                        
+                    )                   
                 )
             );
         }

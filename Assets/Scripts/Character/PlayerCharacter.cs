@@ -21,6 +21,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _dashCooldown;
 
 		[Header("Debug")]
+		[SerializeField] bool _bulletTimeReady;
 		[SerializeField] bool _extraJump;
 
 		int _currentAirAttack;
@@ -249,6 +250,7 @@ namespace TripleBladeHorse
 			_currentAirAttack = 0;
 			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
+			_bulletTimeReady = true;
 			_extraJump = true;
 			_btManager.StartWithdrawBTWindow();
 		}
@@ -260,6 +262,7 @@ namespace TripleBladeHorse
 				_currentAirAttack = 0;
 				_animator.SetBool(PlayerFSMData.Stat.Airborne, false);
 				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
+				_bulletTimeReady = false;
 				_extraJump = false;
 				_state._airborne = false;
 				if (_animator.GetCurrentAnimation().name == PlayerFSMData.Anim.Dropping)
@@ -345,6 +348,7 @@ namespace TripleBladeHorse
 					if (_extraJump)
 					{
 						_mover.ExtraJump(input._additionalValue);
+						_extraJump = false;
 					}
 					else
 					{
@@ -375,7 +379,9 @@ namespace TripleBladeHorse
 						_state._stamina -= 1;
 						_currentAirAttack = 0;
 						TriggerBulletTimeIfPossible();
+
 						_extraJump = true;
+						_bulletTimeReady = true;
 						_btManager.StartDashBTWindow();
 					}
 					else if (!airDash)
@@ -475,13 +481,13 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.WithdrawAll:
-					TriggerBulletTimeIfPossible();
 					_weaponSystem.WithdrawAll();
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.WithdrawOne:
-					TriggerBulletTimeIfPossible();
 					_weaponSystem.WithdrawOne();
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.Regenerate:
@@ -564,8 +570,10 @@ namespace TripleBladeHorse
 
 		void TriggerBulletTimeIfPossible()
 		{
-			if (_extraJump)
+			if (_bulletTimeReady)
 				_btManager.TriggerBulletTime();
+
+			_bulletTimeReady = false;
 		}
 		
 		void UpdateFacingDirection(Vector2 movementInput)

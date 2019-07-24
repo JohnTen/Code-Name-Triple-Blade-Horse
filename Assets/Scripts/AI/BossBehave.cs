@@ -28,7 +28,7 @@ namespace TripleBladeHorse.AI
         bool _opening = true;
         bool _isCharging;
 		[SerializeField] int _slashCount = 0;
-        [SerializeField] int _attackCount = 0;
+        [SerializeField] bool _dodged = false;
         float dodgePercent = 3000;
 		[SerializeField] int _maxSlashCount=3;
 		public int[] weight = new int[]{5,1,3};
@@ -87,6 +87,9 @@ namespace TripleBladeHorse.AI
 			return _move;
 		}
 
+        public bool Moving(){
+            return (DelayInput || BlockInput);
+        }
         public bool Opening(){
             return _opening;
         }
@@ -107,9 +110,11 @@ namespace TripleBladeHorse.AI
         public void Slash(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
+            if(!BlockInput && !DelayInput){
+                _slashCount ++;
+            };            
 			InvokeInputEvent(BossInput.Slash);
-            _slashCount ++;
-            _attackCount ++;            
+            _dodged = false;            
         }
 
         public void MoveToTarget(){
@@ -126,7 +131,12 @@ namespace TripleBladeHorse.AI
         }
 
         public bool IsNotCharging(){
-            return ! _isCharging;
+            
+            if(! _isCharging){
+                _aim = Vector2.zero;
+                _move = Vector2.zero;
+            }
+            return !_isCharging;
         }
 
         public void Retreat(){
@@ -141,7 +151,7 @@ namespace TripleBladeHorse.AI
 
         public bool NeedDodge(){
             
-            if (_attackCount !=0 && _distance.magnitude <= _dodgeAera)
+            if (!_dodged && _distance.magnitude <= _dodgeAera)
             {
                 dodgePercent = Random.Range(0,_state._hitPoints);
                 return(dodgePercent < 600f);
@@ -153,27 +163,30 @@ namespace TripleBladeHorse.AI
             _aim = _distance;
             _move = _aim;
 			InvokeInputEvent(BossInput.Dodge);
+            _dodged = true;
             weight[2] += 5;
-            _attackCount = 0;
+            
         }
 
         public bool TooFar(){
-            return (_distance.magnitude > 14f);
+            return (_distance.magnitude > 16f);
         }
         public void JumpAttack(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
+
             InvokeInputEvent(BossInput.JumpAttack);
-            _attackCount ++;
+            _dodged = false;
         }
 
         public void DashAttack(){
             _aim = _distance.normalized;
             _move = Vector2.zero;
 			InvokeInputEvent(BossInput.DashAttack);
-            _attackCount ++;
-            if(weight[2] != 1)
-                weight[2] = 1;
+            if(weight[2] != 1){
+                    weight[2] = 1;
+            }
+            _dodged = false;
         }
 
         public void CombatTempGen(){

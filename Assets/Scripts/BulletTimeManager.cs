@@ -56,6 +56,7 @@ public class BulletTimeManager : MonoBehaviour
 	{
 		if (!_BTOverloadTimer.IsReachedTime())
 		{
+			_BTOverloadTimer.Start(_BTOverloadCooldown, ClearBTTriggeredTimes);
 			return;
 		}
 
