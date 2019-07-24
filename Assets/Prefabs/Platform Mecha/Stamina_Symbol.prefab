@@ -98,7 +98,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -121,10 +121,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canStick: 0
   _canPullingJump: 0
-  _restoredStamina: 5
+  _restoredStamina: 1
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
   _enegryBallPrefab: {fileID: 1485801041880988041, guid: 632fab691d693244fa9ea41d507e2def,
     type: 3}
   stuckObj: []
   _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0

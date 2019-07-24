@@ -13,13 +13,17 @@ namespace TripleBladeHorse
 		#region Fields
 		[SerializeField] Transform _hittingPoint;
 		[SerializeField] PlayerState _state;
+		[SerializeField] BulletTimeManager _btManager;
+		[SerializeField] AimAssistant _aimAssistant;
 		[SerializeField] int _maxAirAttack;
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
 		[SerializeField] float _dashCooldown;
 
 		[Header("Debug")]
+		[SerializeField] bool _bulletTimeReady;
 		[SerializeField] bool _extraJump;
+
 		int _currentAirAttack;
 		FSM _animator;
 		ICanDetectGround _groundDetector;
@@ -51,7 +55,7 @@ namespace TripleBladeHorse
 			_groundDetector = GetComponent<ICanDetectGround>();
 			_hitbox = GetComponentInChildren<IAttackable>();
 			_hitFlash = GetComponent<HitFlash>();
-
+			
 			colliders = new List<Collider2D>();
 			colliderLayers = new List<int>();
 			_dashCooldownTimer = new Timer();
@@ -246,7 +250,9 @@ namespace TripleBladeHorse
 			_currentAirAttack = 0;
 			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
+			_bulletTimeReady = true;
 			_extraJump = true;
+			_btManager.StartWithdrawBTWindow();
 		}
 
 		private void HandleLandingStateChanged(ICanDetectGround sender, LandingEventArgs eventArgs)
@@ -256,6 +262,7 @@ namespace TripleBladeHorse
 				_currentAirAttack = 0;
 				_animator.SetBool(PlayerFSMData.Stat.Airborne, false);
 				_animator.SetBool(PlayerFSMData.Stat.Charge, false);
+				_bulletTimeReady = false;
 				_extraJump = false;
 				_state._airborne = false;
 				if (_animator.GetCurrentAnimation().name == PlayerFSMData.Anim.Dropping)
@@ -302,7 +309,14 @@ namespace TripleBladeHorse
 
 			if (_state._endurance <= 0)
 			{
-				(_input as PlayerInput).ResetDelayInput();
+				var input = _input as PlayerInput;
+				var mInput = _input as MPlayerInput;
+
+				if (input)
+					input.ResetDelayInput();
+				else
+					mInput.ResetDelayInput();
+
 				CancelAnimation();
 				_state._endurance.Current = 0;
 				_animator.SetToggle(attack._staggerAnimation, true);
@@ -313,6 +327,9 @@ namespace TripleBladeHorse
 
 		private void HandleReceivedInput(InputEventArg<PlayerInputCommand> input)
 		{
+			var pInput = _input as PlayerInput;
+			Vector2 aimingDirection = pInput.GetAimingDirection();
+
 			switch (input._command)
 			{
 				case PlayerInputCommand.JumpBegin:
@@ -323,12 +340,15 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.Jump:
-					if (!_groundDetector.IsOnGround && !_extraJump) break;
+					if (!_groundDetector.IsOnGround 
+					 && !_extraJump)
+						break;
 
 					CancelAnimation();
 					if (_extraJump)
 					{
 						_mover.ExtraJump(input._additionalValue);
+						_extraJump = false;
 					}
 					else
 					{
@@ -359,7 +379,10 @@ namespace TripleBladeHorse
 						_state._stamina -= 1;
 						_currentAirAttack = 0;
 						TriggerBulletTimeIfPossible();
+
 						_extraJump = true;
+						_bulletTimeReady = true;
+						_btManager.StartDashBTWindow();
 					}
 					else if (!airDash)
 					{
@@ -418,22 +441,53 @@ namespace TripleBladeHorse
 
 				case PlayerInputCommand.RangeBegin:
 					_weaponSystem.StartRangeCharge(input._actionChargedPercent);
+					_aimAssistant.StartAimingAssistant();
 					break;
 
 				case PlayerInputCommand.RangeAttack:
-					_weaponSystem.RangeAttack(_input.GetAimingDirection());
+					if (!pInput.IsUsingController)
+					{
+						_weaponSystem.RangeAttack(aimingDirection);
+						break;
+					}
+
+					if (aimingDirection.sqrMagnitude <= 0.025f)
+					{
+						aimingDirection = _aimAssistant.ToNearestTarget(_state._facingRight);
+					}
+					else
+					{
+						aimingDirection = _aimAssistant.ExcuteAimingAssistantance(aimingDirection);
+					}
+					_weaponSystem.RangeAttack(aimingDirection);
 					break;
 
 				case PlayerInputCommand.RangeChargeAttack:
-					_weaponSystem.ChargedRangeAttack(_input.GetAimingDirection());
+					if (!pInput.IsUsingController)
+					{
+						_weaponSystem.ChargedRangeAttack(aimingDirection);
+						break;
+					}
+					
+					if (aimingDirection.sqrMagnitude <= 0.025f)
+					{
+						aimingDirection = _aimAssistant.ToNearestTarget(_state._facingRight);
+					}
+					else
+					{
+						aimingDirection = _aimAssistant.ExcuteAimingAssistantance(aimingDirection);
+					}
+					_weaponSystem.ChargedRangeAttack(aimingDirection);
 					break;
 
 				case PlayerInputCommand.WithdrawAll:
 					_weaponSystem.WithdrawAll();
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.WithdrawOne:
 					_weaponSystem.WithdrawOne();
+					TriggerBulletTimeIfPossible();
 					break;
 
 				case PlayerInputCommand.Regenerate:
@@ -516,11 +570,10 @@ namespace TripleBladeHorse
 
 		void TriggerBulletTimeIfPossible()
 		{
-			if (_extraJump)
-			{
-				TimeManager.Instance.ActivateBulletTime();
-				_extraJump = false;
-			}
+			if (_bulletTimeReady)
+				_btManager.TriggerBulletTime();
+
+			_bulletTimeReady = false;
 		}
 		
 		void UpdateFacingDirection(Vector2 movementInput)

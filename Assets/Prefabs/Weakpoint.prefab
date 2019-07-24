@@ -33667,7 +33667,7 @@ GameObject:
   - component: {fileID: 5350966774469117132}
   m_Layer: 11
   m_Name: Weakpoint
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38839,6 +38839,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3921079620829719376}
     m_Modifications:
+    - target: {fileID: 8040154949657825563, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
+        type: 3}
+      propertyPath: m_Name
+      value: WeakPoint_Hitten02
+      objectReference: {fileID: 0}
     - target: {fileID: 8040154949657791803, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -38899,22 +38904,7 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8040154949657825563, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
-        type: 3}
-      propertyPath: m_Name
-      value: WeakPoint_Hitten02
-      objectReference: {fileID: 0}
     - target: {fileID: 8040154949639440497, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8040154949639440501, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8040154949639440507, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
         type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -38924,7 +38914,17 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8040154949639440501, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8040154949639440505, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8040154949639440507, guid: 22fb08abe19361b4dbe87c53fd2ffc4f,
         type: 3}
       propertyPath: playOnAwake
       value: 0

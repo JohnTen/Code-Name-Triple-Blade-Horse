@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TripleBladeHorse.Movement;
 
 namespace TripleBladeHorse
 {
@@ -24,6 +25,13 @@ namespace TripleBladeHorse
 			{
 				points.GetComponent<Climbable>().enabled = false;
 				points.gameObject.SetActive(false);
+			}
+
+			this.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+			this.GetComponent<BossMover>().enabled = false;
+			foreach (var collider in this.GetComponentsInChildren<Collider2D>())
+			{
+				collider.enabled = false;
 			}
 
 			StartCoroutine(DisplayKill());
@@ -64,6 +72,8 @@ namespace TripleBladeHorse
 				_killedShadow.effectColor = shadowColor;
 				yield return null;
 			}
+
+			this.gameObject.SetActive(false);
 		}
 	}
 }

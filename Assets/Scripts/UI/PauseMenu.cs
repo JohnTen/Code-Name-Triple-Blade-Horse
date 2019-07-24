@@ -7,32 +7,40 @@ using TripleBladeHorse;
 
 public class PauseMenu : MonoBehaviour, IInputModelPlugable
 {
-	[SerializeField] GameObject pausemenu;
-    bool controller;
+	[SerializeField] Canvas canvas;
+	[SerializeField] GameObject panel;
+	bool controller;
     IInputModel input;
-	// Start is called before the first frame update
+
 	void Start()
 	{
-		pausemenu.SetActive(false);
-        InputManager.Instance.RegisterPluggable(0, this);
+		InputManager.Instance.RegisterPluggable(0, this);
     }
-
-	// Update is called once per frame
+	
 	void Update()
 	{
 		if (input.GetButtonDown("Menu"))
 		{
-			pausemenu.SetActive(true);
-			TimeManager.Instance.Pause();
+			canvas.enabled = !canvas.enabled;
+			panel.gameObject.SetActive(canvas.enabled);
+			if (canvas.enabled)
+			{
+				TimeManager.Instance.Pause();
+			}
+			else
+			{
+				TimeManager.Instance.Unpause();
+			}
 		}
 	}
 
 	public void ContinueGame()
 	{
-		pausemenu.SetActive(false);
+        canvas.enabled = false;
+		panel.gameObject.SetActive(canvas.enabled);
 		TimeManager.Instance.Unpause();
-
 	}
+
 	public void ExitGame()
 	{
 		Application.Quit();

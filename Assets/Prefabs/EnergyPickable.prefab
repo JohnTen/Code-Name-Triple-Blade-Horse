@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5961545422884746966}
   - component: {fileID: 1954044664788261979}
   m_Layer: 15
-  m_Name: EnergyBall
+  m_Name: EnergyPickable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -105,7 +105,7 @@ MonoBehaviour:
   _knockback: 0
   _defaultType: 2
   _faction: 3
-  _existTime: -1
+  _existTime: 1000000
   _trackingDistance: 18
   _speed:
     m_Mode: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 12
+    m_ConstantMax: 0
   _torque:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -166,16 +166,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2453737295907507683}
     m_Modifications:
-    - target: {fileID: 2880317261681532391, guid: 599dc8eb541917a438f17194c7202f11,
-        type: 3}
-      propertyPath: m_Name
-      value: StaminaBall
-      objectReference: {fileID: 0}
-    - target: {fileID: 2880317261681532391, guid: 599dc8eb541917a438f17194c7202f11,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 2880317261681492421, guid: 599dc8eb541917a438f17194c7202f11,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -230,6 +220,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532391, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Name
+      value: StaminaBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880317261681532391, guid: 599dc8eb541917a438f17194c7202f11,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2880317261681532389, guid: 599dc8eb541917a438f17194c7202f11,
         type: 3}
