@@ -240,8 +240,6 @@ namespace TripleBladeHorse
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
 				_animator.SetToggle(PlayerFSMData.Stat.DashEnd, true);
-				if (_groundDetector.IsOnGround)
-					_dashCooldownTimer.Start(_dashCooldown);
 			}
 		}
 
@@ -388,6 +386,7 @@ namespace TripleBladeHorse
 					{
 						CancelAnimation();
 						_mover.Dash(moveInput);
+						_dashCooldownTimer.Start(_dashCooldown);
 					}
 					else break;
 
