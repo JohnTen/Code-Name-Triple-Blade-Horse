@@ -167,7 +167,7 @@ namespace TripleBladeHorse.AI
         }
 
         public bool TooFar(){
-            return (_distance.magnitude > 14f);
+            return (_distance.magnitude > 16f);
         }
         public void JumpAttack(){
             _aim = _distance.normalized;
