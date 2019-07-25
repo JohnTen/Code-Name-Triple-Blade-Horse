@@ -4,6 +4,7 @@ using UnityEngine;
 using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
 using TripleBladeHorse.Movement;
+using TripleBladeHorse.VFX;
 using JTUtility;
 
 namespace TripleBladeHorse
@@ -15,6 +16,8 @@ namespace TripleBladeHorse
 		[SerializeField] PlayerState _state;
 		[SerializeField] BulletTimeManager _btManager;
 		[SerializeField] AimAssistant _aimAssistant;
+		[SerializeField] InstanceDashEcho _airDashGhost;
+		[SerializeField] InstanceDashEcho _groundDashGhost;
 		[SerializeField] int _maxAirAttack;
 		[SerializeField] float _healingStaminaCost;
 		[SerializeField] float _healingAmount;
@@ -240,8 +243,6 @@ namespace TripleBladeHorse
 			if (eventArgs.lastMovingState == MovingState.Dash)
 			{
 				_animator.SetToggle(PlayerFSMData.Stat.DashEnd, true);
-				if (_groundDetector.IsOnGround)
-					_dashCooldownTimer.Start(_dashCooldown);
 			}
 		}
 
@@ -374,6 +375,8 @@ namespace TripleBladeHorse
 
 					if (airDash && _state._stamina > 0)
 					{
+						_airDashGhost.enabled = true;
+						_groundDashGhost.enabled = false;
 						CancelAnimation();
 						_mover.Dash(moveInput);
 						_state._stamina -= 1;
@@ -386,8 +389,11 @@ namespace TripleBladeHorse
 					}
 					else if (!airDash)
 					{
+						_airDashGhost.enabled = false;
+						_groundDashGhost.enabled = true;
 						CancelAnimation();
 						_mover.Dash(moveInput);
+						_dashCooldownTimer.Start(_dashCooldown);
 					}
 					else break;
 
@@ -460,6 +466,10 @@ namespace TripleBladeHorse
 						aimingDirection = _aimAssistant.ExcuteAimingAssistantance(aimingDirection);
 					}
 					_weaponSystem.RangeAttack(aimingDirection);
+					break;
+
+				case PlayerInputCommand.RangeChargeBreak:
+					_weaponSystem.StopCharging();
 					break;
 
 				case PlayerInputCommand.RangeChargeAttack:

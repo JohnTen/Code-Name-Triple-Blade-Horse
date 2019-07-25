@@ -27,6 +27,7 @@ namespace TripleBladeHorse.AI
 
         bool _opening = true;
         bool _isCharging;
+        bool _isWlaking;
 		[SerializeField] int _slashCount = 0;
         [SerializeField] bool _dodged = false;
         float dodgePercent = 3000;
@@ -73,22 +74,27 @@ namespace TripleBladeHorse.AI
 
         public Vector2 GetAimingDirection()
 		{
-            if(DelayInput || BlockInput){
-                return Vector2.zero;
-            }
 			return _aim;
 		}
 
 		public Vector2 GetMovingDirection()
 		{
-            if(DelayInput || BlockInput){
-                return Vector2.zero;
-            }
 			return _move;
 		}
 
+        public void Initialization(){
+            _isCharging = false;
+            _dodged = false;
+            _move = Vector2.zero;
+            _aim = Vector2.zero;
+        }
+
+        public void TurnToTarget(){
+            _aim = _distance.normalized;
+            _move = Vector2.zero;
+        }
         public bool Moving(){
-            return (DelayInput || BlockInput);
+            return (DelayInput || BlockInput)&& !_isWlaking;
         }
         public bool Opening(){
             return _opening;
@@ -99,6 +105,7 @@ namespace TripleBladeHorse.AI
         public bool InAttackRange(){
             if(_distance.magnitude <= _attackAera){
                 _isCharging = false;
+                _isWlaking = false;
                 return true;
             }else
             {
@@ -114,13 +121,15 @@ namespace TripleBladeHorse.AI
                 _slashCount ++;
             };            
 			InvokeInputEvent(BossInput.Slash);
-            _dodged = false;            
+            _dodged = false;
+            _aim = Vector2.zero;
         }
 
         public void MoveToTarget(){
             _move = _distance;
             _move = _move.normalized * 0.01f;
             _aim = _move.normalized;
+            _isWlaking = true;
         }
 
         public void Charge(){

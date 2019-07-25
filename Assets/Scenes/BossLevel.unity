@@ -1419,7 +1419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403729323}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -153.90009, y: -24.224611, z: -4}
+  m_LocalPosition: {x: -153.8995, y: -24.224611, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1428934356}
@@ -1702,7 +1702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &613847270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2604,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &967565748 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7104230571190823217, guid: ba6c4070bad2d954d9952b6e7cb9f207,
+    type: 3}
+  m_PrefabInstance: {fileID: 1541337736}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &970181729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10671,6 +10677,15 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 2.33
       objectReference: {fileID: 0}
+    - target: {fileID: 460307099, guid: ba6c4070bad2d954d9952b6e7cb9f207, type: 3}
+      propertyPath: _formationList.Array.data[6].value._pivot
+      value: 
+      objectReference: {fileID: 967565748}
+    - target: {fileID: 7236462793803759108, guid: ba6c4070bad2d954d9952b6e7cb9f207,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.81
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba6c4070bad2d954d9952b6e7cb9f207, type: 3}
 --- !u!1 &1556394766
@@ -12552,7 +12567,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113538958}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -153.90009, y: -23.924433, z: -4}
+  m_LocalPosition: {x: -153.8995, y: -23.924433, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 626847260}
@@ -12629,7 +12644,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 38.559658
+  field of view: 38.543716
   orthographic: 0
   orthographic size: 6.5
   m_Depth: -1

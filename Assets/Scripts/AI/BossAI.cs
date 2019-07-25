@@ -18,13 +18,16 @@ namespace TripleBladeHorse.AI{
             _bossAI.OpenBranch(
                 BT.Selector().OpenBranch(
                     BT.If(_behave.Moving).OpenBranch(
-                        BT.Wait(Time.deltaTime)
+                        BT.Wait(Time.deltaTime),
+                        BT.Call(_behave.Initialization)
                     ),
 
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.Opening),
                         BT.Call(_behave.AfterOpening),
-                        BT.Wait(2f)
+                        BT.Wait(2f),
+                        BT.Call(_behave.DashAttack),
+                        BT.Call(_behave.TurnToTarget)
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.TooFar),
@@ -32,8 +35,14 @@ namespace TripleBladeHorse.AI{
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.NeedDodge),
-                        BT.Call(_behave.Dodge)
-                        //BT.Wait(0.5f)
+                        BT.Call(_behave.Dodge),
+                        BT.Wait(0.5f),
+                        BT.RandomSequence().OpenBranch(
+                            BT.Call(_behave.Slash),
+                            BT.Call(_behave.JumpAttack),
+                            BT.Call(_behave.DashAttack)
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -44,7 +53,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        )
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                         //BT.Wait(1f)                        
                     ),
 
@@ -55,17 +65,15 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        )
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                         //BT.Wait(1f)                                               
                     ),
 
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.IsNotCharging),
-                        BT.RandomSequence().OpenBranch(
-                            BT.Call(_behave.MoveToTarget),
-                            BT.Call(_behave.DashAttack)
-                        )
-                        //BT.Wait(1f)                        
+                        BT.Call(_behave.MoveToTarget),
+                        BT.Wait(1f)                        
                     )                   
                 )
             );

@@ -87,6 +87,7 @@ namespace TripleBladeHorse
 
 		public Vector2 ExcuteAimingAssistantance(Vector2 aimingDirection)
 		{
+			var maxDistance = _maxAimingRange * _maxAimingRange;
 			var currentPosition = (Vector2)_launchPoint.position;
 			var minAngle = float.PositiveInfinity;
 
@@ -102,6 +103,7 @@ namespace TripleBladeHorse
 					if (float.IsInfinity(point.x) || !IsWithinRange(aimingDirection, point)) continue;
 				}
 
+				if (!IsWithinRange(aimingDirection, point)) continue;
 				var toPoint = point - currentPosition;
 				var angle = Vector2.Angle(aimingDirection, point);
 
