@@ -176,6 +176,11 @@ namespace TripleBladeHorse.Combat
 			sheath.StopCharge();
 		}
 
+		public void StopCharging()
+		{
+			sheath.StopCharge();
+		}
+
 		private void Sheath_OnRecievedKnife(ThrowingKnife knife)
 		{
 			knifesInAirList.Remove(knife);

@@ -468,6 +468,10 @@ namespace TripleBladeHorse
 					_weaponSystem.RangeAttack(aimingDirection);
 					break;
 
+				case PlayerInputCommand.RangeChargeBreak:
+					_weaponSystem.StopCharging();
+					break;
+
 				case PlayerInputCommand.RangeChargeAttack:
 					if (!pInput.IsUsingController)
 					{
