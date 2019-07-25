@@ -26,7 +26,8 @@ namespace TripleBladeHorse.AI{
                         BT.Condition(_behave.Opening),
                         BT.Call(_behave.AfterOpening),
                         BT.Wait(2f),
-                        BT.Call(_behave.DashAttack)
+                        BT.Call(_behave.DashAttack),
+                        BT.Call(_behave.TurnToTarget)
                     ),
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.TooFar),
@@ -40,7 +41,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        )
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -51,7 +53,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        )
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                         //BT.Wait(1f)                        
                     ),
 
@@ -62,7 +65,8 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.Slash),
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
-                        )
+                        ),
+                        BT.Call(_behave.TurnToTarget)
                         //BT.Wait(1f)                                               
                     ),
 

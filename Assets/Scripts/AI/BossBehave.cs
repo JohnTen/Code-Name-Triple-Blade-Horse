@@ -74,17 +74,11 @@ namespace TripleBladeHorse.AI
 
         public Vector2 GetAimingDirection()
 		{
-            if(DelayInput || BlockInput){
-                return Vector2.zero;
-            }
 			return _aim;
 		}
 
 		public Vector2 GetMovingDirection()
 		{
-            if(DelayInput || BlockInput){
-                return Vector2.zero;
-            }
 			return _move;
 		}
 
@@ -93,6 +87,11 @@ namespace TripleBladeHorse.AI
             _dodged = false;
             _move = Vector2.zero;
             _aim = Vector2.zero;
+        }
+
+        public void TurnToTarget(){
+            _aim = _distance.normalized;
+            _move = Vector2.zero;
         }
         public bool Moving(){
             return (DelayInput || BlockInput)&& !_isWlaking;
@@ -187,7 +186,6 @@ namespace TripleBladeHorse.AI
 
             InvokeInputEvent(BossInput.JumpAttack);
             _dodged = false;
-            _aim = Vector2.zero;
         }
 
         public void DashAttack(){
@@ -198,7 +196,6 @@ namespace TripleBladeHorse.AI
                     weight[2] = 1;
             }
             _dodged = false;
-            _aim = Vector2.zero;
         }
 
         public void CombatTempGen(){
