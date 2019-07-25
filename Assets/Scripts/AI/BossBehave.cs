@@ -91,6 +91,8 @@ namespace TripleBladeHorse.AI
         public void Initialization(){
             _isCharging = false;
             _dodged = false;
+            _move = Vector2.zero;
+            _aim = Vector2.zero;
         }
         public bool Moving(){
             return (DelayInput || BlockInput)&& !_isWlaking;
@@ -120,7 +122,8 @@ namespace TripleBladeHorse.AI
                 _slashCount ++;
             };            
 			InvokeInputEvent(BossInput.Slash);
-            _dodged = false;            
+            _dodged = false;
+            _aim = Vector2.zero;
         }
 
         public void MoveToTarget(){
@@ -184,6 +187,7 @@ namespace TripleBladeHorse.AI
 
             InvokeInputEvent(BossInput.JumpAttack);
             _dodged = false;
+            _aim = Vector2.zero;
         }
 
         public void DashAttack(){
@@ -194,6 +198,7 @@ namespace TripleBladeHorse.AI
                     weight[2] = 1;
             }
             _dodged = false;
+            _aim = Vector2.zero;
         }
 
         public void CombatTempGen(){

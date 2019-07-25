@@ -600,10 +600,10 @@ MonoBehaviour:
   - key: Crush
     value:
       _type: 0
-      _rotateSpeed: 0
-      _distance: 3
-      _followSpeed: 12
-      _transistionTime: 0.3
+      _rotateSpeed: 500
+      _distance: 1
+      _followSpeed: 50
+      _transistionTime: 1
       _delay: 0
       _state: 0
       _animationName: Boss1_ATK_Comb2_1
@@ -611,15 +611,15 @@ MonoBehaviour:
       _customTrackPoint: []
   - key: AfterCrush
     value:
-      _type: 0
-      _rotateSpeed: 100.13
-      _distance: 1
+      _type: 1
+      _rotateSpeed: 0
+      _distance: 1.5
       _followSpeed: 16
       _transistionTime: 0.5
       _delay: 0
       _state: 0
       _animationName: Boss1_ATK_Comb2_3
-      _pivot: {fileID: 2650518227993876578}
+      _pivot: {fileID: 0}
       _customTrackPoint: []
   - key: AfterThrust
     value:
@@ -632,6 +632,18 @@ MonoBehaviour:
       _state: 0
       _animationName: Boss1_ATK_Comb3_2
       _pivot: {fileID: 350032077}
+      _customTrackPoint: []
+  - key: Crush2
+    value:
+      _type: 0
+      _rotateSpeed: 10
+      _distance: 3
+      _followSpeed: 20
+      _transistionTime: 0.2
+      _delay: 1
+      _state: 0
+      _animationName: Boss1_ATK_Comb2_1
+      _pivot: {fileID: 7236462793803759108}
       _customTrackPoint: []
   _handlePercentage: 0.5
   _bezierPercentage: 0.2
