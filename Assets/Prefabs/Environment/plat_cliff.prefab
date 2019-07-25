@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 9205303329421731006}
   - component: {fileID: 9205303329421731001}
   - component: {fileID: 9205303329421731000}
+  - component: {fileID: 6521606897207317161}
+  - component: {fileID: 2259619269451306423}
   m_Layer: 0
-  m_Name: plat_cliff (1)
+  m_Name: plat_cliff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9205303329421731002}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.259999, y: 3.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -69,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: a8eacc92e7632c54cbe9b2bf6b4b3a2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,7 +96,7 @@ EdgeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 4.49}
+  m_Offset: {x: 0, y: 4.58}
   m_EdgeRadius: 0
   m_Points:
   - {x: -7, y: 0}
@@ -115,7 +117,56 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -7, y: 4.48999}
-  - {x: -7, y: 0.80911255}
-  - {x: -5.1366653, y: -1.8158417}
-  - {x: -2.7059708, y: -5.385193}
+  - {x: -7, y: 4.4}
+  - {x: -6.1424294, y: 0.9126079}
+  - {x: -4.5462112, y: -1.0566844}
+  - {x: -2.5383224, y: -3.4572196}
+--- !u!60 &6521606897207317161
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205303329421731002}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 17.36, y: 12.44}
+    newSize: {x: 17.34, y: 12.43}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.05738449, y: -1.2856312}
+      - {x: -4.272728, y: -1.7941487}
+      - {x: -5.590786, y: 0.05132413}
+      - {x: -7, y: 4.58}
+      - {x: 8, y: 4.58}
+--- !u!251 &2259619269451306423
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205303329421731002}
+  m_Enabled: 0
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 160
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
