@@ -39,6 +39,7 @@ namespace TripleBladeHorse.Combat
 		public bool _triggerGapStagger;
 		public string _staggerAnimation;
 		public string _gapStaggerAnimation;
+		public AttackMove _move;
 
 		public Faction _faction;
 		public AttackType _attackType;
@@ -46,7 +47,8 @@ namespace TripleBladeHorse.Combat
 
 		AttackPackage(int hashID, float hitPointDamage, float enduranceDamage, float knockback,
 			float chargedPercent, float attackRate, bool triggerGapStun, AttackType attackType,
-			Faction faction, Vector2 fromDirection, string staggerAnimation, string gapStaggerAnimation)
+			Faction faction, Vector2 fromDirection, string staggerAnimation, string gapStaggerAnimation,
+			AttackMove move)
 		{
 			_hashID = hashID;
 			_hitPointDamage = new ModifiableValue(hitPointDamage);
@@ -61,13 +63,15 @@ namespace TripleBladeHorse.Combat
 			_staggerAnimation = staggerAnimation;
 			_gapStaggerAnimation = gapStaggerAnimation;
 			_fromDirection = fromDirection;
+
+			_move = move;
 		}
 
 		public static AttackPackage CreateNewPackage()
 		{
 			var hashID = System.Guid.NewGuid().GetHashCode();
 			var package =
-				new AttackPackage(hashID, 0, 0, 0, 0, 0, false, AttackType.Null, Faction.Null, Vector2.zero, "", "");
+				new AttackPackage(hashID, 0, 0, 0, 0, 0, false, AttackType.Null, Faction.Null, Vector2.zero, "", "", null);
 
 			return package;
 		}

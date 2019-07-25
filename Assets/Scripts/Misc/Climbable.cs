@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TripleBladeHorse.Combat;
 
 namespace TripleBladeHorse
@@ -14,6 +15,9 @@ namespace TripleBladeHorse
 		[SerializeField] int _numberOfEnergyBall = 1;
 		[SerializeField, Range(0f, 1f)] float _pullForceFactor;
 		[SerializeField] EnergyBall _enegryBallPrefab;
+
+		[SerializeField] UnityEvent _OnStab;
+		[SerializeField] UnityEvent _OnDraw;
 
 		[Header("Debug")]
 		[SerializeField] List<GameObject> stuckObj;
@@ -45,6 +49,8 @@ namespace TripleBladeHorse
 			if (stuckObj.Count >= _maxStuckedKnife)
 				return false;
 
+			print("Stab");
+			_OnStab.Invoke();
 			stuckObj.Add(obj);
 			return true;
 		}
@@ -76,8 +82,17 @@ namespace TripleBladeHorse
 				_generatedEnergyBalls++;
 			}
 
+			print("Draw");
+			_OnDraw.Invoke();
 			stuckObj.Remove(obj);
 			return true;
+		}
+
+		public void Remove(GameObject obj)
+		{
+			if (!stuckObj.Contains(obj))
+				return;
+			stuckObj.Remove(obj);
 		}
 
 		public void Respawn()

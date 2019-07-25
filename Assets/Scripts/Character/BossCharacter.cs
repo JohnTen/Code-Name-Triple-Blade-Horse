@@ -5,6 +5,7 @@ using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
 using TripleBladeHorse.Movement;
 using TripleBladeHorse.AI;
+using TripleBladeHorse.VFX;
 using JTUtility;
 
 namespace TripleBladeHorse
@@ -44,6 +45,7 @@ namespace TripleBladeHorse
 		[SerializeField] Vector2 _combo2CrushOffset;
 		[SerializeField] AttackMove _crushMove;
 		[SerializeField] List<Collider2D> _combo2AttackBoxes;
+		[SerializeField] ScreenShakeParams _combo2ShakeParams;
 
 		[Header("Combo3/thrust")]
 		[SerializeField] float _thrustTime;
@@ -156,6 +158,7 @@ namespace TripleBladeHorse
 			 && _animator.GetCurrentAnimation().name == BossFSMData.Anim.Combo2_3)
 			{
 				_mover.InterruptContantMove();
+				ShakeScreen.Instance.Shake(_combo2ShakeParams);
 			}
 		}
 

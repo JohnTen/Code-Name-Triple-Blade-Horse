@@ -284,6 +284,12 @@ namespace TripleBladeHorse
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
 
+			if (attack._move != null)
+			{
+				TimeManager.Instance.FrozenFrame(attack._move.FrameFrozen);
+				ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
+			}
+
 			if (result._finalDamage > 0)
 			{
 				_hitFlash.Flash();
@@ -491,13 +497,13 @@ namespace TripleBladeHorse
 					break;
 
 				case PlayerInputCommand.WithdrawAll:
-					_weaponSystem.WithdrawAll();
 					TriggerBulletTimeIfPossible();
+					_weaponSystem.WithdrawAll();
 					break;
 
 				case PlayerInputCommand.WithdrawOne:
-					_weaponSystem.WithdrawOne();
 					TriggerBulletTimeIfPossible();
+					_weaponSystem.WithdrawOne();
 					break;
 
 				case PlayerInputCommand.Regenerate:

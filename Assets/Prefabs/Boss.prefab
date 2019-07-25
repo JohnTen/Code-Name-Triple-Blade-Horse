@@ -1588,6 +1588,38 @@ MonoBehaviour:
   _crushMove: {fileID: 11400000, guid: 911ae8143584afa498b2e24a50a464df, type: 2}
   _combo2AttackBoxes:
   - {fileID: 652440790}
+  _combo2ShakeParams:
+    _duration: 0.3
+    _XFrequency: 8
+    _YFrequency: 5
+    _ZFrequency: 1
+    _XAmplitude: 0.35
+    _YAmplitude: 0.1
+    _ZAmplitude: 0.1
+    _decay:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   _thrustTime: 0.5
   _thrustSpeed:
     m_Mode: 0
@@ -3867,6 +3899,11 @@ PrefabInstance:
       propertyPath: _state
       value: 
       objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -3979,6 +4016,11 @@ PrefabInstance:
       propertyPath: _state
       value: 
       objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -4091,6 +4133,11 @@ PrefabInstance:
       propertyPath: _state
       value: 
       objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
