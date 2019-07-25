@@ -14,6 +14,7 @@ namespace TripleBladeHorse
 		float _baseFixedDeltaTime;
 		float _playerBulletTimeScaleRatio;
 		float _bulletTimer;
+		float _frameFrozenTimer;
 		int pause = 0;
 
 		public static float Time
@@ -59,13 +60,21 @@ namespace TripleBladeHorse
 
 		private void Update()
 		{
-			if (pause > 0 || _bulletTimer <= 0) return;
-			
-			_bulletTimer -= UnscaleDeltaTime;
-			if (_bulletTimer > 0) return;
+			if (pause > 0) return;
+
+			if (_frameFrozenTimer > 0)
+			{
+				_frameFrozenTimer -= UnscaleDeltaTime;
+			}
+
+			if (_bulletTimer > 0)
+			{
+				_bulletTimer -= UnscaleDeltaTime;
+				if (_bulletTimer <= 0)
+					OnBulletTimeEnd?.Invoke();
+			}
 			
 			UpdateTimeScale();
-			OnBulletTimeEnd?.Invoke();
 		}
 
 		public void Pause()
@@ -78,6 +87,15 @@ namespace TripleBladeHorse
 		{
 			pause--;
 			UpdateTimeScale();
+		}
+
+		public void FrozenFrame(float duration)
+		{
+			if (_frameFrozenTimer < duration)
+				_frameFrozenTimer = duration;
+
+			if (_frameFrozenTimer > 0)
+				UnityEngine.Time.timeScale = 0;
 		}
 
 		public void ActivateBulletTime()
@@ -99,7 +117,7 @@ namespace TripleBladeHorse
 
 		void UpdateTimeScale()
 		{
-			if (pause > 0)
+			if (pause > 0 || _frameFrozenTimer > 0)
 			{
 				UnityEngine.Time.timeScale = 0;
 				return;

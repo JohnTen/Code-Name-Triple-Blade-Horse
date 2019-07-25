@@ -13,6 +13,8 @@ namespace TripleBladeHorse
 		Jump,
 		RangeBegin,
 		RangeAttack,
+		RangeChargeBegin,
+		RangeChargeBreak,
 		RangeChargeAttack,
 		MeleeBegin,
 		MeleeAttack,
@@ -32,6 +34,7 @@ namespace TripleBladeHorse
 		[SerializeField] float _meleeMaxChargeTime = 2f;
 
 		[Header("Range")]
+		[SerializeField] float _rangeChargeEnterTime = 0.1f;
 		[SerializeField] float _rangeChargeTime = 0.3f;
 		[SerializeField] float _withdrawTime = 0.3f;
 
@@ -311,10 +314,15 @@ namespace TripleBladeHorse
 					});
 			}
 
+			var passedChargeEnter = _rangeChargeTimer > _rangeChargeEnterTime;
 			if (_input.GetButton("Throw"))
 			{
 				_rangeChargeTimer += TimeManager.PlayerDeltaTime;
-				if (_rangeChargeTimer > _rangeChargeTime)
+				if (!passedChargeEnter && _rangeChargeTimer > _rangeChargeEnterTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeBegin);
+				}
+				else if (_rangeChargeTimer > _rangeChargeTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
 					_rangeChargeTimer = float.NegativeInfinity;
@@ -323,8 +331,15 @@ namespace TripleBladeHorse
 
 			if (_input.GetButtonUp("Throw"))
 			{
-				if (_rangeChargeTimer > 0)
+				if (passedChargeEnter)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeBreak);
+				}
+				else if (_rangeChargeTimer > 0)
+				{
 					InvokeInputEvent(PlayerInputCommand.RangeAttack);
+				}
+				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
 
@@ -337,6 +352,7 @@ namespace TripleBladeHorse
 				throwPressed = true;
 			}
 
+			var passedChargeEnter = _rangeChargeTimer > _rangeChargeEnterTime;
 			if (throwPressed)
 			{
 				// OnButtonDown
@@ -356,7 +372,11 @@ namespace TripleBladeHorse
 
 				// OnButton
 				_rangeChargeTimer += TimeManager.PlayerDeltaTime;
-				if (_rangeChargeTimer > _rangeChargeTime)
+				if (!passedChargeEnter && _rangeChargeTimer > _rangeChargeEnterTime)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeBegin);
+				}
+				else if (_rangeChargeTimer > _rangeChargeTime)
 				{
 					InvokeInputEvent(PlayerInputCommand.RangeChargeAttack);
 					_rangeChargeTimer = float.NegativeInfinity;
@@ -366,8 +386,15 @@ namespace TripleBladeHorse
 			else if (_throwPressedBefore)
 			{
 				_throwPressedBefore = false;
-				if (_rangeChargeTimer > 0)
+				if (passedChargeEnter)
+				{
+					InvokeInputEvent(PlayerInputCommand.RangeChargeBreak);
+				}
+				else if (_rangeChargeTimer > 0)
+				{
 					InvokeInputEvent(PlayerInputCommand.RangeAttack);
+				}
+				_rangeChargeTimer = float.NegativeInfinity;
 			}
 		}
 

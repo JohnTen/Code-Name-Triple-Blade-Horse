@@ -15,29 +15,22 @@ MonoBehaviour:
   hitPointDamageFactor: 1
   enduranceDamageFactor: 1
   damageCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_Mode: 0
+    m_CurveMultiplier: 0
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
   staminaCost: 0
   movement: 0
   knockbackDistance: 1
@@ -45,3 +38,10 @@ MonoBehaviour:
   canTriggerGapStagger: 0
   gapStaggerAnimation: 
   staggerAnimation: Stagger_Mediocre
+  frameFrozenDuration: 0
+  screenShakeParam:
+    _duration: 0
+    _XFrequency: 0
+    _YFrequency: 0
+    _XAmplitude: 0
+    _YAmplitude: 0
