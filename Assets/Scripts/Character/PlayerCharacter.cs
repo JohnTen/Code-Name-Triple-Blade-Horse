@@ -249,7 +249,8 @@ namespace TripleBladeHorse
 		private void HandlePull(Vector3 direction)
 		{
 			_currentAirAttack = 0;
-			_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
+			if (direction.y > 0 || !_groundDetector.IsOnGround)
+				_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			_mover.Pull(direction);
 			_bulletTimeReady = true;
 			_extraJump = true;
