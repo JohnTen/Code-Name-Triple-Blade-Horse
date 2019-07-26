@@ -789,6 +789,14 @@ namespace TripleBladeHorse.Animation
 					Anim.ATK_Charge_Ground_ATK, Anim.Jump_Ground, 0.05f,
 					GeneralFunction.Jump),
 				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.ATK_Melee_Ground_1, 0f,
+					GeneralFunction.GroundAttack),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
+				new Transition(
 					Anim.ATK_Charge_Ground_ATK, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
@@ -799,11 +807,6 @@ namespace TripleBladeHorse.Animation
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
 
-				new Transition(
-					Anim.ATK_Charge_Ground_ATK, Anim.Healing, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.Healing];
-					}),
 
 				//// ATK_Melee_Air_1
 				new Transition(
