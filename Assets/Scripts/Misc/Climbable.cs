@@ -18,6 +18,7 @@ namespace TripleBladeHorse
 
 		[SerializeField] UnityEvent _OnStab;
 		[SerializeField] UnityEvent _OnDraw;
+		[SerializeField] UnityEvent _OnExhausted;
 
 		[Header("Debug")]
 		[SerializeField] List<GameObject> stuckObj;
@@ -80,6 +81,9 @@ namespace TripleBladeHorse
 
 				energyBall.ReplenishAmount = _restoredStamina;
 				_generatedEnergyBalls++;
+
+				if (_generatedEnergyBalls >= _numberOfEnergyBall)
+					_OnExhausted?.Invoke();
 			}
 
 			print("Draw");
