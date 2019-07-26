@@ -14,6 +14,7 @@ namespace TripleBladeHorse
 	{
 		[SerializeField] BaseWeapon _weapon;
 		[SerializeField] HitBox[] _hitboxes;
+		[SerializeField] Collider2D _collider;
 
 		[Header("Weakpoint Movemnt")]
 		[SerializeField] Transform[] _weakpoints;
@@ -60,7 +61,6 @@ namespace TripleBladeHorse
 		HitFlash _hitFlash;
 		BossMover _mover;
 		AttackMove _currentMove;
-		Collider2D _collider;
 		BezierTracker _stalkTracker;
 		bool _stalking;
 
@@ -76,7 +76,6 @@ namespace TripleBladeHorse
 			_hitFlash = GetComponent<HitFlash>();
 			_mover = GetComponent<BossMover>();
 			_groundDetector = GetComponent<ICanDetectGround>();
-			_collider = GetComponent<Collider2D>();
 			_stalkTracker = new BezierTracker();
 
 			_input.OnReceivedInput += HandleReceivedInput;

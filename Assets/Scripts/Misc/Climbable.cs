@@ -37,9 +37,9 @@ namespace TripleBladeHorse
 
 		private void OnDisable()
 		{
-			for (int i = 0; i < stuckObj.Count; i++)
+			while (stuckObj.Count > 0)
 			{
-				var knife = stuckObj[i].GetComponent<ThrowingKnife>();
+				var knife = stuckObj[0].GetComponent<ThrowingKnife>();
 				if (!knife) continue;
 				knife.Withdraw();
 			}
