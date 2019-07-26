@@ -380,7 +380,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.510872, y: 3.6299105}
+  m_Size: {x: 3.5152209, y: 3.6299105}
   m_EdgeRadius: 0
 --- !u!114 &2950960927850981856
 MonoBehaviour:
@@ -394,8 +394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd9ce1869fac0f45b8a7a7051e7f087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minRejectForce: 1
-  _maxRejectForce: 10
+  _minRejectDistance: 1
+  _maxRejectDistance: 3
+  _minRejectSpeed: 1
+  _maxRejectSpeed: 12
   _filterTags:
   - Player
 --- !u!1 &618063232569080483
