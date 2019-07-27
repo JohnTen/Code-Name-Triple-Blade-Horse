@@ -213,7 +213,7 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = false;
 					}
-					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					_collider.gameObject.layer = LayerMask.NameToLayer("RejectCollider");
 					OnStopDashingInvincible?.Invoke();
 				}
 
@@ -223,7 +223,7 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = false;
 					}
-					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					_collider.gameObject.layer = LayerMask.NameToLayer("RejectCollider");
 					OnStopDashingInvincible?.Invoke();
 				}
 
@@ -233,7 +233,7 @@ namespace TripleBladeHorse
 					{
 						collider.enabled = false;
 					}
-					_collider.gameObject.layer = LayerMask.NameToLayer("Enemy");
+					_collider.gameObject.layer = LayerMask.NameToLayer("RejectCollider");
 					OnStopDashingInvincible?.Invoke();
 				}
 			}
