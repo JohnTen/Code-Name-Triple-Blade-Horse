@@ -61,6 +61,7 @@ namespace TripleBladeHorse
 			if (!stuckObj.Contains(obj))
 				return false;
 
+			stuckObj.Remove(obj);
 			if (_rigidbody && PullForceFactor < 1)
 			{
 				var toObj = obj.transform.position - this.transform.position;
@@ -88,7 +89,6 @@ namespace TripleBladeHorse
 
 			print("Draw");
 			_OnDraw.Invoke();
-			stuckObj.Remove(obj);
 			return true;
 		}
 
@@ -101,6 +101,7 @@ namespace TripleBladeHorse
 
 		public void Respawn()
 		{
+			gameObject.SetActive(true);
 			_generatedEnergyBalls = 0;
 		}
 	}
