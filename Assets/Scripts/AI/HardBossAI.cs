@@ -13,11 +13,6 @@ namespace TripleBladeHorse.AI{
         private void OnEnable() {
             _AI.OpenBranch(
                 BT.Selector().OpenBranch(
-                    BT.If(_behave.Moving).OpenBranch(
-                        BT.Wait(Time.deltaTime),
-                        BT.Call(_behave.Initialization)
-                    ),
-
                     BT.While(_behave.Opening).OpenBranch(
                         BT.Call(_behave.MoveToTarget),
                         BT.Wait(1f),
@@ -29,6 +24,11 @@ namespace TripleBladeHorse.AI{
                         BT.Wait(1f),
                         BT.Call(_behave.Slash),
                         BT.Call(_behave.AfterOpening)
+                    ),
+                    
+                    BT.If(_behave.Moving).OpenBranch(
+                        BT.Wait(Time.deltaTime),
+                        BT.Call(_behave.Initialization)
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -54,8 +54,7 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.TurnToTarget)
-                        //BT.Wait(1f)                                               
+                        BT.Call(_behave.TurnToTarget)                                              
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -69,7 +68,7 @@ namespace TripleBladeHorse.AI{
         // Update is called once per frame
         void Update()
         {
-        
+            _AI.Tick();
         }
     }
 }
