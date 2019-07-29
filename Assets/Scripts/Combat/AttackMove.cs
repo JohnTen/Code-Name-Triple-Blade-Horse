@@ -47,6 +47,7 @@ namespace TripleBladeHorse.Combat
 			target._triggerGapStagger = canTriggerGapStagger;
 			target._gapStaggerAnimation = gapStaggerAnimation;
 			target._staggerAnimation = staggerAnimation;
+			target._move = this;
 
 			return target;
 		}

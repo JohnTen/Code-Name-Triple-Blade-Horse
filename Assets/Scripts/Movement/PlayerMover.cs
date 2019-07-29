@@ -15,7 +15,7 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] float _maxYSpeed;
 		[SerializeField] float _jumpHeight;
 		[SerializeField] float _gravityScale;
-		[SerializeField] float _knockbackSpeedFactor;
+		[SerializeField] float _defaultKnockBackSpeed;
 		[SerializeField] float _airAttackMaxXSpeed;
 		[SerializeField] float _airAttackMaxYSpeed;
 		[SerializeField] float _airAttackgravityScale;
@@ -60,6 +60,7 @@ namespace TripleBladeHorse.Movement
 		[SerializeField] bool onPlatform;
 		[SerializeField] bool _blockInput;
 		[SerializeField] List<Collider2D> _ignoredColliders;
+		[SerializeField] float _knockbackSpeed;
 
 
 		PlayerState _state;
@@ -285,6 +286,13 @@ namespace TripleBladeHorse.Movement
 		public void Knockback(Vector2 direction)
 		{
 			_knockbackVector = Vector2.right * (direction.magnitude * Mathf.Sign(direction.x));
+			_knockbackSpeed = _defaultKnockBackSpeed;
+		}
+
+		public void Knockback(Vector2 direction, float speed)
+		{
+			_knockbackVector = Vector2.right * (direction.magnitude * Mathf.Sign(direction.x));
+			_knockbackSpeed = speed;
 		}
 
 		public void Move(Vector2 direction)
@@ -509,7 +517,7 @@ namespace TripleBladeHorse.Movement
 
 			if (_knockbackVector.sqrMagnitude > 0)
 			{
-				var knockback = _knockbackVector.normalized * _knockbackSpeedFactor;
+				var knockback = _knockbackVector.normalized * _knockbackSpeed;
 				if (_knockbackVector.sqrMagnitude < knockback.sqrMagnitude)
 				{
 					_knockbackVector = Vector2.zero;

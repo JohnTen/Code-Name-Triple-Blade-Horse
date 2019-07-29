@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using JTUtility;
+using TripleBladeHorse.VFX;
 
 namespace TripleBladeHorse.Combat
 {
@@ -34,6 +35,16 @@ namespace TripleBladeHorse.Combat
 		{
 			knifesInAirList = new List<ThrowingKnife>();
 			sheath.OnRecievedKnife += Sheath_OnRecievedKnife;
+			sword.OnHit += HandleSwordOnHit;
+		}
+
+		private void HandleSwordOnHit(IAttackable attackable, AttackResult result, AttackPackage attack)
+		{
+			if (attack._move != null)
+			{
+				TimeManager.Instance.FrozenFrame(attack._move.FrameFrozen);
+				ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
+			}
 		}
 
 		public void MeleeAttack()

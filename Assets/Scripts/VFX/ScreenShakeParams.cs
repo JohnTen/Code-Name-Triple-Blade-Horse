@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace TripleBladeHorse.VFX
 {
@@ -8,7 +9,11 @@ namespace TripleBladeHorse.VFX
 		public float _duration;
 		public float _XFrequency;
 		public float _YFrequency;
+		public float _ZFrequency;
 		public float _XAmplitude;
 		public float _YAmplitude;
+		public float _ZAmplitude;
+		
+		public AnimationCurve _decay;
 	}
 }
