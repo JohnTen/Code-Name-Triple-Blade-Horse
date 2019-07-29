@@ -11,4 +11,5 @@ public interface ICanStickKnife
 
 	bool TryStick(GameObject obj);
 	bool TryPullOut(GameObject obj, ref Vector2 pullingVelocity);
+	void Remove(GameObject obj);
 }

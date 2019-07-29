@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TripleBladeHorse.Combat;
 
 namespace TripleBladeHorse
@@ -14,6 +15,10 @@ namespace TripleBladeHorse
 		[SerializeField] int _numberOfEnergyBall = 1;
 		[SerializeField, Range(0f, 1f)] float _pullForceFactor;
 		[SerializeField] EnergyBall _enegryBallPrefab;
+
+		[SerializeField] UnityEvent _OnStab;
+		[SerializeField] UnityEvent _OnDraw;
+		[SerializeField] UnityEvent _OnExhausted;
 
 		[Header("Debug")]
 		[SerializeField] List<GameObject> stuckObj;
@@ -32,9 +37,9 @@ namespace TripleBladeHorse
 
 		private void OnDisable()
 		{
-			for (int i = 0; i < stuckObj.Count; i++)
+			while (stuckObj.Count > 0)
 			{
-				var knife = stuckObj[i].GetComponent<ThrowingKnife>();
+				var knife = stuckObj[0].GetComponent<ThrowingKnife>();
 				if (!knife) continue;
 				knife.Withdraw();
 			}
@@ -45,6 +50,8 @@ namespace TripleBladeHorse
 			if (stuckObj.Count >= _maxStuckedKnife)
 				return false;
 
+			print("Stab");
+			_OnStab.Invoke();
 			stuckObj.Add(obj);
 			return true;
 		}
@@ -74,10 +81,22 @@ namespace TripleBladeHorse
 
 				energyBall.ReplenishAmount = _restoredStamina;
 				_generatedEnergyBalls++;
+
+				if (_generatedEnergyBalls >= _numberOfEnergyBall)
+					_OnExhausted?.Invoke();
 			}
 
+			print("Draw");
+			_OnDraw.Invoke();
 			stuckObj.Remove(obj);
 			return true;
+		}
+
+		public void Remove(GameObject obj)
+		{
+			if (!stuckObj.Contains(obj))
+				return;
+			stuckObj.Remove(obj);
 		}
 
 		public void Respawn()

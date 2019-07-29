@@ -170,15 +170,14 @@ namespace TripleBladeHorse
                 _particles["ATK_Charge_Ground_ATK"].Play();
             }
 
-			if (eventArg._command == PlayerInputCommand.RangeChargeBegin)
-			{
-				_particles["Range_Charge_Ground_Charging"].Play();
-			}
-			if (eventArg._command == PlayerInputCommand.RangeAttack ||
-				eventArg._command == PlayerInputCommand.RangeChargeAttack)
+			if (eventArg._command == PlayerInputCommand.RangeChargeAttack)
 			{
 				_particles["Range_Charge_Ground_Charging"].Stop();
 				_particles["Range_Charge_Ground_ATK"].Play();
+			}
+			if (eventArg._command == PlayerInputCommand.RangeChargeBegin)
+			{
+				_particles["Range_Charge_Ground_Charging"].Play();
 			}
 			if (eventArg._command == PlayerInputCommand.RangeChargeBreak)
 			{

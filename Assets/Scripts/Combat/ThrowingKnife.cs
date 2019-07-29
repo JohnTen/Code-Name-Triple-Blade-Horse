@@ -205,7 +205,7 @@ namespace TripleBladeHorse.Combat
 			if (stuckOn != null)
 			{
 				Vector2 force = Vector2.zero;
-				stuckOn.TryPullOut(this.gameObject, ref force);
+				stuckOn.Remove(this.gameObject);
 			}
 			stuckOn = null;
 			stuckAttack = null;

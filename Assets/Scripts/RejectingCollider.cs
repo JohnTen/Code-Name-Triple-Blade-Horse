@@ -6,8 +6,10 @@ using TripleBladeHorse.Movement;
 
 public class RejectingCollider : MonoBehaviour
 {
-	[SerializeField] float _minRejectForce;
-	[SerializeField] float _maxRejectForce;
+	[SerializeField] float _minRejectDistance;
+	[SerializeField] float _maxRejectDistance;
+	[SerializeField] float _minRejectSpeed;
+	[SerializeField] float _maxRejectSpeed;
 	[SerializeField] string[] _filterTags;
 
 	Collider2D _collider;
@@ -27,10 +29,11 @@ public class RejectingCollider : MonoBehaviour
 		var bound = _collider.bounds;
 		var toOther = collision.bounds.center - bound.center;
 		var maxDistance = bound.extents.x + collision.bounds.extents.x;
-		var force = Mathf.Lerp(_maxRejectForce, _minRejectForce, toOther.magnitude / maxDistance);
-		var actualForce = force * toOther.x > 0 ? Vector2.right : Vector2.left;
+		var force = Mathf.Lerp(_maxRejectDistance, _minRejectDistance, toOther.magnitude / maxDistance);
+		var speed = Mathf.Lerp(_maxRejectSpeed, _minRejectSpeed, toOther.magnitude / maxDistance);
+		var actualForce = force * (toOther.x > 0 ? Vector2.right : Vector2.left);
 
-		mover.Knockback(actualForce * TimeManager.DeltaTime);
+		mover.Knockback(actualForce, speed);
 	}
 
 	bool IsInsideFilter(string tag)

@@ -10,8 +10,8 @@ namespace TripleBladeHorse.Animation
 	{
 		public class Anim
 		{
-			public const string Idle_Ground = "Idle_Ground_New";
-			public const string Run_Ground = "Run_Ground_old";
+			public const string Idle_Ground = "Idle_Ground";
+			public const string Run_Ground = "Run_Ground";
 			public const string Dash_Up = "Dash_Air_Up";
 			public const string Dash_Down = "Dash_Air_Down";
 			public const string Dash_Horizontal = "Dash_Ground";
@@ -29,9 +29,9 @@ namespace TripleBladeHorse.Animation
 			public const string ATK_Melee_Ground_3 = "ATK_Melee_Ground_3";
 			public const string ATK_Charge_Ground_Charging = "ATK_Charge_Ground_Charging";
 			public const string ATK_Charge_Ground_ATK = "ATK_Charge_Ground_ATK";
-			public const string Stagger_Weak = "Hitten_Ground_Small";
-			public const string Stagger_Med = "Hitten_Ground_Normal";
-			public const string Stagger_Strong = "Hitten_Ground_Big";
+			public const string Stagger_Weak = "Hitten_Front_Ground_Small";
+			public const string Stagger_Med = "Hitten_Front_Ground_Normal";
+			public const string Stagger_Strong = "Hitten_Front_Ground_Big";
 			public const string Healing = "Healing";
 			public const string Death = "Death_Ground";
 		}
@@ -143,7 +143,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.Dash_Diagonal_Up, 1, 0, 0, true, false, false, false),
 				new Animation(Anim.Dash_Diagonal_Down, 1, 0, 0, true, false, false, false),
 				new Animation(Anim.Jump_Ground, 5, 1, 0.2f),
-				new Animation(Anim.Jump_Air, 2, 1, 0.2f),
+				new Animation(Anim.Jump_Air, 1, 1, 0.2f),
 				new Animation(Anim.Dropping, 1, 1, 0f),
 				new Animation(Anim.Dropping_Buffering, 3, 1, 0.3f, true, false, true, false),
 				new Animation(Anim.ATK_Melee_Air_1, 1.8f, 1, 0.7f, true, true, false, true),
@@ -433,6 +433,11 @@ namespace TripleBladeHorse.Animation
 					Anim.Jump_Ground, Anim.ATK_Melee_Air_1, 0.1f,
 					GeneralFunction.AirAttack),
 				new Transition(
+					Anim.Jump_Ground, Anim.Jump_Air, 0.05f,
+					(sd) => {
+						return sd._toggleMap[Stat.Jump];
+					}),
+				new Transition(
 					Anim.Jump_Ground, Anim.Dropping, 0.1f,
 					(sd) => {
 						return sd._floatMap[Stat.YSpeed] < 0;
@@ -465,7 +470,7 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Jump_Air, Anim.Dropping, 0.05f,
 					(sd) => {
-						return sd._floatMap[Stat.YSpeed] < 0;
+						return sd._current.completed;
 					}),
 				new Transition(
 					Anim.Jump_Air, Anim.Dropping_Buffering, 0.1f,
@@ -495,7 +500,7 @@ namespace TripleBladeHorse.Animation
 				new Transition(
 					Anim.Dropping, Anim.Jump_Air, 0.05f,
 					(sd) => {
-						return sd._floatMap[Stat.YSpeed] > 0 || sd._toggleMap[Stat.Jump];
+						return sd._toggleMap[Stat.Jump];
 					}),
 				new Transition(
 					Anim.Dropping, Anim.Dropping_Buffering, 0f,
@@ -789,6 +794,14 @@ namespace TripleBladeHorse.Animation
 					Anim.ATK_Charge_Ground_ATK, Anim.Jump_Ground, 0.05f,
 					GeneralFunction.Jump),
 				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.ATK_Melee_Ground_1, 0f,
+					GeneralFunction.GroundAttack),
+				new Transition(
+					Anim.ATK_Charge_Ground_ATK, Anim.Healing, 0.1f,
+					(sd) => {
+						return sd._toggleMap[Stat.Healing];
+					}),
+				new Transition(
 					Anim.ATK_Charge_Ground_ATK, Anim.Idle_Ground, 0.1f,
 					(sd) => {
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) <= float.Epsilon;
@@ -799,11 +812,6 @@ namespace TripleBladeHorse.Animation
 						return sd._current.completed && Mathf.Abs(sd._floatMap[Stat.XSpeed]) > float.Epsilon;
 					}),
 
-				new Transition(
-					Anim.ATK_Charge_Ground_ATK, Anim.Healing, 0.1f,
-					(sd) => {
-						return sd._toggleMap[Stat.Healing];
-					}),
 
 				//// ATK_Melee_Air_1
 				new Transition(
