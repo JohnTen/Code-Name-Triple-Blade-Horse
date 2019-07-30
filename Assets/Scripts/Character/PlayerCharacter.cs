@@ -167,8 +167,6 @@ namespace TripleBladeHorse
 		{
 			if (eventArgs._animation.name == PlayerFSMData.Anim.Death)
 			{
-				CancelAnimation();
-				_animator.PlayAnimation(PlayerFSMData.Anim.Idle_Ground, 0.05f);
 				foreach (var handler in GetComponents<ICanHandleDeath>())
 				{
 					handler.OnDeath(_state);
@@ -286,6 +284,8 @@ namespace TripleBladeHorse
 
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
+			if (_animator.GetCurrentAnimation().name == PlayerFSMData.Anim.Death) return;
+
 			_state._hitPoints -= result._finalDamage;
 			_state._endurance -= result._finalFatigue;
 
@@ -618,6 +618,8 @@ namespace TripleBladeHorse
 		{
 			_weaponSystem.ResetWeapon();
 			CancelAnimation();
+			_animator.SetFloat(PlayerFSMData.Stat.XSpeed, 0);
+			_animator.PlayAnimation(PlayerFSMData.Anim.Idle_Ground, 0.1f);
 		}
 		#endregion
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace TripleBladeHorse
@@ -11,9 +12,11 @@ namespace TripleBladeHorse
 		{
 			RespawnPoint,
 			ReloadLevel,
+			InvokeEvent
 		}
 
 		[SerializeField] DeathHandle _onDeath;
+		[SerializeField] UnityEvent _deathEvent;
 
 		public void OnDeath(CharacterState state)
 		{
@@ -25,6 +28,10 @@ namespace TripleBladeHorse
 
 				case DeathHandle.ReloadLevel:
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+					break;
+
+				case DeathHandle.InvokeEvent:
+					_deathEvent.Invoke();
 					break;
 			}
 		}

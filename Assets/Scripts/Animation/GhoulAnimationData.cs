@@ -8,7 +8,7 @@ namespace TripleBladeHorse.Animation
 	[CreateAssetMenu(menuName = "AnimationFSMData/GhoulFSMData")]
 	public class GhoulAnimationData : FSMData
 	{
-		class Anim
+		public class Anim
 		{
 			public const string Idle_Ground = "Monster1_Idle_Ground";
 			public const string Walk_Ground = "Monster1_Walk_Ground";
@@ -21,7 +21,7 @@ namespace TripleBladeHorse.Animation
 			public const string Stagger_Strong = "Monster1_Hitten_Big";
 		}
 
-		class Stat
+		public class Stat
 		{
 			public const string Attack = "Attack";
 			public const string WeakStagger = "Stagger_Weak";
