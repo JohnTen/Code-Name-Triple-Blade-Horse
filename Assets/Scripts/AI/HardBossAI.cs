@@ -11,18 +11,19 @@ namespace TripleBladeHorse.AI{
         Root _AI = BT.Root();
 
         private void OnEnable() {
+
+            _behave = GetComponent<BossBehave>();
+
             _AI.OpenBranch(
                 BT.Selector().OpenBranch(
                     BT.While(_behave.Opening).OpenBranch(
                         BT.Call(_behave.MoveToTarget),
-                        BT.Wait(1f),
+                        BT.Wait(0.5f),
+                        BT.Call(_behave.TurnToTarget),
+                        BT.Wait(0.5f),
                         BT.Call(_behave.DashAttack),
                         BT.Wait(2f),
-                        BT.Call(_behave.Slash),
-                        BT.Wait(1f),
-                        BT.Call(_behave.Slash),
-                        BT.Wait(1f),
-                        BT.Call(_behave.Slash),
+                        BT.Call(_behave.TurnToTarget),
                         BT.Call(_behave.AfterOpening)
                     ),
                     
