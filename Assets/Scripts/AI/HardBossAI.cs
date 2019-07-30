@@ -19,8 +19,6 @@ namespace TripleBladeHorse.AI{
                     BT.While(_behave.Opening).OpenBranch(
                         BT.Call(_behave.MoveToTarget),
                         BT.Wait(0.5f),
-                        BT.Call(_behave.TurnToTarget),
-                        BT.Wait(0.5f),
                         BT.Call(_behave.DashAttack),
                         BT.Wait(2f),
                         BT.Call(_behave.TurnToTarget),
