@@ -251,12 +251,13 @@ namespace TripleBladeHorse
 			_currentAirAttack = 0;
 			if (direction.y > 0 || !_groundDetector.IsOnGround)
 			{
-				print("Jump");
 				_animator.SetToggle(PlayerFSMData.Stat.Jump, true);
 			}
+
 			_mover.Pull(direction);
 			_bulletTimeReady = true;
 			_extraJump = true;
+			UpdateFacingDirection(direction);
 			_btManager.StartWithdrawBTWindow();
 		}
 
