@@ -97,7 +97,12 @@ namespace TripleBladeHorse
                 {
                     _particles["ATK_Melee_Ground_1"].Play();
                 }
-               
+              
+                if (_fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.ATK_Charge_Ground_ATK)
+                {
+                    _particles["ATK_Charge_Ground_Charging"].Stop();
+                    _particles["ATK_Charge_Ground_ATK"].Play();
+                }
             }
 
             if(eventArgs._name == AnimEventNames.Regenerate)
@@ -105,6 +110,8 @@ namespace TripleBladeHorse
                 _particles["RegenerateCompleted"].Play();
                 _particles["Regenerate"].Stop();
             }
+
+
         }
 
         private void HandleAnimationFadeInEvent(AnimationEventArg eventArgs)
@@ -122,7 +129,7 @@ namespace TripleBladeHorse
         private void MoveStateChangeHandler(ICanChangeMoveState moveState, MovingEventArgs eventArgs)
         {
             if(eventArgs.currentMovingState == MovingState.Move
-                &&_fSM.GetCurrentAnimation().name == "Run_Ground_old"|| _fSM.GetCurrentAnimation().name == "Run_Ground_New")
+                &&_fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.Run_Ground)
             {
                 _particles["Run_Ground"].Play();
             }
@@ -161,13 +168,12 @@ namespace TripleBladeHorse
         private void HandleChargingATK(InputEventArg<PlayerInputCommand> eventArg)
         {
             if (eventArg._command == PlayerInputCommand.MeleeChargeBegin)
-            {
+            { 
                 _particles["ATK_Charge_Ground_Charging"].Play();
             }
             if (eventArg._command == PlayerInputCommand.MeleeChargeAttack)
             {
-                _particles["ATK_Charge_Ground_Charging"].Stop();
-                _particles["ATK_Charge_Ground_ATK"].Play();
+
             }
 
 			if (eventArg._command == PlayerInputCommand.RangeChargeAttack)
