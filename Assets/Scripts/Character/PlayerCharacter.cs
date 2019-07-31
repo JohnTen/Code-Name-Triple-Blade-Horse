@@ -609,7 +609,7 @@ namespace TripleBladeHorse
 		{
 			_state._stamina += amount;
 			_state._stamina.Clamp();
-			OnReceivedEnergy?.Invoke();
+			OnReceivedEnergy?.Invoke(_state);
 		}
 
 		public void ResetState()
