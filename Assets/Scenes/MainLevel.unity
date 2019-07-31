@@ -1545,7 +1545,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 926173655}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &29088508
 GameObject:
@@ -7870,6 +7870,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4376030357004890335, guid: 1c17929139da99b4fa63fc4df41832e7,
     type: 3}
   m_PrefabInstance: {fileID: 771682488}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &283143611 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7600136597050432895, guid: efd5621af4f04c945b80945debb157e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2840332737794629691}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &283450355
 GameObject:
@@ -27108,8 +27114,8 @@ Transform:
   - {fileID: 710631606}
   - {fileID: 1143344703}
   - {fileID: 1351309538}
-  - {fileID: 28605220}
   - {fileID: 1578620222}
+  - {fileID: 28605220}
   - {fileID: 499675158}
   m_Father: {fileID: 718156663}
   m_RootOrder: 0
@@ -33514,6 +33520,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!224 &1147034517 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3387332749012245445, guid: 4d0435dd2784e6649826f85b4ee33460,
+    type: 3}
+  m_PrefabInstance: {fileID: 4898376366107216277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1148898403
 GameObject:
   m_ObjectHideFlags: 0
@@ -33639,7 +33651,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 9.017866, y: 0.5201831}
+  m_Offset: {x: 8.073587, y: 0.5201831}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -33650,7 +33662,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 23.56686, y: 8.431235}
+  m_Size: {x: 25.455418, y: 8.431235}
   m_EdgeRadius: 0
 --- !u!114 &1151975204
 MonoBehaviour:
@@ -43006,8 +43018,8 @@ RectTransform:
   - {fileID: 3457822463932177295}
   - {fileID: 6689018341644959316}
   - {fileID: 78503330199858022}
-  - {fileID: 7014305027283415466}
-  - {fileID: 1546676095916215512}
+  - {fileID: 1147034517}
+  - {fileID: 283143611}
   - {fileID: 6191547550869097975}
   - {fileID: 3328346828244231762}
   - {fileID: 7073817378250406469}
@@ -46396,7 +46408,7 @@ Transform:
   m_Children:
   - {fileID: 178864294}
   m_Father: {fileID: 926173655}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1578651461 stripped
 Transform:
@@ -103185,12 +103197,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!224 &1546676095916215512 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1546676095916215512, guid: efd5621af4f04c945b80945debb157e8,
-    type: 3}
-  m_PrefabInstance: {fileID: 2840332737794629691}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1908788780926911806
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105485,12 +105491,6 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &7014305027283415466 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7014305027283415466, guid: 4d0435dd2784e6649826f85b4ee33460,
-    type: 3}
-  m_PrefabInstance: {fileID: 4898376366107216277}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7073817378250406469 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7073817378250406469, guid: 8599843749f26964381c392005332d23,
