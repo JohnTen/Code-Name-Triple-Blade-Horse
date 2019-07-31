@@ -47,6 +47,8 @@ public class EnemySpawn : MonoBehaviour, ICanHandleRespawn
 	{
 		if (enemyReference)
 			Destroy(enemyReference);
+		enemyReference = null;
+		spawned = false;
 
 		spawnTimer = 0;
 	}

@@ -152,7 +152,7 @@ namespace TripleBladeHorse.Animation
 				new Animation(Anim.ATK_Melee_Ground_1, 1.8f, 1, 0.7f, true, true, false, false),
 				new Animation(Anim.ATK_Melee_Ground_2, 1.8f, 1, 0.7f, true, true, false, false),
 				new Animation(Anim.ATK_Melee_Ground_3, 1.8f, 1, 0.7f, true, true, false, false),
-				new Animation(Anim.ATK_Charge_Ground_Charging, 1f, 1, 0.7f),
+				new Animation(Anim.ATK_Charge_Ground_Charging, 1f, 1, 0.7f, true, false, false, false),
 				new Animation(Anim.ATK_Charge_Ground_ATK, 1f, 1, 0.7f, true, true, false, false),
 				new Animation(Anim.Stagger_Weak, 1f, 1, 0.7f, true, false, true, false),
 				new Animation(Anim.Stagger_Med, 1f, 1, 0.7f, true, false, true, false),

@@ -351,15 +351,20 @@ namespace TripleBladeHorse.Movement
 
 		private Vector2 ApplyPhysicalContactEffects(Vector2 velocity)
 		{
+			Debug.DrawRay(transform.position, velocity, Color.white);
 			foreach (var contact in _contacts)
 			{
-				var d = contact.normal * velocity;
-				if (d.x < 0)
-					velocity.x -= d.x * Mathf.Sign(contact.normal.x);
-				if (d.y < 0)
-					velocity.y -= d.y * Mathf.Sign(contact.normal.y);
+				if (Vector2.Dot(contact.normal, velocity) < 0)
+				{
+					Debug.DrawRay(contact.point, contact.normal, Color.red);
+					var plane = Vector2.Perpendicular(contact.normal);
+					var projection = Vector2.Dot(velocity, plane) * plane.normalized;
+					Debug.DrawRay(transform.position, projection, Color.blue);
+					velocity = projection;
+				}
 			}
 
+			Debug.DrawRay(transform.position, velocity, Color.yellow);
 			return velocity;
 		}
 

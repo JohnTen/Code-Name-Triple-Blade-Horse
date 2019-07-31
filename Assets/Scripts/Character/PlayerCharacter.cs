@@ -46,6 +46,8 @@ namespace TripleBladeHorse
 
 		#region Properties
 		public Transform HittingPoint => _hittingPoint;
+
+		public event Action<PlayerState> OnReceivedEnergy;
 		#endregion
 
 		#region Unity Messages
@@ -69,7 +71,6 @@ namespace TripleBladeHorse
 			_groundDetector.OnLandingStateChanged += HandleLandingStateChanged;
 			_input.OnReceivedInput += HandleReceivedInput;
 			_animator.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeinEvent);
-			_animator.Subscribe(Animation.AnimationState.FadingOut, HandleAnimationFadeoutEvent);
 			_animator.Subscribe(Animation.AnimationState.Completed, HandleAnimationCompletedEvent);
 			_animator.OnReceiveFrameEvent += HandleAnimationFrameEvent;
 			_weaponSystem.OnPull += HandlePull;
@@ -156,11 +157,6 @@ namespace TripleBladeHorse
 					_state._stamina -= _healingStaminaCost;
 					break;
 			}
-		}
-
-		private void HandleAnimationFadeoutEvent(AnimationEventArg eventArgs)
-		{
-			_mover.AirAttacking = false;
 		}
 
 		private void HandleAnimationCompletedEvent(AnimationEventArg eventArgs)
@@ -420,7 +416,7 @@ namespace TripleBladeHorse
 				case PlayerInputCommand.MeleeBegin:
 					if (!_groundDetector.IsOnGround && _currentAirAttack >= _maxAirAttack)
 						break;
-					CancelAnimation();
+					//CancelAnimation();
 					break;
 					
 				case PlayerInputCommand.MeleeAttack:
@@ -440,6 +436,7 @@ namespace TripleBladeHorse
 				case PlayerInputCommand.MeleeChargeBegin:
 					CancelAnimation();
 					_animator.SetBool(PlayerFSMData.Stat.Charge, true);
+					SetFrozen(true);
 
 					TriggerBulletTimeIfPossible();
 					break;
@@ -612,6 +609,7 @@ namespace TripleBladeHorse
 		{
 			_state._stamina += amount;
 			_state._stamina.Clamp();
+			OnReceivedEnergy?.Invoke();
 		}
 
 		public void ResetState()
