@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4571077726298069578}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -21.42, y: -65.08, z: 0}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_Children: []
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: 227d754c4a3ee014b8ee95d9028a9294, type: 3}
   m_Color: {r: 0, g: 0.66319036, b: 1, a: 1}
   m_FlipX: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 1
   _maxStuckedKnife: 3
-  _numberOfEnergyBall: 1
+  _numberOfEnergyBall: 100000
   _pullForceFactor: 1
   _enegryBallPrefab: {fileID: 1485801041880988041, guid: 632fab691d693244fa9ea41d507e2def,
     type: 3}
@@ -139,18 +139,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   _OnExhausted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4571077726298069578}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   stuckObj: []

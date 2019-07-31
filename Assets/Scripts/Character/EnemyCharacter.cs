@@ -45,6 +45,8 @@ namespace TripleBladeHorse
 
 		private void HandleOnHit(AttackPackage attack, AttackResult result)
 		{
+			if (_animator.GetCurrentAnimation().name == GhoulAnimationData.Anim.Death_Ground) return;
+
 			_flash.Flash();
 			_mover.Knockback(attack._fromDirection * attack._knockback);
 			_state._hitPoints -= result._finalDamage;
@@ -106,6 +108,11 @@ namespace TripleBladeHorse
 			_launcher.Interrupt();
 
 			GetComponent<Rigidbody2D>().simulated = false;
+
+			foreach (var handler in GetComponents<ICanHandleDeath>())
+			{
+				handler.OnDeath(_state);
+			}
 		}
 
 		private void HandleEndurance()
