@@ -1,6 +1,6 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
-using System;
 using FlyingWormConsole3.LiteNetLib.Utils;
+using System;
 
 namespace FlyingWormConsole3.LiteNetLib
 {
@@ -144,7 +144,7 @@ namespace FlyingWormConsole3.LiteNetLib
             //Reading property
             byte property = (byte)(data[start] & 0x7F);
             bool fragmented = (data[start] & 0x80) != 0;
-            int headerSize = GetHeaderSize((PacketProperty) property);
+            int headerSize = GetHeaderSize((PacketProperty)property);
 
             if (property > LastProperty ||
                 packetSize > NetConstants.PacketSizeLimit ||

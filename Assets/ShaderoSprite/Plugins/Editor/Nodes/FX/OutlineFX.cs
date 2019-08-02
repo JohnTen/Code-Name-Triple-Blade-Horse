@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Outline")]
@@ -94,14 +92,14 @@ namespace _ShaderoShaderEditorFramework
             }
 
             GUILayout.Label("(0 to 8) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 2);
+            Variable = HorizontalSlider(Variable, 0, 2);
             GUILayout.Label("Outline Color");
             Variable2 = EditorGUILayout.ColorField("", Variable2);
             HDR = GUILayout.Toggle(HDR, "Extra HDR");
             if (HDR)
             {
                 GUILayout.Label("Add HDR: " + Variable3.ToString("0.00"));
-                Variable3 =HorizontalSlider(Variable3, 0, 2);
+                Variable3 = HorizontalSlider(Variable3, 0, 2);
             }
             else
             { Variable3 = 1; }

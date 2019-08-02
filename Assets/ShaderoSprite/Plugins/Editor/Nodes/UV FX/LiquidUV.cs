@@ -1,14 +1,12 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
-[Node(false, "UV/FX (UV)/Liquid UV")]
+    [Node(false, "UV/FX (UV)/Liquid UV")]
 
-public class LiquidUV : Node
-{
+    public class LiquidUV : Node
+    {
         public const string ID = "LiquidUV";
         public override string GetID { get { return ID; } }
         [HideInInspector]
@@ -52,7 +50,7 @@ public class LiquidUV : Node
             code += "\n";
             code += "return p;\n";
             code += "}\n";
-         
+
         }
         public override Node Create(Vector2 pos)
         {
@@ -98,15 +96,15 @@ public class LiquidUV : Node
 
 
             GUILayout.Label("Wave X (0 to 2) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 2);
+            Variable = HorizontalSlider(Variable, 0, 2);
             GUILayout.Label("Wave Y (0 to 2) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 2);
+            Variable2 = HorizontalSlider(Variable2, 0, 2);
             GUILayout.Label("Dist X (1 to 10) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 0, 1);
+            Variable3 = HorizontalSlider(Variable3, 0, 1);
             GUILayout.Label("DistY (1 to 10) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 1);
+            Variable4 = HorizontalSlider(Variable4, 0, 1);
             GUILayout.Label("Speed (-2 to 2) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -2, 2);
+            Variable5 = HorizontalSlider(Variable5, -2, 2);
 
 
         }

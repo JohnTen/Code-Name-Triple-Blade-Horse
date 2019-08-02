@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Generate/Shape/Spiral")]
@@ -104,19 +101,19 @@ namespace _ShaderoShaderEditorFramework
             AddParameters = GUILayout.Toggle(AddParameters, "Add Parameters");
 
             GUILayout.Label("Pos X (-1 to 2) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -1, 2);
+            Variable = HorizontalSlider(Variable, -1, 2);
 
             GUILayout.Label("Pos Y (-1 to 2) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -1, 2);
+            Variable2 = HorizontalSlider(Variable2, -1, 2);
 
             GUILayout.Label("Size (0 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 0, 2);
+            Variable3 = HorizontalSlider(Variable3, 0, 2);
 
             GUILayout.Label("LineSize (-16 to 16) " + Variable4.ToString("0.00"));
             Variable4 = Mathf.RoundToInt(GUILayout.HorizontalSlider(Variable4, -16, 16));
 
             GUILayout.Label("Speed (-2 to 2) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -2, 2);
+            Variable5 = HorizontalSlider(Variable5, -2, 2);
 
             NoAlphaBlack = GUILayout.Toggle(NoAlphaBlack, "No Alpha = Black");
 

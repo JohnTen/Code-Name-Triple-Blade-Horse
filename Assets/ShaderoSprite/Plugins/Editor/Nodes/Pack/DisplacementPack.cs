@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Pack/Displacement Pack")]
@@ -115,7 +113,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable = HorizontalSlider(Variable, -1, 1, GUILayout.Width(190),190);
+            Variable = HorizontalSlider(Variable, -1, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -126,7 +124,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable2 = HorizontalSlider(Variable2, -1, 1, GUILayout.Width(190),190);
+            Variable2 = HorizontalSlider(Variable2, -1, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -137,7 +135,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             AddMotionAlternate = GUILayout.Toggle(AddMotionAlternate, "Add Motion Plus", GUILayout.Width(130));
-            Variable3 = HorizontalSlider(Variable3, -3, 3, GUILayout.Width(190),190);
+            Variable3 = HorizontalSlider(Variable3, -3, 3, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
 

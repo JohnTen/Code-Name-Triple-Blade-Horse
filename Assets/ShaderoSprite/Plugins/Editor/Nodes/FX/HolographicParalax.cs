@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Holographic Paralax")]
@@ -85,7 +82,7 @@ namespace _ShaderoShaderEditorFramework
             }
 
             GUILayout.Label("(0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
 
         }
         private string FinalVariable;
@@ -141,7 +138,7 @@ namespace _ShaderoShaderEditorFramework
             s_out.StringPreviewLines = s_in.StringPreviewNew;
             if (parametersOK)
             {
-                s_out.ValueLine = "float4 " + DefaultName + " = HolographicParalax(" + uv+ "," + Source + "," + DefaultNameVariable1 + ");\n";
+                s_out.ValueLine = "float4 " + DefaultName + " = HolographicParalax(" + uv + "," + Source + "," + DefaultNameVariable1 + ");\n";
             }
             else
             {

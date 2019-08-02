@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace DragonBones
 {
@@ -64,7 +64,7 @@ namespace DragonBones
         protected const string SLOT = "slot";
         protected const string CONSTRAINT = "constraint";
         protected const string IK = "ik";
-        
+
         protected const string SKIN = "skin";
         protected const string DISPLAY = "display";
         protected const string ANIMATION = "animation";

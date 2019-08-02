@@ -1,40 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace TripleBladeHorse
 {
-	public class PlayerDeathHandler : MonoBehaviour, ICanHandleDeath
-	{
-		enum DeathHandle
-		{
-			RespawnPoint,
-			ReloadLevel,
-			InvokeEvent
-		}
+    public class PlayerDeathHandler : MonoBehaviour, ICanHandleDeath
+    {
+        enum DeathHandle
+        {
+            RespawnPoint,
+            ReloadLevel,
+            InvokeEvent
+        }
 
-		[SerializeField] DeathHandle _onDeath;
-		[SerializeField] UnityEvent _deathEvent;
+        [SerializeField] DeathHandle _onDeath;
+        [SerializeField] UnityEvent _deathEvent;
 
-		public void OnDeath(CharacterState state)
-		{
-			switch (_onDeath)
-			{
-				case DeathHandle.RespawnPoint:
-					RecoverPoint.MainRespawn(true);
-					break;
+        public void OnDeath(CharacterState state)
+        {
+            switch (_onDeath)
+            {
+                case DeathHandle.RespawnPoint:
+                    RecoverPoint.MainRespawn(true);
+                    break;
 
-				case DeathHandle.ReloadLevel:
-					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-					break;
+                case DeathHandle.ReloadLevel:
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    break;
 
-				case DeathHandle.InvokeEvent:
-					_deathEvent.Invoke();
-					break;
-			}
-		}
-	}
+                case DeathHandle.InvokeEvent:
+                    _deathEvent.Invoke();
+                    break;
+            }
+        }
+    }
 }
 

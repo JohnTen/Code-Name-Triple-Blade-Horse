@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using JTUtility;
+﻿using JTUtility;
 using TripleBladeHorse.Combat;
+using UnityEngine;
 
 namespace TripleBladeHorse.AI
 {
     public enum BossInput
     {
-		Null,
+        Null,
         Slash,
         Dodge,
         JumpAttack,
@@ -28,159 +26,179 @@ namespace TripleBladeHorse.AI
         bool _opening = true;
         bool _isCharging;
         bool _isWlaking;
-		[SerializeField] int _slashCount = 0;
+        [SerializeField] int _slashCount = 0;
         [SerializeField] bool _dodged = false;
         float dodgePercent = 3000;
-		[SerializeField] int _maxSlashCount=3;
-		public int[] weight = new int[]{5,1,3};
-		public float combatTemp = 3;
-		
-		bool _delayingInput;
-		bool _blockingInput;
-		Vector2 _move;
-		Vector2 _aim;
+        [SerializeField] int _maxSlashCount = 3;
+        public int[] weight = new int[] { 5, 1, 3 };
+        public float combatTemp = 3;
 
-		InputEventArg<BossInput> _delayedInput;
+        bool _delayingInput;
+        bool _blockingInput;
+        Vector2 _move;
+        Vector2 _aim;
 
-		public bool DelayInput
-		{
-			get => _delayingInput;
-			set
-			{
-				if (_delayingInput == value)
-					return;
+        InputEventArg<BossInput> _delayedInput;
 
-				_delayingInput = value;
-				if (!value && _delayedInput._command != BossInput.Null)
-				{
-					OnReceivedInput?.Invoke(_delayedInput);
-				}
+        public bool DelayInput
+        {
+            get => _delayingInput;
+            set
+            {
+                if (_delayingInput == value)
+                    return;
 
-				if (_delayingInput)
-				{
-					_delayedInput._command = BossInput.Null;
-					_delayedInput._additionalValue = 0;
-				}
-			}
-		}
+                _delayingInput = value;
+                if (!value && _delayedInput._command != BossInput.Null)
+                {
+                    OnReceivedInput?.Invoke(_delayedInput);
+                }
 
-		public bool BlockInput
-		{
-			get => _blockingInput;
-			set => _blockingInput = value;
-		}
+                if (_delayingInput)
+                {
+                    _delayedInput._command = BossInput.Null;
+                    _delayedInput._additionalValue = 0;
+                }
+            }
+        }
 
-		public event Action<InputEventArg<BossInput>> OnReceivedInput;
+        public bool BlockInput
+        {
+            get => _blockingInput;
+            set => _blockingInput = value;
+        }
+
+        public event Action<InputEventArg<BossInput>> OnReceivedInput;
 
         public Vector2 GetAimingDirection()
-		{
-			return _aim;
-		}
+        {
+            return _aim;
+        }
 
-		public Vector2 GetMovingDirection()
-		{
-			return _move;
-		}
+        public Vector2 GetMovingDirection()
+        {
+            return _move;
+        }
 
-        public void Initialization(){
+        public void Initialization()
+        {
             _isCharging = false;
             _dodged = false;
             _move = Vector2.zero;
             _aim = Vector2.zero;
         }
 
-        public void TurnToTarget(){
+        public void TurnToTarget()
+        {
             _aim = _distance.normalized;
             _move = Vector2.zero;
         }
-        public bool Moving(){
-            return (DelayInput || BlockInput)&& !_isWlaking;
+        public bool Moving()
+        {
+            return (DelayInput || BlockInput) && !_isWlaking;
         }
-        public bool Opening(){
+        public bool Opening()
+        {
             return _opening;
         }
-        public void AfterOpening(){
+        public void AfterOpening()
+        {
             _opening = false;
         }
-        public bool InAttackRange(){
-            if(_distance.magnitude <= _attackAera){
+        public bool InAttackRange()
+        {
+            if (_distance.magnitude <= _attackAera)
+            {
                 _isCharging = false;
                 _isWlaking = false;
                 return true;
-            }else
+            }
+            else
             {
                 return false;
             }
-            
+
         }
 
-        public void Slash(){
+        public void Slash()
+        {
             _aim = _distance.normalized;
             _move = Vector2.zero;
-            if(!BlockInput && !DelayInput){
-                _slashCount ++;
-            };            
-			InvokeInputEvent(BossInput.Slash);
+            if (!BlockInput && !DelayInput)
+            {
+                _slashCount++;
+            };
+            InvokeInputEvent(BossInput.Slash);
             _dodged = false;
             _aim = Vector2.zero;
         }
 
-        public void MoveToTarget(){
+        public void MoveToTarget()
+        {
             _move = _distance;
             _move = _move.normalized * 0.01f;
             _aim = _move.normalized;
             _isWlaking = true;
         }
 
-        public void Charge(){
+        public void Charge()
+        {
             _move = _distance;
-            _move = _move.normalized*2f;
+            _move = _move.normalized * 2f;
             _aim = _move;
             _isCharging = true;
         }
 
-        public bool IsNotCharging(){
-            
-            if(! _isCharging){
+        public bool IsNotCharging()
+        {
+
+            if (!_isCharging)
+            {
                 _aim = Vector2.zero;
                 _move = Vector2.zero;
             }
             return !_isCharging;
         }
 
-        public void Retreat(){
+        public void Retreat()
+        {
             _move = -_distance;
             _move.Normalize();
             _aim = -_move;
         }
 
-        public bool IsLowHealth(){
+        public bool IsLowHealth()
+        {
             return (_state._hitPoints < 900f);
         }
 
-        public bool NeedDodge(){
-            
+        public bool NeedDodge()
+        {
+
             if (!_dodged && _distance.magnitude <= _dodgeAera)
             {
-                dodgePercent = Random.Range(0,_state._hitPoints);
-                return(dodgePercent < 600f);
+                dodgePercent = Random.Range(0, _state._hitPoints);
+                return (dodgePercent < 600f);
             }
             else return false;
         }
 
-        public void Dodge(){
+        public void Dodge()
+        {
             _aim = _distance;
             _move = _aim;
-			InvokeInputEvent(BossInput.Dodge);
+            InvokeInputEvent(BossInput.Dodge);
             _dodged = true;
             weight[2] += 5;
-            
+
         }
 
-        public bool TooFar(){
+        public bool TooFar()
+        {
             return (_distance.magnitude > 16f);
         }
-        public void JumpAttack(){
+        public void JumpAttack()
+        {
             _aim = _distance.normalized;
             _move = Vector2.zero;
 
@@ -188,73 +206,84 @@ namespace TripleBladeHorse.AI
             _dodged = false;
         }
 
-        public void DashAttack(){
+        public void DashAttack()
+        {
             _aim = _distance.normalized;
             _move = Vector2.zero;
-			InvokeInputEvent(BossInput.DashAttack);
-            if(weight[2] != 1){
-                    weight[2] = 1;
+            InvokeInputEvent(BossInput.DashAttack);
+            if (weight[2] != 1)
+            {
+                weight[2] = 1;
             }
             _dodged = false;
         }
 
-        public void CombatTempGen(){
-            combatTemp = Mathf.Sqrt(Random.Range( 0.25f, _state._hitPoints*0.001f));
-            
-            if(IsLowHealth()){
+        public void CombatTempGen()
+        {
+            combatTemp = Mathf.Sqrt(Random.Range(0.25f, _state._hitPoints * 0.001f));
+
+            if (IsLowHealth())
+            {
                 combatTemp = 0.4f;
             }
         }
 
-        public void WeightCalc(){
-            
+        public void WeightCalc()
+        {
 
-            if(IsLowHealth() && weight[1]!=3){
+
+            if (IsLowHealth() && weight[1] != 3)
+            {
                 weight[1] = 3;
             };
 
-            if(_slashCount > 0 && _slashCount <= _maxSlashCount){
+            if (_slashCount > 0 && _slashCount <= _maxSlashCount)
+            {
                 weight[0] -= 2;
             };
 
-            if(_slashCount > _maxSlashCount){
+            if (_slashCount > _maxSlashCount)
+            {
                 weight[0] = 3;
                 _slashCount = 0;
             };
 
-            if(_distance.magnitude <= _dodgeAera){
+            if (_distance.magnitude <= _dodgeAera)
+            {
                 weight[2] = -1;
-            }else{
+            }
+            else
+            {
                 weight[2] = 3;
             };
         }
 
-		private void InvokeInputEvent(BossInput command)
-		{
-			if (DelayInput)
-			{
-				_delayedInput._command = command;
-				return;
-			}
-			
-			OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command));
-		}
+        private void InvokeInputEvent(BossInput command)
+        {
+            if (DelayInput)
+            {
+                _delayedInput._command = command;
+                return;
+            }
 
-		private void InvokeInputEvent(BossInput command, float value)
-		{
-			if (DelayInput)
-			{
-				_delayedInput._command = command;
-				_delayedInput._additionalValue = value;
-				return;
-			}
+            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command));
+        }
 
-			OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command, value));
-		}
+        private void InvokeInputEvent(BossInput command, float value)
+        {
+            if (DelayInput)
+            {
+                _delayedInput._command = command;
+                _delayedInput._additionalValue = value;
+                return;
+            }
 
-		/// Awake is called when the script instance is being loaded.
-		/// </summary>
-		public void Awake()
+            OnReceivedInput?.Invoke(new InputEventArg<BossInput>(command, value));
+        }
+
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
+        public void Awake()
         {
             _target = FindObjectOfType<PlayerCharacter>().transform;
             _state = GetComponent<CharacterState>();
@@ -268,7 +297,7 @@ namespace TripleBladeHorse.AI
         // Update is called once per frame
         void Update()
         {
-            
+
             _distance = _target.position - this.transform.position;
 
         }

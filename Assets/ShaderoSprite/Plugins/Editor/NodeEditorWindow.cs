@@ -1,19 +1,15 @@
+using _ShaderoShaderEditorFramework.Utilities;
 using System;
 using System.IO;
-using System.Linq;
-
-using UnityEngine;
 using UnityEditor;
-
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 
 namespace _ShaderoShaderEditorFramework.Standard
 {
     public class NodeEditorWindow : EditorWindow
     {
-         private static NodeEditorWindow _editor;
+        private static NodeEditorWindow _editor;
         public static NodeEditorWindow editor { get { AssureEditor(); return _editor; } }
         public static void AssureEditor() { if (_editor == null) OpenNodeEditor(); }
 
@@ -36,11 +32,11 @@ namespace _ShaderoShaderEditorFramework.Standard
         private string MaterialChange;
         #region General 
 
-          [MenuItem("Window/Shadero Sprite Shader Editor")]
+        [MenuItem("Window/Shadero Sprite Shader Editor")]
         public static NodeEditorWindow OpenNodeEditor()
         {
             _editor = GetWindow<NodeEditorWindow>();
-        
+
             NodeEditor.ReInit(false);
 
             Texture iconTexture = ResourceManager.LoadTexture(EditorGUIUtility.isProSkin ? "Textures/Icon_Dark.png" : "Textures/Icon_Light.png");
@@ -149,7 +145,7 @@ namespace _ShaderoShaderEditorFramework.Standard
             AssureEditor();
             canvasCache.AssureCanvas();
 
-             canvasCache.editorState.canvasRect = canvasWindowRect;
+            canvasCache.editorState.canvasRect = canvasWindowRect;
 
             NodeEditorGUI.StartNodeGUI();
 
@@ -158,14 +154,15 @@ namespace _ShaderoShaderEditorFramework.Standard
                 NodeEditor.DrawCanvas(canvasCache.nodeCanvas, canvasCache.editorState);
             }
             catch (UnityException e)
-            {    canvasCache.NewNodeCanvas();
+            {
+                canvasCache.NewNodeCanvas();
                 NodeEditor.ReInit(true);
                 Debug.LogError("Unloaded Canvas due to an exception during the drawing phase!");
                 Debug.LogException(e);
             }
 
 
-        
+
 
             if (NodeEditor.NoBuildShader)
             {
@@ -195,7 +192,7 @@ namespace _ShaderoShaderEditorFramework.Standard
                     x -= 420;
                     y -= 100;
 
-                    GUI.DrawTexture(new Rect(x-24, y-24, 410+48, 363+48), preview);
+                    GUI.DrawTexture(new Rect(x - 24, y - 24, 410 + 48, 363 + 48), preview);
 
 
                     if (bframe == 0) preview = ResourceManager.LoadTexture("Help/Init_build_anm_1.jpg");
@@ -212,25 +209,25 @@ namespace _ShaderoShaderEditorFramework.Standard
                     if (bframe == 11) preview = ResourceManager.LoadTexture("Help/Init_build_anm_12.jpg");
                     if (bframe == 12) preview = ResourceManager.LoadTexture("Help/Init_build_anm_13.jpg");
                     if (bframe >= 13) preview = ResourceManager.LoadTexture("Help/Init_build_anm_14.jpg");
-                   
-                
-                  
+
+
+
                     GUI.DrawTexture(new Rect(x, y, 410, 363), preview);
                 }
             }
 
-             sideWindowWidth = Math.Min(205, Math.Max(205, (int)(position.width / 5)));
+            sideWindowWidth = Math.Min(205, Math.Max(205, (int)(position.width / 5)));
             GUILayout.BeginArea(sideWindowRect, GUI.skin.box);
             DrawSideWindow();
             GUILayout.EndArea();
 
 
 
-            if (GUI.Button(new Rect(10,75,200,20),new GUIContent("Help Tutorial")))
+            if (GUI.Button(new Rect(10, 75, 200, 20), new GUIContent("Help Tutorial")))
             {
                 ShowTutorial = !ShowTutorial;
             }
-           
+
             if (ShowTutorial)
             {
                 GUI.enabled = ShowTutorial;
@@ -244,23 +241,23 @@ namespace _ShaderoShaderEditorFramework.Standard
                 float Bsize = 127;
                 float Bpos = 60;
                 float Bheight = 35;
-                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22, (y / 2 + sy / 2) - Bpos, Bsize-5, Bheight), new GUIContent("1. Basic part 1")))
+                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22, (y / 2 + sy / 2) - Bpos, Bsize - 5, Bheight), new GUIContent("1. Basic part 1")))
                 {
                     ShowTutorialCurrent = 0;
                 }
-                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize, (y / 2 + sy / 2) - Bpos, Bsize-5, Bheight), new GUIContent("2. Basic part 2")))
+                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize, (y / 2 + sy / 2) - Bpos, Bsize - 5, Bheight), new GUIContent("2. Basic part 2")))
                 {
                     ShowTutorialCurrent = 1;
                 }
-                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 2, (y / 2 + sy / 2) - Bpos, Bsize-5, Bheight), new GUIContent("3. The UV")))
+                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 2, (y / 2 + sy / 2) - Bpos, Bsize - 5, Bheight), new GUIContent("3. The UV")))
                 {
                     ShowTutorialCurrent = 2;
                 }
-                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 3, (y / 2 + sy / 2) - Bpos, Bsize-5, Bheight), new GUIContent("4. Use Shader")))
+                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 3, (y / 2 + sy / 2) - Bpos, Bsize - 5, Bheight), new GUIContent("4. Use Shader")))
                 {
                     ShowTutorialCurrent = 3;
                 }
-                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 4, (y / 2 + sy / 2) - Bpos, Bsize-5, Bheight), new GUIContent("5. Parameters")))
+                if (GUI.Button(new Rect((x / 2 - sx / 2) + 22 + Bsize * 4, (y / 2 + sy / 2) - Bpos, Bsize - 5, Bheight), new GUIContent("5. Parameters")))
                 {
                     ShowTutorialCurrent = 4;
                 }
@@ -294,7 +291,7 @@ namespace _ShaderoShaderEditorFramework.Standard
             NodeEditor.NoBuildShaderContext = NodeEditor.NoBuildShader;
         }
         float FullScreenSet;
-     
+
         private void DrawSideWindow()
         {
             GUILayout.Label("Shadero Sprite v1.9.6", NodeEditorGUI.nodeLabelBold);
@@ -306,9 +303,9 @@ namespace _ShaderoShaderEditorFramework.Standard
             }
             else
             {
-           
+
                 if (!NodeEditor.NoBuildShader)
-                 {
+                {
 
                     Texture2D preview = ResourceManager.LoadTexture("Textures/previews/Preview_no_buildshader.jpg");
                     GUI.DrawTexture(new Rect(5, 30, 196, 196), preview);
@@ -317,9 +314,9 @@ namespace _ShaderoShaderEditorFramework.Standard
                 else
                 {
                     if (!NodeEditor.FlagIsSaved)
-                     {
+                    {
                         Texture2D preview = ResourceManager.LoadTexture("Textures/previews/Preview_no_shader.jpg");
-                         GUI.DrawTexture(new Rect(5, 30, 196, 196), preview);
+                        GUI.DrawTexture(new Rect(5, 30, 196, 196), preview);
 
                     }
                     else
@@ -404,10 +401,10 @@ namespace _ShaderoShaderEditorFramework.Standard
             if (MaterialChange != AssetDatabase.GetAssetPath(NodeEditor._Shadero_Material))
             {
                 NodeEditor.FlagIsMaterialChanged = true;
-                NodeEditor.ShaderToNull=true;
-            } 
+                NodeEditor.ShaderToNull = true;
+            }
             MaterialChange = AssetDatabase.GetAssetPath(NodeEditor._Shadero_Material);
-              GUILayout.Space(10);
+            GUILayout.Space(10);
 
             if (NodeEditor.RecalculateFlag)
             {
@@ -421,7 +418,7 @@ namespace _ShaderoShaderEditorFramework.Standard
                 _ShaderoShaderEditorFramework.Utilities.GenericMenu menu = new _ShaderoShaderEditorFramework.Utilities.GenericMenu();
                 NodeCanvasManager.FillCanvasTypeMenu(ref menu, canvasCache.NewNodeCanvas);
                 menu.Show(createCanvasUIPos.position, createCanvasUIPos.width);
-             }
+            }
             if (NodeEditor.NewCanvasWasCalled)
             {
                 UseOwnMaterial = false;
@@ -436,7 +433,7 @@ namespace _ShaderoShaderEditorFramework.Standard
             }
 
             GUILayout.Space(6);
-       
+
             if (GUILayout.Button(new GUIContent("Save Shader Project", "Saves the project to a project Save File in the Assets Folder")))
             {
                 string path = EditorUtility.SaveFilePanelInProject("Save Shadero Shader Project", "Shadero Shader Project", "asset", "", NodeEditor.editorPath + "Shadero_Projects/");
@@ -459,7 +456,7 @@ namespace _ShaderoShaderEditorFramework.Standard
                 {
                     UseOwnMaterial = false;
                     canvasCache.LoadNodeCanvas(path);
-               }
+                }
             }
 
             GUILayout.Space(6);
@@ -499,7 +496,7 @@ namespace _ShaderoShaderEditorFramework.Standard
 
 
             }
-          
+
             if (canvasCache.editorState.selectedNode != null && Event.current.type != EventType.Ignore)
                 canvasCache.editorState.selectedNode.DrawNodePropertyEditor();
         }

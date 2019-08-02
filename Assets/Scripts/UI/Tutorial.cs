@@ -1,106 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using MultiplayersInput;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
-using TripleBladeHorse;
 
-public class Tutorial  : MonoBehaviour, IInputModelPlugable
+namespace TripleBladeHorse.UI
 {
-
-    [SerializeField] Image Toturailimage;
-    [SerializeField] Image Toturailimage2;
-    [SerializeField] float Showspeed;
-    bool stay = false;
-    bool controller;
-
-	public bool Stay
-	{
-		get => stay;
-		set => stay = value;
-	}
-
-    // Start is called before the first frame update
-    void Start()
+    public class Tutorial : MonoBehaviour, IInputModelPlugable
     {
-        InputManager.Instance.RegisterPluggable(0,this);
-    }
+        [SerializeField] Image keyboardTutorialImage;
+        [SerializeField] Image controllerTutorialImage;
+        [SerializeField] float showspeed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(controller == false)
+        bool usingController;
+        bool stay = false;
+
+        public bool Stay
         {
-            if (stay == true)
-            {
-                Color color = Toturailimage.color;
-                color.a += TimeManager.DeltaTime * Showspeed;
-                color.a = Mathf.Clamp01(color.a);
-				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
-				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
+            get => stay;
+            set => stay = value;
+        }
 
+        void Start()
+        {
+            InputManager.Instance.RegisterPluggable(0, this);
+        }
+
+        void Update()
+        {
+            if (usingController == false)
+            {
+                FadingImage(keyboardTutorialImage, controllerTutorialImage);
             }
-
-            if (stay == false)
+            else
             {
-                Color color = Toturailimage.color;
-                color.a -= TimeManager.DeltaTime * Showspeed;
-                color.a = Mathf.Clamp01(color.a);
-				Toturailimage2.color = new Color(color.r, color.g, color.b, 0);
-				Toturailimage.color = new Color(color.r, color.g, color.b, color.a);
+                FadingImage(controllerTutorialImage, keyboardTutorialImage);
             }
         }
-        else
-        {
-          
-            if (stay == true)
-            {
-                Color color1 = Toturailimage2.color;
-                color1.a += TimeManager.DeltaTime * Showspeed;
-                color1.a = Mathf.Clamp01(color1.a);
-				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
-				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
-            }
 
-            if (stay == false)
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "Player")
             {
-                Color color1 = Toturailimage2.color;
-                color1.a -= TimeManager.DeltaTime * Showspeed;
-                color1.a = Mathf.Clamp01(color1.a);
-				Toturailimage.color = new Color(color1.r, color1.g, color1.b, 0);
-				Toturailimage2.color = new Color(color1.r, color1.g, color1.b, color1.a);
+                stay = true;
             }
         }
-       
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            stay = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            stay = false;
-        }
-    }
-
-    public void SetInputModel(IInputModel model)
-    {
-      if (model is ControllerInputModel)
-        {
-            controller = true;
-        }
-        else
-        {
-            controller = false;
+            if (collision.tag == "Player")
+            {
+                stay = false;
+            }
         }
 
-    }
+        private void FadingImage(Image baseImage, Image cancelImage)
+        {
+            Color color = baseImage.color;
+            var fadeValue = stay ? showspeed : -showspeed;
+            color.a += TimeManager.DeltaTime * fadeValue;
+            color.a = Mathf.Clamp01(color.a);
 
+            cancelImage.color = new Color(color.r, color.g, color.b, 0);
+            baseImage.color = color;
+        }
+
+        public void SetInputModel(IInputModel model)
+        {
+            usingController = model is ControllerInputModel;
+        }
+    }
 }

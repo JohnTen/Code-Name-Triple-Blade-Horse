@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -88,15 +86,15 @@ namespace _ShaderoShaderEditorFramework
             if (NodeEditor._Shadero_Material != null) NodeEditor._Shadero_Material.SetFloat(FinalVariable5, Variable5);
 
             GUILayout.Label("Zoom (0.2 to 4) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0.2f, 4);
+            Variable = HorizontalSlider(Variable, 0.2f, 4);
             GUILayout.Label("Pos X (-1 to 2) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -2, 2);
+            Variable2 = HorizontalSlider(Variable2, -2, 2);
             GUILayout.Label("Pos Y (-1 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, -2, 2);
+            Variable3 = HorizontalSlider(Variable3, -2, 2);
             GUILayout.Label("Intensity (0 to 4) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 4);
+            Variable4 = HorizontalSlider(Variable4, 0, 4);
             GUILayout.Label("Speed (-10 to 10) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -10, 10);
+            Variable5 = HorizontalSlider(Variable5, -10, 10);
 
         }
 

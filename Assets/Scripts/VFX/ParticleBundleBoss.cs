@@ -1,16 +1,14 @@
-﻿using System.Collections;
+﻿using JTUtility;
 using System.Collections.Generic;
-using UnityEngine;
 using TripleBladeHorse.Animation;
 using TripleBladeHorse.Combat;
-using TripleBladeHorse.Movement;
-using TripleBladeHorse.AI;
-using JTUtility;
-namespace TripleBladeHorse
+using UnityEngine;
+
+namespace TripleBladeHorse.VFX
 {
     public class ParticleBundleBoss : MonoBehaviour
     {
-     
+
         [System.Serializable]
         class StrAudioPair : PairedValue<string, AudioClip> { }
 
@@ -35,29 +33,18 @@ namespace TripleBladeHorse
             _animator.Subscribe(Animation.AnimationState.FadingIn, HandleFadeInAnimation);
 
             bossAudioSource = GetComponent<AudioSource>();
-            _audiosVolume =new Dictionary<string, float>();
+            _audiosVolume = new Dictionary<string, float>();
             _audios = new Dictionary<string, AudioClip>();
-			_pitch = new Dictionary<string, float>();
+            _pitch = new Dictionary<string, float>();
 
-            foreach (var pair in _audioPairs)
-            {
-                _audios.Add(pair.Key, pair.Value);
-            }
-
-            foreach (var pair in _volumePairs)
-            {
-                _audiosVolume.Add(pair.Key, pair.Value);
-            }
-
-            foreach (var pitch in _pitchPairs)
-            {
-                _pitch.Add(pitch.Key, pitch.Value);
-            }
+            _audios.Add(_audioPairs);
+            _pitch.Add(_pitchPairs);
+            _audiosVolume.Add(_volumePairs);
         }
 
         private void HandleFrameEvent(FrameEventEventArg eventArg)
         {
-            if(eventArg._name == AnimEventNames.AttackBegin)
+            if (eventArg._name == AnimEventNames.AttackBegin)
             {
                 if (eventArg._animation.name == BossFSMData.Anim.Slash1)
                 {
@@ -71,7 +58,7 @@ namespace TripleBladeHorse
         private void HandleOnHit(AttackPackage attack, AttackResult result)
         {
 
-            if (_state._hitPoints<=0)
+            if (_state._hitPoints <= 0)
             {
                 bossAudioSource.clip = _audios["Death"];
                 bossAudioSource.volume = _audiosVolume["Death"];
@@ -81,7 +68,7 @@ namespace TripleBladeHorse
         }
         private void HandleFadeInAnimation(AnimationEventArg eventArgs)
         {
-            if(eventArgs._animation.name == BossFSMData.Anim.Combo2_1)
+            if (eventArgs._animation.name == BossFSMData.Anim.Combo2_1)
             {
                 bossAudioSource.clip = _audios["Combo2"];
                 bossAudioSource.volume = _audiosVolume["Combo2"];

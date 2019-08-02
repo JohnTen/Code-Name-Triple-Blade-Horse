@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Gradient/Palette Swapping With Texture")]

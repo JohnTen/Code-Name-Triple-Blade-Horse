@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Shiny FX")]
@@ -75,7 +72,7 @@ namespace _ShaderoShaderEditorFramework
             Texture2D preview = ResourceManager.LoadTexture("Textures/previews/nid_shiny.jpg");
             GUI.DrawTexture(new Rect(2, 0, 180, 46), preview);
 
-            
+
             GUILayout.Space(50);
             GUILayout.BeginHorizontal();
             Inputs[0].DisplayLayout(new GUIContent("UV", "UV"));
@@ -103,19 +100,19 @@ namespace _ShaderoShaderEditorFramework
             }
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameter");
             GUILayout.Label("Pos: (-1 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -1, 1);
+            Variable = HorizontalSlider(Variable, -1, 1);
 
             GUILayout.Label("Size: (-1 to 1) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -1, 1);
+            Variable2 = HorizontalSlider(Variable2, -1, 1);
 
             GUILayout.Label("Smooth: (0 to 1) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 0, 1);
+            Variable3 = HorizontalSlider(Variable3, 0, 1);
 
             GUILayout.Label("intensity: (0 to 4) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 4);
+            Variable4 = HorizontalSlider(Variable4, 0, 4);
 
             GUILayout.Label("speed: (0 to 8) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, 0, 8);
+            Variable5 = HorizontalSlider(Variable5, 0, 8);
 
         }
         private string FinalVariable;

@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿namespace DragonBones
+namespace DragonBones
 {
     /// <summary>
     /// - The armature proxy interface, the docking engine needs to implement it concretely.
@@ -72,29 +72,29 @@
         /// <version>DragonBones 4.5</version>
         /// <language>zh_CN</language>
         void Dispose(bool disposeProxy);
-         /// <summary>
-         /// - The armature.
-         /// </summary>
-         /// <version>DragonBones 4.5</version>
-         /// <language>en_US</language>
+        /// <summary>
+        /// - The armature.
+        /// </summary>
+        /// <version>DragonBones 4.5</version>
+        /// <language>en_US</language>
 
-         /// <summary>
-         /// - 骨架。
-         /// </summary>
-         /// <version>DragonBones 4.5</version>
-         /// <language>zh_CN</language>
-         Armature armature { get; }
-         /// <summary>
-         /// - The animation player.
-         /// </summary>
-         /// <version>DragonBones 3.0</version>
-         /// <language>en_US</language>
+        /// <summary>
+        /// - 骨架。
+        /// </summary>
+        /// <version>DragonBones 4.5</version>
+        /// <language>zh_CN</language>
+        Armature armature { get; }
+        /// <summary>
+        /// - The animation player.
+        /// </summary>
+        /// <version>DragonBones 3.0</version>
+        /// <language>en_US</language>
 
-         /// <summary>
-         /// - 动画播放器。
-         /// </summary>
-         /// <version>DragonBones 3.0</version>
-         /// <language>zh_CN</language>
-         Animation animation { get; }
+        /// <summary>
+        /// - 动画播放器。
+        /// </summary>
+        /// <version>DragonBones 3.0</version>
+        /// <language>zh_CN</language>
+        Animation animation { get; }
     }
 }

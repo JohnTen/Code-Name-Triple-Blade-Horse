@@ -1,9 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Page Curl")]
@@ -21,7 +17,7 @@ namespace _ShaderoShaderEditorFramework
         public float Variable3 = 0.2f;
         [HideInInspector]
         public float Variable4 = 1.5f;
-       
+
 
         public static int count = 1;
         public static bool tag = false;
@@ -133,15 +129,15 @@ namespace _ShaderoShaderEditorFramework
 
             }
             GUILayout.Label("Mouvement: (-6 to 6) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -6, 6);
+            Variable = HorizontalSlider(Variable, -6, 6);
             GUILayout.Label("Rotation: (-1 to 1) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -1, 1);
+            Variable2 = HorizontalSlider(Variable2, -1, 1);
             GUILayout.Label("Curve: (0 to 0.3) " + Variable3.ToString("0.00"));
             Variable3 = HorizontalSlider(Variable3, 0, 0.3f);
             GUILayout.Label("Shadow: (0 to 8) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 8);
+            Variable4 = HorizontalSlider(Variable4, 0, 8);
 
-    
+
 
 
         }
@@ -184,7 +180,7 @@ namespace _ShaderoShaderEditorFramework
             FinalVariable2 = DefaultNameVariable2;
             FinalVariable3 = DefaultNameVariable3;
             FinalVariable4 = DefaultNameVariable4;
-            
+
             // uv
             if (s_in2.Result == null)
             {

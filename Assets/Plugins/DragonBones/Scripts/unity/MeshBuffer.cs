@@ -21,10 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DragonBones;
 
 namespace DragonBones
 {
@@ -56,11 +54,11 @@ namespace DragonBones
 
         private static int _OnSortSlots(Slot a, Slot b)
         {
-            if(a._zOrder > b._zOrder)
+            if (a._zOrder > b._zOrder)
             {
                 return 1;
             }
-            else if(a._zOrder < b._zOrder)
+            else if (a._zOrder < b._zOrder)
             {
                 return -1;
             }

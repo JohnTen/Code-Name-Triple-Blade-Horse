@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/With 2 RGBA/Automatic Lerp")]
@@ -56,7 +54,7 @@ namespace _ShaderoShaderEditorFramework
                 NodeEditor._Shadero_Material.SetFloat(FinalVariable, Variable);
             }
             GUILayout.Label("Speed(0 to 2) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 2);
+            Variable = HorizontalSlider(Variable, 0, 2);
 
 
 
@@ -104,8 +102,8 @@ namespace _ShaderoShaderEditorFramework
 
             if (parametersOK)
             {
-                s_out.ValueLine = "float "+DefaultNameVariable1 + " = (1+cos(_Time.y *4*" + DefaultNameVariable2 + "))/2;\n";
-                s_out.ValueLine += PreviewVariable + " = lerp(" + PreviewVariable + "," + PreviewVariable2 + ", "+ DefaultNameVariable1 + ");\n";
+                s_out.ValueLine = "float " + DefaultNameVariable1 + " = (1+cos(_Time.y *4*" + DefaultNameVariable2 + "))/2;\n";
+                s_out.ValueLine += PreviewVariable + " = lerp(" + PreviewVariable + "," + PreviewVariable2 + ", " + DefaultNameVariable1 + ");\n";
             }
 
             else

@@ -20,13 +20,13 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace DragonBones
 {
     [DisallowMultipleComponent]
-    [ExecuteInEditMode,RequireComponent(typeof(CanvasRenderer), typeof(RectTransform))]
+    [ExecuteInEditMode, RequireComponent(typeof(CanvasRenderer), typeof(RectTransform))]
     public class UnityUGUIDisplay : MaskableGraphic
     {
         [HideInInspector]
@@ -43,25 +43,25 @@ namespace DragonBones
         /// </summary>
         public Texture texture
         {
-            get    { return _texture; }
+            get { return _texture; }
             set
             {
                 if (_texture == value)
                 {
                     return;
                 }
-                
+
                 _texture = value;
                 SetMaterialDirty();
             }
         }
 
-        protected override void OnPopulateMesh (VertexHelper vh)
+        protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
         }
 
-        public override void Rebuild (CanvasUpdate update)
+        public override void Rebuild(CanvasUpdate update)
         {
             base.Rebuild(update);
             if (canvasRenderer.cull)

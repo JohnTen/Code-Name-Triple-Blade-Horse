@@ -20,11 +20,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using DragonBones;
+using UnityEngine;
 
 namespace DragonBones
 {
@@ -122,7 +120,7 @@ namespace DragonBones
                 var lableStyle = new GUIStyle();
                 lableStyle.margin.left = slotItem.sumLevel * indentSpace + leftMargin;
                 GUILayout.Label(slot.name, lableStyle, GUILayout.Width(100.0f));
-                if(slot.renderDisplay == null || !slot.renderDisplay.activeSelf)
+                if (slot.renderDisplay == null || !slot.renderDisplay.activeSelf)
                 {
                     slotItem.isSelected = GUILayout.Toggle(slotItem.isSelected, "Active");
                 }
@@ -130,7 +128,7 @@ namespace DragonBones
                 {
                     GUILayout.Label("Activated");
                 }
-                
+
                 GUILayout.EndHorizontal();
             }
 

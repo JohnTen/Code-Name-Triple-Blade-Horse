@@ -1,45 +1,42 @@
-using UnityEngine;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
-[Node(false, "Tools/Lighting Support")]
-public class LightingSupport : Node
-{
-    [HideInInspector]
-    public const string ID = "LightingSupport";
-    [HideInInspector]
-    public override string GetID { get { return ID; } }
+    [Node(false, "Tools/Lighting Support")]
+    public class LightingSupport : Node
+    {
+        [HideInInspector]
+        public const string ID = "LightingSupport";
+        [HideInInspector]
+        public override string GetID { get { return ID; } }
 
-    [HideInInspector]
-    public bool parametersOK = true;
+        [HideInInspector]
+        public bool parametersOK = true;
 
-    [HideInInspector]
-    public float Variable = 1;
+        [HideInInspector]
+        public float Variable = 1;
 
         [HideInInspector]
         public bool Light = false;
 
         [HideInInspector]
-    public float InternalCount = -1;
+        public float InternalCount = -1;
 
-    public static int count = 1;
-    public static bool tag = false;
-    public static string code;
+        public static int count = 1;
+        public static bool tag = false;
+        public static string code;
 
-    public static void Init()
-    {
-        tag = false;
-        count = 1;
-    }
-  
+        public static void Init()
+        {
+            tag = false;
+            count = 1;
+        }
 
-    public override Node Create(Vector2 pos)
-    {
 
-     
+        public override Node Create(Vector2 pos)
+        {
+
+
             LightingSupport node = ScriptableObject.CreateInstance<LightingSupport>();
 
             node.name = "Lighting Support";
@@ -50,24 +47,24 @@ public class LightingSupport : Node
             node.CreateOutput("RGBA", "SuperFloat4");
 
             return node;
-    }
+        }
 
 
 
-    protected internal override void NodeGUI()
-    {
-        
-        Texture2D preview = ResourceManager.LoadTexture("Textures/previews/nid_lightingsupport.jpg");
-        GUI.DrawTexture(new Rect(2, 0, 200, 70), preview);
-        GUILayout.Space(80);
-     
+        protected internal override void NodeGUI()
+        {
+
+            Texture2D preview = ResourceManager.LoadTexture("Textures/previews/nid_lightingsupport.jpg");
+            GUI.DrawTexture(new Rect(2, 0, 200, 70), preview);
+            GUILayout.Space(80);
+
             GUILayout.BeginHorizontal();
             Inputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
             Outputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
             GUILayout.EndHorizontal();
             Inputs[1].DisplayLayout(new GUIContent("Normal Map", "RGBA"));
-  
-            
+
+
             if (Outputs[0].GetNodeAcrossConnection() == null)
             {
                 Light = false;
@@ -76,21 +73,21 @@ public class LightingSupport : Node
             {
                 Light = true;
             }
-            
+
         }
 
- 
-    [HideInInspector]
-    public int MemoCount = -1;
-    public override bool FixCalculate()
-    {
-        MemoCount = count;
-        count++;
-        return true;
-    }
 
-    public override bool Calculate()
-    {
+        [HideInInspector]
+        public int MemoCount = -1;
+        public override bool FixCalculate()
+        {
+            MemoCount = count;
+            count++;
+            return true;
+        }
+
+        public override bool Calculate()
+        {
             tag = true;
             NormalMapTag = true;
             LightingSupportTag = Light;
@@ -102,10 +99,10 @@ public class LightingSupport : Node
 
             if (s_in2.Result == null) PreviewVariable2 = "float4(1,1,0,1)";
 
-         
+
 
             s_out.StringPreviewLines = s_in.StringPreviewNew + s_in2.StringPreviewNew;
-   
+
             if (s_in.Result == null)
             {
                 Node.NormalMapOutput = "";
@@ -122,7 +119,7 @@ public class LightingSupport : Node
 
             Outputs[0].SetValue<SuperFloat4>(s_out);
 
-        return true;
+            return true;
+        }
     }
-}
 }

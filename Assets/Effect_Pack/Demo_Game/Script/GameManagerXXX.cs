@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManagerXXX : MonoBehaviour {
+public class GameManagerXXX : MonoBehaviour
+{
 
     static public GameManagerXXX Gm;
 
@@ -12,15 +12,16 @@ public class GameManagerXXX : MonoBehaviour {
         Gm = this;
 
     }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
-       
+
         m_Anim = this.transform.Find("model").GetComponent<Animator>();
-        
+
     }
 
-    public int EffectID =23;
+    public int EffectID = 23;
     public int CurrentID = 1;
 
 
@@ -36,15 +37,16 @@ public class GameManagerXXX : MonoBehaviour {
 
     // Update is called once per frame
 
-    void Update () {
+    void Update()
+    {
 
-     
+
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             InitEffect();
-          
-            
+
+
             Color myColor = new Color32(180, 180, 180, 255);
 
             UI_Image_Arrow[1].color = myColor;
@@ -55,7 +57,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Count.text = CurrentID + "/26";
                 return;
             }
-           
+
 
             CurrentID++;
             Text_Count.text = CurrentID + "/26";
@@ -74,7 +76,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Count.text = CurrentID + "/26";
                 return;
             }
-       
+
 
             CurrentID--;
             Text_Count.text = CurrentID + "/26";
@@ -115,7 +117,7 @@ public class GameManagerXXX : MonoBehaviour {
 
     public GameObject[] EffectPrefabGroup;
 
-    public Transform[]  EffectPosGroup;
+    public Transform[] EffectPosGroup;
 
     // Animation Change function
     private void ChangeAnim()
@@ -139,7 +141,7 @@ public class GameManagerXXX : MonoBehaviour {
                 AnimID = CurrentID;
 
 
-     
+
                 break;
             case 3:
                 if (AnimID == CurrentID)
@@ -149,7 +151,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Anim.text = "Hit_White_Small";
                 AnimID = CurrentID;
 
-                
+
 
                 break;
             case 4:
@@ -192,7 +194,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Anim.text = "Die";
                 AnimID = CurrentID;
 
-          
+
                 break;
             case 8:
                 if (AnimID == CurrentID)
@@ -200,7 +202,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Jump");
                 Text_Anim.text = "Jump";
                 AnimID = CurrentID;
-                
+
                 break;
             case 9:
                 if (AnimID == CurrentID)
@@ -208,7 +210,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Punch");
                 Text_Anim.text = "Punch";
                 AnimID = CurrentID;
-             
+
                 break;
             case 10:
                 if (AnimID == CurrentID)
@@ -216,7 +218,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Spell");
                 Text_Anim.text = "Spell";
                 AnimID = CurrentID;
-         
+
                 break;
             case 11:
                 if (AnimID == CurrentID)
@@ -224,7 +226,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Casting");
                 Text_Anim.text = "Casting";
                 AnimID = CurrentID;
-              
+
                 break;
             case 12:
                 if (AnimID == CurrentID)
@@ -232,7 +234,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Throw_Grenade");
                 Text_Anim.text = "Explosion_S";
                 AnimID = CurrentID;
-              
+
                 break;
             case 13:
                 if (AnimID == CurrentID)
@@ -256,25 +258,25 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Attack_Dagger");
                 Text_Anim.text = "Attack_Dagger";
                 AnimID = CurrentID;
-             
+
                 break;
             case 16:
                 if (AnimID == CurrentID)
                     return;
                 m_Anim.Play("Attack2_Dagger");
                 Text_Anim.text = "Attack2_Dagger";
-              
+
                 AnimID = CurrentID;
                 break;
             case 17:
-              
+
                 if (AnimID == CurrentID)
                     return;
 
                 m_Anim.Play("Attack_Sword");
                 Text_Anim.text = "Attack_Sword";
                 AnimID = CurrentID;
-              
+
                 break;
             case 18:
                 if (AnimID == CurrentID)
@@ -283,7 +285,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Anim.text = "Attack2_Sword";
 
                 AnimID = CurrentID;
-       
+
                 break;
             case 19:
                 if (AnimID == CurrentID)
@@ -291,7 +293,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Attack_Spear");
                 Text_Anim.text = "Attack_Spear";
                 AnimID = CurrentID;
-           
+
                 break;
             case 20:
                 if (AnimID == CurrentID)
@@ -299,7 +301,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Attack2_Spear");
                 Text_Anim.text = "Attack2_Spear";
                 AnimID = CurrentID;
-        
+
                 break;
             case 21:
                 if (AnimID == CurrentID)
@@ -307,7 +309,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("Guard_Hit");
                 Text_Anim.text = "Guard_Hit";
                 AnimID = CurrentID;
-              
+
                 break;
             case 22:
                 if (AnimID == CurrentID)
@@ -315,7 +317,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("GunShot");
                 Text_Anim.text = "GunShot";
                 AnimID = CurrentID;
-               
+
                 break;
             case 23:
                 if (AnimID == CurrentID)
@@ -323,7 +325,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("GunShot 1");
                 Text_Anim.text = "GunShot 1";
                 AnimID = CurrentID;
-            
+
                 break;
 
             case 24:
@@ -332,7 +334,7 @@ public class GameManagerXXX : MonoBehaviour {
                 m_Anim.Play("GunShot 2");
                 Text_Anim.text = "GunShot 2";
                 AnimID = CurrentID;
-            
+
                 break;
 
             case 25:
@@ -352,7 +354,7 @@ public class GameManagerXXX : MonoBehaviour {
                 Text_Anim.text = "Confusion";
                 AnimID = CurrentID;
 
-              
+
                 break;
 
 
@@ -370,16 +372,16 @@ public class GameManagerXXX : MonoBehaviour {
     {
 
 
-       for (int i = 0; i < EffectTmpList.Count; i++)
-       {
-           
+        for (int i = 0; i < EffectTmpList.Count; i++)
+        {
+
             Destroy(EffectTmpList[i]);
-       }
+        }
 
         EffectTmpList.Clear();
     }
 
-    public void CreateEffect(GameObject EffectPrefab,  Transform Pos)
+    public void CreateEffect(GameObject EffectPrefab, Transform Pos)
     {
 
         GameObject tmpobj = Instantiate(EffectPrefab, Pos);
@@ -503,13 +505,13 @@ public class GameManagerXXX : MonoBehaviour {
     }
     public void Gun_Shoot2_AnimEvent()
     {
-        
+
         GameObject tmpobj = Instantiate(EffectPrefabGroup[22]);
         tmpobj.transform.position = EffectPosGroup[22].transform.position;
         tmpobj.AddComponent<DestroyEffect>();
         EffectTmpList.Add(tmpobj);
 
-    
+
     }
 
 

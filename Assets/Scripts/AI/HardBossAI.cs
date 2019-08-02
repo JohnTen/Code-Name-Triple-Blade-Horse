@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using BTAI;
 using UnityEngine;
-using BTAI;
 
-namespace TripleBladeHorse.AI{
+namespace TripleBladeHorse.AI
+{
     public class HardBossAI : MonoBehaviour
     {
         BossBehave _behave;
 
         Root _AI = BT.Root();
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
 
             _behave = GetComponent<BossBehave>();
 
@@ -24,7 +24,7 @@ namespace TripleBladeHorse.AI{
                         BT.Call(_behave.TurnToTarget),
                         BT.Call(_behave.AfterOpening)
                     ),
-                    
+
                     BT.If(_behave.Moving).OpenBranch(
                         BT.Wait(Time.deltaTime),
                         BT.Call(_behave.Initialization)
@@ -53,12 +53,12 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.JumpAttack),
                             BT.Call(_behave.DashAttack)
                         ),
-                        BT.Call(_behave.TurnToTarget)                                              
+                        BT.Call(_behave.TurnToTarget)
                     ),
 
                     BT.Sequence().OpenBranch(
                         BT.Call(_behave.Charge),
-                        BT.Wait(0.5f)                        
+                        BT.Wait(0.5f)
                     )
                 )
             );

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ParticleAutoDestruction : MonoBehaviour
 {
@@ -9,8 +8,8 @@ public class ParticleAutoDestruction : MonoBehaviour
     {
         particleSystems = GetComponentsInChildren<ParticleSystem>();
     }
-	
-	void Update ()
+
+    void Update()
     {
         bool allStopped = true;
 
@@ -24,5 +23,5 @@ public class ParticleAutoDestruction : MonoBehaviour
 
         if (allStopped)
             GameObject.Destroy(gameObject);
-	}
+    }
 }

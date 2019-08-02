@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Pack/Morphing Pack")]
@@ -138,15 +136,15 @@ namespace _ShaderoShaderEditorFramework
             AddMotion = GUILayout.Toggle(AddMotion, "Fix Side UV", GUILayout.Width(135));
             GUILayout.EndHorizontal();
 
-         
+
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ");
-            GUILayout.Label("Blend: " + (Variable*100).ToString("0.00")+"%", GUILayout.Width(135));
+            GUILayout.Label("Blend: " + (Variable * 100).ToString("0.00") + "%", GUILayout.Width(135));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable = HorizontalSlider(Variable, 0, 1, GUILayout.Width(135),135);
+            Variable = HorizontalSlider(Variable, 0, 1, GUILayout.Width(135), 135);
             GUILayout.EndHorizontal();
 
 
@@ -157,7 +155,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable5 =HorizontalSlider(Variable5, 0, 4, GUILayout.Width(135),135);
+            Variable5 = HorizontalSlider(Variable5, 0, 4, GUILayout.Width(135), 135);
             GUILayout.EndHorizontal();
 
 

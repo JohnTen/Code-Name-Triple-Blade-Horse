@@ -137,7 +137,7 @@ namespace FlyingWormConsole3.LiteNetLib
 #endif
                 foreach (IPAddress ip in host.AddressList)
                 {
-                    if((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
+                    if ((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
                        (ipv6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
                         targetList.Add(ip.ToString());
                 }
@@ -145,9 +145,9 @@ namespace FlyingWormConsole3.LiteNetLib
 #endif
             if (targetList.Count == 0)
             {
-                if(ipv4)
+                if (ipv4)
                     targetList.Add("127.0.0.1");
-                if(ipv6)
+                if (ipv6)
                     targetList.Add("::1");
             }
         }

@@ -1,20 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using BTAI;
 using UnityEngine;
-using BTAI;
 
 
-namespace TripleBladeHorse.AI{
+namespace TripleBladeHorse.AI
+{
 
     public class BossAI : MonoBehaviour
     {
         BossBehave _behave;
 
         Root _bossAI = BT.Root();
-        private void OnEnable() {
+        private void OnEnable()
+        {
 
             _behave = GetComponent<BossBehave>();
-            
+
             _bossAI.OpenBranch(
                 BT.Selector().OpenBranch(
                     BT.If(_behave.Moving).OpenBranch(
@@ -55,7 +55,7 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.DashAttack)
                         ),
                         BT.Call(_behave.TurnToTarget)
-                        //BT.Wait(1f)                        
+                    //BT.Wait(1f)                        
                     ),
 
                     BT.Sequence().OpenBranch(
@@ -67,23 +67,23 @@ namespace TripleBladeHorse.AI{
                             BT.Call(_behave.DashAttack)
                         ),
                         BT.Call(_behave.TurnToTarget)
-                        //BT.Wait(1f)                                               
+                    //BT.Wait(1f)                                               
                     ),
 
                     BT.Sequence().OpenBranch(
                         BT.Condition(_behave.IsNotCharging),
                         BT.Call(_behave.MoveToTarget),
-                        BT.Wait(1f)                        
-                    )                   
+                        BT.Wait(1f)
+                    )
                 )
             );
         }
 
-    // Update is called once per frame
+        // Update is called once per frame
         void Update()
         {
             _bossAI.Tick();
         }
-        
+
     }
 }

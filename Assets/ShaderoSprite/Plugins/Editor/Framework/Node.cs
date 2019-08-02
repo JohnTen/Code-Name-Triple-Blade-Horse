@@ -1,7 +1,7 @@
-using UnityEngine;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -25,8 +25,8 @@ namespace _ShaderoShaderEditorFramework
         [NonSerialized]
         internal bool calculated = true;
 
-        private static bool RecalculateFlag;      
-        public static string ShaderNameX = "";     
+        private static bool RecalculateFlag;
+        public static string ShaderNameX = "";
         public static bool GrabPassTag = false;
         public static bool WorldPosTag = false;
         public static bool WorldParalaxTag = false;
@@ -165,7 +165,7 @@ namespace _ShaderoShaderEditorFramework
             PixelUV.Init();
             FishEyeUV.Init();
             PinchUV.Init();
-            TurnMetal.Init(); 
+            TurnMetal.Init();
             TurnGold.Init();
             TurnTransparent.Init();
             HdrControlValue.Init();
@@ -226,7 +226,7 @@ namespace _ShaderoShaderEditorFramework
             float.TryParse(txt, out result);
             v = result;
 
-           
+
             GUILayout.EndHorizontal();
             return v;
         }
@@ -247,7 +247,7 @@ namespace _ShaderoShaderEditorFramework
         {
             GUILayout.BeginHorizontal();
             string txt = "";
-            v = GUILayout.HorizontalSlider(v, a, b, GUILayout.Width(numb-42));
+            v = GUILayout.HorizontalSlider(v, a, b, GUILayout.Width(numb - 42));
             txt = GUILayout.TextField(v.ToString("0.000"), GUILayout.Width(38));
             float result = v;
             float.TryParse(txt, out result);
@@ -267,7 +267,7 @@ namespace _ShaderoShaderEditorFramework
             NodeEditor.RepaintClients();
         }
 
-          public void Delete()
+        public void Delete()
         {
             if (!NodeEditor.curNodeCanvas.nodes.Contains(this))
                 throw new UnityException("The Node " + name + " does not exist on the Canvas " + NodeEditor.curNodeCanvas.name + "!");
@@ -288,18 +288,19 @@ namespace _ShaderoShaderEditorFramework
                 DestroyImmediate(input, true);
             }
             for (int knobCnt = 0; knobCnt < nodeKnobs.Count; knobCnt++)
-            {  if (nodeKnobs[knobCnt] != null)
+            {
+                if (nodeKnobs[knobCnt] != null)
                     DestroyImmediate(nodeKnobs[knobCnt], true);
             }
             DestroyImmediate(this, true);
         }
 
-         public static Node Create(string nodeID, Vector2 position)
+        public static Node Create(string nodeID, Vector2 position)
         {
             return Create(nodeID, position, null);
         }
 
-         public static Node Create(string nodeID, Vector2 position, NodeOutput connectingOutput)
+        public static Node Create(string nodeID, Vector2 position, NodeOutput connectingOutput)
         {
             Node node = NodeTypes.getDefaultNode(nodeID);
             if (node == null)
@@ -309,7 +310,8 @@ namespace _ShaderoShaderEditorFramework
             node.InitBase();
 
             if (connectingOutput != null)
-            {   foreach (NodeInput input in node.Inputs)
+            {
+                foreach (NodeInput input in node.Inputs)
                 {
                     if (input.TryApplyConnection(connectingOutput))
                         break;
@@ -321,7 +323,7 @@ namespace _ShaderoShaderEditorFramework
             return node;
         }
 
-         internal void CheckNodeKnobMigration()
+        internal void CheckNodeKnobMigration()
         {
             if (nodeKnobs.Count == 0 && (Inputs.Count != 0 || Outputs.Count != 0))
             {
@@ -379,7 +381,7 @@ namespace _ShaderoShaderEditorFramework
         }
 #endif
 
-         protected internal virtual void DrawNode()
+        protected internal virtual void DrawNode()
         {
             Rect nodeRect = rect;
             nodeRect.position += NodeEditor.curEditorState.zoomPanAdjust + NodeEditor.curEditorState.panOffset;
@@ -388,7 +390,7 @@ namespace _ShaderoShaderEditorFramework
             GUI.Label(headerRect, name, NodeEditor.curEditorState.selectedNode == this ? NodeEditorGUI.nodeBoxTitleBold : NodeEditorGUI.nodeBoxTitle);
 
 
-       
+
 
             Rect bodyRect = new Rect(nodeRect.x, nodeRect.y + contentOffset.y, nodeRect.width, nodeRect.height - contentOffset.y);
             GUI.BeginGroup(bodyRect, GUI.skin.box);
@@ -623,7 +625,7 @@ namespace _ShaderoShaderEditorFramework
         #region Recursive Search Helpers
 
         [NonSerialized] private List<Node> recursiveSearchSurpassed;
-        [NonSerialized] private Node startRecursiveSearchNode; 
+        [NonSerialized] private Node startRecursiveSearchNode;
 
         internal bool BeginRecursiveSearchLoop()
         {
@@ -642,7 +644,8 @@ namespace _ShaderoShaderEditorFramework
         internal void EndRecursiveSearchLoop()
         {
             if (startRecursiveSearchNode == this)
-            {   recursiveSearchSurpassed = null;
+            {
+                recursiveSearchSurpassed = null;
                 startRecursiveSearchNode = null;
             }
         }

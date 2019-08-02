@@ -1,4 +1,7 @@
-﻿public interface IInputModelPlugable
+﻿namespace MultiplayersInput
 {
-	void SetInputModel(IInputModel model);
+    public interface IInputModelPlugable
+    {
+        void SetInputModel(IInputModel model);
+    }
 }

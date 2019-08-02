@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
 
@@ -91,15 +89,15 @@ namespace _ShaderoShaderEditorFramework
             AddParameters = GUILayout.Toggle(AddParameters, "Add Parameters");
 
             GUILayout.Label("Offset X (-1 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -1, 1);
+            Variable = HorizontalSlider(Variable, -1, 1);
             GUILayout.Label("Offset Y (-1 to 1) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -1, 1);
+            Variable2 = HorizontalSlider(Variable2, -1, 1);
             GUILayout.Label("Zoom X (1 to 10) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 1, 10);
+            Variable3 = HorizontalSlider(Variable3, 1, 10);
             GUILayout.Label("Zoom Y (1 to 10) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 1, 10);
+            Variable4 = HorizontalSlider(Variable4, 1, 10);
             GUILayout.Label("Speed (-1 to 1) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -1, 1);
+            Variable5 = HorizontalSlider(Variable5, -1, 1);
 
 
         }

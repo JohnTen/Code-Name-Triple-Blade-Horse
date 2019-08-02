@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TFHC_Shader_Samples
 {
 
-	public class highlightAnimated : MonoBehaviour
+    public class highlightAnimated : MonoBehaviour
     {
 
         private Material mat;
@@ -18,7 +16,7 @@ namespace TFHC_Shader_Samples
         void OnMouseEnter()
         {
             switchhighlighted(true);
-		}
+        }
 
         void OnMouseExit()
         {

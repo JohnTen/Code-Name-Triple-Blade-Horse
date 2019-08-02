@@ -51,7 +51,7 @@ namespace FlyingWormConsole3.LiteNetLib
             int errorCode = 0;
             _socket.SendTo(ntpData, 0, ntpData.Length, _ntpEndPoint, ref errorCode);
 
-            if(errorCode == 0)
+            if (errorCode == 0)
                 _waiter.WaitOne(1000);
         }
     }

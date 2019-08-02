@@ -958,7 +958,7 @@ namespace DragonBones
             {
                 return;
             }
-            else if(this._timelineData != null && this._dragonBonesData != deformVertices.verticesData.data)
+            else if (this._timelineData != null && this._dragonBonesData != deformVertices.verticesData.data)
             {
                 return;
             }

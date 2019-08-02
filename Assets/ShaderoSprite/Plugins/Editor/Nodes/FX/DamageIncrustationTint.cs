@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Damage Incrustation Tint")]
@@ -22,7 +19,7 @@ namespace _ShaderoShaderEditorFramework
         [HideInInspector]
         public float Variable4 = 0f;
         [HideInInspector]
-        public Color Variable5 = new Color(0,1,0,1);
+        public Color Variable5 = new Color(0, 1, 0, 1);
 
         public static int count = 1;
         public static bool tag = false;
@@ -96,7 +93,7 @@ namespace _ShaderoShaderEditorFramework
                 Variable2 = 1f;
                 Variable3 = 0f;
                 Variable4 = 0f;
-                Variable5 = new Color(0,1,0,1);
+                Variable5 = new Color(0, 1, 0, 1);
             }
 
 
@@ -113,13 +110,13 @@ namespace _ShaderoShaderEditorFramework
 
             }
             GUILayout.Label("Blend: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
             GUILayout.Label("Zoom: (0 to 8) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 8);
+            Variable2 = HorizontalSlider(Variable2, 0, 8);
             GUILayout.Label("PosX: (-2 to 2) " + Variable3.ToString("0.00"));
             Variable3 = HorizontalSlider(Variable3, -2, 2f);
             GUILayout.Label("PosY: (-2 to 2) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, -2, 2f);
+            Variable4 = HorizontalSlider(Variable4, -2, 2f);
             GUILayout.Label("Color: ");
             Variable5 = EditorGUILayout.ColorField("", Variable5);
 
@@ -152,7 +149,7 @@ namespace _ShaderoShaderEditorFramework
             SuperFloat4 s_out = new SuperFloat4();
 
 
-            string NodeCount = MemoCount.ToString(); 
+            string NodeCount = MemoCount.ToString();
             string DefaultName = "_DamageIncrustationTint_" + NodeCount;
             string DefaultNameVariable1 = "_DamageIncrustationTint_blend_" + NodeCount;
             string DefaultNameVariable2 = "_DamageIncrustationTint_zoom_" + NodeCount;

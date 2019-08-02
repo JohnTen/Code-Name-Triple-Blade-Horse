@@ -1,10 +1,8 @@
-using UnityEngine;
-using UnityEditor;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Build Shader")]
@@ -16,7 +14,7 @@ namespace _ShaderoShaderEditorFramework
 
         private static bool ForceNoHdr;
         private static bool ForceFog;
-        private static bool FixHdr=false;
+        private static bool FixHdr = false;
         private static bool LightningSupport;
         private static bool ChangeVariableName;
         private static bool SupportPixelSnap;
@@ -120,7 +118,7 @@ namespace _ShaderoShaderEditorFramework
             g.fontSize = ms;
 
             GUILayout.Space(32);
-            
+
             if (GUILayout.Button(new GUIContent("Load current shader from Material", "Load current Shader from the material")))
             {
                 Buildshader = NodeEditor._Shadero_Material.shader;
@@ -223,7 +221,7 @@ namespace _ShaderoShaderEditorFramework
 
             }
             GUILayout.Space(6);
-           
+
             GUILayout.BeginHorizontal();
             ForceNoHdr = GUILayout.Toggle(ForceNoHdr, "Force No Hdr");
             ForceFog = GUILayout.Toggle(ForceFog, "Force Fog");
@@ -267,7 +265,7 @@ namespace _ShaderoShaderEditorFramework
             if (CullUse == 0) { CullMode = "Cull Off"; }
             if (CullUse == 1) { CullMode = "Cull Back"; }
             if (CullUse == 2) { CullMode = "Cull Front"; }
-             //    private static string CullMode = "Cull Off";
+            //    private static string CullMode = "Cull Off";
 
             if (Buildshader != null)
             {
@@ -570,7 +568,7 @@ namespace _ShaderoShaderEditorFramework
             string WorldParalaxTagStr = "";
             if (WorldParalaxTag) WorldParalaxTagStr = "\"DisableBatching\" = \"True\"";
             Second += "Tags {\"Queue\" = \"Transparent\" \"IgnoreProjector\" = \"true\" \"RenderType\" = \"Transparent\" \"PreviewType\"=\"Plane\" \"CanUseSpriteAtlas\"=\"True\" " + WorldParalaxTagStr + "}\n";
-            Second += "ZWrite Off " + ShaderBlend + " "+ CullMode +" \n";
+            Second += "ZWrite Off " + ShaderBlend + " " + CullMode + " \n";
             Second += "\n";
 
             if (GrabPassTag)
@@ -703,10 +701,10 @@ namespace _ShaderoShaderEditorFramework
             if (ForceNoHdr) result += "FinalResult = saturate(FinalResult);\n";
             if (FixHdr)
             {
-                if (ForceNoHdr==false)
-                { 
-                result += "FinalResult.rgb *= FinalResult.a;\n";
-                result += "FinalResult.a = saturate(FinalResult.a);\n";
+                if (ForceNoHdr == false)
+                {
+                    result += "FinalResult.rgb *= FinalResult.a;\n";
+                    result += "FinalResult.a = saturate(FinalResult.a);\n";
                 }
             }
             if (AddUIRectMaskSupport) result += "FinalResult.a *= UnityGet2DClipping(i.worldPosition.xy, _ClipRect);\n";
@@ -770,7 +768,7 @@ namespace _ShaderoShaderEditorFramework
             Second += "\n";
             Second += "}\n";
             Second += "\n";
-            Second += CullMode+"\n";
+            Second += CullMode + "\n";
             Second += "Lighting Off\n";
             Second += "ZWrite Off\n";
             Second += ShaderBlend + "\n";
@@ -787,17 +785,17 @@ namespace _ShaderoShaderEditorFramework
             Second += "\n";
             string Ffog = "";
             if (ForceFog) Ffog = "nofog";
-            Second += "#pragma surface surf Lambert vertex:vert "+ Ffog+" nolightmap nodynlightmap keepalpha noinstancing\n";
+            Second += "#pragma surface surf Lambert vertex:vert " + Ffog + " nolightmap nodynlightmap keepalpha noinstancing\n";
             Second += "#pragma multi_compile _ PIXELSNAP_ON\n";
             Second += "#pragma multi_compile _ ETC1_EXTERNAL_ALPHA\n";
-             Second += "#include \"UnitySprites.cginc\"\n";
+            Second += "#include \"UnitySprites.cginc\"\n";
 
 
             Second += "struct Input\n";
             Second += "{\n";
             Second += "float2 texcoord;\n";
             Second += "float4 color;\n";
-       
+
             if (GrabPassTag)
             {
                 Second += "float2 screenuv;\n";
@@ -837,11 +835,11 @@ namespace _ShaderoShaderEditorFramework
             if (WorldPosTag)
             {
                 Thirth += "o.worldPos = mul(unity_ObjectToWorld, v.vertex);\n";
-                
+
             }
-            
+
             Thirth += "o.color = v.color * _Color * _RendererColor;\n";
-             Thirth += "}\n";
+            Thirth += "}\n";
             Thirth += "\n";
             Thirth += "\n";
 
@@ -873,7 +871,7 @@ namespace _ShaderoShaderEditorFramework
             result += AddingTag;
             result += Start;
             result += CleanUpScript(preview) + "float4 FinalResult = " + res + ";\n";
-             if (ForceNoHdr) { result += "o.Albedo = saturate(FinalResult.rgb* i.color.rgb);\n"; }
+            if (ForceNoHdr) { result += "o.Albedo = saturate(FinalResult.rgb* i.color.rgb);\n"; }
             else
             { result += "o.Albedo = FinalResult.rgb* i.color.rgb;\n"; }
             result += "o.Alpha = FinalResult.a * _SpriteFade * i.color.a;\n";

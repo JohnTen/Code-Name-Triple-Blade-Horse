@@ -1,8 +1,5 @@
-using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -56,14 +53,14 @@ namespace _ShaderoShaderEditorFramework
             Outputs[0].DisplayLayout(new GUIContent("UV", "The screen UV"));
 
             var text = new string[] { "Use X - Y", "Use X - Z", "Use Y - Z", "Use All" };
-            SetUsed=GUILayout.SelectionGrid(SetUsed, text, 1, EditorStyles.radioButton);
+            SetUsed = GUILayout.SelectionGrid(SetUsed, text, 1, EditorStyles.radioButton);
             Switch = GUILayout.Toggle(Switch, "Switch");
-            GUILayout.Label("Intensity: "+ Intensity.ToString("0.00"));
-            Intensity =HorizontalSlider(Intensity, 0, 2);
+            GUILayout.Label("Intensity: " + Intensity.ToString("0.00"));
+            Intensity = HorizontalSlider(Intensity, 0, 2);
             GUILayout.Label("Offset X: " + offsetX.ToString("0.00"));
-            offsetX =HorizontalSlider(offsetX, -2, 2);
+            offsetX = HorizontalSlider(offsetX, -2, 2);
             GUILayout.Label("Offset Y: " + offsetY.ToString("0.00"));
-            offsetY =HorizontalSlider(offsetY, -2, 2);
+            offsetY = HorizontalSlider(offsetY, -2, 2);
         }
         [HideInInspector]
         public int MemoCount = -1;
@@ -81,14 +78,14 @@ namespace _ShaderoShaderEditorFramework
             s_out.StringPreviewLines = "";
             s_out.ValueLine = "";
 
-         
+
 
             string NodeCount = MemoCount.ToString();
             string DefaultName = "_WordPosPlus_" + NodeCount;
-       
+
             if (Switch)
             {
-                if (SetUsed == 0) s_out.ValueLine = "float2 " +DefaultName+ " = float2("+offsetX.ToString()+"+ i.worldPos.x * " + Intensity.ToString() + ", " + offsetX.ToString() + "+ i.worldPos.y * " + Intensity.ToString()+");\n";
+                if (SetUsed == 0) s_out.ValueLine = "float2 " + DefaultName + " = float2(" + offsetX.ToString() + "+ i.worldPos.x * " + Intensity.ToString() + ", " + offsetX.ToString() + "+ i.worldPos.y * " + Intensity.ToString() + ");\n";
                 if (SetUsed == 1) s_out.ValueLine = "float2 " + DefaultName + "= float2(" + offsetX.ToString() + "+ i.worldPos.x * " + Intensity.ToString() + ", " + offsetX.ToString() + "+ i.worldPos.z * " + Intensity.ToString() + ");\n";
                 if (SetUsed == 2) s_out.ValueLine = "float2 " + DefaultName + "= float2(" + offsetX.ToString() + "+ i.worldPos.y * " + Intensity.ToString() + ", " + offsetX.ToString() + "+ i.worldPos.z * " + Intensity.ToString() + ");\n";
                 if (SetUsed == 3) s_out.ValueLine = "float2 " + DefaultName + "= float2(" + offsetX.ToString() + "+ ((i.worldPos.x+i.worldPos.y+i.worldPos.z)*0.334) * " + Intensity.ToString() + ", " + offsetX.ToString() + "+((i.worldPos.x+i.worldPos.y+i.worldPos.z)*0.4) * " + Intensity.ToString() + ");\n";

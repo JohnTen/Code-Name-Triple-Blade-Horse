@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/ShadowLight")]
@@ -133,23 +130,23 @@ namespace _ShaderoShaderEditorFramework
             }
             GUILayout.Label("Precision: (1 to 32) " + Variable.ToString("0.00"));
             GUILayout.Label("*Higher > Slower*");
-            Variable =HorizontalSlider(Variable, 1, 32);
+            Variable = HorizontalSlider(Variable, 1, 32);
             GUILayout.Label("Size: (0 to 16) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 16);
+            Variable2 = HorizontalSlider(Variable2, 0, 16);
             GUILayout.Label("Color:");
             Variable3 = EditorGUILayout.ColorField("", Variable3);
 
             GUILayout.Label("Intensity: (0 to 4) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 4);
+            Variable4 = HorizontalSlider(Variable4, 0, 4);
 
             GUILayout.Label("PosX: (-1 to 1) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -1, 1);
+            Variable5 = HorizontalSlider(Variable5, -1, 1);
 
             GUILayout.Label("PosY: (-1 to 1) " + Variable6.ToString("0.00"));
-            Variable6 =HorizontalSlider(Variable6, -1, 1);
+            Variable6 = HorizontalSlider(Variable6, -1, 1);
 
             GUILayout.Label("NoSprite: (0 to 1) " + Variable7.ToString("0.00"));
-            Variable7 =HorizontalSlider(Variable7, 0, 1);
+            Variable7 = HorizontalSlider(Variable7, 0, 1);
 
 
 
@@ -235,7 +232,7 @@ namespace _ShaderoShaderEditorFramework
             }
             else
             {
-                string vcol="float4("+ Variable3.r.ToString()+","+ Variable3.g.ToString() + "," + Variable3.b.ToString()+",1)";
+                string vcol = "float4(" + Variable3.r.ToString() + "," + Variable3.g.ToString() + "," + Variable3.b.ToString() + ",1)";
 
 
                 s_out.ValueLine = "float4 " + DefaultName + " = ShadowLight(" + Source + "," + uv + "," + Variable.ToString() + "," + Variable2.ToString() + "," + vcol + "," + Variable4.ToString() + "," + Variable5.ToString() + "," + Variable6.ToString() + "," + Variable7.ToString() + ");\n";

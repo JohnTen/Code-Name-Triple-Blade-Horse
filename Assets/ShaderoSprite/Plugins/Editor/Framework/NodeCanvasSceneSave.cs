@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using _ShaderoShaderEditorFramework;
+﻿using _ShaderoShaderEditorFramework;
+using UnityEngine;
 
-public class NodeCanvasSceneSave : MonoBehaviour 
+public class NodeCanvasSceneSave : MonoBehaviour
 {
-	public NodeCanvas savedNodeCanvas;
+    public NodeCanvas savedNodeCanvas;
 }

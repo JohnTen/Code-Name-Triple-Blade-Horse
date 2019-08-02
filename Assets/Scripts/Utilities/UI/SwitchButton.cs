@@ -1,78 +1,76 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace JTUtility.UI
 {
-	[System.Serializable]
-	struct SwitchButtonData
-	{
-		public string Label;
-		public Color ButtonColor;
-		public Color LabelColor;
-		public StringEvent OnSwitchOn;
-	}
+    [System.Serializable]
+    struct SwitchButtonData
+    {
+        public string Label;
+        public Color ButtonColor;
+        public Color LabelColor;
+        public StringEvent OnSwitchOn;
+    }
 
-	class SwitchButton : MonoBehaviour
-	{
-		[System.Serializable]
-		class IntEvent : UnityEvent<int> { }
+    class SwitchButton : MonoBehaviour
+    {
+        [System.Serializable]
+        class IntEvent : UnityEvent<int> { }
 
-		[SerializeField]
-		SwitchButtonData[] data;
+        [SerializeField]
+        SwitchButtonData[] data;
 
-		[SerializeField]
-		int CurrentIndex;
+        [SerializeField]
+        int CurrentIndex;
 
-		[SerializeField]
-		IntEvent OnSwitch = null;
+        [SerializeField]
+        IntEvent OnSwitch = null;
 
-		[SerializeField]
-		Image ButtonImage = null;
+        [SerializeField]
+        Image ButtonImage = null;
 
-		[SerializeField]
-		Text ButtonLabel = null;
+        [SerializeField]
+        Text ButtonLabel = null;
 
-		bool disabledEvent;
+        bool disabledEvent;
 
-		private void Awake()
-		{
-			ButtonImage = GetComponentInChildren<Image>();
-			ButtonLabel = GetComponentInChildren<Text>();
-			disabledEvent = true;
-			SetTo(CurrentIndex);
-			disabledEvent = false;
-		}
+        private void Awake()
+        {
+            ButtonImage = GetComponentInChildren<Image>();
+            ButtonLabel = GetComponentInChildren<Text>();
+            disabledEvent = true;
+            SetTo(CurrentIndex);
+            disabledEvent = false;
+        }
 
-		public void Switch()
-		{
-			CurrentIndex++;
-			if (CurrentIndex >= data.Length) CurrentIndex = 0;
+        public void Switch()
+        {
+            CurrentIndex++;
+            if (CurrentIndex >= data.Length) CurrentIndex = 0;
 
-			setButton(CurrentIndex);
-		}
+            setButton(CurrentIndex);
+        }
 
-		public void SetTo(int index)
-		{
-			setButton(index);
-		}
+        public void SetTo(int index)
+        {
+            setButton(index);
+        }
 
-		void setButton(int index)
-		{
-			CurrentIndex = index;
-			if (ButtonImage != null) ButtonImage.color = data[index].ButtonColor;
-			if (ButtonLabel != null) ButtonLabel.color = data[index].LabelColor;
-			if (ButtonLabel != null) ButtonLabel.text = data[index].Label;
+        void setButton(int index)
+        {
+            CurrentIndex = index;
+            if (ButtonImage != null) ButtonImage.color = data[index].ButtonColor;
+            if (ButtonLabel != null) ButtonLabel.color = data[index].LabelColor;
+            if (ButtonLabel != null) ButtonLabel.text = data[index].Label;
 
-			if (disabledEvent)
-				return;
+            if (disabledEvent)
+                return;
 
-			if (data[index].OnSwitchOn != null)
-				data[index].OnSwitchOn.Invoke(data[index].Label);
+            if (data[index].OnSwitchOn != null)
+                data[index].OnSwitchOn.Invoke(data[index].Label);
 
-			OnSwitch.Invoke(index);
-		}
-	}
+            OnSwitch.Invoke(index);
+        }
+    }
 }

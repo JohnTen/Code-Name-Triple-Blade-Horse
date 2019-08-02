@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace DragonBones
 {
@@ -31,7 +31,7 @@ namespace DragonBones
         [System.Serializable]
         public class TextureAtlas
         {
-            public TextAsset textureAtlasJSON; 
+            public TextAsset textureAtlasJSON;
             public Texture2D texture;
             public Material material;
             public Material uiMaterial;
@@ -41,23 +41,23 @@ namespace DragonBones
         public TextAsset dragonBonesJSON;
         public TextureAtlas[] textureAtlas;
 
-        
+
 
         /**
          * @language zh_CN
          * 从UnityFactory中移除。
          * @param disposeData
          */
-        public void RemoveFromFactory(bool disposeData =true)
+        public void RemoveFromFactory(bool disposeData = true)
         {
             UnityFactory.factory.RemoveDragonBonesData(dataName, disposeData);
-            if(textureAtlas != null)
+            if (textureAtlas != null)
             {
-                foreach(TextureAtlas ta in textureAtlas)
+                foreach (TextureAtlas ta in textureAtlas)
                 {
-                    if(ta != null && ta.texture != null)
+                    if (ta != null && ta.texture != null)
                     {
-                        UnityFactory.factory.RemoveTextureAtlasData(ta.texture.name,disposeData);
+                        UnityFactory.factory.RemoveTextureAtlasData(ta.texture.name, disposeData);
                     }
                 }
             }

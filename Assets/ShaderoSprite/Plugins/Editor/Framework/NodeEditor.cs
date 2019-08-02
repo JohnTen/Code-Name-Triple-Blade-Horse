@@ -1,11 +1,9 @@
-using UnityEngine;
+using _ShaderoShaderEditorFramework.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
 using UnityEditor;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -239,7 +237,7 @@ namespace _ShaderoShaderEditorFramework
             DrawSubCanvas(nodeCanvas, editorState);
         }
 
-           private static void DrawSubCanvas(NodeCanvas nodeCanvas, NodeEditorState editorState)
+        private static void DrawSubCanvas(NodeCanvas nodeCanvas, NodeEditorState editorState)
         {
             if (!editorState.drawing)
                 return;
@@ -252,7 +250,8 @@ namespace _ShaderoShaderEditorFramework
 
 
             if (Event.current.type == EventType.Repaint)
-            {    float width = curEditorState.zoom / NodeEditorGUI.Background.width;
+            {
+                float width = curEditorState.zoom / NodeEditorGUI.Background.width;
                 float height = curEditorState.zoom / NodeEditorGUI.Background.height;
                 Vector2 offset = curEditorState.zoomPos + curEditorState.panOffset / curEditorState.zoom;
                 Rect uvDrawRect = new Rect(-offset.x * width,
@@ -269,14 +268,16 @@ namespace _ShaderoShaderEditorFramework
             Rect canvasRect = curEditorState.canvasRect;
             curEditorState.zoomPanAdjust = GUIScaleUtility.BeginScale(ref canvasRect, curEditorState.zoomPos, curEditorState.zoom, false);
             if (curEditorState.navigate)
-            {   Vector2 startPos = (curEditorState.selectedNode != null ? curEditorState.selectedNode.rect.center : curEditorState.panOffset) + curEditorState.zoomPanAdjust;
+            {
+                Vector2 startPos = (curEditorState.selectedNode != null ? curEditorState.selectedNode.rect.center : curEditorState.panOffset) + curEditorState.zoomPanAdjust;
                 Vector2 endPos = Event.current.mousePosition;
                 RTEditorGUI.DrawLine(startPos, endPos, Color.green, null, 3);
                 RepaintClients();
             }
 
             if (curEditorState.connectOutput != null)
-            {   NodeOutput output = curEditorState.connectOutput;
+            {
+                NodeOutput output = curEditorState.connectOutput;
                 Vector2 startPos = output.GetGUIKnob().center;
                 Vector2 startDir = output.GetDirection();
                 Vector2 endPos = Event.current.mousePosition;
@@ -342,7 +343,7 @@ namespace _ShaderoShaderEditorFramework
 
             Node.ShaderNameX = NodeEditor.curEditorState.ShaderName;
 
-          
+
             if (curNodeCanvas.nodes.Count == 0)
             {
                 preview = ResourceManager.LoadTexture("Textures/previews/shadero_firstscreen.jpg");
@@ -361,29 +362,31 @@ namespace _ShaderoShaderEditorFramework
 
         #region Space Transformations
 
-         public static Node NodeAtPosition(Vector2 canvasPos)
+        public static Node NodeAtPosition(Vector2 canvasPos)
         {
             NodeKnob focusedKnob;
             return NodeAtPosition(curEditorState, canvasPos, out focusedKnob);
         }
 
-          public static Node NodeAtPosition(Vector2 canvasPos, out NodeKnob focusedKnob)
+        public static Node NodeAtPosition(Vector2 canvasPos, out NodeKnob focusedKnob)
         {
             return NodeAtPosition(curEditorState, canvasPos, out focusedKnob);
         }
 
-         public static Node NodeAtPosition(NodeEditorState editorState, Vector2 canvasPos, out NodeKnob focusedKnob)
+        public static Node NodeAtPosition(NodeEditorState editorState, Vector2 canvasPos, out NodeKnob focusedKnob)
         {
             focusedKnob = null;
             if (NodeEditorInputSystem.shouldIgnoreInput(editorState))
                 return null;
             NodeCanvas canvas = editorState.canvas;
             for (int nodeCnt = canvas.nodes.Count - 1; nodeCnt >= 0; nodeCnt--)
-            {  Node node = canvas.nodes[nodeCnt];
+            {
+                Node node = canvas.nodes[nodeCnt];
                 if (node.rect.Contains(canvasPos))
                     return node;
                 for (int knobCnt = 0; knobCnt < node.nodeKnobs.Count; knobCnt++)
-                {  if (node.nodeKnobs[knobCnt].GetCanvasSpaceKnob().Contains(canvasPos))
+                {
+                    if (node.nodeKnobs[knobCnt].GetCanvasSpaceKnob().Contains(canvasPos))
                     {
                         focusedKnob = node.nodeKnobs[knobCnt];
                         return node;
@@ -408,7 +411,7 @@ namespace _ShaderoShaderEditorFramework
 
         public static List<Node> workList;
         private static int calculationCount;
-     
+
         public static void RecalculateAll(NodeCanvas nodeCanvas)
         {
             Node.InitValueCount();
@@ -418,7 +421,7 @@ namespace _ShaderoShaderEditorFramework
                 FixTable[w] = Math.Abs(nodeCanvas.nodes[w].GetInstanceID());
             }
             Array.Sort(FixTable);
-  
+
             for (int w = 0; w < nodeCanvas.nodes.Count; w++)
             {
                 for (int x = 0; x < nodeCanvas.nodes.Count; x++)
@@ -438,16 +441,17 @@ namespace _ShaderoShaderEditorFramework
             */
             //     Debug.Log(" Node[" + w + "]=" + Math.Abs(nodeCanvas.nodes[w].GetInstanceID()).ToString());
             Node.ErrorTag = false;
-     //     Node.InitValueCount();
+            //     Node.InitValueCount();
             workList = new List<Node>();
             foreach (Node node in nodeCanvas.nodes)
             {
                 if (node.isInput())
-                {  node.ClearCalculation();
-                     workList.Add(node);
+                {
+                    node.ClearCalculation();
+                    workList.Add(node);
                 }
             }
-          
+
             StartCalculation();
         }
 
@@ -458,36 +462,38 @@ namespace _ShaderoShaderEditorFramework
             StartCalculation();
         }
 
-         public static void StartCalculation()
+        public static void StartCalculation()
         {
             checkInit(false);
-            
+
             if (InitiationError)
                 return;
-        
+
             if (workList == null || workList.Count == 0)
                 return;
 
-             calculationCount = 0;
+            calculationCount = 0;
 
             bool limitReached = false;
             for (int roundCnt = 0; !limitReached; roundCnt++)
-            {   limitReached = true;
+            {
+                limitReached = true;
                 for (int workCnt = 0; workCnt < workList.Count; workCnt++)
                 {
                     if (ContinueCalculation(workList[workCnt]))
                         limitReached = false;
                 }
             }
-           
+
         }
 
-          private static bool ContinueCalculation(Node node)
+        private static bool ContinueCalculation(Node node)
         {
             if (node.calculated)
                 return false;
             if ((node.descendantsCalculated() || node.isInLoop()) && node.Calculate())
-            {   node.calculated = true;
+            {
+                node.calculated = true;
                 calculationCount++;
                 workList.Remove(node);
                 if (node.ContinueCalculation && calculationCount < 1000)
@@ -507,11 +513,11 @@ namespace _ShaderoShaderEditorFramework
 
                 else if (calculationCount >= 1000)
                     Debug.LogError("Stopped calculation, to many node ! max 1000!");
-           
+
                 return true;
             }
             else if (!workList.Contains(node))
-            { 
+            {
                 workList.Add(node);
             }
             return false;

@@ -1,86 +1,83 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
-[Node(false, "RGBA/Color/Color Filters")]
-public class ColorFilters : Node
-{
-    [HideInInspector]
-    public const string ID = "ColorFilters";
-    [HideInInspector]
-    public override string GetID { get { return ID; } }
-    [HideInInspector]
-    public float Variable = 1f;
-    [HideInInspector]
-    [Multiline(15)]
-    public string result;
-
-    public static int count = 1;
-    public static bool tag = false;
-    public static string code;
-
-    [HideInInspector]
-    public bool HDR=false;
-    [HideInInspector]
-    public float HDRvalue=1;
-
-
-    [HideInInspector]
-    public bool parametersOK = true;
-
-    private int Selection = 0;
-    
-    public static void Init()
+    [Node(false, "RGBA/Color/Color Filters")]
+    public class ColorFilters : Node
     {
-        tag = false;
-        count = 1;
-    }
+        [HideInInspector]
+        public const string ID = "ColorFilters";
+        [HideInInspector]
+        public override string GetID { get { return ID; } }
+        [HideInInspector]
+        public float Variable = 1f;
+        [HideInInspector]
+        [Multiline(15)]
+        public string result;
+
+        public static int count = 1;
+        public static bool tag = false;
+        public static string code;
+
+        [HideInInspector]
+        public bool HDR = false;
+        [HideInInspector]
+        public float HDRvalue = 1;
 
 
-    public void Function()
-    {
-       code = "";
-       code += "float4 ColorFilters(float4 rgba, float4 red, float4 green, float4 blue, float fade)\n";
-       code += "{\n";
-       code += "float3 c_r = float3(red.r, red.g, red.b);\n";
-       code += "float3 c_g = float3(green.r, green.g, green.b);\n";
-       code += "float3 c_b = float3(blue.r, blue.g, blue.b);\n";
-       code += "float4 r = float4(dot(rgba.rgb, c_r) + red.a, dot(rgba.rgb, c_g) + green.a, dot(rgba.rgb, c_b) + blue.a, rgba.a);\n";
-       code += "return lerp(rgba, saturate(r), fade);\n";
-       code += "\n";
-       code += "}\n";
-    }
+        [HideInInspector]
+        public bool parametersOK = true;
+
+        private int Selection = 0;
+
+        public static void Init()
+        {
+            tag = false;
+            count = 1;
+        }
 
 
-    public override Node Create(Vector2 pos)
-    {
-        Function();
+        public void Function()
+        {
+            code = "";
+            code += "float4 ColorFilters(float4 rgba, float4 red, float4 green, float4 blue, float fade)\n";
+            code += "{\n";
+            code += "float3 c_r = float3(red.r, red.g, red.b);\n";
+            code += "float3 c_g = float3(green.r, green.g, green.b);\n";
+            code += "float3 c_b = float3(blue.r, blue.g, blue.b);\n";
+            code += "float4 r = float4(dot(rgba.rgb, c_r) + red.a, dot(rgba.rgb, c_g) + green.a, dot(rgba.rgb, c_b) + blue.a, rgba.a);\n";
+            code += "return lerp(rgba, saturate(r), fade);\n";
+            code += "\n";
+            code += "}\n";
+        }
 
-        ColorFilters node = ScriptableObject.CreateInstance<ColorFilters>();
 
-        node.name = "Color Filters";
+        public override Node Create(Vector2 pos)
+        {
+            Function();
 
-        node.rect = new Rect(pos.x, pos.y, 222, 420);
-        node.CreateInput("RGBA", "SuperFloat4");
-        node.CreateOutput("RGBA", "SuperFloat4");
+            ColorFilters node = ScriptableObject.CreateInstance<ColorFilters>();
 
-        return node;
-    }
+            node.name = "Color Filters";
 
-    protected internal override void NodeGUI()
-    {
-        Texture2D preview = ResourceManager.LoadTexture("Textures/previews/nid_colorfilters.jpg");
-        GUI.DrawTexture(new Rect(1, 0, 222, 56), preview);
-        GUILayout.Space(58);
-        GUILayout.BeginHorizontal();
-        Inputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
-        Outputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
-        GUILayout.EndHorizontal();
-        
-        parametersOK = GUILayout.Toggle(parametersOK, "Add Parameter");
+            node.rect = new Rect(pos.x, pos.y, 222, 420);
+            node.CreateInput("RGBA", "SuperFloat4");
+            node.CreateOutput("RGBA", "SuperFloat4");
+
+            return node;
+        }
+
+        protected internal override void NodeGUI()
+        {
+            Texture2D preview = ResourceManager.LoadTexture("Textures/previews/nid_colorfilters.jpg");
+            GUI.DrawTexture(new Rect(1, 0, 222, 56), preview);
+            GUILayout.Space(58);
+            GUILayout.BeginHorizontal();
+            Inputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
+            Outputs[0].DisplayLayout(new GUIContent("RGBA", "RGBA"));
+            GUILayout.EndHorizontal();
+
+            parametersOK = GUILayout.Toggle(parametersOK, "Add Parameter");
 
             string[] test = new string[18];
             test[0] = "Blue Lagoon";
@@ -101,51 +98,51 @@ public class ColorFilters : Node
             test[15] = "Blue Jeans";
             test[16] = "Night Vision";
             test[17] = "Blue Paradise";
-            Selection = GUILayout.SelectionGrid(Selection, test,2);
-          
-         if (NodeEditor._Shadero_Material != null)
-         {
-            NodeEditor._Shadero_Material.SetFloat(FinalVariable, Variable);
-         }
+            Selection = GUILayout.SelectionGrid(Selection, test, 2);
 
-        GUILayout.Label("Fade: (0 to 1) " + Variable.ToString("0.00"));
-        Variable =HorizontalSlider(Variable, 0, 1);
-    }
+            if (NodeEditor._Shadero_Material != null)
+            {
+                NodeEditor._Shadero_Material.SetFloat(FinalVariable, Variable);
+            }
 
-    private string FinalVariable;
-    private string FinalVariable2;
-    [HideInInspector]
-    public int MemoCount = -1;
-    public override bool FixCalculate()
-    {
-        MemoCount = count;
-        count++;
-        return true;
-    }
-    string ConvertColors(float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8, float a9, float a10, float a11, float a12)
-    {
+            GUILayout.Label("Fade: (0 to 1) " + Variable.ToString("0.00"));
+            Variable = HorizontalSlider(Variable, 0, 1);
+        }
+
+        private string FinalVariable;
+        private string FinalVariable2;
+        [HideInInspector]
+        public int MemoCount = -1;
+        public override bool FixCalculate()
+        {
+            MemoCount = count;
+            count++;
+            return true;
+        }
+        string ConvertColors(float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8, float a9, float a10, float a11, float a12)
+        {
             string Colors = "";
             string CR = "float4(0,0,1,0)";
             string CG = "float4(0,0,1,0)";
             string CB = "float4(0,0,1,0)";
 
-            CR = "float4("+a1/100+","+a2 / 100 + ","+a3 / 100 + ","+a10 / 100 + ")";
-            CG = "float4("+a4/100+","+a5 / 100 + ","+a6 / 100 + ","+a11 / 100 + ")";
-            CB = "float4("+a7 / 100 + ","+a8 / 100 + ","+a9 / 100 + ","+a12 / 100 + ")";
+            CR = "float4(" + a1 / 100 + "," + a2 / 100 + "," + a3 / 100 + "," + a10 / 100 + ")";
+            CG = "float4(" + a4 / 100 + "," + a5 / 100 + "," + a6 / 100 + "," + a11 / 100 + ")";
+            CB = "float4(" + a7 / 100 + "," + a8 / 100 + "," + a9 / 100 + "," + a12 / 100 + ")";
             Colors = CR + "," + CG + "," + CB;
             return Colors;
         }
-    public override bool Calculate()
-    {
-        tag = true;
+        public override bool Calculate()
+        {
+            tag = true;
 
-        SuperFloat4 s_in = Inputs[0].GetValue<SuperFloat4>();
-        SuperFloat4 s_out = new SuperFloat4();
+            SuperFloat4 s_in = Inputs[0].GetValue<SuperFloat4>();
+            SuperFloat4 s_out = new SuperFloat4();
 
-        string NodeCount = MemoCount.ToString();
-        string DefaultName = "_ColorFilters_" + NodeCount;
-        string DefaultNameVariable1 = "_ColorFilters_Fade_" + NodeCount;
-        string DefaultParameters1 = ", Range(0, 1)) = " + Variable.ToString();
+            string NodeCount = MemoCount.ToString();
+            string DefaultName = "_ColorFilters_" + NodeCount;
+            string DefaultNameVariable1 = "_ColorFilters_Fade_" + NodeCount;
+            string DefaultParameters1 = ", Range(0, 1)) = " + Variable.ToString();
             string PreviewVariable = s_in.Result;
 
             FinalVariable = DefaultNameVariable1;
@@ -157,10 +154,10 @@ public class ColorFilters : Node
             }
 
 
-            s_out.StringPreviewLines = s_in.StringPreviewNew ;
-      
+            s_out.StringPreviewLines = s_in.StringPreviewNew;
+
             string Colors = "";
-           
+
             if (Selection == 0) Colors = ConvertColors(100, 102, 0, 18, 100, 4, 28, -26, 100, -64, 0, 12);
             if (Selection == 1) Colors = ConvertColors(200, 98, -116, 24, 100, 2, 30, 52, 20, -48, -20, 12);
             if (Selection == 2) Colors = ConvertColors(-42, 68, 108, -96, 100, 116, -92, 104, 96, 0, 2, 4);
@@ -198,7 +195,7 @@ public class ColorFilters : Node
 
             s_out.Result = DefaultName;
 
-            s_out.ParametersDeclarationLines += s_in.ParametersDeclarationLines ;
+            s_out.ParametersDeclarationLines += s_in.ParametersDeclarationLines;
 
             if (parametersOK)
             {
@@ -211,5 +208,5 @@ public class ColorFilters : Node
             count++;
             return true;
         }
-}
+    }
 }

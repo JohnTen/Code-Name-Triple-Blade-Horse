@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Plasma FX")]
@@ -106,13 +103,13 @@ namespace _ShaderoShaderEditorFramework
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameters");
 
             GUILayout.Label("Fade: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
             if (NodeEditor._Shadero_Material != null)
             {
                 NodeEditor._Shadero_Material.SetFloat(FinalVariable2, Variable2);
             }
             GUILayout.Label("Speed: (0 to 1) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 1);
+            Variable2 = HorizontalSlider(Variable2, 0, 1);
 
 
 

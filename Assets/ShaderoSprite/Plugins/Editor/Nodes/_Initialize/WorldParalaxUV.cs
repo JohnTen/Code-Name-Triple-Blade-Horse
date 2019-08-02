@@ -1,8 +1,4 @@
 using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -55,8 +51,8 @@ namespace _ShaderoShaderEditorFramework
         {
             Outputs[0].DisplayLayout(new GUIContent("UV", "The screen UV"));
 
-            GUILayout.Label("Intensity: "+ Intensity.ToString("0.00"));
-            Intensity =HorizontalSlider(Intensity, 0, 1f);
+            GUILayout.Label("Intensity: " + Intensity.ToString("0.00"));
+            Intensity = HorizontalSlider(Intensity, 0, 1f);
         }
         [HideInInspector]
         public int MemoCount = -1;
@@ -74,13 +70,13 @@ namespace _ShaderoShaderEditorFramework
             s_out.StringPreviewLines = "";
             s_out.ValueLine = "";
 
-         
+
 
             string NodeCount = MemoCount.ToString();
             string DefaultName = "_WorldParalaxUV_" + NodeCount;
-       
-            s_out.ValueLine = "float2 " +DefaultName+ " = i.texcoord + float2((-unity_ObjectToWorld[0][2] * " + Intensity.ToString()+"),0);\n";
-                
+
+            s_out.ValueLine = "float2 " + DefaultName + " = i.texcoord + float2((-unity_ObjectToWorld[0][2] * " + Intensity.ToString() + "),0);\n";
+
             s_out.Result = DefaultName;
             s_out.StringPreviewNew = s_out.StringPreviewLines + s_out.ValueLine;
             s_out.ParametersLines = "";

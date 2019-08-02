@@ -157,7 +157,7 @@ namespace DragonBones
             this.boundingBox = null;
         }
     }
-    
+
     /// <internal/>
     /// <private/>
     public class PathDisplayData : DisplayData

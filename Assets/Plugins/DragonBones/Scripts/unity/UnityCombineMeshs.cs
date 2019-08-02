@@ -20,10 +20,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DragonBones;
 
 namespace DragonBones
 {
@@ -195,11 +193,11 @@ namespace DragonBones
                         transform.localScale = Vector3.one;
                     }
                     //
-                    if(slot._deformVertices != null)
+                    if (slot._deformVertices != null)
                     {
                         slot._deformVertices.verticesDirty = true;
                     }
-                    
+
                     slot._transformDirty = true;
                     slot.Update(-1);
 

@@ -1,7 +1,7 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
-﻿using System;
-using System.Collections.Generic;
 using FlyingWormConsole3.LiteNetLib.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace FlyingWormConsole3.LiteNetLib
 {
@@ -82,7 +82,7 @@ namespace FlyingWormConsole3.LiteNetLib
         }
 
         public void Recycle(NetPacket packet)
-        { 
+        {
             if (packet.Size > NetConstants.MaxPacketSize)
             {
                 //Dont pool big packets. Save memory

@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Generate/3D/Procedural Planet")]
@@ -150,12 +147,12 @@ namespace _ShaderoShaderEditorFramework
             Inputs[1].DisplayLayout(new GUIContent("UV Texture", "UV"));
             Inputs[2].DisplayLayout(new GUIContent("Source", "Source"));
 
-          
+
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Jupiter"))
             {
-                Variable2 =-0.05f;
-                Variable  = 0.00f;
+                Variable2 = -0.05f;
+                Variable = 0.00f;
                 Variable3 = 1.0f;
                 Variable4 = 1.0f;
                 Variable5 = -1.0f;
@@ -207,7 +204,7 @@ namespace _ShaderoShaderEditorFramework
                 Variable11 = Random.Range(-0.2f, 0.3f);
                 Variable12 = Random.Range(-0.5f, 0.5f);
                 Variable13 = Random.Range(-0.5f, 0.5f);
-                Variable14 = Random.Range(-0.1f, 1.1f); 
+                Variable14 = Random.Range(-0.1f, 1.1f);
                 Variable15 = Random.Range(-1.0f, 0.9f);
                 Variable16 = Random.Range(-1.0f, 2.0f);
                 Variable17 = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
@@ -308,7 +305,7 @@ namespace _ShaderoShaderEditorFramework
             GUILayout.Label("Strange Cloud");
             GUILayout.Space(8);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Grad : (-0.1 to 1.1)"); Variable14 = HorizontalSlider(Variable14, -0.1f,1.1f);
+            GUILayout.Label("Grad : (-0.1 to 1.1)"); Variable14 = HorizontalSlider(Variable14, -0.1f, 1.1f);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -452,7 +449,7 @@ namespace _ShaderoShaderEditorFramework
             s_out.StringPreviewLines = s_in.StringPreviewNew + s_in2.StringPreviewNew + s_in3.StringPreviewNew;
             if (parametersOK)
             {
-                s_out.ValueLine = "float4 " + DefaultName + " = Generate_3DPlanet(" + Source + "," + uv + "," + uv2 + ", float2(" + DefaultNameVariable1 + "," + DefaultNameVariable2 + "),float3(" + DefaultNameVariable3 + "," + DefaultNameVariable4 + "," + DefaultNameVariable5 + ")," 
+                s_out.ValueLine = "float4 " + DefaultName + " = Generate_3DPlanet(" + Source + "," + uv + "," + uv2 + ", float2(" + DefaultNameVariable1 + "," + DefaultNameVariable2 + "),float3(" + DefaultNameVariable3 + "," + DefaultNameVariable4 + "," + DefaultNameVariable5 + "),"
                 + DefaultNameVariable6 + ","
                 + DefaultNameVariable7 + ","
                 + DefaultNameVariable8 + ","
@@ -473,7 +470,7 @@ namespace _ShaderoShaderEditorFramework
                 string vcol2 = "float4(" + Variable10.r.ToString() + "," + Variable10.g.ToString() + "," + Variable10.b.ToString() + "," + Variable10.a.ToString() + ")";
                 string vcol3 = "float4(" + Variable17.r.ToString() + "," + Variable17.g.ToString() + "," + Variable17.b.ToString() + "," + Variable17.a.ToString() + ")";
 
-                s_out.ValueLine = "float4 " + DefaultName + " = Generate_3DPlanet(" + Source + "," + uv + "," + uv2 + ", float2(" + Variable.ToString() + "," + Variable2.ToString() + "),float3(" + Variable3.ToString() + "," + Variable4.ToString() + "," + Variable5.ToString() + ")," 
+                s_out.ValueLine = "float4 " + DefaultName + " = Generate_3DPlanet(" + Source + "," + uv + "," + uv2 + ", float2(" + Variable.ToString() + "," + Variable2.ToString() + "),float3(" + Variable3.ToString() + "," + Variable4.ToString() + "," + Variable5.ToString() + "),"
                  + vcol + ","
                  + Variable7.ToString() + ","
                  + Variable8.ToString() + ","

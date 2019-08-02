@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public interface ICanBlockInput
+﻿namespace TripleBladeHorse
 {
-	bool BlockInput { get; }
-	bool DelayInput { get; }
+    public interface ICanBlockInput
+    {
+        bool BlockInput { get; }
+        bool DelayInput { get; }
+    }
 }

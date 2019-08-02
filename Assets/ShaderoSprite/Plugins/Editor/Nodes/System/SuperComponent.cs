@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
 
 
 public class SuperFloat : Component

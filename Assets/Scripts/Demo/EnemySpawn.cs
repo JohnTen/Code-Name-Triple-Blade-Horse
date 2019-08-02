@@ -1,55 +1,55 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TripleBladeHorse;
+﻿using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour, ICanHandleRespawn
+namespace TripleBladeHorse
 {
-	[SerializeField] GameObject _enemyPrefab;
-	[SerializeField] float _range;
-	[SerializeField] float _spawnDelay = 2;
-	GameObject enemyReference;
-	float spawnTimer;
-	bool spawned;
-	
-    void Update()
+    public class EnemySpawn : MonoBehaviour, ICanHandleRespawn
     {
-		spawnTimer -= TimeManager.DeltaTime;
+        [SerializeField] GameObject _enemyPrefab;
+        [SerializeField] float _range;
+        [SerializeField] float _spawnDelay = 2;
+        GameObject enemyReference;
+        float spawnTimer;
+        bool spawned;
 
-		if (enemyReference == null && spawnTimer < 0)
-		{
-			if (spawned)
-			{
-				spawnTimer = _spawnDelay;
-				spawned = false;
-			}
-			else
-			{
-				Spawn();
-				spawned = true;
-			}
-		}
-	}
+        void Update()
+        {
+            spawnTimer -= TimeManager.DeltaTime;
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireCube(transform.position, new Vector3(_range * 2, 1, 1));
-	}
+            if (enemyReference == null && spawnTimer < 0)
+            {
+                if (spawned)
+                {
+                    spawnTimer = _spawnDelay;
+                    spawned = false;
+                }
+                else
+                {
+                    Spawn();
+                    spawned = true;
+                }
+            }
+        }
 
-	void Spawn()
-	{
-		enemyReference = Instantiate(_enemyPrefab.gameObject, transform.position, transform.rotation);
-		enemyReference.transform.position = this.transform.position + Random.Range(-_range, _range) * Vector3.right;
-	}
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(transform.position, new Vector3(_range * 2, 1, 1));
+        }
 
-	public void Respawn()
-	{
-		if (enemyReference)
-			Destroy(enemyReference);
-		enemyReference = null;
-		spawned = false;
+        void Spawn()
+        {
+            enemyReference = Instantiate(_enemyPrefab.gameObject, transform.position, transform.rotation);
+            enemyReference.transform.position = this.transform.position + Random.Range(-_range, _range) * Vector3.right;
+        }
 
-		spawnTimer = 0;
-	}
+        public void Respawn()
+        {
+            if (enemyReference)
+                Destroy(enemyReference);
+            enemyReference = null;
+            spawned = false;
+
+            spawnTimer = 0;
+        }
+    }
 }

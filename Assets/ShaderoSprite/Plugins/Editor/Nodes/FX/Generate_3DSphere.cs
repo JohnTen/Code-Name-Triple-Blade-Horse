@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Generate/3D/Spherize")]
@@ -149,7 +146,7 @@ namespace _ShaderoShaderEditorFramework
         private string FinalVariable4;
         private string FinalVariable5;
         private string FinalVariable6;
-         [HideInInspector]
+        [HideInInspector]
         public int MemoCount = -1;
         public override bool FixCalculate()
         {
@@ -192,7 +189,7 @@ namespace _ShaderoShaderEditorFramework
             FinalVariable4 = DefaultNameVariable4;
             FinalVariable5 = DefaultNameVariable5;
             FinalVariable6 = DefaultNameVariable6;
-      
+
             if (s_in3.Result == null)
             {
                 Source = "_MainTex";

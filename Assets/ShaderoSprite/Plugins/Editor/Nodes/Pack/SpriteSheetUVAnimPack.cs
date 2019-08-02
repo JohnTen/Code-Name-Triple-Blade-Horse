@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Pack/Sprite Sheet UV Anim Pack")]
@@ -165,7 +163,7 @@ namespace _ShaderoShaderEditorFramework
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label(" ",GUILayout.Width(140));
+            GUILayout.Label(" ", GUILayout.Width(140));
             Variable4 = HorizontalSlider(Variable4, 0, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 

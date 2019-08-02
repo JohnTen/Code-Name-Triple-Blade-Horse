@@ -17,7 +17,7 @@ namespace FlyingWormConsole3.LiteNetLib
         private bool _running;
         private readonly NetManager.OnMessageReceived _onMessageReceived;
 
-        private static readonly IPAddress MulticastAddressV6 = IPAddress.Parse (NetConstants.MulticastGroupIPv6);
+        private static readonly IPAddress MulticastAddressV6 = IPAddress.Parse(NetConstants.MulticastGroupIPv6);
         private static readonly bool IPv6Support;
         private const int SocketReceivePollTime = 100000;
         private const int SocketSendPollTime = 5000;
@@ -35,7 +35,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 // IPv6Support = Socket.OSSupportsIPv6;
                 IPv6Support = false;
             }
-            catch 
+            catch
             {
                 IPv6Support = false;
             }
@@ -80,7 +80,7 @@ namespace FlyingWormConsole3.LiteNetLib
                         //10040 - message too long
                         //10054 - remote close (not error)
                         //Just UDP
-                        NetUtils.DebugWrite(ConsoleColor.DarkRed, "[R] Ingored error: {0} - {1}", (int)ex.SocketErrorCode, ex.ToString() );
+                        NetUtils.DebugWrite(ConsoleColor.DarkRed, "[R] Ingored error: {0} - {1}", (int)ex.SocketErrorCode, ex.ToString());
                         continue;
                     }
                     NetUtils.DebugWriteError("[R]Error code: {0} - {1}", (int)ex.SocketErrorCode, ex.ToString());
@@ -101,7 +101,7 @@ namespace FlyingWormConsole3.LiteNetLib
             _udpSocketv4.ReceiveBufferSize = NetConstants.SocketBufferSize;
             _udpSocketv4.SendBufferSize = NetConstants.SocketBufferSize;
             _udpSocketv4.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, NetConstants.SocketTTL);
-            if(reuseAddress)
+            if (reuseAddress)
                 _udpSocketv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 #if !NETCORE
             _udpSocketv4.DontFragment = true;
@@ -149,11 +149,11 @@ namespace FlyingWormConsole3.LiteNetLib
                 try
                 {
                     _udpSocketv6.SetSocketOption(
-                        SocketOptionLevel.IPv6, 
+                        SocketOptionLevel.IPv6,
                         SocketOptionName.AddMembership,
                         new IPv6MulticastOption(MulticastAddressV6));
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Unity3d throws exception - ignored
                 }
@@ -220,7 +220,7 @@ namespace FlyingWormConsole3.LiteNetLib
                         return -1;
                     result = _udpSocketv4.SendTo(data, offset, size, SocketFlags.None, remoteEndPoint.EndPoint);
                 }
-                else if(IPv6Support)
+                else if (IPv6Support)
                 {
                     if (!_udpSocketv6.Poll(SocketSendPollTime, SelectMode.SelectWrite))
                         return -1;
@@ -236,7 +236,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     NetUtils.DebugWriteError("[S]" + ex);
                 }
-                
+
                 errorCode = (int)ex.SocketErrorCode;
                 return -1;
             }

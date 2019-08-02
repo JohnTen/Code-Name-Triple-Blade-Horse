@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using BTAI;
 using UnityEngine;
-using BTAI;
 
-namespace TripleBladeHorse.AI{
+namespace TripleBladeHorse.AI
+{
     public class MeleeAI : MonoBehaviour
     {
         public EnemyBehave meleeBehave;
         [SerializeField] float _attackIntervalMelee;
-        private void OnEnable() {
+        private void OnEnable()
+        {
             meleeRoot.OpenBranch(
                 BT.Selector().OpenBranch(
                     BT.Sequence().OpenBranch(
@@ -24,10 +24,10 @@ namespace TripleBladeHorse.AI{
                     ),
                     BT.Call(meleeBehave.Patrol)
                 )
-            );    
+            );
         }
         Root meleeRoot = BT.Root();
-    // Update is called once per frame
+        // Update is called once per frame
         void Update()
         {
             meleeRoot.Tick();

@@ -262,7 +262,7 @@ namespace DragonBones
                 timeline.ReturnToPool();
             }
 
-            foreach(var timeline in this._poseTimelines)
+            foreach (var timeline in this._poseTimelines)
             {
                 timeline.ReturnToPool();
             }

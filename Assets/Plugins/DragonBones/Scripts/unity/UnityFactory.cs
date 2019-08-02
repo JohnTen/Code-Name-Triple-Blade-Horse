@@ -938,7 +938,7 @@ namespace DragonBones
             }
 
             TextureData prevTextureData = null;
-            if(prevDispalyData is ImageDisplayData)
+            if (prevDispalyData is ImageDisplayData)
             {
                 prevTextureData = (prevDispalyData as ImageDisplayData).texture;
             }

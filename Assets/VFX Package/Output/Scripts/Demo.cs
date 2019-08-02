@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class Demo : MonoBehaviour {
+public class Demo : MonoBehaviour
+{
 
     public GameObject[] effects;
 

@@ -20,9 +20,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DragonBones
 {
@@ -42,9 +39,9 @@ namespace DragonBones
     public abstract class TransformObject : BaseObject
     {
         /// <private/>
-        protected static readonly Matrix _helpMatrix  = new Matrix();
+        protected static readonly Matrix _helpMatrix = new Matrix();
         /// <private/>
-        protected static readonly Transform _helpTransform  = new Transform();
+        protected static readonly Transform _helpTransform = new Transform();
         /// <private/>
         protected static readonly Point _helpPoint = new Point();
         /// <summary>
@@ -157,7 +154,7 @@ namespace DragonBones
         /// <language>zh_CN</language>
         public Armature armature
         {
-            get{ return this._armature; }
+            get { return this._armature; }
         }
     }
 }

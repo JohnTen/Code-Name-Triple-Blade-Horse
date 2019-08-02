@@ -192,7 +192,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (currentPacket.Packet != null)
                 {
                     //check send time
-                    if(currentPacket.TimeStamp.HasValue)
+                    if (currentPacket.TimeStamp.HasValue)
                     {
                         double packetHoldTime = (currentTime - currentPacket.TimeStamp.Value).TotalMilliseconds;
                         if (packetHoldTime > _peer.ResendDelay)
@@ -245,7 +245,7 @@ namespace FlyingWormConsole3.LiteNetLib
             int currentAckIndex = startAckIndex;
             int currentBit = 0;
             int currentByte = NetConstants.SequencedHeaderSize;
-            do 
+            do
             {
                 if (_outgoingAcks[currentAckIndex])
                 {
@@ -285,7 +285,7 @@ namespace FlyingWormConsole3.LiteNetLib
             }
 
             //Drop bad packets
-            if(relate < 0)
+            if (relate < 0)
             {
                 //Too old packet doesn't ack
                 NetUtils.DebugWrite("[RR]ReliableInOrder too old");
@@ -338,7 +338,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (_ordered)
                 {
                     NetPacket p;
-                    while ( (p = _receivedPackets[_remoteSequence % _windowSize]) != null)
+                    while ((p = _receivedPackets[_remoteSequence % _windowSize]) != null)
                     {
                         //process holded packet
                         _receivedPackets[_remoteSequence % _windowSize] = null;

@@ -1,8 +1,5 @@
-using UnityEngine;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Colorify/TurnGB")]
@@ -78,7 +75,7 @@ namespace _ShaderoShaderEditorFramework
             }
 
             GUILayout.Label("Value: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
 
         }
 

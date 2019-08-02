@@ -1,9 +1,5 @@
-using UnityEngine;
-
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Color/Threshold")]
@@ -48,7 +44,7 @@ namespace _ShaderoShaderEditorFramework
             return node;
         }
 
-      
+
 
         protected internal override void NodeGUI()
         {
@@ -73,63 +69,63 @@ namespace _ShaderoShaderEditorFramework
         }
 
         private string FinalVariable;
-    [HideInInspector]
-    public int MemoCount = -1;
-    public override bool FixCalculate()
-    {
-        MemoCount = count;
-        count++;
-        return true;
+        [HideInInspector]
+        public int MemoCount = -1;
+        public override bool FixCalculate()
+        {
+            MemoCount = count;
+            count++;
+            return true;
+        }
+
+        public override bool Calculate()
+        {
+            tag = true;
+
+            SuperFloat4 s_in = Inputs[0].GetValue<SuperFloat4>();
+            SuperFloat4 s_out = new SuperFloat4();
+
+
+            string NodeCount = MemoCount.ToString();
+            string DefautType = "float4";
+            string DefautTypeFade = "float";
+            string DefaultName = "Threshold_" + NodeCount;
+            string DefaultNameVariable1 = "_Threshold_Fade_" + NodeCount;
+            string DefaultParameters1 = ", Range(0, 1)) = " + Variable.ToString();
+            string VoidName = "Threshold";
+            string Value1 = Variable.ToString();
+            string PreviewVariable = s_in.Result;
+
+            FinalVariable = DefaultNameVariable1;
+
+            if (s_in.Result == null)
+            {
+                PreviewVariable = "float4(0,0,0,1)";
+            }
+
+            s_out.StringPreviewLines = s_in.StringPreviewNew;
+
+            if (parametersOK)
+            {
+                s_out.ValueLine = DefautType + " " + DefaultName + " = " + VoidName + "(" + PreviewVariable + "," + DefaultNameVariable1 + ");\n";
+            }
+            else
+            {
+                s_out.ValueLine = DefautType + " " + DefaultName + " = " + VoidName + "(" + PreviewVariable + "," + Value1 + ");\n";
+            }
+
+            s_out.StringPreviewNew = s_out.StringPreviewLines + s_out.ValueLine;
+            s_out.Result = DefaultName;
+            s_out.ParametersLines += s_in.ParametersLines;
+            s_out.ParametersDeclarationLines += s_in.ParametersDeclarationLines;
+
+            if (parametersOK) s_out.ParametersLines += DefaultNameVariable1 + "(\"" + DefaultNameVariable1 + "\"" + DefaultParameters1 + "\n";
+            if (parametersOK) s_out.ParametersDeclarationLines += DefautTypeFade + " " + DefaultNameVariable1 + ";\n";
+
+            Outputs[0].SetValue<SuperFloat4>(s_out);
+
+            count++;
+            return true;
+        }
     }
-
-    public override bool Calculate()
-    {
-        tag = true;
-
-        SuperFloat4 s_in = Inputs[0].GetValue<SuperFloat4>();
-        SuperFloat4 s_out = new SuperFloat4();
-        
-        
-        string NodeCount = MemoCount.ToString();
-        string DefautType = "float4";
-        string DefautTypeFade = "float";
-        string DefaultName = "Threshold_" + NodeCount;
-        string DefaultNameVariable1 = "_Threshold_Fade_" + NodeCount;
-        string DefaultParameters1 = ", Range(0, 1)) = "+Variable.ToString(); 
-        string VoidName = "Threshold";
-        string Value1 = Variable.ToString(); 
-        string PreviewVariable = s_in.Result;
-
-        FinalVariable = DefaultNameVariable1;
-
-        if (s_in.Result == null)
-        {
-            PreviewVariable = "float4(0,0,0,1)";
-        }
-    
-        s_out.StringPreviewLines = s_in.StringPreviewNew;
-
-        if (parametersOK)
-        {
-            s_out.ValueLine = DefautType + " " + DefaultName + " = " + VoidName + "(" + PreviewVariable + "," + DefaultNameVariable1 + ");\n";
-        }
-        else
-        {
-            s_out.ValueLine = DefautType + " " + DefaultName + " = " + VoidName + "(" + PreviewVariable + "," + Value1 + ");\n";
-        }
-
-        s_out.StringPreviewNew = s_out.StringPreviewLines + s_out.ValueLine;
-        s_out.Result = DefaultName;
-        s_out.ParametersLines += s_in.ParametersLines;
-        s_out.ParametersDeclarationLines += s_in.ParametersDeclarationLines;
-
-        if (parametersOK) s_out.ParametersLines += DefaultNameVariable1 + "(\"" + DefaultNameVariable1 + "\""+ DefaultParameters1+"\n";
-        if (parametersOK) s_out.ParametersDeclarationLines += DefautTypeFade + " " + DefaultNameVariable1 + ";\n";
-
-        Outputs[0].SetValue<SuperFloat4>(s_out);
-
-        count++;
-         return true;
-    }
-}
 }

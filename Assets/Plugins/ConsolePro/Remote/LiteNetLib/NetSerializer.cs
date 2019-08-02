@@ -1,7 +1,7 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
-﻿using System;
-using System.Reflection;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 #if WINRT || NETCORE
 using System.Linq;
 #endif

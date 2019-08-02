@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Pack/Morphing Perfect Pack")]
@@ -83,7 +81,7 @@ namespace _ShaderoShaderEditorFramework
             node.CreateInput("UV", "SuperFloat2");
             node.CreateOutput("RGBA", "SuperFloat4");
 
-            return node; 
+            return node;
         }
 
         protected internal override void NodeGUI()
@@ -134,26 +132,26 @@ namespace _ShaderoShaderEditorFramework
             GUILayout.Label(" ");
             GUILayout.Label(" ");
             GUILayout.Label(" ");
-         
+
 
             if (GUILayout.Button("Reset"))
             {
                 Variable = 1;
                 Variable5 = 1;
             }
-            
+
             AddParameters = GUILayout.Toggle(AddParameters, "Add Parameters");
-        
-          //  AddMotion = GUILayout.Toggle(AddMotion, "Fix Side UV", GUILayout.Width(135));
-        
-         
-            GUILayout.Label("Blend: " + (Variable*100).ToString("0.00")+"%");
-            Variable =HorizontalSlider(Variable, 0, 1);
-        
+
+            //  AddMotion = GUILayout.Toggle(AddMotion, "Fix Side UV", GUILayout.Width(135));
+
+
+            GUILayout.Label("Blend: " + (Variable * 100).ToString("0.00") + "%");
+            Variable = HorizontalSlider(Variable, 0, 1);
+
 
             GUILayout.Label("Stranger: " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, 0, 4);
-        
+            Variable5 = HorizontalSlider(Variable5, 0, 4);
+
 
 
         }

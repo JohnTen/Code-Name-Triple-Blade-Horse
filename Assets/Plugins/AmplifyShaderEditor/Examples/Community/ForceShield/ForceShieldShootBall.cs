@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TFHC_ForceShield_Shader_Sample
 {
     public class ForceShieldShootBall : MonoBehaviour
     {
 
-		// Shooting balls XD 
+        // Shooting balls XD 
 
         public Rigidbody bullet;
         public Transform origshoot;

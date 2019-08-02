@@ -1,217 +1,217 @@
-﻿using System.Collections;
+﻿using JTUtility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using JTUtility;
 
 namespace TripleBladeHorse.Movement
 {
-	[RequireComponent(typeof(Rigidbody2D))]
-	public class BossMover : MonoBehaviour, ICanMove
-	{
-		public enum MoveMode
-		{
-			Slow,
-			Quick,
-			Back
-		}
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class BossMover : MonoBehaviour, ICanMove
+    {
+        public enum MoveMode
+        {
+            Slow,
+            Quick,
+            Back
+        }
 
-		[SerializeField] float _slowSpeed = 8;
-		[SerializeField] float _quickSpeed = 8;
-		[SerializeField] float _backSpeed = 8;
+        [SerializeField] float _slowSpeed = 8;
+        [SerializeField] float _quickSpeed = 8;
+        [SerializeField] float _backSpeed = 8;
 
-		[Header("Debug")]
-		[SerializeField] float _baseSpeed = 8;
-		[SerializeField] bool _constantMoving;
-		[SerializeField] Vector2 _velocity;
-		[SerializeField] Vector2 _movementVector;
-		[SerializeField] MovingState _currentMovingState;
+        [Header("Debug")]
+        [SerializeField] float _baseSpeed = 8;
+        [SerializeField] bool _constantMoving;
+        [SerializeField] Vector2 _velocity;
+        [SerializeField] Vector2 _movementVector;
+        [SerializeField] MovingState _currentMovingState;
 
-		Rigidbody2D _rigidbody;
+        Rigidbody2D _rigidbody;
 
-		ParticleSystem.MinMaxCurve _constantMovingSpeedCurve;
-		Vector2 _constantMoveVelocity;
-		bool _usingCurveForConstantMoving;
-		float _originalGravityScale;
-		MoveMode _moveMode;
-		Vector2 _extraMovement;
+        ParticleSystem.MinMaxCurve _constantMovingSpeedCurve;
+        Vector2 _constantMoveVelocity;
+        bool _usingCurveForConstantMoving;
+        float _originalGravityScale;
+        MoveMode _moveMode;
+        Vector2 _extraMovement;
 
-		CharacterState _state;
-		List<ContactPoint2D> _contacts;
+        CharacterState _state;
+        List<ContactPoint2D> _contacts;
 
-		public Vector2 Velocity => _velocity;
-		public bool IsConstantMoving => _constantMoving;
-		public MoveMode Movemode
-		{
-			get => _moveMode;
-			set
-			{
-				_moveMode = value;
-				switch (value)
-				{
-					case MoveMode.Back: _baseSpeed = _backSpeed; break;
-					case MoveMode.Slow: _baseSpeed = _slowSpeed; break;
-					case MoveMode.Quick: _baseSpeed = _quickSpeed; break;
-				}
-			}
-		}
+        public Vector2 Velocity => _velocity;
+        public bool IsConstantMoving => _constantMoving;
+        public MoveMode Movemode
+        {
+            get => _moveMode;
+            set
+            {
+                _moveMode = value;
+                switch (value)
+                {
+                    case MoveMode.Back: _baseSpeed = _backSpeed; break;
+                    case MoveMode.Slow: _baseSpeed = _slowSpeed; break;
+                    case MoveMode.Quick: _baseSpeed = _quickSpeed; break;
+                }
+            }
+        }
 
-		public MovingState CurrentMovingState
-		{
-			get => _currentMovingState;
-			protected set
-			{
-				if (value == _currentMovingState) return;
+        public MovingState CurrentMovingState
+        {
+            get => _currentMovingState;
+            protected set
+            {
+                if (value == _currentMovingState) return;
 
-				var last = _currentMovingState;
-				_currentMovingState = value;
+                var last = _currentMovingState;
+                _currentMovingState = value;
 
-				OnMovingStateChanged?.
-					Invoke(this, new MovingEventArgs(
-						_state._facingRight,
-						transform.position,
-						_velocity,
-						value,
-						last));
-			}
-		}
-		
-		public event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
+                OnMovingStateChanged?.
+                    Invoke(this, new MovingEventArgs(
+                        _state._facingRight,
+                        transform.position,
+                        _velocity,
+                        value,
+                        last));
+            }
+        }
 
-		private void Awake()
-		{
-			_rigidbody = GetComponent<Rigidbody2D>();
-			_state = GetComponent<EnemyState>();
-			_contacts = new List<ContactPoint2D>();
-		}
+        public event Action<ICanChangeMoveState, MovingEventArgs> OnMovingStateChanged;
 
-		private void FixedUpdate()
-		{
-			_rigidbody.GetContacts(_contacts);
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _state = GetComponent<EnemyState>();
+            _contacts = new List<ContactPoint2D>();
+        }
 
-			if (!IsConstantMoving)
-				Moving(_movementVector);
+        private void FixedUpdate()
+        {
+            _rigidbody.GetContacts(_contacts);
 
-			CurrentMovingState =
-				(_velocity.sqrMagnitude > 0.1f || _movementVector.sqrMagnitude > 0.1f) ?
-				MovingState.Move :
-				MovingState.Idle;
-		}
+            if (!IsConstantMoving)
+                Moving(_movementVector);
 
-		public void Move(Vector2 direction)
-		{
-			if (!IsConstantMoving)
-			_movementVector = direction;
-		}
+            CurrentMovingState =
+                (_velocity.sqrMagnitude > 0.1f || _movementVector.sqrMagnitude > 0.1f) ?
+                MovingState.Move :
+                MovingState.Idle;
+        }
 
-		public void ManualMove(Vector2 toward)
-		{
-			_extraMovement += toward;
-		}
+        public void Move(Vector2 direction)
+        {
+            if (!IsConstantMoving)
+                _movementVector = direction;
+        }
 
-		public void InvokeConstantMovement(Vector3 velocity, float time)
-		{
-			if (IsConstantMoving) return;
+        public void ManualMove(Vector2 toward)
+        {
+            _extraMovement += toward;
+        }
 
-			_originalGravityScale = _rigidbody.gravityScale;
-			_rigidbody.gravityScale = 0;
+        public void InvokeConstantMovement(Vector3 velocity, float time)
+        {
+            if (IsConstantMoving) return;
 
-			_usingCurveForConstantMoving = false;
-			_constantMoveVelocity = velocity;
-			StartCoroutine(ConstantMoving(time));
-		}
+            _originalGravityScale = _rigidbody.gravityScale;
+            _rigidbody.gravityScale = 0;
 
-		public void InvokeConstantMovement(Vector3 direction, ParticleSystem.MinMaxCurve speed, float time)
-		{
-			if (IsConstantMoving) return;
+            _usingCurveForConstantMoving = false;
+            _constantMoveVelocity = velocity;
+            StartCoroutine(ConstantMoving(time));
+        }
 
-			_originalGravityScale = _rigidbody.gravityScale;
-			_rigidbody.gravityScale = 0;
+        public void InvokeConstantMovement(Vector3 direction, ParticleSystem.MinMaxCurve speed, float time)
+        {
+            if (IsConstantMoving) return;
 
-			_usingCurveForConstantMoving = true;
-			_constantMoveVelocity = direction.normalized;
-			_constantMovingSpeedCurve = speed;
-			StartCoroutine(ConstantMoving(time));
-		}
+            _originalGravityScale = _rigidbody.gravityScale;
+            _rigidbody.gravityScale = 0;
 
-		public void InterruptContantMove()
-		{
-			if (!IsConstantMoving) return;
+            _usingCurveForConstantMoving = true;
+            _constantMoveVelocity = direction.normalized;
+            _constantMovingSpeedCurve = speed;
+            StartCoroutine(ConstantMoving(time));
+        }
 
-			StopAllCoroutines();
-			_velocity = Vector3.zero;
-			_constantMoving = false;
-			_rigidbody.velocity = Vector3.zero;
-			_rigidbody.gravityScale = _originalGravityScale;
-		}
+        public void InterruptContantMove()
+        {
+            if (!IsConstantMoving) return;
 
-		private Vector2 ApplyPhysicalContactEffects(Vector2 velocity)
-		{
-			foreach (var contact in _contacts)
-			{
-				var d = contact.normal * velocity;
-				if (d.x < 0)
-					velocity.x -= d.x * Mathf.Sign(contact.normal.x);
-				if (d.y < 0)
-					velocity.y -= d.y * Mathf.Sign(contact.normal.y);
-			}
+            StopAllCoroutines();
+            _velocity = Vector3.zero;
+            _constantMoving = false;
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.gravityScale = _originalGravityScale;
+        }
 
-			return velocity;
-		}
+        private Vector2 ApplyPhysicalContactEffects(Vector2 velocity)
+        {
+            foreach (var contact in _contacts)
+            {
+                var d = contact.normal * velocity;
+                if (d.x < 0)
+                    velocity.x -= d.x * Mathf.Sign(contact.normal.x);
+                if (d.y < 0)
+                    velocity.y -= d.y * Mathf.Sign(contact.normal.y);
+            }
 
-		private void Moving(Vector3 direction)
-		{
-			_velocity = ProcessVelocity(_velocity, direction);
+            return velocity;
+        }
 
-			_rigidbody.MovePosition((Vector2)transform.position + _velocity * TimeManager.DeltaTime);
+        private void Moving(Vector3 direction)
+        {
+            _velocity = ProcessVelocity(_velocity, direction);
 
-			ResetPhysicalContacts();
-		}
+            _rigidbody.MovePosition((Vector2)transform.position + _velocity * TimeManager.DeltaTime);
 
-		private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)
-		{
-			velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * TimeManager.DeltaTime;
-			velocity = ApplyPhysicalContactEffects(velocity);
-			
-			velocity.x = movingDirection.x * _baseSpeed;
+            ResetPhysicalContacts();
+        }
 
-			return velocity;
-		}
+        private Vector2 ProcessVelocity(Vector2 velocity, Vector2 movingDirection)
+        {
+            velocity.y += _rigidbody.gravityScale * Physics2D.gravity.y * TimeManager.DeltaTime;
+            velocity = ApplyPhysicalContactEffects(velocity);
 
-		private void ResetPhysicalContacts()
-		{
-			_contacts.Clear();
-		}
+            velocity.x = movingDirection.x * _baseSpeed;
 
-		IEnumerator ConstantMoving(float time)
-		{
-			var timer = 0f;
-			var wait = new WaitForFixedUpdate();
-			_constantMoving = true;
+            return velocity;
+        }
 
-			while (timer < time)
-			{
-				var percentage = timer / time;
-				_velocity = _constantMoveVelocity;
+        private void ResetPhysicalContacts()
+        {
+            _contacts.Clear();
+        }
 
-				if (_usingCurveForConstantMoving)
-				{
-					_velocity *= _constantMovingSpeedCurve.Evaluate(percentage);
-				}
+        IEnumerator ConstantMoving(float time)
+        {
+            var timer = 0f;
+            var wait = new WaitForFixedUpdate();
+            _constantMoving = true;
 
-				_velocity = ApplyPhysicalContactEffects(_velocity);
-				_extraMovement = ApplyPhysicalContactEffects(_extraMovement);
-				var movement = (Vector2)transform.position + _velocity * TimeManager.DeltaTime;
-				movement += _extraMovement;
-				_rigidbody.MovePosition(movement);
-				ResetPhysicalContacts();
+            while (timer < time)
+            {
+                var percentage = timer / time;
+                _velocity = _constantMoveVelocity;
 
-				timer += TimeManager.DeltaTime;
-				_extraMovement = Vector2.zero;
-				yield return wait;
-			}
+                if (_usingCurveForConstantMoving)
+                {
+                    _velocity *= _constantMovingSpeedCurve.Evaluate(percentage);
+                }
 
-			_rigidbody.gravityScale = _originalGravityScale;
-			_constantMoving = false;
-		}
-	}
+                _velocity = ApplyPhysicalContactEffects(_velocity);
+                _extraMovement = ApplyPhysicalContactEffects(_extraMovement);
+                var movement = (Vector2)transform.position + _velocity * TimeManager.DeltaTime;
+                movement += _extraMovement;
+                _rigidbody.MovePosition(movement);
+                ResetPhysicalContacts();
+
+                timer += TimeManager.DeltaTime;
+                _extraMovement = Vector2.zero;
+                yield return wait;
+            }
+
+            _rigidbody.gravityScale = _originalGravityScale;
+            _constantMoving = false;
+        }
+    }
 }

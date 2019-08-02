@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using JTUtility;
 using System.Collections.Generic;
-using JTUtility;
 using UnityEngine;
 
 namespace BTAI

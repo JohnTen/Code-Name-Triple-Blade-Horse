@@ -1,72 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace JTUtility.Interactables
 {
-	public class PressPlate : MonoInteractable
-	{
-		[SerializeField]
-		LayerMask affetcableLayer = new LayerMask();
+    public class PressPlate : MonoInteractable
+    {
+        [SerializeField]
+        LayerMask affetcableLayer = new LayerMask();
 
-		[SerializeField]
-		List<GameObject> pressingObjects = new List<GameObject>();
+        [SerializeField]
+        List<GameObject> pressingObjects = new List<GameObject>();
 
-		public override void StartInteracting() { }
+        public override void StartInteracting() { }
 
-		public override void StopInteracting() { }
-		
-		protected override void Update()
-		{
-			if (pressingObjects.Count > 0)
-			{
-				if (!isInteracting)
-				{
-					InvokeStartInteracting();
-					InvokeActivated();
+        public override void StopInteracting() { }
 
-					if (onActivated != null)
-						onActivated.Invoke();
-				}
+        protected override void Update()
+        {
+            if (pressingObjects.Count > 0)
+            {
+                if (!isInteracting)
+                {
+                    InvokeStartInteracting();
+                    InvokeActivated();
 
-				isActivated = true;
-				isInteracting = true;
+                    if (onActivated != null)
+                        onActivated.Invoke();
+                }
 
-				InvokeKeepInteracting();
-			}
-			else
-			{
-				if (isInteracting)
-				{
-					InvokeStopInteracting();
-					InvokeDeactivated();
+                isActivated = true;
+                isInteracting = true;
 
-					if (onDeactivated != null)
-						onDeactivated.Invoke();
-				}
+                InvokeKeepInteracting();
+            }
+            else
+            {
+                if (isInteracting)
+                {
+                    InvokeStopInteracting();
+                    InvokeDeactivated();
 
-				isActivated = false;
-				isInteracting = false;
-			}
-		}
+                    if (onDeactivated != null)
+                        onDeactivated.Invoke();
+                }
 
-		protected virtual void OnTriggerEnter(Collider collider)
-		{
-			if (((1 << collider.gameObject.layer) & affetcableLayer) != 0 &&
-				!pressingObjects.Contains(collider.gameObject))
-			{
-				pressingObjects.Add(collider.gameObject);
-			}
-		}
+                isActivated = false;
+                isInteracting = false;
+            }
+        }
 
-		protected virtual void OnTriggerExit(Collider collider)
-		{
-			if (((1 << collider.gameObject.layer) & affetcableLayer) != 0 &&
-				pressingObjects.Contains(collider.gameObject))
-			{
-				pressingObjects.Remove(collider.gameObject);
-			}
-		}
-	}
+        protected virtual void OnTriggerEnter(Collider collider)
+        {
+            if (((1 << collider.gameObject.layer) & affetcableLayer) != 0 &&
+                !pressingObjects.Contains(collider.gameObject))
+            {
+                pressingObjects.Add(collider.gameObject);
+            }
+        }
+
+        protected virtual void OnTriggerExit(Collider collider)
+        {
+            if (((1 << collider.gameObject.layer) & affetcableLayer) != 0 &&
+                pressingObjects.Contains(collider.gameObject))
+            {
+                pressingObjects.Remove(collider.gameObject);
+            }
+        }
+    }
 }

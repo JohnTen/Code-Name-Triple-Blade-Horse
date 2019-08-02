@@ -1,12 +1,9 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Make 3D Effects")]
-    public class Make3DFX : Node 
+    public class Make3DFX : Node
     {
         [HideInInspector]
         public const string ID = "Make3DFX";
@@ -112,19 +109,19 @@ namespace _ShaderoShaderEditorFramework
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameters");
 
             GUILayout.Label("Distance: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
 
             GUILayout.Label("Size: (0 to 16) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 16);
+            Variable2 = HorizontalSlider(Variable2, 0, 16);
 
             GUILayout.Label("Pos X: (-2 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, -2, 2);
+            Variable3 = HorizontalSlider(Variable3, -2, 2);
 
             GUILayout.Label("Pos Y: (-2 to 2) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, -2, 2);
+            Variable4 = HorizontalSlider(Variable4, -2, 2);
 
             GUILayout.Label("Light: (-2 to 2) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, -2, 2);
+            Variable5 = HorizontalSlider(Variable5, -2, 2);
 
         }
 
@@ -164,7 +161,7 @@ namespace _ShaderoShaderEditorFramework
             string DefaultParameters4 = ", Range(-2, 2)) = " + Variable4.ToString();
             string DefaultParameters5 = ", Range(-2, 2)) = " + Variable5.ToString();
             string uv = s_in.Result;
-             string Source = "";
+            string Source = "";
 
             FinalVariable = DefaultNameVariable1;
             FinalVariable2 = DefaultNameVariable2;

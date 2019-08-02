@@ -21,11 +21,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using UnityEditorInternal;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace DragonBones
 {
@@ -52,7 +52,7 @@ namespace DragonBones
         private SerializedProperty _flipYPro;
         private SerializedProperty _closeCombineMeshsPro;
 
-        private string[] _sortingMode = new string[]{SortingMode.SortByZ.ToString(), SortingMode.SortByOrder.ToString()};
+        private string[] _sortingMode = new string[] { SortingMode.SortByZ.ToString(), SortingMode.SortByOrder.ToString() };
 
         void ClearUp()
         {
@@ -378,9 +378,9 @@ namespace DragonBones
                         }
                     }
 
-                    if(oldValue != this._closeCombineMeshsPro.boolValue)
+                    if (oldValue != this._closeCombineMeshsPro.boolValue)
                     {
-                        if(this._closeCombineMeshsPro.boolValue)
+                        if (this._closeCombineMeshsPro.boolValue)
                         {
                             this._armatureComponent.CloseCombineMeshs();
                         }

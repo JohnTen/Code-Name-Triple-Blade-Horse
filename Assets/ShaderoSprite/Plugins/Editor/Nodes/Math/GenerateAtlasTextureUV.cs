@@ -1,10 +1,7 @@
 
-using UnityEngine;
-using UnityEditor;
 using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Tools/Generate a Atlas Textured UV")]
@@ -18,10 +15,10 @@ namespace _ShaderoShaderEditorFramework
         public static bool tag = false;
         public static string code;
         public static int Used = 2;
-       [HideInInspector]
+        [HideInInspector]
         [Multiline(150)]
         public string result;
-     
+
         [HideInInspector]
         public int backpreview = 0;
 
@@ -36,8 +33,8 @@ namespace _ShaderoShaderEditorFramework
         {
             GenerateAtlasTextureUV node = ScriptableObject.CreateInstance<GenerateAtlasTextureUV>();
             node.name = "Generate Atlas Texture UV";
-            node.rect = new Rect(pos.x, pos.y, 198+150, 270);
-             return node;
+            node.rect = new Rect(pos.x, pos.y, 198 + 150, 270);
+            return node;
 
         }
         Rect[] getUVs(string path)
@@ -60,72 +57,72 @@ namespace _ShaderoShaderEditorFramework
 
             if (tex != null)
             {
-                     if (Node.ShaderNameX != "")
+                if (Node.ShaderNameX != "")
+                {
+                    ShaderString = "Shadero Previews/GeneratedUV";
+
+                    Rect[] GetUvs;
+                    GetUvs = getUVs(AssetDatabase.GetAssetPath(tex));
+
+                    int TextureSize = 256;
+
+                    Material mat = Instantiate(NodeEditor._Shadero_Material);
+                    mat.shader = Shader.Find(ShaderString);
+
+                    RenderTexture rt = new RenderTexture(TextureSize, TextureSize, 26);
+
+                    RenderTexture.active = rt;
+
+                    mat.SetFloat("px1", 0);
+                    mat.SetFloat("py1", 0);
+                    mat.SetFloat("px2", 1);
+                    mat.SetFloat("py2", 1);
+                    Graphics.Blit(tex, rt, mat);
+
+                    Texture2D destination_texture = new Texture2D(TextureSize, TextureSize);
+
+                    destination_texture.ReadPixels(new Rect(0, 0, TextureSize, TextureSize), 0, 0);
+                    destination_texture.Apply();
+
+
+
+                    RenderTexture.active = null;
+
+                    for (int c = 0; c < GetUvs.Length; c++)
                     {
-                        ShaderString = "Shadero Previews/GeneratedUV";
-
-                        Rect[] GetUvs;
-                        GetUvs = getUVs(AssetDatabase.GetAssetPath(tex));
-
-                        int TextureSize = 256;
-
-                        Material mat = Instantiate(NodeEditor._Shadero_Material);
-                        mat.shader = Shader.Find(ShaderString);
-
-                        RenderTexture rt = new RenderTexture(TextureSize, TextureSize, 26);
+                        float x1 = GetUvs[c].x / tex.width;
+                        float y1 = GetUvs[c].y / tex.height;
+                        float x2 = GetUvs[c].width / tex.width;
+                        float y2 = GetUvs[c].height / tex.height;
+                        mat.SetFloat("px1", x1);
+                        mat.SetFloat("py1", y1);
+                        mat.SetFloat("px2", x2 + x1);
+                        mat.SetFloat("py2", y2 + y1);
 
                         RenderTexture.active = rt;
 
-                        mat.SetFloat("px1", 0);
-                        mat.SetFloat("py1", 0);
-                        mat.SetFloat("px2", 1);
-                        mat.SetFloat("py2", 1);
-                        Graphics.Blit(tex, rt, mat);
-
-                        Texture2D destination_texture = new Texture2D(TextureSize, TextureSize);
+                        Graphics.Blit(destination_texture, rt, mat);
 
                         destination_texture.ReadPixels(new Rect(0, 0, TextureSize, TextureSize), 0, 0);
                         destination_texture.Apply();
 
-            
-
                         RenderTexture.active = null;
+                    }
 
-                        for (int c = 0; c < GetUvs.Length; c++)
+
+                    EditorGUI.DrawPreviewTexture(new Rect(160, 36, 178, 179), destination_texture);
+
+                    if (GUILayout.Button(new GUIContent("Save to PNG (256x256)", "Save the result to a Sprite file")))
+                    {
+                        string path = EditorUtility.SaveFilePanelInProject("Generate Atlas Texture UV", "AtlasTextureUV", "png", "", NodeEditor.editorPath + "Shadero_Projects/");
+                        if (!string.IsNullOrEmpty(path))
                         {
-                            float x1 = GetUvs[c].x / tex.width;
-                            float y1 = GetUvs[c].y / tex.height;
-                            float x2 = GetUvs[c].width / tex.width;
-                            float y2 = GetUvs[c].height / tex.height;
-                            mat.SetFloat("px1", x1);
-                            mat.SetFloat("py1", y1);
-                            mat.SetFloat("px2", x2 + x1);
-                            mat.SetFloat("py2", y2 + y1);
-
-                            RenderTexture.active = rt;
-
-                            Graphics.Blit(destination_texture, rt, mat);
-
-                            destination_texture.ReadPixels(new Rect(0, 0, TextureSize, TextureSize), 0, 0);
-                            destination_texture.Apply();
-
-                            RenderTexture.active = null;
+                            byte[] bs = destination_texture.EncodeToPNG();
+                            File.WriteAllBytes(path, bs);
                         }
+                    }
 
-
-                        EditorGUI.DrawPreviewTexture(new Rect(160, 36, 178, 179), destination_texture);
-
-                        if (GUILayout.Button(new GUIContent("Save to PNG (256x256)", "Save the result to a Sprite file")))
-                        {
-                            string path = EditorUtility.SaveFilePanelInProject("Generate Atlas Texture UV", "AtlasTextureUV", "png", "", NodeEditor.editorPath + "Shadero_Projects/");
-                            if (!string.IsNullOrEmpty(path))
-                            {
-                                byte[] bs = destination_texture.EncodeToPNG();
-                                File.WriteAllBytes(path, bs);
-                            }
-                        }
-
-                        DestroyImmediate(mat);
+                    DestroyImmediate(mat);
 
                 }
 
@@ -142,8 +139,8 @@ namespace _ShaderoShaderEditorFramework
 
             //if (s_in.Result != null)
             //{
-                ShaderString = "Shadero Previews/GenerateXWWSXQ" + count;
-           // }
+            ShaderString = "Shadero Previews/GenerateXWWSXQ" + count;
+            // }
             /*
             SuperFloat4 s_out = new SuperFloat4();
             string PreviewVariable = s_in.Result;

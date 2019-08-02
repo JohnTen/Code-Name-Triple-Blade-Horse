@@ -1,14 +1,12 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
-[Node(false, "UV/FX (UV)/Doodle UV")]
+    [Node(false, "UV/FX (UV)/Doodle UV")]
 
-public class DoodleUV : Node
-{
+    public class DoodleUV : Node
+    {
         public const string ID = "DoodleUV";
         public override string GetID { get { return ID; } }
         [HideInInspector]

@@ -1,8 +1,8 @@
 #if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA
+using FlyingWormConsole3.LiteNetLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using FlyingWormConsole3.LiteNetLib.Utils;
 
 namespace FlyingWormConsole3.LiteNetLib
 {
@@ -17,7 +17,7 @@ namespace FlyingWormConsole3.LiteNetLib
     {
         //Flow control
         private int _currentFlowMode;
-        private int _sendedPacketsCount;                    
+        private int _sendedPacketsCount;
         private int _flowTimer;
 
         //Ping and RTT
@@ -270,7 +270,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     throw new Exception("Unreliable packet size > allowed (" + (_mtu - headerSize) + ")");
                 }
-                
+
                 int packetFullSize = _mtu - headerSize;
                 int packetDataSize = packetFullSize - NetConstants.FragmentHeaderSize;
 
@@ -285,7 +285,7 @@ namespace FlyingWormConsole3.LiteNetLib
                            " packetDataSize: {3}\n" +
                            " fullPacketsCount: {4}\n" +
                            " lastPacketSize: {5}\n" +
-                           " totalPackets: {6}", 
+                           " totalPackets: {6}",
                     _mtu, headerSize, packetFullSize, packetDataSize, fullPacketsCount, lastPacketSize, totalPackets);
 
                 if (totalPackets > ushort.MaxValue)
@@ -304,7 +304,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     Buffer.BlockCopy(data, i * packetDataSize, p.RawData, dataOffset, packetDataSize);
                     SendPacket(p);
                 }
-                
+
                 if (lastPacketSize > 0)
                 {
                     NetPacket p = _packetPool.Get(property, lastPacketSize + NetConstants.FragmentHeaderSize);
@@ -316,7 +316,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     SendPacket(p);
                 }
 
-                _fragmentId++;             
+                _fragmentId++;
                 return;
             }
 
@@ -376,7 +376,7 @@ namespace FlyingWormConsole3.LiteNetLib
             //Calc average round trip time
             _rtt += roundTripTime;
             _rttCount++;
-            _avgRtt = _rtt/_rttCount;
+            _avgRtt = _rtt / _rttCount;
 
             //flowmode 0 = fastest
             //flowmode max = lowest
@@ -398,7 +398,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     NetUtils.DebugWrite("[PA]Increased flow speed, RTT: {0}, PPS: {1}", _avgRtt, _peerListener.GetPacketsPerSecond(_currentFlowMode));
                 }
             }
-            else if(_avgRtt > _peerListener.GetStartRtt(_currentFlowMode))
+            else if (_avgRtt > _peerListener.GetStartRtt(_currentFlowMode))
             {
                 _goodRttCount = 0;
                 if (_currentFlowMode < _peerListener.GetMaxFlowMode())
@@ -459,7 +459,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 }
 
                 NetUtils.DebugWrite("Received all fragments!");
-                NetPacket resultingPacket = _packetPool.Get( p.Property, incomingFragments.TotalSize );
+                NetPacket resultingPacket = _packetPool.Get(p.Property, incomingFragments.TotalSize);
 
                 int resultingPacketOffset = resultingPacket.GetHeaderSize();
                 int firstFragmentSize = fragments[0].Size - dataOffset;
@@ -495,7 +495,7 @@ namespace FlyingWormConsole3.LiteNetLib
 
         private void ProcessMtuPacket(NetPacket packet)
         {
-            if (packet.Size == 1 || 
+            if (packet.Size == 1 ||
                 packet.RawData[1] >= NetConstants.PossibleMtu.Length)
                 return;
 
@@ -512,7 +512,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 mtuOkPacket.RawData[1] = packet.RawData[1];
                 SendPacket(mtuOkPacket);
             }
-            else if(packet.RawData[1] > _mtuIdx) //MtuOk
+            else if (packet.RawData[1] > _mtuIdx) //MtuOk
             {
                 lock (_mtuMutex)
                 {
@@ -654,7 +654,7 @@ namespace FlyingWormConsole3.LiteNetLib
             //2 - merge byte + minimal packet size + datalen(ushort)
             if (_peerListener.MergeEnabled &&
                 CanMerge(packet.Property) &&
-                _mergePos + packet.Size + NetConstants.HeaderSize*2 + 2 < _mtu)
+                _mergePos + packet.Size + NetConstants.HeaderSize * 2 + 2 < _mtu)
             {
                 FastBitConverter.GetBytes(_mergeData.RawData, _mergePos + NetConstants.HeaderSize, (ushort)packet.Size);
                 Buffer.BlockCopy(packet.RawData, 0, _mergeData.RawData, _mergePos + NetConstants.HeaderSize + 2, packet.Size);
@@ -755,7 +755,7 @@ namespace FlyingWormConsole3.LiteNetLib
             if (maxSendPacketsCount > 0)
             {
                 int availableSendPacketsCount = maxSendPacketsCount - _sendedPacketsCount;
-                currentMaxSend = Math.Min(availableSendPacketsCount, (maxSendPacketsCount*deltaTime)/NetConstants.FlowUpdateTime);
+                currentMaxSend = Math.Min(availableSendPacketsCount, (maxSendPacketsCount * deltaTime) / NetConstants.FlowUpdateTime);
             }
             else
             {

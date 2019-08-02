@@ -1,195 +1,193 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using TripleBladeHorse.Combat;
 
 namespace TripleBladeHorse
 {
-	public class AimAssistant : MonoBehaviour
-	{
-		[SerializeField] float _maxAimingRange;
-		[SerializeField] float _assistanceAngle = 15f;
-		[SerializeField] float _projectileSpeed = 15f;
-		[SerializeField] Transform _launchPoint;
-		[SerializeField] List<string> _aimingTags;
-		[SerializeField] LayerMask _obstacleLayer;
-		[SerializeField] bool _predictTargetOnAim;
-		[SerializeField] bool _predictTargetOnNotAim;
+    public class AimAssistant : MonoBehaviour
+    {
+        [SerializeField] float _maxAimingRange;
+        [SerializeField] float _assistanceAngle = 15f;
+        [SerializeField] float _projectileSpeed = 15f;
+        [SerializeField] Transform _launchPoint;
+        [SerializeField] List<string> _aimingTags;
+        [SerializeField] LayerMask _obstacleLayer;
+        [SerializeField] bool _predictTargetOnAim;
+        [SerializeField] bool _predictTargetOnNotAim;
 
-		[Header("Debug")]
-		[SerializeField] bool _trackingObjects;
-		[SerializeField] List<Transform> _objects;
-		[SerializeField] List<Vector2> _velocities;
-		[SerializeField] List<Vector2> _lastPosition;
-		[SerializeField] float _lastFrameDeltaTime;
+        [Header("Debug")]
+        [SerializeField] bool _trackingObjects;
+        [SerializeField] List<Transform> _objects;
+        [SerializeField] List<Vector2> _velocities;
+        [SerializeField] List<Vector2> _lastPosition;
+        [SerializeField] float _lastFrameDeltaTime;
 
-		private void Awake()
-		{
-			_objects = new List<Transform>();
-			_velocities = new List<Vector2>();
-			_lastPosition = new List<Vector2>();
-			_lastFrameDeltaTime = TimeManager.DeltaTime;
-		}
+        private void Awake()
+        {
+            _objects = new List<Transform>();
+            _velocities = new List<Vector2>();
+            _lastPosition = new List<Vector2>();
+            _lastFrameDeltaTime = TimeManager.DeltaTime;
+        }
 
-		private void Update()
-		{
-			if (_trackingObjects)
-			{
-				GatherTarget();
-				UpdateObjects();
-			}
-		}
+        private void Update()
+        {
+            if (_trackingObjects)
+            {
+                GatherTarget();
+                UpdateObjects();
+            }
+        }
 
-		public void StartAimingAssistant()
-		{
-			_objects.Clear();
-			_velocities.Clear();
-			_lastPosition.Clear();
-			_lastFrameDeltaTime = TimeManager.DeltaTime;
-			_trackingObjects = true;
-		}
+        public void StartAimingAssistant()
+        {
+            _objects.Clear();
+            _velocities.Clear();
+            _lastPosition.Clear();
+            _lastFrameDeltaTime = TimeManager.DeltaTime;
+            _trackingObjects = true;
+        }
 
-		public void StopAimingAssistant()
-		{
-			_trackingObjects = false;
-		}
+        public void StopAimingAssistant()
+        {
+            _trackingObjects = false;
+        }
 
-		public Vector2 ToNearestTarget(bool facingRight)
-		{
-			var maxDistance = _maxAimingRange * _maxAimingRange;
-			var currentPosition = (Vector2)_launchPoint.position;
-			var minDistance = float.PositiveInfinity;
-			var aimDirection = facingRight ? Vector2.right : Vector2.left;
+        public Vector2 ToNearestTarget(bool facingRight)
+        {
+            var maxDistance = _maxAimingRange * _maxAimingRange;
+            var currentPosition = (Vector2)_launchPoint.position;
+            var minDistance = float.PositiveInfinity;
+            var aimDirection = facingRight ? Vector2.right : Vector2.left;
 
-			for (int i = 0; i < _objects.Count; i++)
-			{
-				var point = (Vector2)_objects[i].position;
-				if (_predictTargetOnNotAim)
-				{
-					point = PredictHittingPoint(point, _velocities[i], currentPosition, _projectileSpeed);
-					if (float.IsInfinity(point.x)) continue;
-				}
-				
-				var toPoint = point - currentPosition;
-				if (Mathf.Sign(toPoint.x) != Mathf.Sign(aimDirection.x)) continue;
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                var point = (Vector2)_objects[i].position;
+                if (_predictTargetOnNotAim)
+                {
+                    point = PredictHittingPoint(point, _velocities[i], currentPosition, _projectileSpeed);
+                    if (float.IsInfinity(point.x)) continue;
+                }
 
-				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
-				if (hit.collider != null) continue;
+                var toPoint = point - currentPosition;
+                if (Mathf.Sign(toPoint.x) != Mathf.Sign(aimDirection.x)) continue;
 
-				if (toPoint.sqrMagnitude > minDistance || toPoint.sqrMagnitude > maxDistance) continue;
+                var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
+                if (hit.collider != null) continue;
 
-				minDistance = toPoint.sqrMagnitude;
-				aimDirection = toPoint;
-			}
+                if (toPoint.sqrMagnitude > minDistance || toPoint.sqrMagnitude > maxDistance) continue;
 
-			return aimDirection.normalized;
-		}
+                minDistance = toPoint.sqrMagnitude;
+                aimDirection = toPoint;
+            }
 
-		public Vector2 ExcuteAimingAssistantance(Vector2 aimingDirection)
-		{
-			var maxDistance = _maxAimingRange * _maxAimingRange;
-			var currentPosition = (Vector2)_launchPoint.position;
-			var minAngle = float.PositiveInfinity;
+            return aimDirection.normalized;
+        }
 
-			Debug.DrawRay(currentPosition, aimingDirection * 10);
-			for (int i = 0; i < _objects.Count; i++)
-			{
-				var point = (Vector2)_objects[i].position;
+        public Vector2 ExcuteAimingAssistantance(Vector2 aimingDirection)
+        {
+            var maxDistance = _maxAimingRange * _maxAimingRange;
+            var currentPosition = (Vector2)_launchPoint.position;
+            var minAngle = float.PositiveInfinity;
 
-				if (_predictTargetOnAim)
-				{
-					point = PredictHittingPoint(point, _velocities[i], currentPosition, _projectileSpeed);
-					print(point);
-					if (float.IsInfinity(point.x) || !IsWithinRange(aimingDirection, point)) continue;
-				}
+            Debug.DrawRay(currentPosition, aimingDirection * 10);
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                var point = (Vector2)_objects[i].position;
 
-				if (!IsWithinRange(aimingDirection, point)) continue;
-				var toPoint = point - currentPosition;
-				var angle = Vector2.Angle(aimingDirection, point);
+                if (_predictTargetOnAim)
+                {
+                    point = PredictHittingPoint(point, _velocities[i], currentPosition, _projectileSpeed);
+                    print(point);
+                    if (float.IsInfinity(point.x) || !IsWithinRange(aimingDirection, point)) continue;
+                }
 
-				var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
-				if (hit.collider != null) continue;
+                if (!IsWithinRange(aimingDirection, point)) continue;
+                var toPoint = point - currentPosition;
+                var angle = Vector2.Angle(aimingDirection, point);
 
-				if (angle > minAngle) continue;
-				minAngle = angle;
-				aimingDirection = toPoint;
-			}
+                var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
+                if (hit.collider != null) continue;
 
-			Debug.DrawRay(currentPosition, aimingDirection * 10, Color.yellow);
-			return aimingDirection.normalized;
-		}
+                if (angle > minAngle) continue;
+                minAngle = angle;
+                aimingDirection = toPoint;
+            }
 
-		void GatherTarget()
-		{
-			foreach (var tag in _aimingTags)
-			{
-				var objects = GameObject.FindGameObjectsWithTag(tag);
-				foreach (var obj in objects)
-				{
-					if (_objects.Contains(obj.transform)) continue;
+            Debug.DrawRay(currentPosition, aimingDirection * 10, Color.yellow);
+            return aimingDirection.normalized;
+        }
 
-					_objects.Add(obj.transform);
-					_lastPosition.Add(obj.transform.position);
-					_velocities.Add(Vector2.zero);
-				}
-			}
-		}
+        void GatherTarget()
+        {
+            foreach (var tag in _aimingTags)
+            {
+                var objects = GameObject.FindGameObjectsWithTag(tag);
+                foreach (var obj in objects)
+                {
+                    if (_objects.Contains(obj.transform)) continue;
 
-		bool IsWithinRange(Vector2 aimDirection, Vector2 position)
-		{
-			var maxDistance = _maxAimingRange * _maxAimingRange;
-			var toPosition = position - (Vector2)_launchPoint.position;
+                    _objects.Add(obj.transform);
+                    _lastPosition.Add(obj.transform.position);
+                    _velocities.Add(Vector2.zero);
+                }
+            }
+        }
 
-			if (toPosition.sqrMagnitude > maxDistance) return false;
+        bool IsWithinRange(Vector2 aimDirection, Vector2 position)
+        {
+            var maxDistance = _maxAimingRange * _maxAimingRange;
+            var toPosition = position - (Vector2)_launchPoint.position;
 
-			if (Vector2.Angle(aimDirection, toPosition) > _assistanceAngle)
-				return false;
+            if (toPosition.sqrMagnitude > maxDistance) return false;
 
-			return true;
-		}
+            if (Vector2.Angle(aimDirection, toPosition) > _assistanceAngle)
+                return false;
 
-		Vector2 PredictHittingPoint(Vector2 targetPosition, Vector2 targetVelocity, Vector2 shooterPosition, float projectileSpeed)
-		{
-			var displacement = targetPosition - shooterPosition;
-			float targetMoveAngle = Vector3.Angle(-displacement, targetVelocity) * Mathf.Deg2Rad;
+            return true;
+        }
 
-			//if the target is stopping or if it is impossible for the projectile to catch up with the target (Sine Formula)
-			if (targetVelocity.magnitude == 0 || 
-				targetVelocity.magnitude > projectileSpeed && 
-				Mathf.Sin(targetMoveAngle) / projectileSpeed > Mathf.Cos(targetMoveAngle) / targetVelocity.magnitude)
-			{
-				return targetPosition;
-			}
-			//also Sine Formula
-			float shootAngle = Mathf.Asin(Mathf.Sin(targetMoveAngle) * targetVelocity.magnitude / projectileSpeed);
-			return targetPosition + targetVelocity * displacement.magnitude / Mathf.Sin(Mathf.PI - targetMoveAngle - shootAngle) * Mathf.Sin(shootAngle) / targetVelocity.magnitude;
-		}
+        Vector2 PredictHittingPoint(Vector2 targetPosition, Vector2 targetVelocity, Vector2 shooterPosition, float projectileSpeed)
+        {
+            var displacement = targetPosition - shooterPosition;
+            float targetMoveAngle = Vector3.Angle(-displacement, targetVelocity) * Mathf.Deg2Rad;
 
-		void RemoveUnexistedObject(int index)
-		{
-			_objects.RemoveAt(index);
-			_lastPosition.RemoveAt(index);
-			_velocities.RemoveAt(index);
-		}
+            //if the target is stopping or if it is impossible for the projectile to catch up with the target (Sine Formula)
+            if (targetVelocity.magnitude == 0 ||
+                targetVelocity.magnitude > projectileSpeed &&
+                Mathf.Sin(targetMoveAngle) / projectileSpeed > Mathf.Cos(targetMoveAngle) / targetVelocity.magnitude)
+            {
+                return targetPosition;
+            }
+            //also Sine Formula
+            float shootAngle = Mathf.Asin(Mathf.Sin(targetMoveAngle) * targetVelocity.magnitude / projectileSpeed);
+            return targetPosition + targetVelocity * displacement.magnitude / Mathf.Sin(Mathf.PI - targetMoveAngle - shootAngle) * Mathf.Sin(shootAngle) / targetVelocity.magnitude;
+        }
 
-		void UpdateObjects()
-		{
-			_lastFrameDeltaTime = 1 / _lastFrameDeltaTime;
-			for (int i = 0; i < _objects.Count; i++)
-			{
-				if (_objects[i] == null)
-				{
-					RemoveUnexistedObject(i);
-					i--;
-					continue;
-				}
+        void RemoveUnexistedObject(int index)
+        {
+            _objects.RemoveAt(index);
+            _lastPosition.RemoveAt(index);
+            _velocities.RemoveAt(index);
+        }
 
-				var posDiff = (Vector2)_objects[i].position - _lastPosition[i];
-				_velocities[i] = posDiff * _lastFrameDeltaTime;
-			}
+        void UpdateObjects()
+        {
+            _lastFrameDeltaTime = 1 / _lastFrameDeltaTime;
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                if (_objects[i] == null)
+                {
+                    RemoveUnexistedObject(i);
+                    i--;
+                    continue;
+                }
 
-			_lastFrameDeltaTime = TimeManager.PlayerDeltaTime;
-		}
-	}
+                var posDiff = (Vector2)_objects[i].position - _lastPosition[i];
+                _velocities[i] = posDiff * _lastFrameDeltaTime;
+            }
+
+            _lastFrameDeltaTime = TimeManager.PlayerDeltaTime;
+        }
+    }
 }
 

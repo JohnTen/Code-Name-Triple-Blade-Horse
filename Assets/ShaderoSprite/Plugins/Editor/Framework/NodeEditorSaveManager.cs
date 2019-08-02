@@ -1,10 +1,8 @@
-using UnityEngine;
+using _ShaderoShaderEditorFramework.Utilities;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-
-using _ShaderoShaderEditorFramework;
-using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {

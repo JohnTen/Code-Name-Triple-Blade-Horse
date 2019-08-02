@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace DragonBones
 {
@@ -154,7 +154,7 @@ namespace DragonBones
     {
         public ActionType type;
         // Frame event name | Sound event name | Animation name
-        public string name; 
+        public string name;
         public BoneData bone;
         public SlotData slot;
         public UserData data;

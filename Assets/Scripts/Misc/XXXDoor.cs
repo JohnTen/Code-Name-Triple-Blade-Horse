@@ -1,58 +1,58 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using JTUtility;
 
 public class XXXDoor : MonoBehaviour
 {
     #region Fields
-	[SerializeField] float doorOpenDuration;
-	[SerializeField] Vector3 doorMovingFacter;
-	[SerializeField] AnimationCurve doorMovingCurve;
-	[SerializeField] Transform door;
+    [SerializeField] float doorOpenDuration;
+    [SerializeField] Vector3 doorMovingFacter;
+    [SerializeField] AnimationCurve doorMovingCurve;
+    [SerializeField] Transform door;
 
-	[Space(10)]
-	[SerializeField] BoolEvent onDoorOpen;
+    [Space(10)]
+    [SerializeField] BoolEvent onDoorOpen;
 
-	bool doorOpening;
-	#endregion
+    bool doorOpening;
+    #endregion
 
-	#region Properties
-	public bool Opened { get; private set; }
-	#endregion
+    #region Properties
+    public bool Opened { get; private set; }
+    #endregion
 
-	#region Public Methods
-	public void SetDoorOpenState(bool open)
-	{
-		if (open == Opened || doorOpening) return;
+    #region Public Methods
+    public void SetDoorOpenState(bool open)
+    {
+        if (open == Opened || doorOpening) return;
 
-		Opened = open;
-		StartCoroutine(OpenDoor(open));
-	}
-	#endregion
+        Opened = open;
+        StartCoroutine(OpenDoor(open));
+    }
+    #endregion
 
-	#region Private Methods
-	IEnumerator OpenDoor(bool open)
-	{
-		doorOpening = true;
+    #region Private Methods
+    IEnumerator OpenDoor(bool open)
+    {
+        doorOpening = true;
 
-		float time = 0;
-		float factor = 0;
-		Vector3 movement;
+        float time = 0;
+        float factor = 0;
+        Vector3 movement;
 
-		while (time < doorOpenDuration)
-		{
-			time += Time.deltaTime;
+        while (time < doorOpenDuration)
+        {
+            time += Time.deltaTime;
 
-			factor = time / doorOpenDuration;
-			factor = open ? factor : 1 - factor;
-			movement = doorMovingFacter * doorMovingCurve.Evaluate(factor);
+            factor = time / doorOpenDuration;
+            factor = open ? factor : 1 - factor;
+            movement = doorMovingFacter * doorMovingCurve.Evaluate(factor);
 
-			door.localPosition = movement;
+            door.localPosition = movement;
 
-			yield return null;
-		}
+            yield return null;
+        }
 
-		doorOpening = false;
-	}
-	#endregion
+        doorOpening = false;
+    }
+    #endregion
 }

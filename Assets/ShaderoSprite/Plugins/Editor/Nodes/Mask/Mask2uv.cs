@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Mask/Mask 2 UV")]
@@ -57,7 +55,7 @@ namespace _ShaderoShaderEditorFramework
             }
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameter");
             GUILayout.Label("Inverse: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
         }
         private string FinalVariable;
         [HideInInspector]

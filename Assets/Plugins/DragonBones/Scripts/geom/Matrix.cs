@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace DragonBones
@@ -157,20 +157,20 @@ namespace DragonBones
             return this;
         }
 
-    /// <summary>
-    /// - Convert to unit matrix.
-    /// The resulting matrix has the following properties: a=1, b=0, c=0, d=1, tx=0, ty=0.
-    /// </summary>
-    /// <version>DragonBones 3.0</version>
-    /// <language>en_US</language>
+        /// <summary>
+        /// - Convert to unit matrix.
+        /// The resulting matrix has the following properties: a=1, b=0, c=0, d=1, tx=0, ty=0.
+        /// </summary>
+        /// <version>DragonBones 3.0</version>
+        /// <language>en_US</language>
 
-    /// <summary>
-    /// - 转换为单位矩阵。
-    /// 该矩阵具有以下属性：a=1、b=0、c=0、d=1、tx=0、ty=0。
-    /// </summary>
-    /// <version>DragonBones 3.0</version>
-    /// <language>zh_CN</language>
-    public Matrix Identity()
+        /// <summary>
+        /// - 转换为单位矩阵。
+        /// 该矩阵具有以下属性：a=1、b=0、c=0、d=1、tx=0、ty=0。
+        /// </summary>
+        /// <version>DragonBones 3.0</version>
+        /// <language>zh_CN</language>
+        public Matrix Identity()
         {
             this.a = this.d = 1.0f;
             this.b = this.c = 0.0f;
@@ -349,7 +349,7 @@ namespace DragonBones
                 x2 = x3;
                 x3 = tmp;
             }
-            
+
             rectangle.x = (float)Math.Floor(x0 < x2 ? x0 : x2);
             rectangle.width = (float)Math.Ceiling((x1 > x3 ? x1 : x3) - rectangle.x);
 

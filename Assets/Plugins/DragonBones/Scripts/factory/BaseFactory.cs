@@ -422,7 +422,7 @@ namespace DragonBones
         /// <language>zh_CN</language>
         public DragonBonesData ParseDragonBonesData(object rawData, string name = null, float scale = 1.0f)
         {
-            var dataParser = rawData is byte[] ? BaseFactory._binaryParser : this._dataParser;
+            var dataParser = rawData is byte[]? BaseFactory._binaryParser : this._dataParser;
             DragonBonesData dragonBonesData = dataParser.ParseDragonBonesData(rawData, scale);
 
             while (true)

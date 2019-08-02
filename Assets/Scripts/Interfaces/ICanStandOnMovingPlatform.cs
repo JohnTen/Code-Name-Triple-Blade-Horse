@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-public interface ICanStandOnMovingPlatform
+﻿namespace TripleBladeHorse
 {
-	void EnterPlatform();
-	void LeavePlatform();
+    public interface ICanStandOnMovingPlatform
+    {
+        void EnterPlatform();
+        void LeavePlatform();
+    }
 }

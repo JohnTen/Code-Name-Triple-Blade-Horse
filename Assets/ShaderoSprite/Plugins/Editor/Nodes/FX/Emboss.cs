@@ -1,12 +1,9 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Filters/Emboss")]
-    public class Emboss : Node 
+    public class Emboss : Node
     {
         [HideInInspector]
         public const string ID = "Emboss";
@@ -118,19 +115,19 @@ namespace _ShaderoShaderEditorFramework
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameters");
 
             GUILayout.Label("Angle: (-1 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -1, 1);
+            Variable = HorizontalSlider(Variable, -1, 1);
 
             GUILayout.Label("Distance: (-4 to 4) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -4, 4);
+            Variable2 = HorizontalSlider(Variable2, -4, 4);
 
             GUILayout.Label("Intensity: (-2 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, -2, 2);
+            Variable3 = HorizontalSlider(Variable3, -2, 2);
 
             GUILayout.Label("Grayfade: (0 to 1) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, 0, 1);
+            Variable4 = HorizontalSlider(Variable4, 0, 1);
 
             GUILayout.Label("Original: (0 to 1) " + Variable5.ToString("0.00"));
-            Variable5 =HorizontalSlider(Variable5, 0, 1);
+            Variable5 = HorizontalSlider(Variable5, 0, 1);
 
         }
 

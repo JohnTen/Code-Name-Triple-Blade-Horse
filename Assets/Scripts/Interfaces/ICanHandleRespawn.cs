@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TripleBladeHorse
+﻿namespace TripleBladeHorse
 {
-	public interface ICanHandleRespawn
-	{
-		void Respawn();
-	}
+    public interface ICanHandleRespawn
+    {
+        void Respawn();
+    }
 }

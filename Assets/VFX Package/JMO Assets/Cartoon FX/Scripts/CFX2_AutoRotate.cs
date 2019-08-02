@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 // Cartoon FX  - (c) 2013,2014 Jean Moreno
 
@@ -7,10 +6,10 @@ using System.Collections;
 
 public class CFX2_AutoRotate : MonoBehaviour
 {
-	public Vector3 speed = new Vector3(0,40f,0);
-	
-	void Update ()
-	{
-		transform.Rotate(speed * Time.deltaTime);
-	}
+    public Vector3 speed = new Vector3(0, 40f, 0);
+
+    void Update()
+    {
+        transform.Rotate(speed * Time.deltaTime);
+    }
 }

@@ -1,119 +1,117 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 [ImageEffectAllowedInSceneView]
 [ExecuteInEditMode]
 public class Pixelize : MonoBehaviour
 {
-	#region Private Members
-	private Shader _screenAndMaskShader;
-	private Material _screenAndMaskMaterial;
-	private RenderTexture _temporaryRenderTexture;
-	private Shader _combineLayersShader;
-	private Material _combineLayersMaterial;
-	#endregion
+    #region Private Members
+    private Shader _screenAndMaskShader;
+    private Material _screenAndMaskMaterial;
+    private RenderTexture _temporaryRenderTexture;
+    private Shader _combineLayersShader;
+    private Material _combineLayersMaterial;
+    #endregion
 
-	#region Properties
-	private Shader ScreenAndMaskShader
-	{
-		get
-		{
-			if(_screenAndMaskShader == null)
-			{
-				_screenAndMaskShader = Shader.Find("Hidden/PostProcess/Pixelize/ScreenAndMask");
-			}
+    #region Properties
+    private Shader ScreenAndMaskShader
+    {
+        get
+        {
+            if (_screenAndMaskShader == null)
+            {
+                _screenAndMaskShader = Shader.Find("Hidden/PostProcess/Pixelize/ScreenAndMask");
+            }
 
-			return _screenAndMaskShader;
-		}
-	}
- 
-	private Material ScreenAndMaskMaterial
-	{
-		get
-		{
-			if(_screenAndMaskMaterial == null)
-			{
-				_screenAndMaskMaterial = new Material(ScreenAndMaskShader);
-			}
+            return _screenAndMaskShader;
+        }
+    }
 
-			return _screenAndMaskMaterial;
-		}
-	}
+    private Material ScreenAndMaskMaterial
+    {
+        get
+        {
+            if (_screenAndMaskMaterial == null)
+            {
+                _screenAndMaskMaterial = new Material(ScreenAndMaskShader);
+            }
 
-	private RenderTexture TemporaryRenderTarget
-	{
-		get
-		{
-			if(_temporaryRenderTexture == null)
-			{
-				CreateTemporaryRenderTarget();
-			}
+            return _screenAndMaskMaterial;
+        }
+    }
 
-			return _temporaryRenderTexture;
-		}
-	}
+    private RenderTexture TemporaryRenderTarget
+    {
+        get
+        {
+            if (_temporaryRenderTexture == null)
+            {
+                CreateTemporaryRenderTarget();
+            }
 
-	private Shader CombineLayersShader
-	{
-		get
-		{
-			if(_combineLayersShader == null)
-			{
-				_combineLayersShader = Shader.Find("Hidden/PostProcess/Pixelize/CombineLayers");
-			}
+            return _temporaryRenderTexture;
+        }
+    }
 
-			return _combineLayersShader;
-		}
-	}
+    private Shader CombineLayersShader
+    {
+        get
+        {
+            if (_combineLayersShader == null)
+            {
+                _combineLayersShader = Shader.Find("Hidden/PostProcess/Pixelize/CombineLayers");
+            }
 
-	private Material CombineLayersMaterial
-	{
-		get
-		{
-			if(_combineLayersMaterial == null)
-			{
-				_combineLayersMaterial = new Material(CombineLayersShader);
-			}
+            return _combineLayersShader;
+        }
+    }
 
-			return _combineLayersMaterial;
-		}
-	}
-	#endregion
+    private Material CombineLayersMaterial
+    {
+        get
+        {
+            if (_combineLayersMaterial == null)
+            {
+                _combineLayersMaterial = new Material(CombineLayersShader);
+            }
 
-	#region Functions
-	void OnRenderImage(RenderTexture src, RenderTexture dest)
-	{
-		CheckTemporaryRenderTarget();
-		
-		Graphics.Blit(src, TemporaryRenderTarget, ScreenAndMaskMaterial);
+            return _combineLayersMaterial;
+        }
+    }
+    #endregion
 
-		Graphics.Blit(TemporaryRenderTarget, dest, CombineLayersMaterial);
-	}
+    #region Functions
+    void OnRenderImage(RenderTexture src, RenderTexture dest)
+    {
+        CheckTemporaryRenderTarget();
 
-	private void CreateTemporaryRenderTarget()
-	{
-		_temporaryRenderTexture = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear); // better bit precision on Alpha would be preferable but 8 is enough for the current pixelization effect which is already banded
-		_temporaryRenderTexture.useMipMap = true;
-		_temporaryRenderTexture.autoGenerateMips = true;
-		_temporaryRenderTexture.wrapMode = TextureWrapMode.Clamp;
-		_temporaryRenderTexture.filterMode = FilterMode.Point;
-		_temporaryRenderTexture.Create();
-	}
+        Graphics.Blit(src, TemporaryRenderTarget, ScreenAndMaskMaterial);
 
-	private void CheckTemporaryRenderTarget()
-	{
-		if(TemporaryRenderTarget.width != Screen.width || TemporaryRenderTarget.width != Screen.height)
-		{
-			ReleaseTemporaryRenderTarget();
-		}
-	}
+        Graphics.Blit(TemporaryRenderTarget, dest, CombineLayersMaterial);
+    }
 
-	private void ReleaseTemporaryRenderTarget()
-	{
-		_temporaryRenderTexture.Release();
-		_temporaryRenderTexture = null;
-	}
-	#endregion
+    private void CreateTemporaryRenderTarget()
+    {
+        _temporaryRenderTexture = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear); // better bit precision on Alpha would be preferable but 8 is enough for the current pixelization effect which is already banded
+        _temporaryRenderTexture.useMipMap = true;
+        _temporaryRenderTexture.autoGenerateMips = true;
+        _temporaryRenderTexture.wrapMode = TextureWrapMode.Clamp;
+        _temporaryRenderTexture.filterMode = FilterMode.Point;
+        _temporaryRenderTexture.Create();
+    }
+
+    private void CheckTemporaryRenderTarget()
+    {
+        if (TemporaryRenderTarget.width != Screen.width || TemporaryRenderTarget.width != Screen.height)
+        {
+            ReleaseTemporaryRenderTarget();
+        }
+    }
+
+    private void ReleaseTemporaryRenderTarget()
+    {
+        _temporaryRenderTexture.Release();
+        _temporaryRenderTexture = null;
+    }
+    #endregion
 }

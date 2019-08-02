@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Pack/Pattern Movement Pack")]
@@ -99,7 +97,7 @@ namespace _ShaderoShaderEditorFramework
             }
 
 
-      
+
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("     ");
@@ -129,7 +127,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable = HorizontalSlider(Variable, -1, 1, GUILayout.Width(190),190);
+            Variable = HorizontalSlider(Variable, -1, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -139,17 +137,17 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable2 = HorizontalSlider(Variable2, -1, 1, GUILayout.Width(190),190);
+            Variable2 = HorizontalSlider(Variable2, -1, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            AddMask = GUILayout.Toggle(AddMask, "Add Mask", GUILayout.Width(190));          
-             GUILayout.Label("Speed: (-3 to 3) " + Variable3.ToString("0.00"), GUILayout.Width(190));
+            AddMask = GUILayout.Toggle(AddMask, "Add Mask", GUILayout.Width(190));
+            GUILayout.Label("Speed: (-3 to 3) " + Variable3.ToString("0.00"), GUILayout.Width(190));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable3 = HorizontalSlider(Variable3, -3, 3, GUILayout.Width(190),190);
+            Variable3 = HorizontalSlider(Variable3, -3, 3, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
 
@@ -160,7 +158,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable4 = HorizontalSlider(Variable4, 0, 1, GUILayout.Width(190),190);
+            Variable4 = HorizontalSlider(Variable4, 0, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -170,7 +168,7 @@ namespace _ShaderoShaderEditorFramework
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(" ", GUILayout.Width(140));
-            Variable5 = HorizontalSlider(Variable5, 0, 1, GUILayout.Width(190),190);
+            Variable5 = HorizontalSlider(Variable5, 0, 1, GUILayout.Width(190), 190);
             GUILayout.EndHorizontal();
             if (AddMask) tex2 = (Texture2D)EditorGUI.ObjectField(new Rect(8, 227, 130, 130), tex2, typeof(Texture2D), true);
 
@@ -265,12 +263,12 @@ namespace _ShaderoShaderEditorFramework
                 s_out.ParametersLines += DefaultNameVariable3 + "(\"" + DefaultNameVariable3 + "\"" + DefaultParameters3 + "\n";
                 s_out.ParametersLines += DefaultNameVariable4 + "(\"" + DefaultNameVariable4 + "\"" + DefaultParameters4 + "\n";
                 s_out.ParametersLines += DefaultNameVariable5 + "(\"" + DefaultNameVariable5 + "\"" + DefaultParameters5 + "\n";
-                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable1 + ";\n";
+                s_out.ParametersDeclarationLines += "float " + DefaultNameVariable1 + ";\n";
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable2 + ";\n";
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable3 + ";\n";
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable4 + ";\n";
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable5 + ";\n";
-              }
+            }
             s_out.ParametersLines += SourceName + "(\"" + SourceName + "(RGB)\", 2D) = \"white\" { }\n";
             if (AddMask) s_out.ParametersLines += SourceName2 + "(\"" + SourceName2 + "(RGB)\", 2D) = \"white\" { }\n";
             s_out.ParametersDeclarationLines += "sampler2D " + SourceName + ";\n";

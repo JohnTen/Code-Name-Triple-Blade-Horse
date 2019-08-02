@@ -1,61 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace JTUtility.Interactables
 {
-	public class TimedSwitch : MonoInteractable
-	{
-		[SerializeField] float time = 0;
+    public class TimedSwitch : MonoInteractable
+    {
+        [SerializeField] float time = 0;
 
-		Timer timer;
+        Timer timer;
 
-		public override void StartInteracting()
-		{
-			if (!isInteracting)
-			{
-				InvokeStartInteracting();
-			}
-			isInteracting = true;
+        public override void StartInteracting()
+        {
+            if (!isInteracting)
+            {
+                InvokeStartInteracting();
+            }
+            isInteracting = true;
 
-			if (isActivated) return;
+            if (isActivated) return;
 
-			isActivated = true;
-			timer.Start(time);
-			InvokeActivated();
+            isActivated = true;
+            timer.Start(time);
+            InvokeActivated();
 
-			if (onActivated != null)
-				onActivated.Invoke();
-		}
+            if (onActivated != null)
+                onActivated.Invoke();
+        }
 
-		public override void StopInteracting()
-		{
-			if (isInteracting)
-			{
-				InvokeStopInteracting();
-			}
+        public override void StopInteracting()
+        {
+            if (isInteracting)
+            {
+                InvokeStopInteracting();
+            }
 
-			isInteracting = false;
-		}
+            isInteracting = false;
+        }
 
-		protected virtual void Awake()
-		{
-			timer = new Timer();
-			timer.OnTimeOut += Timer_OnTimeOut;
-		}
+        protected virtual void Awake()
+        {
+            timer = new Timer();
+            timer.OnTimeOut += Timer_OnTimeOut;
+        }
 
-		protected void OnDestroy()
-		{
-			timer.Dispose();
-		}
+        protected void OnDestroy()
+        {
+            timer.Dispose();
+        }
 
-		protected void Timer_OnTimeOut(Timer timer)
-		{
-			InvokeDeactivated();
+        protected void Timer_OnTimeOut(Timer timer)
+        {
+            InvokeDeactivated();
 
-			if (onDeactivated != null)
-				onDeactivated.Invoke();
-			isActivated = false;
-		}
-	}
+            if (onDeactivated != null)
+                onDeactivated.Invoke();
+            isActivated = false;
+        }
+    }
 }

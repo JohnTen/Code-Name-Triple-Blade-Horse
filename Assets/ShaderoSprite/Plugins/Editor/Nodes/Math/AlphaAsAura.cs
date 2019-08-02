@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Alpha/Alpha As Aura")]
@@ -83,7 +81,7 @@ namespace _ShaderoShaderEditorFramework
             }
 
             GUILayout.Label("Fade: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
 
             SwapRGBA = GUILayout.Toggle(SwapRGBA, "SWAP A and B");
         }

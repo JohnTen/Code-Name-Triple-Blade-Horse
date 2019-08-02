@@ -1,7 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 
 namespace _ShaderoShaderEditorFramework
 {
@@ -87,13 +85,13 @@ namespace _ShaderoShaderEditorFramework
             }
 
             GUILayout.Label("Rot: (-360 to 360) " + Variable.ToString("0."));
-            Variable =HorizontalSlider(Variable, -360, 360);
+            Variable = HorizontalSlider(Variable, -360, 360);
             GUILayout.Label("Pos X: (-2 to 2) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -2, 2);
+            Variable2 = HorizontalSlider(Variable2, -2, 2);
             GUILayout.Label("Pos Y: (-2 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, -2, 2);
+            Variable3 = HorizontalSlider(Variable3, -2, 2);
             GUILayout.Label("Speed: (-8 to 8) " + Variable4.ToString("0.00"));
-            Variable4 =HorizontalSlider(Variable4, -8, 8);
+            Variable4 = HorizontalSlider(Variable4, -8, 8);
 
         }
 

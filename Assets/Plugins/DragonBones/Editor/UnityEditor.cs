@@ -22,10 +22,9 @@
  */
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace DragonBones
 {
@@ -342,7 +341,7 @@ namespace DragonBones
                 var jsonObject = (Dictionary<string, object>)MiniJSON.Json.Deserialize(dragonBonesAsset.text);
                 if (dragonBonesAsset.text == "DBDT")
                 {
-                    int headerLength  = 0;
+                    int headerLength = 0;
                     jsonObject = BinaryDataParser.DeserializeBinaryJsonData(dragonBonesAsset.bytes, out headerLength);
                 }
                 else

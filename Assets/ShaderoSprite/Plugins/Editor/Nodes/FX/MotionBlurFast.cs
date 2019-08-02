@@ -1,12 +1,9 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Filters/Motion Blur Fast")]
-    public class MotionBlurFast : Node 
+    public class MotionBlurFast : Node
     {
         [HideInInspector]
         public const string ID = "MotionBlurFast";
@@ -92,27 +89,27 @@ namespace _ShaderoShaderEditorFramework
             {
                 NodeEditor._Shadero_Material.SetFloat(FinalVariable, Variable);
                 NodeEditor._Shadero_Material.SetFloat(FinalVariable2, Variable2);
-             }
+            }
             if (GUILayout.Button("Reset"))
             {
                 Variable = 0f;
                 Variable2 = 1f;
-             }
+            }
 
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameters");
 
             GUILayout.Label("Angle: (-1 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, -1, 1);
+            Variable = HorizontalSlider(Variable, -1, 1);
 
             GUILayout.Label("Distance: (-4 to 4) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, -4, 4);
+            Variable2 = HorizontalSlider(Variable2, -4, 4);
 
-      
+
         }
 
         private string FinalVariable;
         private string FinalVariable2;
-   
+
         [HideInInspector]
         public int MemoCount = -1;
         public override bool FixCalculate()
@@ -134,14 +131,14 @@ namespace _ShaderoShaderEditorFramework
             string DefaultName = "_MotionBlurFast_" + NodeCount;
             string DefaultNameVariable1 = "_MotionBlurFast_Angle_" + NodeCount;
             string DefaultNameVariable2 = "_MotionBlurFast_Distance_" + NodeCount;
-             string DefaultParameters1 = ", Range(-1, 1)) = " + Variable.ToString();
+            string DefaultParameters1 = ", Range(-1, 1)) = " + Variable.ToString();
             string DefaultParameters2 = ", Range(0, 16)) = " + Variable2.ToString();
             string uv = s_in.Result;
             string Source = "";
 
             FinalVariable = DefaultNameVariable1;
             FinalVariable2 = DefaultNameVariable2;
- 
+
             // source
             if (s_in.Result == null)
             {
@@ -194,10 +191,10 @@ namespace _ShaderoShaderEditorFramework
 
                 s_out.ParametersLines += DefaultNameVariable1 + "(\"" + DefaultNameVariable1 + "\"" + DefaultParameters1 + "\n";
                 s_out.ParametersLines += DefaultNameVariable2 + "(\"" + DefaultNameVariable2 + "\"" + DefaultParameters2 + "\n";
-          
+
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable1 + ";\n";
                 s_out.ParametersDeclarationLines += "float " + DefaultNameVariable2 + ";\n";
-          
+
             }
 
             Outputs[0].SetValue<SuperFloat4>(s_out);

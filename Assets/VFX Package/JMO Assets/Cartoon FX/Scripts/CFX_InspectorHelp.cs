@@ -7,20 +7,19 @@
 // its usage
 
 using UnityEngine;
-using System.Collections;
 
 public class CFX_InspectorHelp : MonoBehaviour
 {
-	public bool Locked;
-	public string Title;
-	public string HelpText;
-	public int MsgType;
-	
-	[ContextMenu("Toggle Lock")]
-	void ToggleLock()
-	{
-		this.Locked = !this.Locked;
-	}
+    public bool Locked;
+    public string Title;
+    public string HelpText;
+    public int MsgType;
+
+    [ContextMenu("Toggle Lock")]
+    void ToggleLock()
+    {
+        this.Locked = !this.Locked;
+    }
 }
 
 #endif

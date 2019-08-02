@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class AnimatioEventSender : MonoBehaviour {
+public class AnimatioEventSender : MonoBehaviour
+{
 
 
     void Start()
     {
-      
+
 
     }
 

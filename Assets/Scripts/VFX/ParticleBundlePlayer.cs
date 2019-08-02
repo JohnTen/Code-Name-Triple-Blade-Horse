@@ -1,32 +1,30 @@
-﻿using System.Collections;
+﻿using JTUtility;
 using System.Collections.Generic;
-using UnityEngine;
 using TripleBladeHorse.Animation;
-using TripleBladeHorse.Movement;
 using TripleBladeHorse.Combat;
-using JTUtility;
+using TripleBladeHorse.Movement;
+using UnityEngine;
 
-namespace TripleBladeHorse
+namespace TripleBladeHorse.VFX
 {
     public class ParticleBundlePlayer : MonoBehaviour, IDeathHandler
     {
-		[System.Serializable]
-		class StrParticlePair : PairedValue<string, ParticleSystem> { }
+        [System.Serializable]
+        class StrParticlePair : PairedValue<string, ParticleSystem> { }
 
-		[System.Serializable]
-		class StrAudioPair : PairedValue<string, AudioClip> { }
+        [System.Serializable]
+        class StrAudioPair : PairedValue<string, AudioClip> { }
 
 
-		
         [SerializeField] AudioSource _playerAudioSource;
-		[SerializeField] List<StrParticlePair> _particlePairs;
-		[SerializeField] List<StrAudioPair> _audioPairs;
-		[SerializeField] List<StrFloatPair> _volumePairs;
+        [SerializeField] List<StrParticlePair> _particlePairs;
+        [SerializeField] List<StrAudioPair> _audioPairs;
+        [SerializeField] List<StrFloatPair> _volumePairs;
         [SerializeField] List<StrFloatPair> _pitchPairs;
 
-		private Dictionary<string, ParticleSystem> _particles;
-		private Dictionary<string, AudioClip> _audios;
-		private Dictionary<string, float> _volume;
+        private Dictionary<string, ParticleSystem> _particles;
+        private Dictionary<string, AudioClip> _audios;
+        private Dictionary<string, float> _volume;
         private Dictionary<string, float> _pitch;
 
         private FSM _fSM;
@@ -50,30 +48,15 @@ namespace TripleBladeHorse
             _hitBox.OnHit += OnHittedHandler;
             _fSM.Subscribe(Animation.AnimationState.FadingIn, HandleAnimationFadeInEvent);
 
-			_particles = new Dictionary<string, ParticleSystem>();
-			_audios = new Dictionary<string, AudioClip>();
-			_volume = new Dictionary<string, float>();
+            _particles = new Dictionary<string, ParticleSystem>();
+            _audios = new Dictionary<string, AudioClip>();
+            _volume = new Dictionary<string, float>();
             _pitch = new Dictionary<string, float>();
 
-            foreach (var pair in _particlePairs)
-			{
-				_particles.Add(pair.Key, pair.Value);
-			}
-
-			foreach (var pair in _audioPairs)
-			{
-				_audios.Add(pair.Key, pair.Value);
-			}
-
-			foreach (var pair in _volumePairs)
-			{
-				_volume.Add(pair.Key, pair.Value);
-			}
-
-            foreach (var pitch in _pitchPairs)
-            {
-                _pitch.Add(pitch.Key, pitch.Value);
-            }
+            _particles.Add(_particlePairs);
+            _audios.Add(_audioPairs);
+            _volume.Add(_volumePairs);
+            _pitch.Add(_pitchPairs);
         }
 
         private void OnDestroy()
@@ -97,7 +80,7 @@ namespace TripleBladeHorse
                 {
                     _particles["ATK_Melee_Ground_1"].Play();
                 }
-              
+
                 if (_fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.ATK_Charge_Ground_ATK)
                 {
                     _particles["ATK_Charge_Ground_Charging"].Stop();
@@ -105,7 +88,7 @@ namespace TripleBladeHorse
                 }
             }
 
-            if(eventArgs._name == AnimEventNames.Regenerate)
+            if (eventArgs._name == AnimEventNames.Regenerate)
             {
                 _particles["RegenerateCompleted"].Play();
                 _particles["Regenerate"].Stop();
@@ -116,7 +99,7 @@ namespace TripleBladeHorse
 
         private void HandleAnimationFadeInEvent(AnimationEventArg eventArgs)
         {
-            if(eventArgs._animation.name == PlayerFSMData.Anim.Healing)
+            if (eventArgs._animation.name == PlayerFSMData.Anim.Healing)
             {
                 _particles["Regenerate"].Play();
                 _playerAudioSource.clip = _audios["Regenerate"];
@@ -128,8 +111,8 @@ namespace TripleBladeHorse
 
         private void MoveStateChangeHandler(ICanChangeMoveState moveState, MovingEventArgs eventArgs)
         {
-            if(eventArgs.currentMovingState == MovingState.Move
-                &&_fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.Run_Ground)
+            if (eventArgs.currentMovingState == MovingState.Move
+                && _fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.Run_Ground)
             {
                 _particles["Run_Ground"].Play();
             }
@@ -137,7 +120,7 @@ namespace TripleBladeHorse
             {
                 _particles["Run_Ground"].Stop();
             }
-            if(eventArgs.currentMovingState == MovingState.Airborne)
+            if (eventArgs.currentMovingState == MovingState.Airborne)
             {
                 _particles["Jump_In_Air"].Play();
                 int i = Random.Range(0, 2);
@@ -147,7 +130,7 @@ namespace TripleBladeHorse
                 _playerAudioSource.pitch = _pitch["Jump" + j];
                 _playerAudioSource.Play();
             }
-            if(eventArgs.currentMovingState == MovingState.Dash)
+            if (eventArgs.currentMovingState == MovingState.Dash)
             {
                 _playerAudioSource.clip = _audios["Dash"];
                 _playerAudioSource.volume = _volume["Dash"];
@@ -167,30 +150,21 @@ namespace TripleBladeHorse
 
         private void HandleChargingATK(InputEventArg<PlayerInputCommand> eventArg)
         {
-            if (eventArg._command == PlayerInputCommand.MeleeChargeBegin)
-            { 
-                _particles["ATK_Charge_Ground_Charging"].Play();
-            }
-            if (eventArg._command == PlayerInputCommand.MeleeChargeAttack)
+            if (eventArg._command == PlayerInputCommand.RangeChargeAttack)
             {
-
+                _particles["Range_Charge_Ground_Charging"].Stop();
+                _particles["Range_Charge_Ground_ATK"].Play();
             }
-
-			if (eventArg._command == PlayerInputCommand.RangeChargeAttack)
-			{
-				_particles["Range_Charge_Ground_Charging"].Stop();
-				_particles["Range_Charge_Ground_ATK"].Play();
-			}
-			if (eventArg._command == PlayerInputCommand.RangeChargeBegin)
-			{
-				_particles["Range_Charge_Ground_Charging"].Play();
-			}
-			if (eventArg._command == PlayerInputCommand.RangeChargeBreak)
-			{
-				_particles["Range_Charge_Ground_Charging"].Stop();
-				_particles["Range_Charge_Ground_ATK"].Stop();
-			}
-		}
+            if (eventArg._command == PlayerInputCommand.RangeChargeBegin)
+            {
+                _particles["Range_Charge_Ground_Charging"].Play();
+            }
+            if (eventArg._command == PlayerInputCommand.RangeChargeBreak)
+            {
+                _particles["Range_Charge_Ground_Charging"].Stop();
+                _particles["Range_Charge_Ground_ATK"].Stop();
+            }
+        }
 
         private void TimeManagerHandler()
         {

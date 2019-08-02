@@ -1,9 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/Generate/3D/Simple Spherize")]
@@ -107,7 +103,7 @@ namespace _ShaderoShaderEditorFramework
             GUILayout.Label("Rot Y : (-4 to 4) " + Variable.ToString("0.00"));
             Variable = HorizontalSlider(Variable, -4, 4);
 
-       
+
 
 
 
@@ -115,7 +111,7 @@ namespace _ShaderoShaderEditorFramework
         }
         private string FinalVariable;
         private string FinalVariable2;
-         [HideInInspector]
+        [HideInInspector]
         public int MemoCount = -1;
         public override bool FixCalculate()
         {
@@ -146,7 +142,7 @@ namespace _ShaderoShaderEditorFramework
 
             FinalVariable = DefaultNameVariable1;
             FinalVariable2 = DefaultNameVariable2;
-      
+
             if (s_in3.Result == null)
             {
                 Source = "_MainTex";

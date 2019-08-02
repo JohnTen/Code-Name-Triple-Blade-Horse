@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Plasma Light FX")]
@@ -113,15 +110,15 @@ namespace _ShaderoShaderEditorFramework
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameters");
 
             GUILayout.Label("Add: (0 to 1) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 1);
+            Variable = HorizontalSlider(Variable, 0, 1);
             if (NodeEditor._Shadero_Material != null)
             {
                 NodeEditor._Shadero_Material.SetFloat(FinalVariable2, Variable2);
             }
             GUILayout.Label("Speed: (0 to 1) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 1);
+            Variable2 = HorizontalSlider(Variable2, 0, 1);
             GUILayout.Label("Gray: (0 to 1) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 0, 1);
+            Variable3 = HorizontalSlider(Variable3, 0, 1);
 
 
 
@@ -188,7 +185,7 @@ namespace _ShaderoShaderEditorFramework
             }
             else
             {
-                s_out.ValueLine = "float4 " + DefaultName + " = PlasmaLight(" + rgba + "," + uv + "," + Variable.ToString() + "," + Variable2.ToString()+"," + Variable3.ToString() + ");\n";
+                s_out.ValueLine = "float4 " + DefaultName + " = PlasmaLight(" + rgba + "," + uv + "," + Variable.ToString() + "," + Variable2.ToString() + "," + Variable3.ToString() + ");\n";
             }
 
             s_out.StringPreviewNew = s_out.StringPreviewLines + s_out.ValueLine;

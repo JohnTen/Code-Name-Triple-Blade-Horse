@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "Organic Shader/Human Breath Ex UV")]
@@ -24,14 +21,14 @@ namespace _ShaderoShaderEditorFramework
 
         [HideInInspector]
         public bool AddParameters = true;
-   
+
         public static void Init()
         {
             tag = false;
             count = 1;
         }
 
-     
+
         public void Function()
         {
 
@@ -101,12 +98,12 @@ namespace _ShaderoShaderEditorFramework
             AddParameters = GUILayout.Toggle(AddParameters, "Add Parameters");
 
             GUILayout.Label("Intensity: (0 to 2) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0f, 2f);
+            Variable = HorizontalSlider(Variable, 0f, 2f);
             GUILayout.Label("Speed: (0 to 3) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0f, 3f);
+            Variable2 = HorizontalSlider(Variable2, 0f, 3f);
             GUILayout.Label("Side Intensity");
             GUILayout.Label("(0 to 2) " + Variable3.ToString("0.00"));
-            Variable3 =HorizontalSlider(Variable3, 0f, 2f);
+            Variable3 = HorizontalSlider(Variable3, 0f, 2f);
 
 
 
@@ -168,11 +165,11 @@ namespace _ShaderoShaderEditorFramework
             {
                 Source = s_in2.Result;
             }
-             
-             
+
+
             s_out.StringPreviewLines = s_in.StringPreviewNew + s_in2.StringPreviewNew;
 
-       
+
             if (AddParameters)
             {
                 s_out.ValueLine = "float2 " + DefaultName + " = HumanBreathExUV(" + uv + "," + RGBA + "," + DefaultNameVariable1 + "," + DefaultNameVariable2 + "," + DefaultNameVariable3 + ");\n";

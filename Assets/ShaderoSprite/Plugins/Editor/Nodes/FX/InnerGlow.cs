@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System.Collections;
-using _ShaderoShaderEditorFramework;
 using _ShaderoShaderEditorFramework.Utilities;
+using UnityEditor;
+using UnityEngine;
 namespace _ShaderoShaderEditorFramework
 {
     [Node(false, "RGBA/FX/Inner Glow")]
@@ -117,7 +114,7 @@ namespace _ShaderoShaderEditorFramework
 
             }
 
- 
+
             parametersOK = GUILayout.Toggle(parametersOK, "Add Parameter");
 
             // Paramaters
@@ -128,9 +125,9 @@ namespace _ShaderoShaderEditorFramework
                 NodeEditor._Shadero_Material.SetColor(FinalVariable3, Variable3);
             }
             GUILayout.Label("Intensity: (0 to 16) " + Variable.ToString("0.00"));
-            Variable =HorizontalSlider(Variable, 0, 16);
+            Variable = HorizontalSlider(Variable, 0, 16);
             GUILayout.Label("Size: (0 to 16) " + Variable2.ToString("0.00"));
-            Variable2 =HorizontalSlider(Variable2, 0, 16);
+            Variable2 = HorizontalSlider(Variable2, 0, 16);
             GUILayout.Label("Color:");
             Variable3 = EditorGUILayout.ColorField("", Variable3);
 

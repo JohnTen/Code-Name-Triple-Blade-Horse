@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace TripleBladeHorse
+namespace TripleBladeHorse.UI
 {
     public class EnergyPoint : MonoBehaviour
     {
-      
+
         [SerializeField] Image _emputyEnergy;
         [SerializeField] Image _fullEnergy;
         GameObject[] _fullEnergys;
@@ -25,7 +23,7 @@ namespace TripleBladeHorse
         {
             int currentEnergy = (int)_playerState._stamina.Current;
             int baseEnergy = (int)_playerState._stamina.Base;
-            for(int i = 0; i < currentEnergy; i++)
+            for (int i = 0; i < currentEnergy; i++)
             {
                 _fullEnergys[i].SetActive(true);
             }
@@ -38,10 +36,10 @@ namespace TripleBladeHorse
 
         void CreateEnergy()
         {
-            int baseEnergy = (int) _playerState._stamina.Base;
+            int baseEnergy = (int)_playerState._stamina.Base;
             _fullEnergys = new GameObject[baseEnergy];
 
-            for (int i = 0; i < baseEnergy; i ++)
+            for (int i = 0; i < baseEnergy; i++)
             {
 
                 GameObject emputy = Instantiate(_emputyEnergy.gameObject);
