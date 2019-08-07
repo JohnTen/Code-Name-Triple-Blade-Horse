@@ -1304,6 +1304,7 @@ GameObject:
   - component: {fileID: 390506247}
   - component: {fileID: 390506253}
   - component: {fileID: 1185275020}
+  - component: {fileID: 5231197245005274337}
   - component: {fileID: 1185275028}
   - component: {fileID: 8061021970201993437}
   - component: {fileID: 3786504185608398051}
@@ -1772,6 +1773,32 @@ MonoBehaviour:
   _maxSlashCount: 3
   weight: 050000000100000003000000
   combatTemp: 3
+--- !u!114 &5231197245005274337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638668825963291463}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 712cbb1f939976245ba51726e3fcb1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateAction: 0
+  activateMovement: 1
+  repeatAction: 0
+  repeatMovement: 1
+  delayingInput: 0
+  blockInput: 0
+  xMovement: 1
+  yMovement: 0
+  pullingDirection: {x: 0, y: 0}
+  _commands1: 
+  _commands2: 
+  _commands3: 
+  nextQueue: 0
+  delayedInput: 0
 --- !u!114 &1185275028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3843,16 +3870,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weakpoint
       objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _frameFrozenWhenCombo
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3908,6 +3925,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -3959,16 +3986,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Weakpoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _frameFrozenWhenCombo
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
@@ -4025,6 +4042,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
       propertyPath: playOnAwake
@@ -4076,16 +4103,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Weakpoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 390506247}
-    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
-        type: 3}
-      propertyPath: _frameFrozenWhenCombo
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5816102152070699998, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
@@ -4141,6 +4158,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _state
+      value: 
+      objectReference: {fileID: 390506247}
+    - target: {fileID: 3534390368235476757, guid: bcb2762136a1bc6469713a861a938a56,
+        type: 3}
+      propertyPath: _frameFrozenWhenCombo
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1958877729510121608, guid: bcb2762136a1bc6469713a861a938a56,
         type: 3}
