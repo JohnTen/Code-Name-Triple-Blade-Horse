@@ -123,7 +123,7 @@ namespace TripleBladeHorse.VFX
             if (eventArgs.currentMovingState == MovingState.Airborne)
             {
                 _particles["Jump_In_Air"].Play();
-                int i = Random.Range(0, 2);
+                int i = Random.Range(0, 4);
                 string j = i.ToString();
                 _playerAudioSource.clip = _audios["Jump" + j];
                 _playerAudioSource.volume = _volume["Jump" + j];
