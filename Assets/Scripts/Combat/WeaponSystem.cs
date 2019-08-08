@@ -220,7 +220,7 @@ namespace TripleBladeHorse.Combat
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.P))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.P))
                 ResetWeapon();
         }
 

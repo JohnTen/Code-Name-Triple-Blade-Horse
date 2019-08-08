@@ -60,6 +60,7 @@ namespace TripleBladeHorse.Movement
         [SerializeField] bool _blockInput;
         [SerializeField] List<Collider2D> _ignoredColliders;
         [SerializeField] float _knockbackSpeed;
+        [SerializeField] List<Collider2D> _contactsCollider;
 
 
         PlayerState _state;
@@ -165,6 +166,7 @@ namespace TripleBladeHorse.Movement
             _groundDetector = GetComponent<ICanDetectGround>();
             _groundDetector.OnLandingStateChanged += HandleLanding;
             _contacts = new List<ContactPoint2D>();
+            _contactsCollider = new List<Collider2D>();
             _ignoredColliders = new List<Collider2D>();
         }
 
@@ -499,6 +501,7 @@ namespace TripleBladeHorse.Movement
                 var contactAngle = Vector2.SignedAngle(Vector2.up, contacts[i].normal);
                 if (contactAngle > minAngle && contactAngle < maxAngle) return true;
 
+                Debug.Break();
                 if (effector.sideArc > 0)
                 {
                     minAngle = -effector.sideArc * 0.5f + effector.rotationalOffset + 90;
@@ -561,9 +564,11 @@ namespace TripleBladeHorse.Movement
 
         private void UpdateContacts()
         {
+            _contactsCollider.Clear();
             _rigidbody.GetContacts(_contacts);
             for (int i = 0; i < _contacts.Count; i++)
             {
+                _contactsCollider.Add(_contacts[i].collider);
                 if (!_ignoredColliders.Contains(_contacts[i].collider)) continue;
 
                 _contacts.RemoveAt(i);

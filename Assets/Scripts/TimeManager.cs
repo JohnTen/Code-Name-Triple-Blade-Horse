@@ -77,13 +77,13 @@ namespace TripleBladeHorse
 
         public void Pause()
         {
-            pause++;
+            pause = 1;
             UpdateTimeScale();
         }
 
         public void Unpause()
         {
-            pause--;
+            pause =  0;
             UpdateTimeScale();
         }
 

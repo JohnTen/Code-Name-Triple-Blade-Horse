@@ -145,7 +145,7 @@ namespace TripleBladeHorse
             else
             {
                 var diff = _aimingPivot.position.z - Camera.main.transform.position.z;
-                var screenPos = Input.mousePosition + Vector3.forward * diff;
+                var screenPos = UnityEngine.Input.mousePosition + Vector3.forward * diff;
 
                 aim = (Camera.main.ScreenToWorldPoint(screenPos) - _aimingPivot.position);
                 Debug.DrawLine(Camera.main.ScreenToWorldPoint(screenPos), _aimingPivot.position);
