@@ -22,8 +22,13 @@ namespace TripleBladeHorse.Combat
         {
             if (_launchEffect != null)
                 _launchEffect.Play();
-            launchSound.Play();
-            launchSound.pitch = Random.Range(0.75f, 1.25f);
+
+            if (launchSound != null)
+            {
+                launchSound.Play();
+                launchSound.pitch = Random.Range(0.75f, 1.25f);
+            }
+
             Invoke("StartAttack", _delay);
         }
 

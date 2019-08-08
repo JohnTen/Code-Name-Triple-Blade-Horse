@@ -501,7 +501,6 @@ namespace TripleBladeHorse.Movement
                 var contactAngle = Vector2.SignedAngle(Vector2.up, contacts[i].normal);
                 if (contactAngle > minAngle && contactAngle < maxAngle) return true;
 
-                Debug.Break();
                 if (effector.sideArc > 0)
                 {
                     minAngle = -effector.sideArc * 0.5f + effector.rotationalOffset + 90;
