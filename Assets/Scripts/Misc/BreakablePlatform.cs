@@ -7,7 +7,7 @@ namespace TripleBladeHorse
         [SerializeField] float breakTime = 2;
         [SerializeField] float reappearTime = 2;
         [SerializeField] ParticleSystem rubble;
-
+        public AudioSource breakSound;
         public void Respawn()
         {
             if (IsInvoking())
@@ -26,6 +26,8 @@ namespace TripleBladeHorse
 
         private void Break()
         {
+            breakSound.Play();
+            breakSound.pitch = Random.Range(0.75f, 1.25f);
             this.gameObject.SetActive(false);
             RubblePlay();
             Invoke("Reappear", reappearTime);
