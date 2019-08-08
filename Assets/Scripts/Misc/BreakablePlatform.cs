@@ -26,8 +26,7 @@ namespace TripleBladeHorse
 
         private void Break()
         {
-            breakSound.Play();
-            breakSound.pitch = Random.Range(0.75f, 1.25f);
+            
             this.gameObject.SetActive(false);
             RubblePlay();
             Invoke("Reappear", reappearTime);
@@ -41,6 +40,8 @@ namespace TripleBladeHorse
 
         private void RubblePlay()
         {
+            breakSound.Play();
+            breakSound.pitch = Random.Range(0.75f, 1.25f);
             rubble.Play();
         }
     }
