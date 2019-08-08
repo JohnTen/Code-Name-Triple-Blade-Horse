@@ -79,6 +79,7 @@ namespace TripleBladeHorse
             TimeManager.Instance.OnBulletTimeEnd += OnBulletTimeEnd;
         }
 
+       
         private void Update()
         {
             var frozen =

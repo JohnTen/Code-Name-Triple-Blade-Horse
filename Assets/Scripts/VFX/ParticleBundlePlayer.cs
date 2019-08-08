@@ -115,6 +115,12 @@ namespace TripleBladeHorse.VFX
                 && _fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.Run_Ground)
             {
                 _particles["Run_Ground"].Play();
+                int i = Random.Range(0, 4);
+                string j = i.ToString();
+                _playerAudioSource.clip = _audios["Run_Ground" + j];
+                _playerAudioSource.volume = _volume["Run_Ground" + j];
+                _playerAudioSource.pitch = _pitch["Run_Ground" + j];
+                _playerAudioSource.Play();
             }
             else
             {
