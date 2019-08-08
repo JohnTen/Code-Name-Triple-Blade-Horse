@@ -21,6 +21,7 @@ namespace TripleBladeHorse.VFX
         [SerializeField] List<StrAudioPair> _audioPairs;
         [SerializeField] List<StrFloatPair> _volumePairs;
         [SerializeField] List<StrFloatPair> _pitchPairs;
+        [SerializeField] float _footstepFreq = 2;
 
         private Dictionary<string, ParticleSystem> _particles;
         private Dictionary<string, AudioClip> _audios;
@@ -32,6 +33,9 @@ namespace TripleBladeHorse.VFX
         private ICharacterInput<PlayerInputCommand> _characterInput;
         private ICanDetectGround _groundDetect;
         private IAttackable _hitBox;
+
+        private bool _repeatFootstepSFX;
+        private float _footstepSFXTimer;
 
         private void Start()
         {
@@ -57,6 +61,20 @@ namespace TripleBladeHorse.VFX
             _audios.Add(_audioPairs);
             _volume.Add(_volumePairs);
             _pitch.Add(_pitchPairs);
+        }
+
+        private void Update()
+        {
+            if (_repeatFootstepSFX && TimeManager.Time > _footstepSFXTimer)
+            {
+                int i = Random.Range(0, 6);
+                string j = i.ToString();
+                _playerAudioSource.clip = _audios["Run_Ground" + j];
+                _playerAudioSource.volume = _volume["Run_Ground" + j];
+                _playerAudioSource.pitch = _pitch["Run_Ground" + j];
+                _playerAudioSource.Play();
+                _footstepSFXTimer = TimeManager.Time + 1 / _footstepFreq;
+            }
         }
 
         private void OnDestroy()
@@ -115,16 +133,12 @@ namespace TripleBladeHorse.VFX
                 && _fSM.GetCurrentAnimation().name == PlayerFSMData.Anim.Run_Ground)
             {
                 _particles["Run_Ground"].Play();
-                int i = Random.Range(0, 4);
-                string j = i.ToString();
-                _playerAudioSource.clip = _audios["Run_Ground_" + j];
-                _playerAudioSource.volume = _volume["Run_Ground_" + j];
-                _playerAudioSource.pitch = _pitch["Run_Ground_" + j];
-                _playerAudioSource.Play();
+                _repeatFootstepSFX = true;
             }
             else
             {
                 _particles["Run_Ground"].Stop();
+                _repeatFootstepSFX = false;
             }
             if (eventArgs.currentMovingState == MovingState.Airborne)
             {

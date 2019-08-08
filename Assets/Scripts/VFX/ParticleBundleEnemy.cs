@@ -16,8 +16,6 @@ namespace TripleBladeHorse.VFX
 
         [SerializeField]
         private HitBox hitBox;
-        [SerializeField]
-        private EnemyState _state;
 
         [SerializeField] private AudioSource enemyAudioSource1;
         [SerializeField] private AudioSource enemyAudioSource2;
@@ -30,6 +28,7 @@ namespace TripleBladeHorse.VFX
         private Dictionary<string, AudioClip> _audios;
         private Dictionary<string, float> _volume;
         private Dictionary<string, float> _pitch;
+        private EnemyState _state;
 
 
         ICharacterInput<EnemyInput> _input;

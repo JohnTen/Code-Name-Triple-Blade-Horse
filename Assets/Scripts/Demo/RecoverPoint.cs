@@ -79,6 +79,7 @@ namespace TripleBladeHorse
         {
             foreach (var obj in respawnHandlers)
             {
+                if (obj == null) continue;
                 var handler = obj.GetComponent<ICanHandleRespawn>();
                 if (handler != null) handler.Respawn();
             }

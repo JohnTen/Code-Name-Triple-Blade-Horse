@@ -2407,20 +2407,20 @@ MonoBehaviour:
     value: {fileID: 8300000, guid: b9a973155da052145a7eae03a26fbb62, type: 3}
   - key: Jump4
     value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_0
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_1
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_2
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_3
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_4
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_5
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
-  - key: Run_Ground_6
-    value: {fileID: 8300000, guid: 40bf85adaa2f4ef4286a8e77a91a7e29, type: 3}
+  - key: Run_Ground0
+    value: {fileID: 8300000, guid: 16f86366363250f4f89161a5583269af, type: 3}
+  - key: Run_Ground1
+    value: {fileID: 8300000, guid: 959325232bff8a84babf1e586d3e2bef, type: 3}
+  - key: Run_Ground2
+    value: {fileID: 8300000, guid: 91701f95a6b73e64fa50895895a197fb, type: 3}
+  - key: Run_Ground3
+    value: {fileID: 8300000, guid: 4bff9c12fe56d5142bd54bb22e55019b, type: 3}
+  - key: Run_Ground4
+    value: {fileID: 8300000, guid: 058db133a06268f4f8783591826af1f6, type: 3}
+  - key: Run_Ground5
+    value: {fileID: 8300000, guid: df8ac7be607319f4b9b8dc02997d7bc1, type: 3}
+  - key: Run_Ground6
+    value: {fileID: 8300000, guid: 5005c619edd8b8b41b82d30994309603, type: 3}
   _volumePairs:
   - key: Dash
     value: 1
@@ -2442,20 +2442,20 @@ MonoBehaviour:
     value: 0.5
   - key: Jump4
     value: 0.5
-  - key: Run_Ground_0
-    value: 0.5
-  - key: Run_Ground_1
-    value: 0.5
-  - key: Run_Ground_2
-    value: 0.5
-  - key: Run_Ground_3
-    value: 0.5
-  - key: Run_Ground_4
-    value: 0.5
-  - key: Run_Ground_5
-    value: 0.5
-  - key: Run_Ground_6
-    value: 0.5
+  - key: Run_Ground0
+    value: 1
+  - key: Run_Ground1
+    value: 1
+  - key: Run_Ground2
+    value: 1
+  - key: Run_Ground3
+    value: 1
+  - key: Run_Ground4
+    value: 1
+  - key: Run_Ground5
+    value: 1
+  - key: Run_Ground6
+    value: 1
   _pitchPairs:
   - key: Dash
     value: 1
@@ -2477,6 +2477,21 @@ MonoBehaviour:
     value: 1
   - key: Jump4
     value: 1.07
+  - key: Run_Ground0
+    value: 1.07
+  - key: Run_Ground1
+    value: 1.07
+  - key: Run_Ground2
+    value: 1.07
+  - key: Run_Ground3
+    value: 1.07
+  - key: Run_Ground4
+    value: 1.07
+  - key: Run_Ground5
+    value: 1.07
+  - key: Run_Ground6
+    value: 1.07
+  _footstepFreq: 2
 --- !u!82 &785308006592369316
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4889,6 +4904,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5873655222543155126}
     m_Modifications:
+    - target: {fileID: 722594225026990096, guid: 1496ec712d8894619bc340aeab2802ef,
+        type: 3}
+      propertyPath: m_Name
+      value: StorageSpread
+      objectReference: {fileID: 0}
     - target: {fileID: 7972647097321884715, guid: 1496ec712d8894619bc340aeab2802ef,
         type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.size
@@ -5033,11 +5053,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 722594225026990096, guid: 1496ec712d8894619bc340aeab2802ef,
-        type: 3}
-      propertyPath: m_Name
-      value: StorageSpread
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1496ec712d8894619bc340aeab2802ef, type: 3}
@@ -5251,6 +5266,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5873655222543155126}
     m_Modifications:
+    - target: {fileID: 5972011221539177878, guid: e0c782168fbf48d48b5545f30c3f1725,
+        type: 3}
+      propertyPath: m_Name
+      value: Healing
+      objectReference: {fileID: 0}
     - target: {fileID: 5972011221539177879, guid: e0c782168fbf48d48b5545f30c3f1725,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5315,11 +5335,6 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.radius.value
       value: 0.94
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972011221539177878, guid: e0c782168fbf48d48b5545f30c3f1725,
-        type: 3}
-      propertyPath: m_Name
-      value: Healing
       objectReference: {fileID: 0}
     - target: {fileID: 5972011222021007208, guid: e0c782168fbf48d48b5545f30c3f1725,
         type: 3}
@@ -5652,6 +5667,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5873655222543155126}
     m_Modifications:
+    - target: {fileID: 1313231677117836, guid: ca4d750136e21604bbfda7c5c7af3d54, type: 3}
+      propertyPath: m_Name
+      value: Run_Smoke
+      objectReference: {fileID: 0}
     - target: {fileID: 4877653469868666, guid: ca4d750136e21604bbfda7c5c7af3d54, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.2699966
@@ -5695,10 +5714,6 @@ PrefabInstance:
     - target: {fileID: 4877653469868666, guid: ca4d750136e21604bbfda7c5c7af3d54, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1313231677117836, guid: ca4d750136e21604bbfda7c5c7af3d54, type: 3}
-      propertyPath: m_Name
-      value: Run_Smoke
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca4d750136e21604bbfda7c5c7af3d54, type: 3}
