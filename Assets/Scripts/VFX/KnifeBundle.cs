@@ -49,9 +49,11 @@ namespace TripleBladeHorse.VFX
             }
             if (currentState == KnifeState.Flying)
             {
-                knifeAudioSource.clip = _audios["Throw"];
-                knifeAudioSource.volume = _volume["Throw"];
-                knifeAudioSource.pitch = _pitch["Throw"];
+                int i = Random.Range(0, 4);
+                string j = i.ToString();
+                knifeAudioSource.clip = _audios["Throw" +j];
+                knifeAudioSource.volume = _volume["Throw" +j];
+                knifeAudioSource.pitch = _pitch["Throw" +j];
                 knifeAudioSource.Play();
             }
         }
