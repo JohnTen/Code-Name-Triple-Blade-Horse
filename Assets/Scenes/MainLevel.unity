@@ -34544,7 +34544,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1513601706}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &1286458966 stripped
+--- !u!82 &1286458972 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 996761397126741216, guid: ab0c48871036e7d4eb1b4168c6eb9341,
     type: 3}
@@ -40680,6 +40680,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1699936981}
     m_Modifications:
+    - target: {fileID: 996761397126741216, guid: ab0c48871036e7d4eb1b4168c6eb9341,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996761397126741216, guid: ab0c48871036e7d4eb1b4168c6eb9341,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c7a2cbf05f8f86142bbec2366d2cda51, type: 3}
     - target: {fileID: 3141621328622397440, guid: ab0c48871036e7d4eb1b4168c6eb9341,
         type: 3}
       propertyPath: m_Name
@@ -40754,7 +40764,7 @@ PrefabInstance:
         type: 3}
       propertyPath: breakSound
       value: 
-      objectReference: {fileID: 1286458966}
+      objectReference: {fileID: 1286458972}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab0c48871036e7d4eb1b4168c6eb9341, type: 3}
 --- !u!1001 &1514676463
