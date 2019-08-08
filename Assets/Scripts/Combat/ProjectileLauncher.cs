@@ -10,7 +10,7 @@ namespace TripleBladeHorse.Combat
         [SerializeField] ParticleSystem _launchEffect;
         [SerializeField] AttackMove _move;
         [SerializeField] Vector2 _launchDirection = Vector2.right;
-
+        public AudioSource launchSound;
         public Transform Target { get; set; }
         public Vector2 LaunchDirection
         {
@@ -22,6 +22,8 @@ namespace TripleBladeHorse.Combat
         {
             if (_launchEffect != null)
                 _launchEffect.Play();
+            launchSound.Play();
+            launchSound.pitch = Random.Range(0.75f, 1.25f);
             Invoke("StartAttack", _delay);
         }
 
