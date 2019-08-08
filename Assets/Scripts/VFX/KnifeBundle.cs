@@ -42,9 +42,11 @@ namespace TripleBladeHorse.VFX
         {
             if (currentState == KnifeState.InSheath && previousState == KnifeState.Returning)
             {
-                knifeAudioSource.clip = _audios["Equip"];
-                knifeAudioSource.volume = _volume["Equip"];
-                knifeAudioSource.pitch = _pitch["Equip"];
+                int i = Random.Range(0, 4);
+                string j = i.ToString();
+                knifeAudioSource.clip = _audios["Equip" +j];
+                knifeAudioSource.volume = _volume["Equip" +j];
+                knifeAudioSource.pitch = _pitch["Equip" +j];
                 knifeAudioSource.Play();
             }
             if (currentState == KnifeState.Flying)
