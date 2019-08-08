@@ -117,9 +117,9 @@ namespace TripleBladeHorse.VFX
                 _particles["Run_Ground"].Play();
                 int i = Random.Range(0, 4);
                 string j = i.ToString();
-                _playerAudioSource.clip = _audios["Run_Ground" + j];
-                _playerAudioSource.volume = _volume["Run_Ground" + j];
-                _playerAudioSource.pitch = _pitch["Run_Ground" + j];
+                _playerAudioSource.clip = _audios["Run_Ground_" + j];
+                _playerAudioSource.volume = _volume["Run_Ground_" + j];
+                _playerAudioSource.pitch = _pitch["Run_Ground_" + j];
                 _playerAudioSource.Play();
             }
             else
