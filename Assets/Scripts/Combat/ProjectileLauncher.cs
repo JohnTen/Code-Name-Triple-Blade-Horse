@@ -26,7 +26,7 @@ namespace TripleBladeHorse.Combat
             if (launchSound != null)
             {
                 launchSound.Play();
-                launchSound.volume = Random.Range(1.50f, 1.75f);
+                launchSound.volume = Random.Range(3.00f, 3.25f);
                 launchSound.pitch = Random.Range(0.75f, 1.25f);
             }
 
