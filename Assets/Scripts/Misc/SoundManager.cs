@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 [System.Serializable]
-public class SoundClips
+public class SoundClip
 {
-    public string label;
-    public AudioClip[] sounds;
+    public string label = "Default";
+    public string group = "Default";
+    public AudioClip[] audioClips;
     public AudioMixerGroup output;
     public bool mute;
     public bool playOnAwake = true;
@@ -19,9 +20,11 @@ public class SoundClips
 
     public float standardVolume = 1;
     public float standardPitch = 1;
-
-    [Header("Debug")]
     public AudioSource source;
+
+    [SerializeField] bool clipExpanded;
+    [SerializeField] bool settingExpanded;
+    [SerializeField] bool debugExpanded;
 
     public bool IsActivated { get; private set; }
 
@@ -43,11 +46,11 @@ public class SoundClips
 
     public void Play()
     {
-        if (sounds.Length <= 0) return;
-        var index = Random.Range(0, sounds.Length);
+        if (audioClips.Length <= 0) return;
+        var index = Random.Range(0, audioClips.Length);
 
         SetSource(source);
-        source.clip = sounds[index];
+        source.clip = audioClips[index];
         source.Play();
         IsActivated = true;
     }
@@ -61,7 +64,7 @@ public class SoundClips
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
-    [SerializeField] SoundClips[] clips;
+    [SerializeField] SoundClip[] clips;
 
     [Header("Debug")]
     [SerializeField] GameObject soundObject;
@@ -128,16 +131,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public static void Play(string label)
-    {
-        Instance._Play(label);
-    }
-
-    public static void Stop(string label)
-    {
-        Instance._Stop(label);
-    }
-
     public static bool IsPlaying(string label)
     {
         foreach (var s in Instance.clips)
@@ -151,7 +144,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         return false;
     }
 
-    public void _Play(string label)
+    public void Play(string label)
     {
         foreach (var s in clips)
         {
@@ -162,7 +155,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public void _Stop(string label)
+    public void Stop(string label)
     {
         foreach (var s in clips)
         {
@@ -173,7 +166,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public void _FadeIn(string label)
+    public void FadeIn(string label)
     {
         foreach (var s in clips)
         {
@@ -184,7 +177,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public void _FadeOut(string label)
+    public void FadeOut(string label)
     {
         foreach (var s in clips)
         {
@@ -195,7 +188,50 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    IEnumerator FadeIn(SoundClips clip)
+    public void GroupFadeIn(string soundLabel)
+    {
+        foreach (var s in clips)
+        {
+            if (s.label != soundLabel)
+                continue;
+
+            GroupFadeOut(s.group, s.label);
+
+            StartCoroutine(FadeIn(s));
+        }
+    }
+
+    public void GroupFadeOut(string groupLabel)
+    {
+        foreach (var g in clips)
+        {
+            if (g.group != groupLabel || !g.IsPlaying) continue;
+
+            StartCoroutine(FadeOut(g));
+        }
+    }
+
+    public void GroupFadeOut(string groupLabel, string exception)
+    {
+        foreach (var g in clips)
+        {
+            if (g.group != groupLabel || !g.IsPlaying || exception == g.label) continue;
+
+            StartCoroutine(FadeOut(g));
+        }
+    }
+
+    public void GroupFadeOut(string groupLabel, List<string> exceptions)
+    {
+        foreach (var g in clips)
+        {
+            if (g.group != groupLabel || !g.IsPlaying || exceptions.Contains(g.label)) continue;
+
+            StartCoroutine(FadeOut(g));
+        }
+    }
+
+    IEnumerator FadeIn(SoundClip clip)
     {
         float time = FadeInTime;
         float origVolume = clip.standardVolume;
@@ -212,7 +248,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         clip.Play();
     }
 
-    IEnumerator FadeOut(SoundClips clip)
+    IEnumerator FadeOut(SoundClip clip)
     {
         float time = FadeInTime;
         float origVolume = clip.standardVolume;

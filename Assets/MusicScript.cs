@@ -1,38 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.SceneManagement;
+using JTUtility;
 
-public class MusicScript : MonoBehaviour
+public class MusicScript : MonoSingleton<MusicScript>
 {
-
-    private static MusicScript _instance;
-
-    public static MusicScript Instance { get { return _instance; } }
-
-
-    private void Awake()
+    private void Start()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        this.transform.SetParent(GlobalObject.Instance.transform);
+        SceneManager.sceneLoaded += OnNewSceneLoaded;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnNewSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Start")
+        if (scene.name == "Start")
             Destroy(this.gameObject);
     }
 }

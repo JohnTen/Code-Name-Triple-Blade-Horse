@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2247079051047466318}
   - component: {fileID: 8304544966625559160}
   - component: {fileID: 2662105031474063901}
+  - component: {fileID: -6704124300785623510}
   m_Layer: 0
   m_Name: GlobalObject
   m_TagString: Untagged
@@ -59,3 +60,86 @@ MonoBehaviour:
   _bulletTimeScale: 0.4
   _playerBulletTimeScale: 0.9
   _bulletTimeDuration: 2
+--- !u!114 &-6704124300785623510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151257040721716988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b8d8603c741f8439d4e9ba36a03c63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - label: Main Menu
+    group: BGM
+    audioClips:
+    - {fileID: 8300000, guid: 44ca2f2359253494eb2f530d403805c1, type: 3}
+    output: {fileID: -6688249586407060704, guid: 81c9e8860d409b249874f9463931ca83,
+      type: 2}
+    mute: 0
+    playOnAwake: 0
+    loop: 1
+    volume: 1
+    pitch: 1
+    standardVolume: 0
+    standardPitch: 0
+    source: {fileID: 0}
+    clipExpanded: 0
+    settingExpanded: 1
+    debugExpanded: 0
+  - label: First Level
+    group: BGM
+    audioClips:
+    - {fileID: 8300000, guid: b7718a6384ce340e1854705e320a1f66, type: 3}
+    output: {fileID: -6688249586407060704, guid: 81c9e8860d409b249874f9463931ca83,
+      type: 2}
+    mute: 0
+    playOnAwake: 0
+    loop: 1
+    volume: 1
+    pitch: 1
+    standardVolume: 0
+    standardPitch: 0
+    source: {fileID: 0}
+    clipExpanded: 0
+    settingExpanded: 1
+    debugExpanded: 0
+  - label: Main Level
+    group: BGM
+    audioClips:
+    - {fileID: 8300000, guid: 1afd5380ec3d2d84fac7fbfe667648f0, type: 3}
+    output: {fileID: -6688249586407060704, guid: 81c9e8860d409b249874f9463931ca83,
+      type: 2}
+    mute: 0
+    playOnAwake: 0
+    loop: 1
+    volume: 0.4
+    pitch: 1
+    standardVolume: 0
+    standardPitch: 0
+    source: {fileID: 0}
+    clipExpanded: 0
+    settingExpanded: 1
+    debugExpanded: 0
+  - label: Boss Scene
+    group: BGM
+    audioClips:
+    - {fileID: 8300000, guid: fb1f083996f8c324781a0f4054c99412, type: 3}
+    output: {fileID: -6688249586407060704, guid: 81c9e8860d409b249874f9463931ca83,
+      type: 2}
+    mute: 0
+    playOnAwake: 0
+    loop: 1
+    volume: 0.397
+    pitch: 1
+    standardVolume: 0
+    standardPitch: 0
+    source: {fileID: 0}
+    clipExpanded: 0
+    settingExpanded: 0
+    debugExpanded: 0
+  soundObject: {fileID: 0}
+  sources: []
