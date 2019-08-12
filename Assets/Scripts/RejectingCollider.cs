@@ -23,7 +23,6 @@ namespace TripleBladeHorse
             if (IsInsideFilter(collision.tag)) return;
             var mover = collision.GetComponent<PlayerMover>();
             if (!mover) return;
-            print(collision.name);
 
             var bound = _collider.bounds;
             var toOther = collision.bounds.center - bound.center;

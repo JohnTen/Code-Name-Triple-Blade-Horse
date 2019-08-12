@@ -122,7 +122,15 @@ namespace TripleBladeHorse.Movement
 
         public void InvokeConstantMovement(Vector3 direction, ParticleSystem.MinMaxCurve speed, float time)
         {
-            if (IsConstantMoving) return;
+            print("IsConstantMoving " + IsConstantMoving
+                + "\ndirection " + direction
+                + "\nspeed(0.5) " + speed.Evaluate(0.5f)
+                + "\ntime " + time);
+
+            if (IsConstantMoving)
+            {
+                InterruptContantMove();
+            }
 
             _originalGravityScale = _rigidbody.gravityScale;
             _rigidbody.gravityScale = 0;

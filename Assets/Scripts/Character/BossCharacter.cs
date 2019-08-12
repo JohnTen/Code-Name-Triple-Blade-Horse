@@ -286,7 +286,6 @@ namespace TripleBladeHorse
 
                 case BossFSMData.Anim.Combo3_2:
                     UpdateFacingDirection(aim);
-                    print(aim);
                     _mover.InvokeConstantMovement(moveDirection, _thrustSpeed, _thrustTime);
                     break;
 
@@ -453,7 +452,6 @@ namespace TripleBladeHorse
                 {
                     pivot.transform.localEulerAngles = _state._facingRight ? Vector3.zero : Vector3.up * 180;
                 }
-                print("Updated direction");
             }
         }
 

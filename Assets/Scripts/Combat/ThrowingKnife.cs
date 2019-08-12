@@ -367,7 +367,6 @@ namespace TripleBladeHorse.Combat
 
             if (attackable == null && !Stuck)
             {
-                print(hit.collider.name);
                 Hover();
             }
         }

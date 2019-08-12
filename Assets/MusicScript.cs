@@ -13,7 +13,7 @@ public class MusicScript : MonoSingleton<MusicScript>
 
     private void OnNewSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Start")
+        if (scene.buildIndex == 0)
             Destroy(this.gameObject);
     }
 }

@@ -20,7 +20,7 @@ namespace TripleBladeHorse.VFX
             get
             {
                 var vcam = _brain.ActiveVirtualCamera as CinemachineVirtualCameraBase;
-                if (_vcam != vcam)
+                if (_vcam != vcam && vcam != null)
                 {
                     _vcam = vcam;
                 }

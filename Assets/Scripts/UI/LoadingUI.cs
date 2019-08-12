@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TripleBladeHorse.UI
 {
     public class LoadingUI : MonoBehaviour
     {
-        [SerializeField] Transform icon;
-        [SerializeField] float rotateSpeed;
+        [SerializeField] Image icon;
+        [SerializeField] float speed;
+        [SerializeField] Sprite[] sprites;
 
         public void StartLoading(AsyncOperation operation)
         {
@@ -15,10 +17,20 @@ namespace TripleBladeHorse.UI
 
         IEnumerator PlayLoadingAnimation(AsyncOperation asyncOperation)
         {
+            float time = 0;
+            int index = 0;
+
             while (!asyncOperation.isDone)
             {
-                icon.Rotate(0, 0, rotateSpeed * TimeManager.DeltaTime);
+                if (time <= 0)
+                {
+                    icon.sprite = sprites[index];
+                    index++;
+                    index %= sprites.Length;
+                    time += 1 / speed;
+                }
 
+                time -= Time.unscaledDeltaTime;
                 yield return null;
             }
         }

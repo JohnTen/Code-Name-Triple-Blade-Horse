@@ -49,7 +49,6 @@ namespace TripleBladeHorse
             if (stuckObj.Count >= _maxStuckedKnife)
                 return false;
 
-            print("Stab");
             _OnStab.Invoke();
             stuckObj.Add(obj);
             return true;
@@ -86,7 +85,6 @@ namespace TripleBladeHorse
                     _OnExhausted?.Invoke();
             }
 
-            print("Draw");
             _OnDraw.Invoke();
             return true;
         }
