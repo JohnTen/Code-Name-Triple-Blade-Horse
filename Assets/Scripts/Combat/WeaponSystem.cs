@@ -40,10 +40,10 @@ namespace TripleBladeHorse.Combat
 
         private void HandleSwordOnHit(IAttackable attackable, AttackResult result, AttackPackage attack)
         {
-            if (attack._move != null)
+            if (attack._move != null && result._isWeakspot)
             {
                 TimeManager.Instance.FrozenFrame(attack._move.FrameFrozen);
-                ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
+                //ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
             }
         }
 
