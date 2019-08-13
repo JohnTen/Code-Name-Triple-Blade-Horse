@@ -281,6 +281,12 @@ namespace TripleBladeHorse
             _state._hitPoints -= result._finalDamage;
             _state._endurance -= result._finalFatigue;
 
+            if (attack._move != null && result._isWeakspot)
+            {
+                TimeManager.Instance.FrozenFrame(attack._move.FrameFrozen);
+                ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
+            }
+
             if (result._finalDamage > 0)
             {
                 _hitFlash.Flash();
