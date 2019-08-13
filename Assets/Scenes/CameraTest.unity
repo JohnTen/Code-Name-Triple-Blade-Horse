@@ -1343,8 +1343,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &90987786
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1362,7 +1381,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1495,7 +1514,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -3061,7 +3080,7 @@ SpriteRenderer:
   m_Size: {x: 12.96, y: 2.36}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &316300637
@@ -3281,7 +3300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339236992}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.126083, y: 1.4396596, z: -2}
+  m_LocalPosition: {x: -31.096851, y: 1.4396596, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1678973377}
@@ -3424,17 +3443,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7322338521489496462, guid: c675c99afdbb8de4e856445a69921de4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7967618017740660448, guid: c675c99afdbb8de4e856445a69921de4,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 4516137945640197642, guid: c675c99afdbb8de4e856445a69921de4,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 7322338521489496462, guid: c675c99afdbb8de4e856445a69921de4,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -3829,8 +3848,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &419932421
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3848,7 +3886,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -3954,8 +3992,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &420251509
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3973,7 +4030,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4427,7 +4484,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5320,7 +5377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.926083, y: -3.4603405, z: -3}
+  m_LocalPosition: {x: -31.89685, y: -3.4603405, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 926173655}
@@ -5598,7 +5655,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -6191,8 +6248,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &586838805
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6210,7 +6286,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -7629,7 +7705,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 710631603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.757072, y: -1.3382282, z: -3}
+  m_LocalPosition: {x: -31.717419, y: -2.8482285, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1460546534}
@@ -8169,7 +8245,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -8988,22 +9064,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 611382478332559861, guid: 5e26dacd014ce904e81f7ec3f110676b,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 22603649960925626, guid: 5e26dacd014ce904e81f7ec3f110676b,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 2166466417346647165, guid: 5e26dacd014ce904e81f7ec3f110676b,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 611382478332559861, guid: 5e26dacd014ce904e81f7ec3f110676b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 5730662027365126805, guid: 5e26dacd014ce904e81f7ec3f110676b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 22603649960925626, guid: 5e26dacd014ce904e81f7ec3f110676b,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -9402,7 +9478,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -9475,8 +9551,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!1 &891608206
 GameObject:
   m_ObjectHideFlags: 0
@@ -9672,7 +9767,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -9958,8 +10053,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &907483043
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9977,7 +10091,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -10216,7 +10330,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -10289,8 +10403,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!1 &925263198
 GameObject:
   m_ObjectHideFlags: 0
@@ -10684,8 +10817,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &966329386
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10703,7 +10855,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11008,7 +11160,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11081,8 +11233,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!1 &994162858
 GameObject:
   m_ObjectHideFlags: 0
@@ -11132,8 +11303,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &994162861
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11151,7 +11341,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11394,8 +11584,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1007701141
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11413,7 +11622,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11770,8 +11979,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1041908843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11789,7 +12017,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -12380,8 +12608,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1083036154
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12399,7 +12646,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -12854,8 +13101,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1140228074
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12873,7 +13139,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -13171,90 +13437,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 39.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 18.73135
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 12.599998
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.minScalar
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: prewarm
-      value: 1
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 457012699481823075, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
@@ -13391,6 +13577,11 @@ PrefabInstance:
       propertyPath: prewarm
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 6629901529712606117, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -13506,15 +13697,90 @@ PrefabInstance:
       propertyPath: InitialModule.startSpeed.scalar
       value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.x
+      value: 39.7
       objectReference: {fileID: 0}
-    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.y
+      value: 18.73135
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 12.599998
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39672eed14a9e0046ba3ea9e52699e91, type: 3}
@@ -15090,7 +15356,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -15599,7 +15865,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -16288,90 +16554,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 20.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.9313507
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.2000008
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.minScalar
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: prewarm
-      value: 1
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 457012699481823075, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
@@ -16503,6 +16689,11 @@ PrefabInstance:
       propertyPath: InitialModule.startLifetime.scalar
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 6629901529712606117, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -16628,15 +16819,90 @@ PrefabInstance:
       propertyPath: InitialModule.startSpeed.scalar
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.x
+      value: 20.6
       objectReference: {fileID: 0}
-    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.y
+      value: 3.9313507
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.2000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39672eed14a9e0046ba3ea9e52699e91, type: 3}
@@ -18130,7 +18396,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -18389,8 +18655,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1662623711
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18408,7 +18693,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -19828,7 +20113,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -20073,22 +20358,27 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 611382478332559861, guid: 5e26dacd014ce904e81f7ec3f110676b,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 22603649960925626, guid: 5e26dacd014ce904e81f7ec3f110676b,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 2166466417346647165, guid: 5e26dacd014ce904e81f7ec3f110676b,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 611382478332559861, guid: 5e26dacd014ce904e81f7ec3f110676b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093385479906588717, guid: 5e26dacd014ce904e81f7ec3f110676b,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5730662027365126805, guid: 5e26dacd014ce904e81f7ec3f110676b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 22603649960925626, guid: 5e26dacd014ce904e81f7ec3f110676b,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -20104,11 +20394,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8330095009723951642, guid: 5e26dacd014ce904e81f7ec3f110676b,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4093385479906588717, guid: 5e26dacd014ce904e81f7ec3f110676b,
         type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -20349,6 +20634,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86806ec5186e5d49880ca8198611362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLoadingScene:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: JTUtility.SwitchLevel+AsyncOperationEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!4 &1786556347
 Transform:
   m_ObjectHideFlags: 0
@@ -20408,6 +20698,7 @@ MonoBehaviour:
   - R1
   - Y
   - A
+  modelType: 00
 --- !u!1 &1799007982
 GameObject:
   m_ObjectHideFlags: 0
@@ -20536,8 +20827,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1804355428
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20555,7 +20865,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -20744,8 +21054,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1809614648
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20763,7 +21092,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -21155,7 +21484,7 @@ SpriteRenderer:
   m_Size: {x: 28.8, y: 8.704687}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1851302126
@@ -22117,7 +22446,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -22190,8 +22519,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!1 &1962963157
 GameObject:
   m_ObjectHideFlags: 0
@@ -22852,7 +23200,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -23037,8 +23385,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &1988345244
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23056,7 +23423,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -23189,7 +23556,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.24, y: 1.15}
+    oldSize: {x: 2.24, y: 1.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -23401,8 +23768,27 @@ MonoBehaviour:
   _canPullingJump: 0
   _restoredStamina: 0
   _maxStuckedKnife: 3
+  _numberOfEnergyBall: 1
   _pullForceFactor: 1
+  _enegryBallPrefab: {fileID: 0}
+  _OnStab:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnDraw:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _OnExhausted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stuckObj: []
+  _rigidbody: {fileID: 0}
+  _generatedEnergyBalls: 0
 --- !u!61 &2039121470
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23420,7 +23806,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.82}
+    oldSize: {x: 1.76, y: 1.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -24710,90 +25096,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 20.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.9313507
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 27.400002
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.minScalar
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
-        type: 3}
-      propertyPath: prewarm
-      value: 1
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 457012699481823075, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
@@ -24925,6 +25231,11 @@ PrefabInstance:
       propertyPath: InitialModule.startLifetime.scalar
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 6629901529712606117, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -25050,15 +25361,90 @@ PrefabInstance:
       propertyPath: InitialModule.startSpeed.scalar
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 457012699481823068, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.x
+      value: 20.6
       objectReference: {fileID: 0}
-    - target: {fileID: 1248394393971539640, guid: 39672eed14a9e0046ba3ea9e52699e91,
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      propertyPath: m_LocalPosition.y
+      value: 3.9313507
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 27.400002
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568061, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 457012699166568062, guid: 39672eed14a9e0046ba3ea9e52699e91,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39672eed14a9e0046ba3ea9e52699e91, type: 3}
@@ -25273,277 +25659,277 @@ PrefabInstance:
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.15484641
+      value: 0.1307087
       objectReference: {fileID: 0}
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9879386
+      value: 0.9914208
       objectReference: {fileID: 0}
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.8991106
+      value: 1.9395483
       objectReference: {fileID: 0}
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.758073
+      value: 7.8021264
       objectReference: {fileID: 0}
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.0000001
+      value: 1.0000002
       objectReference: {fileID: 0}
     - target: {fileID: 7882363354883592533, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.9999998
+      value: 0.9999999
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.2510953
+      value: 0.22741652
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9679624
+      value: 0.97379756
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.9608777
+      value: 2.957241
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.8800025
+      value: 6.8733315
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.0000001
+      value: 0.9999999
       objectReference: {fileID: 0}
     - target: {fileID: 7270270939201647817, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.52849126
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.84893876
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.1978984
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.590699
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.019817716
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9998036
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.9996867
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.741143
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.99999976
       objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.54903567
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8357989
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.2150288
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.6094403
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354904521724528621, guid: b1f6d640c78054840b7e5babdfdba3a7,
+    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.0000004
       objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.035247006
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9993787
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.95933425
+      value: 1.0819024
       objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.670041
+      value: 2.80249
       objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.0000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030626159063395818, guid: b1f6d640c78054840b7e5babdfdba3a7,
+    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 0.9999999
       objectReference: {fileID: 0}
     - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.0819037
-      objectReference: {fileID: 0}
-    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.8024905
-      objectReference: {fileID: 0}
-    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.0000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 2140497782748155012, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.0000002
       objectReference: {fileID: 0}
     - target: {fileID: 4755998049384801355, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1578006
+      value: 1.1577996
       objectReference: {fileID: 0}
     - target: {fileID: 4755998049384801355, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.1980772
+      value: 2.198077
       objectReference: {fileID: 0}
     - target: {fileID: 4755998049384801355, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.0000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 8118429592840943667, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.08649074
-      objectReference: {fileID: 0}
-    - target: {fileID: 8118429592840943667, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.99625266
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.093566686
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10.563555
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.3136606
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9495352
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.8228757
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.470232
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.9999996
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.0000004
-      objectReference: {fileID: 0}
-    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.049635272
-      objectReference: {fileID: 0}
-    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10.698203
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.02743279
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.99962366
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.2628147
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10.836655
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.0000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8118429592840943667, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.08649039
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118429592840943667, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9962527
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.09356729
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148632547855296616, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.628582
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.332173
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9432185
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.7311177
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.3651
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284372327339830597, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.049635906
+      objectReference: {fileID: 0}
+    - target: {fileID: 326285810793470765, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.76323
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.045678716
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9989562
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.23546267
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.890848
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6199132552929807632, guid: b1f6d640c78054840b7e5babdfdba3a7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9999999
+      objectReference: {fileID: 0}
     - target: {fileID: 8593844376978086918, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.16781276
+      value: 0.16781405
       objectReference: {fileID: 0}
     - target: {fileID: 8593844376978086918, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.539501
+      value: 12.604528
       objectReference: {fileID: 0}
     - target: {fileID: 4891715440308728924, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.045156367
+      value: 0.045157637
       objectReference: {fileID: 0}
     - target: {fileID: 4891715440308728924, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.86165
+      value: 12.926678
       objectReference: {fileID: 0}
     - target: {fileID: 3003648542374499285, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.111815535
+      value: 0.111817144
       objectReference: {fileID: 0}
     - target: {fileID: 3003648542374499285, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.809426
+      value: 13.874454
       objectReference: {fileID: 0}
     - target: {fileID: 2959930975448111252, guid: b1f6d640c78054840b7e5babdfdba3a7,
         type: 3}
