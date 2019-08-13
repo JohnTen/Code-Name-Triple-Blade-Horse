@@ -72,6 +72,16 @@ namespace TripleBladeHorse.Combat
         private void Awake()
         {
             flyingVFX.SetParent(null);
+            OnHit += ThrowingKnife_OnHit;
+        }
+
+        private void ThrowingKnife_OnHit(IAttackable attackable, AttackResult result, AttackPackage attack)
+        {
+            if (attack._move != null && result._isWeakspot)
+            {
+                TimeManager.Instance.FrozenFrame(attack._move.FrameFrozen);
+                //ShakeScreen.Instance.Shake(attack._move.ScreenShakeParam);
+            }
         }
 
         private void Update()

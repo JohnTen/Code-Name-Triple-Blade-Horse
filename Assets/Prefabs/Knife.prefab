@@ -72,7 +72,7 @@ MonoBehaviour:
   state: 0
   piercing: 0
   normalAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
-  chargedAttack: {fileID: 11400000, guid: 985f8a5118005094392856a12e05d209, type: 2}
+  chargedAttack: {fileID: 11400000, guid: abbcfa33989021843a9702b87948931f, type: 2}
   floatAttack: {fileID: 11400000, guid: 0ee0f14d677ccfb45b6700d0e6abca62, type: 2}
   drawStuckAttack: {fileID: 11400000, guid: 0ee0f14d677ccfb45b6700d0e6abca62, type: 2}
 --- !u!114 &974760221936440285
@@ -93,6 +93,8 @@ MonoBehaviour:
   color: {r: 0.8301887, g: 0, b: 0, a: 1}
   _ghostPrefab: {fileID: 5585258012321885980, guid: 168efe93b8431ab4d99d53f630762906,
     type: 3}
+  spawning: 0
+  startPositionBtwSpawns: {x: 0, y: 0, z: 0}
 --- !u!1 &3672448917957651048
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,22 +272,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
         type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
         type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
         type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4816177015221276703, guid: ae73efeb3ab1c264e96ca4948e1efc78,
+    - target: {fileID: 4816177014495151740, guid: ae73efeb3ab1c264e96ca4948e1efc78,
         type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
       value: 1
