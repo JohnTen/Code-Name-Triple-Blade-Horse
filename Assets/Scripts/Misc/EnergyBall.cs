@@ -26,6 +26,7 @@ namespace TripleBladeHorse
             if (collider == null) return;
 
             var player = collider.GetComponentInParent<PlayerCharacter>();
+            if (player == null) return;
             player.ReplenishStamina(ReplenishAmount);
         }
     }
