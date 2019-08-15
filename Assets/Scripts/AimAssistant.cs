@@ -59,6 +59,8 @@ namespace TripleBladeHorse
             var minDistance = float.PositiveInfinity;
             var aimDirection = facingRight ? Vector2.right : Vector2.left;
 
+            Physics2D.queriesHitTriggers = false;
+            Physics2D.queriesStartInColliders = false;
             for (int i = 0; i < _objects.Count; i++)
             {
                 var point = (Vector2)_objects[i].position;
@@ -71,15 +73,20 @@ namespace TripleBladeHorse
                 var toPoint = point - currentPosition;
                 if (Mathf.Sign(toPoint.x) != Mathf.Sign(aimDirection.x)) continue;
 
-                var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
-                if (hit.collider != null) continue;
-
                 if (toPoint.sqrMagnitude > minDistance || toPoint.sqrMagnitude > maxDistance) continue;
+
+                var hit = Physics2D.Raycast(currentPosition, toPoint, _maxAimingRange, _obstacleLayer);
+                if (hit.collider != null && hit.distance < toPoint.magnitude)
+                {
+                    print(hit.collider.name);
+                    continue;
+                }
 
                 minDistance = toPoint.sqrMagnitude;
                 aimDirection = toPoint;
             }
 
+            Debug.DrawRay(currentPosition, aimDirection, Color.white, 2);
             return aimDirection.normalized;
         }
 
@@ -89,6 +96,8 @@ namespace TripleBladeHorse
             var currentPosition = (Vector2)_launchPoint.position;
             var minAngle = float.PositiveInfinity;
 
+            Physics2D.queriesHitTriggers = false;
+            Physics2D.queriesStartInColliders = false;
             Debug.DrawRay(currentPosition, aimingDirection * 10);
             for (int i = 0; i < _objects.Count; i++)
             {

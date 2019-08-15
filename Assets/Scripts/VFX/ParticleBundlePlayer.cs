@@ -206,7 +206,6 @@ namespace TripleBladeHorse.VFX
             _playerAudioSource.pitch = _pitch["Pain"];
             _playerAudioSource.Play();
         }
-
     }
 
 }
